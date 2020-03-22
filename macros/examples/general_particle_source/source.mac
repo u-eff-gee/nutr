@@ -1,0 +1,11 @@
+/run/numberOfThreads
+/run/initialize
+
+/gps/particle gamma
+/gps/energy 1.332 MeV
+
+/gps/pos/type Point
+/gps/pos/centre 0. 0. 0. mm
+/gps/ang/type iso
+
+/run/beamOn 
