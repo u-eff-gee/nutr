@@ -17,24 +17,18 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "PrimaryGeneratorAction.hh"
+#pragma once
 
-#include "G4Event.hh"
-#include "G4GeneralParticleSource.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
 
-PrimaryGeneratorAction::PrimaryGeneratorAction()
- : G4VUserPrimaryGeneratorAction(),
-   fParticleGun(nullptr)
+#include "W_dir_dir.hh"
+
+class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-   fParticleGun = new G4GeneralParticleSource();
-}
+  public:
+    PrimaryGeneratorAction();
+   ~PrimaryGeneratorAction();
 
-PrimaryGeneratorAction::~PrimaryGeneratorAction()
-{
-  delete fParticleGun;
-}
+    virtual void GeneratePrimaries(G4Event*);
 
-void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
-{
-  fParticleGun->GeneratePrimaryVertex(anEvent);
-}
+};

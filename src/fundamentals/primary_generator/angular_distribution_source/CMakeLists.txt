@@ -15,6 +15,8 @@
 #
 #    Copyright (C) 2020 Udo Friman-Gayer
 
-include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/general_particle_source)
+include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/angular_distribution_source ${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/angular_distribution_source/angular_distribution)
 
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator/angular_distribution_source/angular_distribution)
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
+target_link_libraries(primaryGeneratorAction w_dir_dir)
