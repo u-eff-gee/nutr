@@ -1,3 +1,22 @@
+/*
+    This file is part of nutr.
+
+    nutr is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    nutr is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with nutr.  If not, see <https://www.gnu.org/licenses/>.
+
+    Copyright (C) 2020 Udo Friman-Gayer
+*/
+
 #pragma once
 
 #include <vector>
@@ -27,9 +46,29 @@ using std::vector;
  */
 class W_dir_dir{
 public:
-	W_dir_dir(const State ini_state, const Transition ini_to_int, const State int_state, const Transition int_to_fin, const State fin_state);
+	/**
+	 * \brief Constructor
+	 * 
+	 * \param ini_state Intial state
+	 * \param ini_to_int Transition from initial state to intermediate state
+	 * \param int_state Intermediate state
+	 * \param int_to_fin Transition from intermediate state to final state
+	 * \param fin_state Final state
+	 */
+	W_dir_dir(const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state);
+	/**
+	 * \brief Destructor
+	 */
 	~W_dir_dir() = default;
 
+	/**
+	 * \brief Return value of the dir-dir correlation at an angle \f$\theta\f$
+	 * 
+	 * \param theta Polar angle between the direction of the incoming and 
+	 * the outgoing photon in radians.
+	 * 
+	 * \return \f$W \left( \theta \right)\f$
+	 */
 	double operator()(const double theta);
 
 protected:
@@ -193,25 +232,58 @@ protected:
 	 * \f$\nu\f$ is restricted to:
 	 *
 	 * \f[
-	 *	0 \leq \nu \leq \min \left[ 2 j, \min\left( L_1, L_1^\prime \right), \min\left( L_2, L_2^\prime \right) \right].
+	 *	0 \leq \nu \leq \min \left[ 2 j, \min\left( 2 L_1, 2 L_1^\prime \right), \min\left( 2 L_2, 2 L_2^\prime \right) \right].
 	 * \f]
 	 *
 	 * The equation above is more general than Eq. (13) in Ref. \cite FerentzRosenzweig1955,
 	 * since it does not make an assumption about the relative magnitude of \f$L_n\f$ and
 	 * \f$L_n^\prime\f$.
 	 *
+	 * \param ini_to_int Transition from initial state to intermediate state
+	 * \param int_state Intermediate state
+	 * \param int_to_fin Transition from intermediate state to final state
+	 * 
+	 * \return \f$2\nu_\mathrm{max}\f$
 	 */
-	int get_two_nu_max(const int two_L_n, const int two_L_p) const;
-	vector<double> calculate_av_coefficients();
+	int get_two_nu_max(const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin) const;
 
-	const AvCoefficient av_coef;
-	vector<double> av_coef_cache;
+	/**
+	 * \brief Calculate set of products of \f$A_v\f$ coefficients
+	 * 
+	 * The sum over \f$\nu\f$ in Eq. (I-1) of \cite FaggHanna1959 contains products of 
+	 * \f$A_v\f$ coefficients of the form:
+	 * 
+	 * \f[
+	 * 		A_v \left( L_1, L_1^\prime, j_1, j, \delta_1 \right) 
+	 * 		A_v \left( L_2, L_2^\prime, j_2, j, \delta_2 \right).
+	 * \f]
+	 * 
+	 * This function calculates all products from \f$\nu = 0\f$ up to, and including, a maximum 
+	 * value of \f$\nu_\mathrm{max}\f$ for a given set of quantum numbers, and returns them 
+	 * as a vector.
+	 * 
+	 * \param two_nu_max Maximum value of \f$2 \nu\f$
+	 * \param ini_state Intial state
+	 * \param ini_to_int Transition from initial state to intermediate state
+	 * \param int_state Intermediate state
+	 * \param int_to_fin Transition from intermediate state to final state
+	 * \param fin_state Final state
+	 * 
+	 * \return \f$A_v (L_1, L_1^\prime, j_1, j, \delta_1) A_v (L_2, L_2^\prime, j_2, j, \delta_2) ~~,
+	 * ~~ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace \f$ sorted by increasing values
+	 *  of \f$\nu\f$ in a std::vector.
+	 */
+	vector<double> get_av_products(const int two_nu_max, const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state) const;
 
-	Transition initial_to_intermediate;
-	Transition intermediate_to_final;
-	State initial_state;
-	State intermediate_state;
-	State final_state;
+	const AvCoefficient av_coef; /**< Instance of the AvCoefficient class */
+	vector<double> av_prod_cache; /**< Vector to store \f$A_v\f$ coefficients */
 
-	int two_nu_max; 
+	Transition initial_to_intermediate; /**< Transition from initial state to intermediate state */
+	Transition intermediate_to_final; /**< Transition from intermediate state to final state */
+	State initial_state; /**< Initial state */
+	State intermediate_state; /**< Intermediate state */
+	State final_state; /**< Final state */
+
+	int nu_max; /**< Maximum value of \f$\nu\f$ for which the coefficients do not vanish */
+	int two_nu_max; /**< Maximum value of \f$2 \nu\f$ for which the coefficients do not vanish */
 };

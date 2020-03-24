@@ -12,6 +12,8 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nutr.  If not, see <https://www.gnu.org/licenses/>.
+#
+#    Copyright (C) 2020 Udo Friman-Gayer
 
 # Based on the official CMake tutorial on:
 #
@@ -39,6 +41,12 @@ if(WITH_GEANT4_UIVIS)
 else()
   find_package(Geant4 REQUIRED)
 endif()
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+	configure_file(${PROJECT_SOURCE_DIR}/Doxyfile.in Doxyfile)
+	add_custom_target(doc_doxygen ALL COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
+endif(DOXYGEN_FOUND)
 
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)

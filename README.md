@@ -26,6 +26,7 @@ A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4
 ### 2.1 Prerequisites
 
 * [Geant4 10.6 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`.
+* [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is not needed to build `nutr`, but since the output is written in the ROOT format by default, it is highly recommended.
 
 In the following, the directory where the top-level `CMakeLists.txt` is located in a downloaded version of `nutr` is denoted as `NUTR_SOURCE_DIR`.
