@@ -30,7 +30,7 @@ using std::vector;
 /**
  * \brief Class for a direction-direction (dir-dir) correlation
  *
- * Evaluates the angular correlation between two photons in a nuclear reactions of the type 
+ * Evaluates the angular correlation between two photons in a nuclear reaction of the type 
  * \f$(\gamma, \gamma')\f$ in which a nucleus in an initial state with the spin 
  * \f$j_1\f$ absorbs a photon to render it in an excited state with the spin \f$j\f$, 
  * and emits another photon in a transition to another state with the spin \f$j_2\f$.
@@ -63,6 +63,17 @@ public:
 
 	/**
 	 * \brief Return value of the dir-dir correlation at an angle \f$\theta\f$
+	 * 
+	 * It is given by the following expression {Eqs. (I-1) and (I-2) in Ref. \cite FaggHanna1959}:
+	 * 
+	 * \f[
+	 * 		W \left( \theta, \varphi \right) = \sum_\nu A_v \left( L_1, L_1^\prime, j_1, j \right) A_v \left( L_2, L_2^\prime, j_2, j \right) P_\nu \left[ \cos \left( \theta \right) \right].
+	 * \f]
+	 * 
+	 * Here, a level sequence \f$j_1 \to j \to \j_2\f$ is assumed.
+	 * The first transition proceeds via the multipolarities \f$L_1\f$ and \f$L_1^\prime\f$,
+	 * while the second has the multipolarities \f$L_2\f$ and \f$L_2^\prime\f$.
+	 * The symbol \f$P_v\f$ denotes a Legendre polynomial of the order \f$\nu\f$.
 	 * 
 	 * \param theta Polar angle between the direction of the incoming and 
 	 * the outgoing photon in radians.

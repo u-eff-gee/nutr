@@ -17,15 +17,19 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "AvCoefficient.hh"
+#include <cmath>
 
-AvCoefficient::AvCoefficient():
-f_coef(FCoefficient())
+#include "W_pol_dir.hh"
+
+using std::min;
+
+W_pol_dir::W_pol_dir(const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state):
+initial_state(ini_state), initial_to_intermediate(ini_to_int),
+intermediate_state(int_state), intermediate_to_final(int_to_fin),
+final_state(fin_state), w_dir_dir(W_dir_dir(ini_state, ini_to_int, int_state, int_to_fin, fin_state))
 {}
 
-double AvCoefficient::operator()(const int two_nu, const int two_L, const int two_Lp, const int two_jn, const int two_j, const double delta) const {
-	
-	return f_coef(two_nu, two_L, two_L, two_jn, two_j)
-		+ 2.*delta*f_coef(two_nu, two_L, two_Lp, two_jn, two_j)
-		+ delta*delta*f_coef(two_nu, two_Lp, two_Lp, two_jn, two_j);
+double W_pol_dir::operator()(const double theta, const double phi){
+
+	return 0;
 }

@@ -29,6 +29,12 @@ target_link_libraries(avCoefficient fCoefficient)
 add_library(w_dir_dir W_dir_dir.cc)
 target_link_libraries(w_dir_dir avCoefficient)
 
+add_library(kappa_coefficient KappaCoefficient.cc)
+target_link_libraries(kappa_coefficient ${GSL_LIBRARIES})
+
+add_library(w_pol_dir W_pol_dir.cc)
+target_link_libraries(w_pol_dir avCoefficient w_dir_dir kappe_coefficent)
+
 enable_testing()
 add_executable(test_f_coefficient test_f_coefficient.cc)
 target_link_libraries(test_f_coefficient fCoefficient)
@@ -37,3 +43,7 @@ add_test(test_f_coefficient test_f_coefficient)
 add_executable(test_w_dir_dir test_w_dir_dir.cc)
 target_link_libraries(test_w_dir_dir w_dir_dir)
 add_test(test_w_dir_dir test_w_dir_dir)
+
+add_executable(test_kappa_coefficient test_kappa_coefficient.cc)
+target_link_libraries(test_kappa_coefficient kappa_coefficient)
+add_test(test_kappa_coefficient test_kappa_coefficient)

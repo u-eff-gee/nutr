@@ -17,15 +17,26 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "AvCoefficient.hh"
+#include <vector>
 
-AvCoefficient::AvCoefficient():
-f_coef(FCoefficient())
-{}
+using std::vector;
 
-double AvCoefficient::operator()(const int two_nu, const int two_L, const int two_Lp, const int two_jn, const int two_j, const double delta) const {
-	
-	return f_coef(two_nu, two_L, two_L, two_jn, two_j)
-		+ 2.*delta*f_coef(two_nu, two_L, two_Lp, two_jn, two_j)
-		+ delta*delta*f_coef(two_nu, two_Lp, two_Lp, two_jn, two_j);
-}
+/**
+ * \brief Struct to store \f$\kappa_\nu\f$ coefficient parameters and their values from literature data.
+ */
+struct KappaCoefficientLiteratureValue{
+	/**
+	 * \brief Constructor for KappaCoefficientLiteratureValue
+	 *
+	 */
+	KappaCoefficientLiteratureValue(int t_nu, int t_L, int t_Lp, double val):
+		two_nu(t_nu),
+		two_L(t_L),
+		two_Lp(t_Lp),
+		value(val)
+	{};
+	~KappaCoefficientLiteratureValue() = default;
+
+	int two_nu, two_L, two_Lp;
+	double value;
+};
