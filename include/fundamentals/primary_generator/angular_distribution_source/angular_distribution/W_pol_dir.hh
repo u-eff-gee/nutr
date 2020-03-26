@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "AlphavCoefficient.hh"
 #include "AvCoefficient.hh"
 #include "KappaCoefficient.hh"
 #include "State.hh"
@@ -76,7 +77,7 @@ public:
 	 * Compared to the dir-dir correlation, the expression contains a term whose sign is 
 	 * determined by the electromagnetic charactor of the alternative multipolarity of the first 
 	 * transition.
-	 * Explicitly, \f$\left( \pm \right)_{L_1^\prime}\f = +1$ if it has electric character, and 
+	 * Explicitly, \f$\left( \pm \right)_{L_1^\prime} = +1\f$ if it has electric character, and 
 	 * \f$\left( \pm \right)_{L_1^\prime} = -1\f$ if it has magnetic character.
 	 * The \f$\cos \left( 2\varphi \right)\f$ term introduces a dependence on the azimuthal angle $\varphi$ with respect to the polarization axis of the first photon.
 	 * In Ref. \cite Kneissl1996, the symbol \f$\kappa_\nu \left( L_1, L_1^\prime \right)\f$ is 
@@ -92,12 +93,41 @@ public:
 	 * 
 	 * \return \f$W \left( \theta, \varphi \right)\f$
 	 */
-	double operator()(const double theta, const double phi);
+	double operator()(const double theta, const double phi) const;
 
 protected:
+	/**
+	 * \brief Calculate set of products of \f$\alpha_\nu A_\nu \f$ coefficients
+	 * 
+	 * The sum over \f$\nu\f$ in the polarization-related part in Eq. (I-8) of 
+	 * \cite FaggHanna1959 contains products of \f$\alpha_\nu\f$ and \f$A_\nu\f$ coefficients 
+	 * of the form:
+	 * 
+	 * \f[
+	 * 		\alpha_\nu \left( L_1, L_1^\prime, j_1, j, \delta_1 \right) 
+	 * 		A_v \left( L_2, L_2^\prime, j_2, j, \delta_2 \right).
+	 * \f]
+	 * 
+	 * This function calculates all products from \f$\nu = 2\f$ up to, and including, a maximum 
+	 * value of \f$\nu_\mathrm{max}\f$ for a given set of quantum numbers, and returns them 
+	 * as a vector.
+	 * 
+	 * \param two_nu_max Maximum value of \f$2 \nu\f$
+	 * \param ini_state Intial state
+	 * \param ini_to_int Transition from initial state to intermediate state
+	 * \param int_state Intermediate state
+	 * \param int_to_fin Transition from intermediate state to final state
+	 * \param fin_state Final state
+	 * 
+	 * \return \f$\alpha_v (L_1, L_1^\prime, j_1, j, \delta_1) A_v (L_2, L_2^\prime, j_2, j, \delta_2) ~~,
+	 * ~~ \nu \in \lbrace 2, ..., \nu_\mathrm{max} \rbrace ~~,~~ \nu~\mathrm{even} \f$ sorted by increasing values
+	 *  of \f$\nu\f$ in a std::vector. 
+ 	 */
+	vector<double> get_alphav_av_products(const int two_nu_max, const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state) const;
 
 	const AvCoefficient av_coef; /**< Instance of the AvCoefficient class */
-	const KappaCoefficient kappa_coef; /**< Instance of the KappaCoefficient class */
+	const AlphavCoefficient alphav_coef; /**< Instance of the KappaCoefficient class */
+	vector<double> alphav_av_prod_cache; /**< Vector to store products \f$\alpha_\nu A_\nu \f$*/
 	const W_dir_dir w_dir_dir; /**< Instance of the W_dir_dir class */
 
 	Transition initial_to_intermediate; /**< Transition from initial state to intermediate state */

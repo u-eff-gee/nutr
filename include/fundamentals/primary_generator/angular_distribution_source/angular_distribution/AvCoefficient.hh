@@ -22,9 +22,9 @@
 #include "FCoefficient.hh"
 
 /**
- * \brief Class for an \f$A_v\f$ coefficient.
+ * \brief Class for an \f$A_\nu\f$ coefficient.
  * 
- * The \f$A_v\f$ coefficients are introduced in Eq. (I-1) of Ref. \cite FaggHanna1959, which is quoted 
+ * The \f$A_\nu\f$ coefficients are introduced in Eq. (I-1) of Ref. \cite FaggHanna1959, which is quoted 
  * first before the single constituents are described:
  *
  * \f[
@@ -51,7 +51,7 @@
  * expression for the coefficients is obtained {Eq. (I-2) of Ref. \cite FaggHanna1959}:
  *
  * \f[
- *	A_\nu (n) \left( L_n, L_n^\prime, j_n, j \right) =
+ *	A_\nu (n) \left( L_n, L_n^\prime, j_n, j, \delta_n \right) =
  *	F_\nu \left( L_n, L_n, j_n, j \right)
  *	+ 2 \delta_n F_\nu \left( L_n, L_n^\prime, j_n, j \right)
  *	+ \delta_n^2 F_\nu \left( L_n^\prime, L_n^\prime, j_n, j \right).

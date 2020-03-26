@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <cmath>
+
 #include <gsl/gsl_sf.h>
 
 #include "W_dir_dir.hh"
@@ -28,14 +29,14 @@ using std::min;
 W_dir_dir::W_dir_dir(const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state):
 initial_state(ini_state), initial_to_intermediate(ini_to_int),
 intermediate_state(int_state), intermediate_to_final(int_to_fin),
-final_state(fin_state), nu_max(0)
+final_state(fin_state), nu_max(0), av_coef(AvCoefficient())
 {
 	two_nu_max = get_two_nu_max(ini_to_int, int_state, int_to_fin);
 	nu_max = two_nu_max/2;
 	av_prod_cache = get_av_products(two_nu_max, ini_state, ini_to_int, int_state, int_to_fin, fin_state);
 }
 
-double W_dir_dir::operator()(const double theta){
+double W_dir_dir::operator()(const double theta) const {
 
 	double sum_over_nu{0.};
 

@@ -73,14 +73,23 @@ public:
 	 * Here, a level sequence \f$j_1 \to j \to \j_2\f$ is assumed.
 	 * The first transition proceeds via the multipolarities \f$L_1\f$ and \f$L_1^\prime\f$,
 	 * while the second has the multipolarities \f$L_2\f$ and \f$L_2^\prime\f$.
-	 * The symbol \f$P_v\f$ denotes a Legendre polynomial of the order \f$\nu\f$.
+	 * The symbol \f$P_v\f$ denotes a Legendre polynomial of the degree \f$\nu\f$.
 	 * 
 	 * \param theta Polar angle between the direction of the incoming and 
 	 * the outgoing photon in radians.
 	 * 
 	 * \return \f$W \left( \theta \right)\f$
 	 */
-	double operator()(const double theta);
+	double operator()(const double theta) const;
+	
+	/**
+	 * \brief Return \f$\nu_\mathrm{max}\f$
+	 */
+	int get_nu_max() const { return nu_max; };
+	/**
+	 * \brief Return \f$2 \nu_\mathrm{max}\f$
+	 */
+	int get_two_nu_max() const { return two_nu_max; };
 
 protected:
 	/**
@@ -281,7 +290,7 @@ protected:
 	 * \param fin_state Final state
 	 * 
 	 * \return \f$A_v (L_1, L_1^\prime, j_1, j, \delta_1) A_v (L_2, L_2^\prime, j_2, j, \delta_2) ~~,
-	 * ~~ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace \f$ sorted by increasing values
+	 * ~~ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace ~~,~~ \nu~\mathrm{even} \f$ sorted by increasing values
 	 *  of \f$\nu\f$ in a std::vector.
 	 */
 	vector<double> get_av_products(const int two_nu_max, const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state) const;
