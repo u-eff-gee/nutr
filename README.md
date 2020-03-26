@@ -28,6 +28,7 @@ A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4
 * [Geant4 10.6 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`.
 * [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is not needed to build `nutr`, but since the output is written in the ROOT format by default, it is highly recommended.
+* [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](www.doxygen.nl/index.html) formulas (optional) 
 
 In the following, the directory where the top-level `CMakeLists.txt` is located in a downloaded version of `nutr` is denoted as `NUTR_SOURCE_DIR`.
 In a build directory `NUTR_BUILD_DIR`, execute:
@@ -42,8 +43,9 @@ This creates an executable `nutr` in `NUTR_BUILD_DIR`.
 After the first build step, several `CMake` build variables will be available for a customization of the build.
 Besides the usual Geant4 build variables, `nutr` provides the following options:
 
-* `WITH_GEANT4_UIVIS`: Build `nutr` with Geant4 UI and Vis drivers.
-* `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator.
+* `BUILD_DOCUMENTATION`: Build the code documentation using Doxygen (default: OFF).
+* `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator (default: `general_particle_source`).
+* `WITH_GEANT4_UIVIS`: Build `nutr` with Geant4 UI and Vis drivers (default: ON).
 
 ## 3. License
 
