@@ -54,3 +54,14 @@ add_test(test_kappa_coefficient test_kappa_coefficient)
 add_executable(test_w_pol_dir test_w_pol_dir.cc)
 target_link_libraries(test_w_pol_dir w_pol_dir ${GSL_LIBRARIES})
 add_test(test_w_pol_dir test_w_pol_dir)
+
+# Integration of ROOT libraries using information from the manual:
+# "Integrate ROOT into my project with CMake"
+# https://root.cern.ch/how/integrate-root-my-project-cmake (04/09/2020)
+list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
+find_package(ROOT COMPONENTS RGL)
+if(ROOT_FOUND)
+    add_executable(test_plots_tgl test_plots_tgl.cc)
+    target_link_libraries(test_plots_tgl w_pol_dir ${ROOT_LIBRARIES})
+    add_test(test_plots_tgl test_plots_tgl)
+endif()
