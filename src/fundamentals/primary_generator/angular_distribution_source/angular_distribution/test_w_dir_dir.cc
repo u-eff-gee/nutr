@@ -53,7 +53,6 @@ double w_dir_dir_0_2_0(const double theta){
 
 int main(){
 
-
 	const double epsilon{1e-7};
 
 	double w_dir_dir_num{0.};

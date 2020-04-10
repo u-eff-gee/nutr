@@ -38,6 +38,9 @@ target_link_libraries(alphavCoefficient fCoefficient kappa_coefficient)
 add_library(w_pol_dir W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
 
+add_library(spherePointSampler SpherePointSampler.cc)
+target_link_libraries(spherePointSampler ${GSL_LIBRARIES})
+
 enable_testing()
 add_executable(test_f_coefficient test_f_coefficient.cc)
 target_link_libraries(test_f_coefficient fCoefficient)
@@ -65,3 +68,7 @@ if(ROOT_FOUND)
     target_link_libraries(test_plots_tgl w_pol_dir ${ROOT_LIBRARIES})
     add_test(test_plots_tgl test_plots_tgl)
 endif()
+
+add_executable(test_elliptic_integral test_elliptic_integral.cc)
+target_link_libraries(test_elliptic_integral spherePointSampler ${GSL_LIBRARIES})
+add_test(test_elliptic_integral test_elliptic_integral)

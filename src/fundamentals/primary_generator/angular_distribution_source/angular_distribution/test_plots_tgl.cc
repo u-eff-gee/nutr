@@ -28,7 +28,7 @@
  * 
  * I found this possibility by browsing the ROOT user forum for suggestions on 3D plotting 
  * of surfaces after I tried TGraph2D and TH2 first.
- * The TGraph2D method will be described in another test.
+ * The TGraph2D method is described in another test.
  * In principle, the TH2 method employs all the usual methods for histogram drawing, and I expected
  *  that the "SPH" drawing option, which is supposed to plot the histogram data in a 
  * spherical coordinate system was convenient.
@@ -62,7 +62,7 @@ W_pol_dir w_pol_dir(
     State(0, positive));
 
 void angdist_wrapper(TGLVertex3 &dst, double theta, double phi) {
-    
+
     dst.X() = w_pol_dir(theta, phi)*sin(theta)*cos(phi);
     dst.Y() = w_pol_dir(theta, phi)*sin(theta)*sin(phi);
     dst.Z() = w_pol_dir(theta, phi)*cos(theta);
