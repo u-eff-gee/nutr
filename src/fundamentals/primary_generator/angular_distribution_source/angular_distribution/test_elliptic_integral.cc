@@ -18,11 +18,12 @@
 */
 
 #include <cmath>
-#include <iostream>
 #include <vector>
+#include <stdexcept>
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_elljac.h>
+#include <gsl/gsl_sf_ellint.h>
 
 #include "SpherePointSampler.hh"
 #include "TestUtilities.hh"
@@ -46,7 +47,6 @@ using std::vector;
  * can not be handled by GSL.
  */
 const vector<vector<double>> elliptic_integral_2nd_kind_literature_values{    
-    { 1.00, 1.          },
     { 1.20, 1.244969258 },
     { 1.40, 1.345488787 },
     { 1.60, 1.403811262 },
@@ -68,8 +68,7 @@ int main(){
     double ell_int_num = 0.;
 
     /**
-     *  For \f$ 0 \leq m \leq 1 \f$, test a few literature values, in particular the one for 
-     *  \f$m = 1\f$
+     *  For \f$ 0 \leq m \leq 1 \f$, test a few literature values
      */
     for(auto val: elliptic_integral_2nd_kind_literature_values){
         ell_int_num = sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, one_over_k_to_m(val[0]));
@@ -77,38 +76,14 @@ int main(){
     }
 
     /**
-     * Test a special case with a negative value of \f$m = -\frac{1}{2}f$, using relation
-     * 17.4.18 in \cite AbramowitzStegun1974.
+     * Test the special case fabs(m) == 1.
      */
+    bool error_thrown{false};
+    try{
+        sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, 1.);
+	} catch(const std::invalid_argument e){
+		error_thrown = true;
+	}
+	assert(error_thrown);
 
-    const vector<double> u_values{
-        0., 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, M_PI_2
-    };
-
-    double sn, cn, dn;
-
-    for(auto u: u_values){
-        gsl_sf_elljac_e(u*sqrt(1.5), 0.5/1.5, &sn, &cn, &dn);
-
-        ell_int_ana = sqrt(1.5)*(
-            sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(u*sqrt(1.5), 0.5/1.5)
-            - 0.5/sqrt(1.5)*sn*cn/dn
-        );
-        ell_int_num = sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(u, -0.5);
-
-        test_numerical_equality<double>(ell_int_num, ell_int_ana, epsilon);
-    }
-
-    /**
-     * Test a special case with a value of \f$m = 2\f$, i.e. an absolute value larger than 1, 
-     * using relation 17.4.16 in \cite AbramowitzStegun1974.
-     */
-    for(auto u: u_values){
-        ell_int_ana = sqrt(2.)
-        *sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(u*sqrt(2.), 1./2.)
-        -(2.-1.)*u;
-        ell_int_num = sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(u, 2.);
-
-        test_numerical_equality<double>(ell_int_num, ell_int_ana, epsilon);
-    }
 }

@@ -72,3 +72,7 @@ endif()
 add_executable(test_elliptic_integral test_elliptic_integral.cc)
 target_link_libraries(test_elliptic_integral spherePointSampler ${GSL_LIBRARIES})
 add_test(test_elliptic_integral test_elliptic_integral)
+
+add_executable(test_spiral_segment test_spiral_segment.cc)
+target_link_libraries(test_spiral_segment spherePointSampler ${GSL_LIBRARIES})
+add_test(test_spiral_segment test_spiral_segment)

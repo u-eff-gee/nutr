@@ -17,37 +17,151 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
+#include <array>
 #include <cmath>
+#include <stdexcept>
 
 #include <gsl/gsl_sf_ellint.h>
 #include <gsl/gsl_sf_elljac.h>
 
 #include "SpherePointSampler.hh"
 
-double SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m(const double u, const double m) const {
+using std::array;
+using std::invalid_argument;
+
+double SpherePointSampler::elliptic_integral_1st_kind_arbitrary_m(const double phi, const double m) const {
+
+    const double abs_m = fabs(m);
+
+    if(abs_m == 1.){
+        throw invalid_argument("GSL implementation of the incomplete elliptic integral of the first kind cannot handle fabs(m) == 1.");
+    }
+
+    const double sqrt_abs_m = sqrt(abs_m);
+
+    if(m >= 0. && abs_m < 1.){
+        return gsl_sf_ellint_F(phi, sqrt_abs_m, GSL_PREC_DOUBLE);
+    }
+
+    const double sqrt_1_plus_abs_m = sqrt(1. + abs_m);
+    const double abs_m_over_1_plus_abs_m = abs_m/(1. + abs_m);
+
     if(m < 0.){
-        const double abs_m = fabs(m);
-        const double sqrt_1_plus_m = sqrt(1. + abs_m);
-        const double m_over_1_plus_m = abs_m/(1. + abs_m);
-
-        double sn, cn, dn;
-        gsl_sf_elljac_e(u*sqrt_1_plus_m, m_over_1_plus_m, &sn, &cn, &dn);
-
-        return sqrt_1_plus_m*(
-            elliptic_integral_2nd_kind_arbitrary_m(u*sqrt_1_plus_m, m_over_1_plus_m)
-            -abs_m/sqrt_1_plus_m*sn*cn/dn
+        return 1./sqrt_1_plus_abs_m*(
+            elliptic_integral_1st_kind_arbitrary_m(M_PI_2, abs_m_over_1_plus_abs_m)
+            -elliptic_integral_1st_kind_arbitrary_m(M_PI_2 - phi, abs_m_over_1_plus_abs_m)
         );
     }
 
-    if(m > 1.){
-        const double sqrt_m = sqrt(m);
+    return 1./sqrt_abs_m*elliptic_integral_1st_kind_arbitrary_m(asin(sqrt_abs_m*sin(phi)), 1./abs_m);
 
-        return sqrt_m*elliptic_integral_2nd_kind_arbitrary_m(u*sqrt_m, 1./m)-(m-1.)*u;
+}
+
+double SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m(const double phi, const double m) const {
+
+    const double abs_m = fabs(m);
+
+    if(abs_m == 1.){
+        throw invalid_argument("GSL implementation of the incomplete elliptic integral of the second kind cannot handle fabs(m) == 1.");
     }
 
-    // The GSL function cannot handle this case.
-    if(m == 1.)
-        return 1.;
+    const double abs_k = sqrt(abs_m);
 
-    return gsl_sf_ellint_E(u, sqrt(m), GSL_PREC_DOUBLE);
+    // Direct call of the GSL library function possible
+    if(m >= 0. && abs_m < 1.){
+            return gsl_sf_ellint_E(phi, abs_k, GSL_PREC_DOUBLE);
+    }
+
+    // Use Eq. (19.7.5) in Ref. \cite DLMF2020
+    const double k_squared_plus_one = 1.+abs_k*abs_k;
+    const double kappa_prime = 1./sqrt(k_squared_plus_one);
+    const double kappa = abs_k*kappa_prime;
+    const double kappa_squared = kappa*kappa;
+    const double theta = asin(
+        sin(phi)
+        /(kappa_prime*sqrt(1.+abs_k*abs_k*pow(sin(phi), 2)))
+    );
+
+    return 1./kappa_prime*(
+        elliptic_integral_2nd_kind_arbitrary_m(theta, kappa_squared)
+        -kappa_squared*
+            sin(theta)*cos(theta)
+            /sqrt(1.-kappa_squared*pow(sin(theta), 2))
+    );
+
+    // Alternative implementation of the cases \f$m < 0\f$ and \f$ |m| > 1 \f$ based on 
+    // Eqs. (17.4.16) and (17.4.18) in 
+    // \cite AbramowitzStegun1974, which did not give the correct results.
+    // Possibly something went wrong in the transformation between \f$\varphi\f$ and \f$u\f$.
+    //
+    // const double u = elliptic_integral_1st_kind_arbitrary_m(phi, m);
+    // 
+    // if(m < 0.){
+    //     const double sqrt_1_plus_abs_m = sqrt(1. + abs_m);
+    //     const double abs_m_over_1_plus_abs_m = abs_m/(1. + abs_m);
+
+    //     double sn_u_times_sqrt_1_plus_abs_m, 
+    //     cn_u_times_sqrt_1_plus_abs_m, dn_u_times_sqrt_1_plus_abs_m;
+
+    //     gsl_sf_elljac_e(u*sqrt_1_plus_abs_m, abs_m_over_1_plus_abs_m, &sn_u_times_sqrt_1_plus_abs_m, &cn_u_times_sqrt_1_plus_abs_m, &dn_u_times_sqrt_1_plus_abs_m);
+
+    //     return sqrt_1_plus_abs_m*(
+    //         elliptic_integral_2nd_kind_arbitrary_m(
+    //             asin(sn_u_times_sqrt_1_plus_abs_m),
+    //             abs_m_over_1_plus_abs_m)
+    //         -abs_m/sqrt_1_plus_abs_m*sn_u_times_sqrt_1_plus_abs_m*cn_u_times_sqrt_1_plus_abs_m/dn_u_times_sqrt_1_plus_abs_m
+    //     );
+    // }
+
+    // const double inverse_abs_m = 1./abs_m;
+
+    // double sn_u_times_sqrt_abs_m, cn_u_times_sqrt_abs_m, dn_u_times_sqrt_abs_m;
+
+    // gsl_sf_elljac_e(u*sqrt_abs_m, inverse_abs_m, &sn_u_times_sqrt_abs_m, &cn_u_times_sqrt_abs_m, &dn_u_times_sqrt_abs_m);
+
+    // return sqrt_abs_m*elliptic_integral_2nd_kind_arbitrary_m(
+    //     asin(sn_u_times_sqrt_abs_m),
+    //     inverse_abs_m)
+    // -(abs_m-1.)*u;
+
+}
+
+double SpherePointSampler::segment_length(const double Theta, const double c) const {
+    if(Theta >= 0 && Theta <= M_PI_2){
+        return elliptic_integral_2nd_kind_arbitrary_m(Theta, -c*c);
+    }
+    if(Theta <= M_PI){
+        return 2.*elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, -c*c)
+        - elliptic_integral_2nd_kind_arbitrary_m(M_PI - Theta, -c*c);
+    }
+}
+
+double SpherePointSampler::segment_length_linear_interpolation(const double Theta, const double c, const unsigned int n_points) const {
+    const double theta_increment = Theta/((double) n_points - 1.);
+    array<double, 3> x_i{0., 0., 1.};
+    array<double, 3> x_i_plus_one{0., 0., 0.};
+    double phi_i_plus_one{0.}, segment_increment_squared{0.}, segment_length{0.}, sine_theta_i_plus_one{0.}, theta_i_plus_one{0.};
+
+    for(unsigned int i = 0; i < n_points-1; ++i){
+        theta_i_plus_one = (i+1)*theta_increment;
+        sine_theta_i_plus_one = sin(theta_i_plus_one);
+        phi_i_plus_one = c*theta_i_plus_one;
+
+        x_i_plus_one[0] = sine_theta_i_plus_one*cos(phi_i_plus_one);
+        x_i_plus_one[1] = sine_theta_i_plus_one*sin(phi_i_plus_one);
+        x_i_plus_one[2] = cos(theta_i_plus_one);
+
+        segment_increment_squared = 0;
+        for(size_t j = 0; j < 3; ++j){
+            segment_increment_squared += (x_i_plus_one[j] - x_i[j])*(x_i_plus_one[j] - x_i[j]);
+        }
+
+        segment_length += sqrt(segment_increment_squared);
+
+        for(size_t j = 0; j < 3; ++j){
+            x_i[j] = x_i_plus_one[j];
+        }
+    }
+
+    return segment_length;
 }
