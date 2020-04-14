@@ -29,50 +29,24 @@
 using std::array;
 using std::invalid_argument;
 
-double SpherePointSampler::elliptic_integral_1st_kind_arbitrary_m(const double phi, const double m) const {
-
-    const double abs_m = fabs(m);
-
-    if(abs_m == 1.){
-        throw invalid_argument("GSL implementation of the incomplete elliptic integral of the first kind cannot handle fabs(m) == 1.");
-    }
-
-    const double sqrt_abs_m = sqrt(abs_m);
-
-    if(m >= 0. && abs_m < 1.){
-        return gsl_sf_ellint_F(phi, sqrt_abs_m, GSL_PREC_DOUBLE);
-    }
-
-    const double sqrt_1_plus_abs_m = sqrt(1. + abs_m);
-    const double abs_m_over_1_plus_abs_m = abs_m/(1. + abs_m);
-
-    if(m < 0.){
-        return 1./sqrt_1_plus_abs_m*(
-            elliptic_integral_1st_kind_arbitrary_m(M_PI_2, abs_m_over_1_plus_abs_m)
-            -elliptic_integral_1st_kind_arbitrary_m(M_PI_2 - phi, abs_m_over_1_plus_abs_m)
-        );
-    }
-
-    return 1./sqrt_abs_m*elliptic_integral_1st_kind_arbitrary_m(asin(sqrt_abs_m*sin(phi)), 1./abs_m);
-
-}
-
 double SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m(const double phi, const double m) const {
 
     const double abs_m = fabs(m);
 
-    if(abs_m == 1.){
-        throw invalid_argument("GSL implementation of the incomplete elliptic integral of the second kind cannot handle fabs(m) == 1.");
+    // Use Eq. (19.6.9) in Ref. \cite DLMF2020.
+    // The GSL implementation cannot handle this case.
+    if(m == 1.){
+        return sin(phi);
     }
 
     const double abs_k = sqrt(abs_m);
 
-    // Direct call of the GSL library function possible
+    // Direct call of the GSL library function possible.
     if(m >= 0. && abs_m < 1.){
             return gsl_sf_ellint_E(phi, abs_k, GSL_PREC_DOUBLE);
     }
 
-    // Use Eq. (19.7.5) in Ref. \cite DLMF2020
+    // Use Eq. (19.7.5) in Ref. \cite DLMF2020.
     const double k_squared_plus_one = 1.+abs_k*abs_k;
     const double kappa_prime = 1./sqrt(k_squared_plus_one);
     const double kappa = abs_k*kappa_prime;

@@ -46,7 +46,8 @@ using std::vector;
  * In particular, the literature values include the value of the integral at \f$k = m = 1\f$, which
  * can not be handled by GSL.
  */
-const vector<vector<double>> elliptic_integral_2nd_kind_literature_values{    
+const vector<vector<double>> elliptic_integral_2nd_kind_literature_values{ 
+    { 1.00, 1.000000000 },
     { 1.20, 1.244969258 },
     { 1.40, 1.345488787 },
     { 1.60, 1.403811262 },
@@ -74,16 +75,5 @@ int main(){
         ell_int_num = sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, one_over_k_to_m(val[0]));
         test_numerical_equality<double>(ell_int_num, val[1], epsilon);
     }
-
-    /**
-     * Test the special case fabs(m) == 1.
-     */
-    bool error_thrown{false};
-    try{
-        sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, 1.);
-	} catch(const std::invalid_argument e){
-		error_thrown = true;
-	}
-	assert(error_thrown);
 
 }

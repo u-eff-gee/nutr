@@ -50,25 +50,6 @@ public:
     SpherePointSampler() = default;
     ~SpherePointSampler() = default;
 
-
-    /**
-     * \brief Elliptic integral of the first kind \f$F\left( \varphi | m \right)\f$ for arbitrary real parameters
-     * 
-     * Needed for the conversion from \f$\varphi\f$ to \f$u\f$.
-     * The transformation from arbitrary real \f$m\f$ to the range \f$0 \leq m < 1\f$ is given by
-     * Eqs. (17.4.15) and (17.4.17) in Ref. \cite AbramowitzStegun1974.
-     * Note that the function \f$K\left( m \right)\f$ is defined as \f$F\f$, evaluated at 
-     * \f$\varphi = \pi / 2\f$ {Eq. (17.3.2) in \cite AbramowitzStegun1974}.
-     * See also the definition of SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m
-     * for more information.
-     * 
-     * \param phi \f$\varphi\f$
-     * \param m \f$m\f$
-     * 
-     * \return \f$F\left( \varphi | m \right)\f$
-     */
-    double elliptic_integral_1st_kind_arbitrary_m(const double phi, const double m) const;
-
     /**
      * \brief Elliptic integral of the second kind \f$E\left( \varphi | m \right)\f$ for arbitrary real parameters
      * 
