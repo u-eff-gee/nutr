@@ -19,6 +19,7 @@
 
 #include <array>
 #include <cmath>
+#include <sstream>
 #include <stdexcept>
 
 #include <gsl/gsl_sf_ellint.h>
@@ -28,6 +29,8 @@
 
 using std::array;
 using std::invalid_argument;
+using std::runtime_error;
+using std::stringstream;
 
 double SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m(const double phi, const double m) const {
 
@@ -47,10 +50,16 @@ double SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m(const double p
     }
 
     // Use Eq. (19.7.5) in Ref. \cite DLMF2020.
-    const double k_squared_plus_one = 1.+abs_k*abs_k;
-    const double kappa_prime = 1./sqrt(k_squared_plus_one);
+    const double abs_k_squared = abs_k*abs_k;
+    const double kappa_prime = 1./sqrt(1. + abs_k_squared);
     const double kappa = abs_k*kappa_prime;
     const double kappa_squared = kappa*kappa;
+    // phi == pi/2 corresponds to the complete elliptic integral
+    // This is both a shortcut and an insurance against numerical instabilities.
+    if(phi == M_PI_2){
+        return gsl_sf_ellint_Ecomp(kappa, GSL_PREC_DOUBLE)/kappa_prime;
+    }
+
     const double theta = asin(
         sin(phi)
         /(kappa_prime*sqrt(1.+abs_k*abs_k*pow(sin(phi), 2)))
@@ -105,8 +114,9 @@ double SpherePointSampler::segment_length(const double Theta, const double c) co
         return elliptic_integral_2nd_kind_arbitrary_m(Theta, -c*c);
     }
     if(Theta <= M_PI){
-        return 2.*elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, -c*c)
-        - elliptic_integral_2nd_kind_arbitrary_m(M_PI - Theta, -c*c);
+        const double negative_c_squared = -c*c;
+        return 2.*elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, negative_c_squared)
+        - elliptic_integral_2nd_kind_arbitrary_m(M_PI - Theta, negative_c_squared);
     }
 }
 
@@ -138,4 +148,76 @@ double SpherePointSampler::segment_length_linear_interpolation(const double Thet
     }
 
     return segment_length;
+}
+
+double SpherePointSampler::find_c(const unsigned int n, const double epsilon, const unsigned int max_n_iterations) const {
+
+    if(n < 2){
+        throw invalid_argument("Number of points smaller than 2 requested.");
+    }
+
+    // Initial guess from Ref. \cite Koay2011
+    double c_j = sqrt(n*M_PI);
+    double c_j_plus_one = 0.;
+    double negative_c_j_squared = 0;
+    double complete_elliptic_integral_1st{0.}, complete_elliptic_integral_2nd{0.};
+
+    const double n_times_pi = n*M_PI;
+
+    for(unsigned int i = 0; i < max_n_iterations; ++i){
+        negative_c_j_squared = -c_j*c_j;
+        complete_elliptic_integral_1st = elliptic_integral_1st_kind_arbitrary_m(M_PI_2, negative_c_j_squared);
+        complete_elliptic_integral_2nd = elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, negative_c_j_squared);
+
+        c_j_plus_one =
+            (c_j*n_times_pi*(
+                    2.*complete_elliptic_integral_2nd 
+                    - complete_elliptic_integral_1st
+                ))
+                /(
+                    n_times_pi*complete_elliptic_integral_2nd
+                    -n_times_pi*complete_elliptic_integral_1st
+                    +c_j*complete_elliptic_integral_2nd*complete_elliptic_integral_2nd
+                );
+
+        if(fabs(c_j_plus_one - c_j) < epsilon){
+            return c_j_plus_one;
+        }
+
+        c_j = c_j_plus_one;
+    }
+    
+    stringstream error_message;
+    error_message << "No value for c found after " << max_n_iterations << " iterations with an initial value of c_0 = " << sqrt(n*M_PI);
+
+    throw runtime_error(error_message.str());
+}
+
+double SpherePointSampler::elliptic_integral_1st_kind_arbitrary_m(const double phi, const double m) const {
+
+    const double abs_m = fabs(m);
+    const double abs_k = sqrt(abs_m);
+
+    if(m >= 0. && abs_m < 1.){
+        return gsl_sf_ellint_F(phi, abs_k, GSL_PREC_DOUBLE);
+    }
+
+    // Use Eq. (19.7.5) in Ref. \cite DLMF2020.
+    const double abs_k_squared = abs_k*abs_k;
+    const double kappa_prime = 1./sqrt(1. + abs_k_squared);
+    const double kappa = abs_k*kappa_prime;
+
+    // phi == pi/2 corresponds to the complete elliptic integral
+    // This is both a shortcut and an insurance against numerical instabilities.
+    if(phi == M_PI_2){
+        return kappa_prime*gsl_sf_ellint_Kcomp(kappa, GSL_PREC_DOUBLE);
+    }
+    
+    const double theta = asin(
+        sin(phi)
+        /(kappa_prime*sqrt(1.+abs_k_squared*pow(sin(phi), 2)))
+    );
+
+    return kappa_prime*elliptic_integral_1st_kind_arbitrary_m(theta, kappa*kappa);
+
 }

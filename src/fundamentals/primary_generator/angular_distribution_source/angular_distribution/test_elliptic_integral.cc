@@ -19,7 +19,6 @@
 
 #include <cmath>
 #include <vector>
-#include <stdexcept>
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_elljac.h>
@@ -43,9 +42,16 @@ using std::vector;
  *      m = \left( \frac{1}{k^{-1}} \right)^2.
  * \f]
  * 
- * In particular, the literature values include the value of the integral at \f$k = m = 1\f$, which
- * can not be handled by GSL.
+ * In particular, the literature values for the elliptic integral of the second kind include the 
+ * value of the integral at \f$k = m = 1\f$, which can not be handled by GSL.
  */
+const vector<vector<double>> elliptic_integral_1st_kind_literature_values{ 
+    { 1.20, 2.067254932 },
+    { 1.40, 1.862817607 },
+    { 1.60, 1.771073176 },
+    { 1.80, 1.718978667 },
+    { 2.00, 1.685750355 },
+};
 const vector<vector<double>> elliptic_integral_2nd_kind_literature_values{ 
     { 1.00, 1.000000000 },
     { 1.20, 1.244969258 },
@@ -71,6 +77,11 @@ int main(){
     /**
      *  For \f$ 0 \leq m \leq 1 \f$, test a few literature values
      */
+    for(auto val: elliptic_integral_1st_kind_literature_values){
+        ell_int_num = sph_pt_samp.elliptic_integral_1st_kind_arbitrary_m(M_PI_2, one_over_k_to_m(val[0]));
+        test_numerical_equality<double>(ell_int_num, val[1], epsilon);
+    }
+
     for(auto val: elliptic_integral_2nd_kind_literature_values){
         ell_int_num = sph_pt_samp.elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, one_over_k_to_m(val[0]));
         test_numerical_equality<double>(ell_int_num, val[1], epsilon);

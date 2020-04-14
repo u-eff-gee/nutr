@@ -175,4 +175,54 @@ public:
      */
     double segment_length_linear_interpolation(const double Theta, const double c, const unsigned int n_points) const;
 
+    /**
+     * \brief For a desired number of points, find the optimum number of cycles of the spiral.
+     * 
+     * It is clear that the parameter \f$c\f$ depends on the number of desired points 
+     * \f$n\f$, if the goal is to create the points as uniformly as possible.
+     * Koay \cite Koay2011 suggests the relation [Eq. (9)]
+     * 
+     * \f[
+     *      c = \frac{n \pi}{E\left( -c^2 \right)},
+     * \f]
+     * 
+     * which follows from the demand that the length of each of the \f$n\f$ segments of the spiral,
+     * \f$S \left( \pi \right) / n\f$, is equal to the distance on the spherical surface
+     * between two points \f$\left( \theta, \varphi \right)\f$ and 
+     * \f$\left( \theta^\prime, \varphi + 2 \pi \right)\f$, which is given by: 
+     * 
+     * \f[
+     *      \theta^\prime - \theta = \frac{2 \pi}{c}.
+     * \f]
+     * 
+     * The present implementation uses the iterative algorithm suggested in \cite Koay2011, 
+     * Appendix A.
+     * Convergence is assumed if the \f$j+1\f$-th element of the sequence differs from the 
+     * \f$j\f$-th element by less than a number \f$epsilon\f$.
+     * By default, the value \f$\epsilon = 10^{-8}\f$ from Ref. \cite Koay2011 is used.
+     * 
+     * \param n \f$n\f$, number of points to be sampled. Must be larger than 1.
+     * \param epsilon Convergence criterion
+     * \param max_n_iterations Maximum number of iterations. If the convergence criterion has not been reached after max_n_iterations iterations, an error is thrown.
+     * 
+     * \return \f$c\f$
+     */
+    double find_c(const unsigned int n, const double epsilon = 1e-8, const unsigned int max_n_iterations = 10000) const;
+
+    /**
+     * \brief Elliptic integral of the first kind \f$F\left( \varphi | m \right)\f$ for arbitrary real parameters
+     * 
+     * Needed for the determination of the optimum value for \f$c\f$ according to Eq. (14) 
+     * in Ref. \cite Koay2011.
+     * The transformation from arbitrary real \f$m\f$ to the range \f$0 \leq m < 1\f$ is given by
+     * Eqs. (19.7.5) in Ref. \cite DLMF2020.
+     * See also the definition of SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m
+     * for more information.
+     * 
+     * \param phi \f$\varphi\f$
+     * \param m \f$m\f$
+     * 
+     * \return \f$F\left( \varphi | m \right)\f$
+     */
+    double elliptic_integral_1st_kind_arbitrary_m(const double phi, const double m) const;
 };

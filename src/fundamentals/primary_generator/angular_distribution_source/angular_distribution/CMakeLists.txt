@@ -76,3 +76,7 @@ add_test(test_elliptic_integral test_elliptic_integral)
 add_executable(test_spiral_segment test_spiral_segment.cc)
 target_link_libraries(test_spiral_segment spherePointSampler ${GSL_LIBRARIES})
 add_test(test_spiral_segment test_spiral_segment)
+
+add_executable(test_find_c test_find_c.cc)
+target_link_libraries(test_find_c spherePointSampler)
+add_test(test_find_c test_find_c)
