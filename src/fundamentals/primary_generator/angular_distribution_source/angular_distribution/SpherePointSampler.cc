@@ -157,7 +157,8 @@ double SpherePointSampler::find_c(const unsigned int n, const double epsilon, co
     }
 
     // Initial guess from Ref. \cite Koay2011
-    double c_j = sqrt(n*M_PI);
+    const double c_0 = sqrt(n*M_PI);
+    double c_j = c_0;
     double c_j_plus_one = 0.;
     double negative_c_j_squared = 0;
     double complete_elliptic_integral_1st{0.}, complete_elliptic_integral_2nd{0.};
@@ -188,7 +189,42 @@ double SpherePointSampler::find_c(const unsigned int n, const double epsilon, co
     }
     
     stringstream error_message;
-    error_message << "No value for c found after " << max_n_iterations << " iterations with an initial value of c_0 = " << sqrt(n*M_PI);
+    error_message << "No value for c found after " << max_n_iterations << " iterations with an initial value of c_0 = " << c_0;
+
+    throw runtime_error(error_message.str());
+}
+
+double SpherePointSampler::find_Theta_j(const unsigned int j, const unsigned int n, const double c, const double epsilon, const unsigned int max_n_iterations) const {
+
+    if(j == 0 || j > n){
+
+        stringstream error_message;
+        error_message << "j must be an nonzero positive integer between 1 and n = " << n;
+
+        throw invalid_argument(error_message.str());
+    }
+
+    // Initial guess from Ref. \cite Koay2011
+    // Note that j is fixed here, and the iteration index is denoted as l
+    const double Theta_j_0 = acos(1.-(2.*j-1.)/(double) n);
+    double Theta_j_l = Theta_j_0;
+
+    double Theta_j_l_plus_one = 0.;
+
+    for(unsigned int i = 0; i < max_n_iterations; ++i){
+        Theta_j_l_plus_one = Theta_j_l
+            +((2.*j - 1.)*M_PI - c*segment_length(Theta_j_l, c))
+            /(c*sqrt(1.+c*c*pow(sin(Theta_j_l), 2)));
+
+        if(fabs(Theta_j_l_plus_one - Theta_j_l) < epsilon){
+            return Theta_j_l_plus_one;
+        }
+
+        Theta_j_l = Theta_j_l_plus_one;
+    }
+
+    stringstream error_message;
+    error_message << "No value for Theta_j found after " << max_n_iterations << " iterations with an initial value of Theta_j_0 = " << Theta_j_0;
 
     throw runtime_error(error_message.str());
 }

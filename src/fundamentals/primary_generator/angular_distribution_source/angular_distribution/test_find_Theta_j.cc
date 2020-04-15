@@ -28,28 +28,33 @@ using std::vector;
 
 int main(){
 
-    const vector<unsigned int> n_points_values { 2, 10, 100, 1000, 10000, 100000, 1000000 };
+    const unsigned int n = 100;
 
     SpherePointSampler sph_pt_samp;
+    const double c = sph_pt_samp.find_c(n);
 
 	bool error_thrown{false};
 	try{
-		sph_pt_samp.find_c(1);
+		sph_pt_samp.find_Theta_j(0, n, c);
 	} catch(const std::invalid_argument e){
 		error_thrown = true;
 	}
 	assert(error_thrown);
+    error_thrown = false;
 
-    double c = 0.;
+    double Theta_j = 0.;
 
-    for(auto n_points: n_points_values){
-        c = sph_pt_samp.find_c(n_points);
+    for(unsigned int j = 1; j <= n; ++j){
+        Theta_j = sph_pt_samp.find_Theta_j(j, n, c);
 
-        // The fixed-point formula that defines the optimum c {Eq. (8) in Ref. \cite Koay2011}
-        // provides a straightforward test.
-        test_numerical_equality<double>(c, 
-            2.*n_points*M_PI/sph_pt_samp.segment_length(M_PI, c), 1e-8
-        );
+        // Test using the defining equation {Eq. (11) in Ref. \cite Koay2011} for Theta_j
+        test_numerical_equality<double>(sph_pt_samp.segment_length(Theta_j, c), (2.*j-1)*M_PI/c, 1e-8);
     }
 
+	try{
+		sph_pt_samp.find_Theta_j(n+1, n, c);
+	} catch(const std::invalid_argument e){
+		error_thrown = true;
+	}
+	assert(error_thrown);    
 }

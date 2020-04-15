@@ -80,3 +80,7 @@ add_test(test_spiral_segment test_spiral_segment)
 add_executable(test_find_c test_find_c.cc)
 target_link_libraries(test_find_c spherePointSampler)
 add_test(test_find_c test_find_c)
+
+add_executable(test_find_Theta_j test_find_Theta_j.cc)
+target_link_libraries(test_find_Theta_j spherePointSampler)
+add_test(test_find_Theta_j test_find_Theta_j)

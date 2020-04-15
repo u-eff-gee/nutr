@@ -210,6 +210,32 @@ public:
     double find_c(const unsigned int n, const double epsilon = 1e-8, const unsigned int max_n_iterations = 10000) const;
 
     /**
+     * \brief Find the polar angle of the mid point of the j-th spiral segment for a given \f$c\f$
+     * 
+     * The mid points of the \f$j\f$-th of a total number of \f$n\f$ spiral segments can be found 
+     * at segment lengths {Eq. (11) in \cite Koay2011}:
+     * 
+     * \f[
+     *      S \left( \Theta_j \right) = \frac{(2j-1)\pi}{m},
+     * \f]
+     * 
+     * where \f$j\f$ is a positive, nonzero integer in the range \f$ 1\leq j \leq n\f$.
+     * 
+     * The equation above is solved for \f$\Theta_j\f$ numerically, by using the iterative 
+     * algorithm proposed by Koay \cite Koay2011.
+     * See also the description of SpherePointSampler::find_c, which uses a similar iteration.
+     * 
+     * \param j \f$j\f$, index of the spiral segment whose mid point should be calculated
+     * \param n \f$n\f$, number of points to be sampled which corresponds to the given \f$c\f$. Must be larger than 1.
+     * \param c \f$c\f$, proportionality constant between \f$\theta\f$ and \f$\varphi\f$ which corresponds to the given \f$n\f$.
+     * \param epsilon Convergence criterion
+     * \param max_n_iterations Maximum number of iterations. If the convergence criterion has not been reached after max_n_iterations iterations, an error is thrown.
+     * 
+     * \return \f$\Theta_j\f$
+     */
+    double find_Theta_j(const unsigned int j, const unsigned int n, const double c, const double epsilon = 1e-8, const unsigned int max_n_iterations = 10000) const;
+
+    /**
      * \brief Elliptic integral of the first kind \f$F\left( \varphi | m \right)\f$ for arbitrary real parameters
      * 
      * Needed for the determination of the optimum value for \f$c\f$ according to Eq. (14) 
