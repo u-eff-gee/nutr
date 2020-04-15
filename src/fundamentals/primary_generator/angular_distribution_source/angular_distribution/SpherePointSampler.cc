@@ -17,7 +17,6 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include <array>
 #include <cmath>
 #include <sstream>
 #include <stdexcept>
@@ -27,10 +26,40 @@
 
 #include "SpherePointSampler.hh"
 
-using std::array;
 using std::invalid_argument;
 using std::runtime_error;
 using std::stringstream;
+
+array<vector<double>, 2> SpherePointSampler::sample(const unsigned int n) const {
+    array<vector<double>, 2> theta_phi = {vector<double>(n, 0.), vector<double>(n, 0.)};
+
+    const double c = find_c(n);
+
+    for(size_t j = 1; j <= n; ++j){
+        theta_phi[0][j] = find_Theta_j(j, n, c);
+        theta_phi[1][j] = c*theta_phi[0][j];
+    }
+
+    return theta_phi;
+}
+
+array<vector<double>, 3> SpherePointSampler::sample_cartesian(const unsigned int n, const double r) const {
+
+    const array<vector<double>, 2> theta_phi = sample(n);
+    
+    array<vector<double>, 3> x_y_z = {vector<double>(n, 0.), vector<double>(n, 0.), vector<double>(n, 0.)};
+
+    double sine_theta = 0.;
+
+    for(size_t i = 0; i < n; ++i){
+        sine_theta = sin(theta_phi[0][i]);
+        x_y_z[0][i] = r*sine_theta*cos(theta_phi[1][i]);
+        x_y_z[1][i] = r*sine_theta*sin(theta_phi[1][i]);
+        x_y_z[2][i] = r*cos(theta_phi[0][i]);
+    }
+
+    return x_y_z;
+}
 
 double SpherePointSampler::elliptic_integral_2nd_kind_arbitrary_m(const double phi, const double m) const {
 

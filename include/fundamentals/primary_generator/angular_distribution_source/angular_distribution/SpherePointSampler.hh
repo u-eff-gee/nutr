@@ -19,6 +19,12 @@
 
 #pragma once
 
+#include <array>
+#include <vector>
+
+using std::array;
+using std::vector;
+
 /**
  * \brief Class for sampling points approximately uniformly on the surface of a sphere
  * 
@@ -49,6 +55,46 @@ class SpherePointSampler{
 public:
     SpherePointSampler() = default;
     ~SpherePointSampler() = default;
+
+    /**
+     * \brief Sample \f$n\f$ points approximately uniformly on the surface of a unit sphere
+     * 
+     * Using the algorithm of Koay \cite Koay2011, this function samples \f$n\f$ points on the 
+     * surface of the unit sphere, whose coordinates are identified by the polar angles
+     * \f$\theta_i\f$
+     * and the azimuthal angles \f$\varphi_i\f$, with \f$0 \leq i < n\f$.
+     * 
+     * \param n \f$n\f$, desired number of points
+     * 
+     * \return std::array that contains two std::vectors with size \f$n\f$. The first vector contains the values \f$\theta_i\f$, and the second vector contains the values \f$\varphi_i\f$.
+     */
+    array<vector<double>, 2> sample(const unsigned int n) const;
+
+    /**
+     * \brief Sample \f$n\f$ points approximately uniformly on the surface of a sphere in Cartesian coordinates
+     * 
+     * Compared to SpherePointSampler::sample, which returns pairs \f$\theta_i, \phi_i\f$,
+     * this function returns the corresponding cartesian coordinates 
+     * {see also the end of Sec. 2 in Ref. \cite Koay2011}:
+     * 
+     * \f[
+     *      \mathbf{x}_i = \left(
+     *          \begin{array}{c}
+     *              r\mathrm{sin} \left( \theta_i \right) \mathrm{cos} \left( \varphi_i \right) \\
+     *              r\mathrm{sin} \left( \theta_i \right) \mathrm{sin} \left( \varphi_i \right) \\
+     *              r\mathrm{cos} \left( \theta_i \right)
+     *          \end{array}
+     *      \right).
+     * \f]
+     * 
+     * Note that the radius \f$r\f$ of the sphere may be specified as well.
+     * 
+     * \param n \f$n\f$, desired number of points
+     * \param r \f$r\f$, radius of the sphere
+     * 
+     * \return std::array that contains three std::vectors with size \f$n\f$, that contain the \f$x\f$-, \f$y\f$-, and \f$z\f$ coordinate. 
+     */
+    array<vector<double>, 3> sample_cartesian(const unsigned int n, const double r = 1.) const;
 
     /**
      * \brief Elliptic integral of the second kind \f$E\left( \varphi | m \right)\f$ for arbitrary real parameters
