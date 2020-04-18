@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 #include <gsl/gsl_sf.h>
 
@@ -66,9 +67,9 @@ vector<double> W_dir_dir::get_av_products(const int two_nu_max, const State &ini
 		av_products.push_back(
 			av_coef(two_nu, ini_to_int.two_L, ini_to_int.two_Lp,
 			ini_state.two_J, int_state.two_J, ini_to_int.delta)
-			*av_coef(two_nu, ini_to_int.two_L, ini_to_int.two_Lp,
-			ini_state.two_J, int_state.two_J, ini_to_int.delta)
-			);
+			*av_coef(two_nu, int_to_fin.two_L, int_to_fin.two_Lp,
+			fin_state.two_J, int_state.two_J, int_to_fin.delta)
+		);
 	}
 
 	return av_products;

@@ -57,8 +57,8 @@ vector<double> W_pol_dir::get_alphav_av_products(const int two_nu_max, const Sta
 		alphav_av_products.push_back(
 			alphav_coef(two_nu, ini_to_int.two_L, ini_to_int.two_Lp,
 			ini_state.two_J, int_state.two_J, ini_to_int.delta)
-			*av_coef(two_nu, ini_to_int.two_L, ini_to_int.two_Lp,
-			ini_state.two_J, int_state.two_J, ini_to_int.delta)
+			*av_coef(two_nu, int_to_fin.two_L, int_to_fin.two_Lp,
+			fin_state.two_J, int_state.two_J, int_to_fin.delta)
 			);
 	}
 
