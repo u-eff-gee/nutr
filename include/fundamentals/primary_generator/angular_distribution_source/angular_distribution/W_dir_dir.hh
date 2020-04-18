@@ -81,6 +81,26 @@ public:
 	 * \return \f$W \left( \theta \right)\f$
 	 */
 	double operator()(const double theta) const;
+
+	/**
+	 * \brief Return value of the dir-dir correlation at an angle \f$\theta\f$
+	 * 
+	 * This call operator accepts the angle \f$\varphi\f$ as a second argument, although the 
+	 * direction-direction correlation is independent of the azimuthal angle.
+	 * It is intended for easy switching between the two classes without having to change a lot
+	 * of code.
+	 * Internally, the method calls the single-argument call operator.
+	 * 
+	 * \param theta Polar angle between the direction of the incoming and 
+	 * the outgoing photon in radians.
+	 * \param phi Azimuthal angle between the polarization axis of the first photon and the direction of the
+	 * outgoing photon in radians. Note that this argument has no influence on the result.
+	 * 
+	 * \return \f$W \left( \theta \right)\f$
+	 */
+	double operator()(const double theta, const double phi) const {
+		return operator()(theta);
+	}
 	
 	/**
 	 * \brief Return \f$\nu_\mathrm{max}\f$
