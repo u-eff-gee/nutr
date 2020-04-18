@@ -28,8 +28,13 @@
  * 
  * I found this possibility by browsing the ROOT user forum for suggestions on 3D plotting 
  * of surfaces after I tried TGraph2D and TH2 first.
- * The TGraph2D method is described in another test.
- * In principle, the TH2 method employs all the usual methods for histogram drawing, and I expected
+ *      * The TGraph2D class has the drawback that it is not made for an intuitive drawing of
+ * closed surfaces.
+ * While the drawing of functions of the type z = f(x, y) on a grid of x- and y values works quite
+ * well, the associated Delaunay triangulation algorithm fails to draw closed surfaces between a 
+ * given set of (x, y, z) tuples and the plotted objects
+ * look like crumpled paper instead of having a smooth surface.
+ *      * In principle, the TH2 method employs all the usual methods for histogram drawing, and I expected
  *  that the "SPH" drawing option, which is supposed to plot the histogram data in a 
  * spherical coordinate system was convenient.
  * However, there is almost no documentation on what the "SPH" option actually does, and I

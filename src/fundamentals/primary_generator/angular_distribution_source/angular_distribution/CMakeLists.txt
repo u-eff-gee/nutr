@@ -67,6 +67,10 @@ if(ROOT_FOUND)
     add_executable(test_plots_tgl test_plots_tgl.cc)
     target_link_libraries(test_plots_tgl w_pol_dir ${ROOT_LIBRARIES})
     add_test(test_plots_tgl test_plots_tgl)
+
+    add_executable(test_plots_tpolymarker3d test_plots_tpolymarker3d.cc)
+    target_link_libraries(test_plots_tpolymarker3d w_pol_dir spherePointSampler ${ROOT_LIBRARIES})
+    add_test(test_plots_tpolymarker3d test_plots_tpolymarker3d)    
 endif()
 
 add_executable(test_elliptic_integral test_elliptic_integral.cc)
