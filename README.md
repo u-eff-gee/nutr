@@ -29,6 +29,7 @@ A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4
 * [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is optional for building some tests of `nutr`. However, since the output is written in the ROOT format by default, it is highly recommended.
 * [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](www.doxygen.nl/index.html) formulas (optional) 
+* [python3](https://www.python.org/) to import the angular correlation function wrappers in python code (optional)
 
 In the following, the directory where the top-level `CMakeLists.txt` is located in a downloaded version of `nutr` is denoted as `NUTR_SOURCE_DIR`.
 In a build directory `NUTR_BUILD_DIR`, execute:

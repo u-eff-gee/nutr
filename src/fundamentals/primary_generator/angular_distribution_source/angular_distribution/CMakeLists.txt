@@ -26,8 +26,9 @@ target_link_libraries(fCoefficient ${GSL_LIBRARIES})
 add_library(avCoefficient AvCoefficient.cc)
 target_link_libraries(avCoefficient fCoefficient)
 
-add_library(w_dir_dir W_dir_dir.cc)
+add_library(w_dir_dir SHARED W_dir_dir.cc)
 target_link_libraries(w_dir_dir avCoefficient)
+configure_file(w_dir_dir.py.in w_dir_dir.py)
 
 add_library(kappa_coefficient KappaCoefficient.cc)
 target_link_libraries(kappa_coefficient ${GSL_LIBRARIES})
