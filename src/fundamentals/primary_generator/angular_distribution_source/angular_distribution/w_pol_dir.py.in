@@ -17,35 +17,41 @@
 
 import ctypes
 
-lib = ctypes.cdll.LoadLibrary('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_distribution_source/angular_distribution/libw_dir_dir.so')
+lib = ctypes.cdll.LoadLibrary('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_distribution_source/angular_distribution/libw_pol_dir.so')
 
-lib.w_dir_dir.restype = ctypes.c_double
-lib.w_dir_dir.argtypes = [
+lib.w_pol_dir.restype = ctypes.c_double
+lib.w_pol_dir.argtypes = [
     ctypes.c_double,
     ctypes.c_double,
     ctypes.c_int,
     ctypes.c_int,
     ctypes.c_int,
-    ctypes.c_double,
     ctypes.c_int,
     ctypes.c_int,
     ctypes.c_int,
     ctypes.c_double,
     ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_double,
+    ctypes.c_int,
+    ctypes.c_int
 ]
 
-def w_dir_dir(
+def w_pol_dir(
     theta, phi, 
-    two_J_ini, 
-    two_L_ini_to_int, two_Lp_ini_to_int, delta_ini_to_int, 
-    two_J_int, 
+    two_J_ini, p_ini, 
+    em_ini_to_int, two_L_ini_to_int, emp_ini_to_int, two_Lp_ini_to_int, delta_ini_to_int, 
+    two_J_int, p_int, 
     two_L_int_to_fin, two_Lp_int_to_fin, delta_int_to_fin, 
-    two_J_fin
+    two_J_fin, p_fin
     ):
-    """Direction-direction correlation
+    """Polarization-direction correlation
 
 It is assumed that a nucleus is excited from an initial (ini) state to an intermediate (int) \
-state by the absorption of a photon which propagates in positive z-direction. \
+state by the absorption of a linearly polarized photon which propagates in positive z-direction. \
+The polarization axis is assumed to be along the x axis.
 The intermediate excited state decays to a final (fin) state by the emission of a photon. \
 The angular distribution of the emitted photon is described by this function in terms of \
 the polar- and aximuthal angle in spherical coordinates.
@@ -59,10 +65,17 @@ and Xp denotes one of the labels other than X.
         Polar angle in radians. theta == 0 is the positive z axis.
     phi: float
         Azimuthal angle in radians. theta == 0.5*pi, phi == 0 is the positive x axis, \
-theta == 0.5*pi, phi == 0.5*pi is the positive y axis. In fact, the direction-direction correlation is independent of the azimuthal angle.
+theta == 0.5*pi, phi == 0.5*pi is the positive y axis.
     two_J_X: int
         Two times the angular momentum quantum number of the initial state X in units of \
 the reduced Planck constant.
+    p_X: int
+        Parity number of the state X. p_X == -1 means negative, p_X == 1 means positive parity. \
+Any other number entered for p_X will be treated like a -1.
+    em_X_to_Xp: int
+        Electromagnetic character of the transition from state X to Xp. em_X_to_Xp == -1 means \
+electric, em_X_to_Xp == 1 means magnetic. The signs were chosen in analogy to dipole excitations \
+of an even-even nucleus. Any other number entered for em_X_to_Xp will be treated like a -1.
     two_L_X_to_Xp: int
         Two times the primary multipolarity of the transition from state X to Xp.
     two_Lp_X_to_Xp: int
@@ -75,11 +88,11 @@ the reduced Planck constant.
     float
         Angular distribution
     """
-    return lib.w_dir_dir(
+    return lib.w_pol_dir(
         theta, phi, 
-        two_J_ini, 
-        two_L_ini_to_int, two_Lp_ini_to_int, delta_ini_to_int, 
-        two_J_int, 
+        two_J_ini, p_ini, 
+        em_ini_to_int, two_L_ini_to_int, emp_ini_to_int, two_Lp_ini_to_int, delta_ini_to_int, 
+        two_J_int, p_int, 
         two_L_int_to_fin, two_Lp_int_to_fin, delta_int_to_fin, 
-        two_J_fin        
+        two_J_fin, p_fin        
     )

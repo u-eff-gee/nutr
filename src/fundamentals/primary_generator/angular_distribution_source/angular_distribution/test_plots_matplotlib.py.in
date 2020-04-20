@@ -1,0 +1,105 @@
+# This file is part of nutr.
+
+# nutr is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# nutr is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with nutr.  If not, see <https://www.gnu.org/licenses/>.
+
+# Copyright (C) 2020 Udo Friman-Gayer
+
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import numpy as np
+
+import os
+os.chdir('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_distribution_source/angular_distribution/')
+from w_dir_dir import w_dir_dir
+from w_pol_dir import w_pol_dir
+
+from pathlib import Path
+
+class AngularDistributionPlot:
+    def __init__(self, title, filename, params, polarized):
+        self.title=title
+        self.filename=filename
+        self.params=params
+        self.polarized=polarized
+
+OUTPUT_DIR = Path('@PROJECT_BINARY_DIR@')
+
+AXIS_BEAM_LABEL = 'Beam direction'
+AXIS_POLARIZATION_LABEL = 'Polarization axis'
+AXIS_LAST_LABEL = ''
+AXES_LABELS = {0: AXIS_BEAM_LABEL, 1: AXIS_POLARIZATION_LABEL, 2: AXIS_LAST_LABEL}
+AXES_INDICES = {label: index for index, label in AXES_LABELS.items()}
+
+XLIM = (-2., 2.)
+YLIM = (-2., 2.)
+ZLIM = (-2., 2.)
+
+COLOR_MAP_MAX = 3.
+
+N_THETA = 100
+N_PHI   = 100
+
+theta, phi = np.meshgrid(np.linspace(0., np.pi, N_THETA),
+                         np.linspace(0., 2.*np.pi, N_PHI))
+
+ang_corr = np.zeros(np.shape(theta))
+x_y_z = np.zeros((3, np.shape(theta)[0], np.shape(theta)[1]))
+
+angular_distributions = [
+    AngularDistributionPlot(r'$0 \to 1 \to 0$', '0_1_0.pdf', [0, 2, 4, 0., 2, 2, 4, 0., 0], False),
+    AngularDistributionPlot(r'$0 \to 2 \to 0$', '0_2_0.pdf', [0, 4, 6, 0., 4, 4, 6, 0., 0], False),
+
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 0$', '0p_1p_0.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 0, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 1^- \to 0$', '0p_1m_0.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 0., 0, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 2^+ \to 0$', '0p_2p_0.pdf', [0, 1, -1, 4, 1, 6, 0., 4, 1, 4, 6, 0., 0, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 2^- \to 0$', '0p_2m_0.pdf', [0, 1, 1, 4, -1, 6, 0., 4, -1, 4, 6, 0., 0, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = 0$', '0p_1p_1_delta_2_zero.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 2, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = +1$', '0p_1p_1_delta_2_plus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 1., 2, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = -1$', '0p_1p_1_delta_2_minus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, -1., 2, 1], True),
+
+]
+
+for ang_dist_plot in angular_distributions:
+    for i in range(N_THETA):
+        for j in range(N_PHI):
+            
+            if ang_dist_plot.polarized:
+                ang_corr[i][j] = w_pol_dir(theta[i][j], phi[i][j], *ang_dist_plot.params)
+            else:
+                ang_corr[i][j] = w_dir_dir(theta[i][j], phi[i][j], *ang_dist_plot.params)                
+
+            x_y_z[AXES_INDICES[AXIS_POLARIZATION_LABEL]][i][j] = ang_corr[i][j]*np.sin(theta[i][j])*np.cos(phi[i][j])
+            x_y_z[AXES_INDICES[AXIS_LAST_LABEL]][i][j] = ang_corr[i][j]*np.sin(theta[i][j])*np.sin(phi[i][j])
+            x_y_z[AXES_INDICES[AXIS_BEAM_LABEL]][i][j] = ang_corr[i][j]*np.cos(theta[i][j])
+
+    color_map_norm = ang_corr/COLOR_MAP_MAX
+    color_map = mpl.cm.jet(color_map_norm)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_title(ang_dist_plot.title)
+    ax.set_xlabel(AXES_LABELS[0])
+    ax.set_xlim(XLIM)
+    ax.set_ylabel(AXES_LABELS[1])
+    ax.set_ylim(YLIM)
+    ax.set_zlabel(AXES_LABELS[2])
+    ax.set_zlim(ZLIM)
+
+    ax.plot_surface(x_y_z[0], x_y_z[1], x_y_z[2], facecolors=color_map)
+
+    fig.colorbar(mpl.cm.ScalarMappable(norm=mpl.colors.Normalize(vmin=0., vmax=COLOR_MAP_MAX), cmap=plt.get_cmap('jet')), shrink=0.8)
+
+    output_file_path = OUTPUT_DIR / ang_dist_plot.filename
+    plt.savefig(output_file_path)
+    print('Created output file {} for angular distribution {}'.format(output_file_path, ang_dist_plot.title))

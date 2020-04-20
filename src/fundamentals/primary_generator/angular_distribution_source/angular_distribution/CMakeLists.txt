@@ -36,8 +36,9 @@ target_link_libraries(kappa_coefficient ${GSL_LIBRARIES})
 add_library(alphavCoefficient AlphavCoefficient.cc)
 target_link_libraries(alphavCoefficient fCoefficient kappa_coefficient)
 
-add_library(w_pol_dir W_pol_dir.cc)
+add_library(w_pol_dir SHARED W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
+configure_file(w_pol_dir.py.in w_pol_dir.py)
 
 add_library(spherePointSampler SpherePointSampler.cc)
 target_link_libraries(spherePointSampler ${GSL_LIBRARIES})
@@ -89,3 +90,5 @@ add_test(test_find_c test_find_c)
 add_executable(test_find_Theta_j test_find_Theta_j.cc)
 target_link_libraries(test_find_Theta_j spherePointSampler)
 add_test(test_find_Theta_j test_find_Theta_j)
+
+configure_file(test_plots_matplotlib.py.in test_plots_matplotlib.py)

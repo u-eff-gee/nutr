@@ -74,12 +74,12 @@ vector<double> W_dir_dir::get_av_products(const int two_nu_max, const State &ini
 	return av_products;
 }
 
-extern "C" double w_dir_dir(const double theta, const double phi, const int two_J_ini, const int p_ini, const int two_L_ini_to_int, const int two_Lp_ini_to_int, const double delta_ini_to_int, const int two_J_int, const int p_int, const int two_L_int_to_fin, const int two_Lp_int_to_fin, const double delta_int_to_fin, const int two_J_fin, const int p_fin){
+extern "C" double w_dir_dir(const double theta, const double phi, const int two_J_ini, const int two_L_ini_to_int, const int two_Lp_ini_to_int, const double delta_ini_to_int, const int two_J_int, const int two_L_int_to_fin, const int two_Lp_int_to_fin, const double delta_int_to_fin, const int two_J_fin){
 	W_dir_dir w_d_d(		
-			State(two_J_ini),
-			Transition(two_L_ini_to_int, two_Lp_ini_to_int, delta_ini_to_int), 
-			State(two_J_int),
-			Transition(two_L_int_to_fin, two_Lp_int_to_fin, delta_int_to_fin), 
-			State(two_J_fin));
+			State(two_J_ini, parity_unknown),
+			Transition(em_unknown, two_L_ini_to_int, em_unknown, two_Lp_ini_to_int, delta_ini_to_int), 
+			State(two_J_int, parity_unknown),
+			Transition(em_unknown, two_L_int_to_fin, em_unknown, two_Lp_int_to_fin, delta_int_to_fin), 
+			State(two_J_fin, parity_unknown));
 	return w_d_d(theta, phi);
 }
