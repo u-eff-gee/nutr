@@ -46,7 +46,7 @@ double W_pol_dir::operator()(const double theta, const double phi) const {
 		polarization_sign = -1;
 	}
 
-	return w_dir_dir(theta)+polarization_sign*cos(2.*phi)*sum_over_nu;
+	return w_dir_dir(theta)+polarization_sign*cos(2.*phi)*sum_over_nu/(1.+initial_to_intermediate.delta*initial_to_intermediate.delta)/(1.+intermediate_to_final.delta*intermediate_to_final.delta);
 }
 
 vector<double> W_pol_dir::get_alphav_av_products(const int two_nu_max, const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state) const {

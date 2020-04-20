@@ -64,9 +64,11 @@ angular_distributions = [
     AngularDistributionPlot(r'$0^+ \to 1^- \to 0$', '0p_1m_0.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 0., 0, 1], True),
     AngularDistributionPlot(r'$0^+ \to 2^+ \to 0$', '0p_2p_0.pdf', [0, 1, -1, 4, 1, 6, 0., 4, 1, 4, 6, 0., 0, 1], True),
     AngularDistributionPlot(r'$0^+ \to 2^- \to 0$', '0p_2m_0.pdf', [0, 1, 1, 4, -1, 6, 0., 4, -1, 4, 6, 0., 0, 1], True),
+
     AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = 0$', '0p_1p_1_delta_2_zero.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 2, 1], True),
     AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = +1$', '0p_1p_1_delta_2_plus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 1., 2, 1], True),
     AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = -1$', '0p_1p_1_delta_2_minus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, -1., 2, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 \to +\infty$', '0p_1p_1_delta_2_positive_infinity.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 100., 2, 1], True),
 
 ]
 

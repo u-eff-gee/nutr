@@ -44,7 +44,7 @@ double W_dir_dir::operator()(const double theta) const {
 		sum_over_nu += av_prod_cache[i]*gsl_sf_legendre_Pl(2*i, cos(theta));
 	}
 
-	return sum_over_nu;
+	return sum_over_nu/(1.+initial_to_intermediate.delta*initial_to_intermediate.delta)/(1.+intermediate_to_final.delta*intermediate_to_final.delta);
 }
 
 int W_dir_dir::get_two_nu_max(const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin) const {
