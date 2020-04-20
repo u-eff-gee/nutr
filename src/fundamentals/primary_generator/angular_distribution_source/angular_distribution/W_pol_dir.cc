@@ -65,13 +65,13 @@ vector<double> W_pol_dir::get_alphav_av_products(const int two_nu_max, const Sta
 	return alphav_av_products;
 }
 
-extern "C" double w_pol_dir(const double theta, const double phi, const int two_J_ini, const int p_ini, const int em_ini_to_int, const int two_L_ini_to_int, const int emp_ini_to_int, const int two_Lp_ini_to_int, const double delta_ini_to_int, const int two_J_int, const int p_int, const int two_L_int_to_fin, const int two_Lp_int_to_fin, const double delta_int_to_fin, const int two_J_fin, const int p_fin){
+extern "C" double w_pol_dir(const double theta, const double phi, const int two_J_ini, const int p_ini, const int em_ini_to_int, const int two_L_ini_to_int, const int emp_ini_to_int, const int two_Lp_ini_to_int, const double delta_ini_to_int, const int two_J_int, const int p_int, const int two_L_int_to_fin, const int two_Lp_int_to_fin, const double delta_int_to_fin, const int two_J_fin){
 
 	W_pol_dir w_p_d(
 			State(two_J_ini, p_ini == 1 ? positive : negative),
 			Transition(em_ini_to_int == 1 ? magnetic : electric, two_L_ini_to_int, emp_ini_to_int == 1 ? magnetic : electric, two_Lp_ini_to_int, delta_ini_to_int), 
 			State(two_J_int, p_int == 1 ? positive : negative),
 			Transition(em_unknown, two_L_int_to_fin, em_unknown, two_Lp_int_to_fin, delta_int_to_fin), 
-			State(two_J_fin, p_fin == 1 ? positive : negative));
+			State(two_J_fin, parity_unknown));
 	return w_p_d(theta, phi);
 }

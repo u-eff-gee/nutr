@@ -36,7 +36,6 @@ lib.w_pol_dir.argtypes = [
     ctypes.c_int,
     ctypes.c_double,
     ctypes.c_int,
-    ctypes.c_int
 ]
 
 def w_pol_dir(
@@ -45,7 +44,7 @@ def w_pol_dir(
     em_ini_to_int, two_L_ini_to_int, emp_ini_to_int, two_Lp_ini_to_int, delta_ini_to_int, 
     two_J_int, p_int, 
     two_L_int_to_fin, two_Lp_int_to_fin, delta_int_to_fin, 
-    two_J_fin, p_fin
+    two_J_fin
     ):
     """Polarization-direction correlation
 
@@ -94,5 +93,5 @@ of an even-even nucleus. Any other number entered for em_X_to_Xp will be treated
         em_ini_to_int, two_L_ini_to_int, emp_ini_to_int, two_Lp_ini_to_int, delta_ini_to_int, 
         two_J_int, p_int, 
         two_L_int_to_fin, two_Lp_int_to_fin, delta_int_to_fin, 
-        two_J_fin, p_fin        
+        two_J_fin      
     )

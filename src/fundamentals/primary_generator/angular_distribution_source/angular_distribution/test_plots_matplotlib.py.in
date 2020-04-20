@@ -27,11 +27,10 @@ from w_pol_dir import w_pol_dir
 from pathlib import Path
 
 class AngularDistributionPlot:
-    def __init__(self, title, filename, params, polarized):
+    def __init__(self, title, filename, params):
         self.title=title
         self.filename=filename
         self.params=params
-        self.polarized=polarized
 
 OUTPUT_DIR = Path('@PROJECT_BINARY_DIR@')
 
@@ -45,7 +44,32 @@ XLIM = (-2., 2.)
 YLIM = (-2., 2.)
 ZLIM = (-2., 2.)
 
-COLOR_MAP_MAX = 3.
+# A matplotlib color map maps scalar values in a range [n_0, n_1] to colors in a range [c_0, c_1].
+# Here, it is assumed that n_0 = 0.
+# If several angular distributions are visualized in different panels, it may be beneficial to 
+# use the same mapping for all of them. 
+# Having the same magnitude-color mapping in each panel means the magnitude can be compared more
+# easily.
+# On the other hand, if the magnitude of a particular angular distribution is much smaller 
+# than n_1, its visualization will not make use of the entire color map and the contrast may be 
+# too low.
+# The parameter COLOR_MAP_MAX sets the value of n_1 to a nonzero positive value, which will 
+# be the upper limit for all visualizations.
+# If COLOR_MAP_MAX is set to a negative value or zero, n_1 will be set to the maximum value
+# for each specific angular distribution, which is the most efficient use of the color map.
+# 
+# In this context, also note the importance of the choice of a color scheme.
+# While the 'rainbow' or 'jet' color schemes of matplotlib give appealing and colorful,
+# visualizations, they have been critized for not representing magnitudes well for 
+# human perception.
+# For a discussion of this issue, see
+# 
+# https://matplotlib.org/3.2.1/tutorials/colors/colormaps.html
+#
+# and references therein.
+# According to these considerations, this script will also use different color maps for the two 
+# fundamentally different settings of COLOR_MAP_MAX.
+COLOR_MAP_MAX = -1
 
 N_THETA = 100
 N_PHI   = 100
@@ -57,26 +81,45 @@ ang_corr = np.zeros(np.shape(theta))
 x_y_z = np.zeros((3, np.shape(theta)[0], np.shape(theta)[1]))
 
 angular_distributions = [
-    AngularDistributionPlot(r'$0 \to 1 \to 0$', '0_1_0.pdf', [0, 2, 4, 0., 2, 2, 4, 0., 0], False),
-    AngularDistributionPlot(r'$0 \to 2 \to 0$', '0_2_0.pdf', [0, 4, 6, 0., 4, 4, 6, 0., 0], False),
+    AngularDistributionPlot(r'$0 \to 1 \to 0$', '0_1_0.pdf', [0, 2, 4, 0., 2, 2, 4, 0., 0]),
+    AngularDistributionPlot(r'$0 \to 2 \to 0$', '0_2_0.pdf', [0, 4, 6, 0., 4, 4, 6, 0., 0]),
 
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 0$', '0p_1p_0.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 0, 1], True),
-    AngularDistributionPlot(r'$0^+ \to 1^- \to 0$', '0p_1m_0.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 0., 0, 1], True),
-    AngularDistributionPlot(r'$0^+ \to 2^+ \to 0$', '0p_2p_0.pdf', [0, 1, -1, 4, 1, 6, 0., 4, 1, 4, 6, 0., 0, 1], True),
-    AngularDistributionPlot(r'$0^+ \to 2^- \to 0$', '0p_2m_0.pdf', [0, 1, 1, 4, -1, 6, 0., 4, -1, 4, 6, 0., 0, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 0$', '0p_1p_0.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 0]),
+    AngularDistributionPlot(r'$0^+ \to 1^- \to 0$', '0p_1m_0.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 0., 0]),
+    AngularDistributionPlot(r'$0^+ \to 2^+ \to 0$', '0p_2p_0.pdf', [0, 1, -1, 4, 1, 6, 0., 4, 1, 4, 6, 0., 0]),
+    AngularDistributionPlot(r'$0^+ \to 2^- \to 0$', '0p_2m_0.pdf', [0, 1, 1, 4, -1, 6, 0., 4, -1, 4, 6, 0., 0]),
 
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = 0$', '0p_1p_1_delta_2_zero.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 2, 1], True),
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = +1$', '0p_1p_1_delta_2_plus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 1., 2, 1], True),
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = -1$', '0p_1p_1_delta_2_minus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, -1., 2, 1], True),
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 \to +\infty$', '0p_1p_1_delta_2_positive_infinity.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 100., 2, 1], True),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = 0$', '0p_1p_1_delta_2_zero.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 2]),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = +1$', '0p_1p_1_delta_2_plus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 1., 2]),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = -1$', '0p_1p_1_delta_2_minus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, -1., 2]),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 \to +\infty$', '0p_1p_1_delta_2_plus_infinity.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 100., 2]),
 
+    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 = 0$', '0p_1m_1_delta_2_zero.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 0., 2]),
+    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 = +1$', '0p_1m_1_delta_2_plus_one.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 1., 2]),
+    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 = -1$', '0p_1m_1_delta_2_minus_one.pdf', [0, 1, -1, 2, 1, 4, 0., 2, 1, 2, 4, -1., 2]),
+    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 \to +\infty$', '0p_1m_1_delta_2_plus_infinity.pdf', [0, 1, -1, 2, 1, 4, 0., 2, 1, 2, 4, 100., 2]),
+
+    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = 0$', '1_2p_3_2p_1_2_delta_1_zero_delta_2_zero.pdf', [1, 1, 1, 2, -1, 4, 0., 3, 1, 2, 4, 0., 1]),
+    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = +1$', '1_2p_3_2p_1_2_delta_1_plus_one_delta_2_plus_one.pdf', [1, 1, 1, 2, -1, 4, 1., 3, 1, 2, 4, 1., 1]),
+    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = -1$', '1_2p_3_2p_1_2_delta_1_minus_one_delta_2_minus_one.pdf', [1, 1, 1, 2, -1, 4, -1., 3, 1, 2, 4, -1., 1]),
+    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = +\infty$', '1_2p_3_2p_1_2_delta_1_plus_infinity_delta_2_plus_infinity.pdf', [1, 1, 1, 2, -1, 4, 100., 3, 1, 2, 4, 100., 1]),
+
+    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = 2.3,~\delta_2 = 1.3$', '3_2p_7_2p_5_2_delta_1_plus_2.3_delta_2_plus_1.3.pdf', [3, 1, -1, 4, 1, 6, 2.3, 7, 1, 2, 4, 1.3, 5]),
+    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = 2.3,~\delta_2 = -1.3$', '3_2p_7_2p_5_2_delta_1_plus_2.3_delta_2_minus_1.3.pdf', [3, 1, -1, 4, 1, 6, 2.3, 7, 1, 2, 4, -1.3, 5]),
+    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = -2.3,~\delta_2 = 1.3$', '3_2p_7_2p_5_2_delta_1_minus_2.3_delta_2_plus_1.3.pdf', [3, 1, -1, 4, 1, 6, -2.3, 7, 1, 2, 4, 1.3, 5]),
+    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = -2.3,~\delta_2 = -1.3$', '3_2p_7_2p_5_2_delta_1_minus_2.3_delta_2_minus_1.3.pdf', [3, 1, -1, 4, 1, 6, -2.3, 7, 1, 2, 4, -1.3, 5]),
 ]
 
 for ang_dist_plot in angular_distributions:
+    output_file_path = OUTPUT_DIR / ang_dist_plot.filename
+    if os.path.isfile(output_file_path):
+        print('File {} already exists. Skipping calculation ...'.format(output_file_path))
+        continue
+
     for i in range(N_THETA):
         for j in range(N_PHI):
-            
-            if ang_dist_plot.polarized:
+
+            if len(ang_dist_plot.params) != 9:
                 ang_corr[i][j] = w_pol_dir(theta[i][j], phi[i][j], *ang_dist_plot.params)
             else:
                 ang_corr[i][j] = w_dir_dir(theta[i][j], phi[i][j], *ang_dist_plot.params)                
@@ -85,8 +128,14 @@ for ang_dist_plot in angular_distributions:
             x_y_z[AXES_INDICES[AXIS_LAST_LABEL]][i][j] = ang_corr[i][j]*np.sin(theta[i][j])*np.sin(phi[i][j])
             x_y_z[AXES_INDICES[AXIS_BEAM_LABEL]][i][j] = ang_corr[i][j]*np.cos(theta[i][j])
 
-    color_map_norm = ang_corr/COLOR_MAP_MAX
-    color_map = mpl.cm.jet(color_map_norm)
+    if COLOR_MAP_MAX > 0.:
+        color_map_max = COLOR_MAP_MAX
+        color_map_norm = ang_corr/COLOR_MAP_MAX
+        color_map = mpl.cm.rainbow(color_map_norm)
+    else:
+        color_map_max = np.max(ang_corr)
+        color_map_norm = ang_corr/color_map_max
+        color_map = mpl.cm.inferno(color_map_norm)
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -100,8 +149,7 @@ for ang_dist_plot in angular_distributions:
 
     ax.plot_surface(x_y_z[0], x_y_z[1], x_y_z[2], facecolors=color_map)
 
-    fig.colorbar(mpl.cm.ScalarMappable(norm=mpl.colors.Normalize(vmin=0., vmax=COLOR_MAP_MAX), cmap=plt.get_cmap('jet')), shrink=0.8)
+    fig.colorbar(mpl.cm.ScalarMappable(norm=mpl.colors.Normalize(vmin=0., vmax=color_map_max), cmap=(plt.get_cmap('rainbow') if COLOR_MAP_MAX > 0. else plt.get_cmap('inferno'))), shrink=0.8)
 
-    output_file_path = OUTPUT_DIR / ang_dist_plot.filename
     plt.savefig(output_file_path)
     print('Created output file {} for angular distribution {}'.format(output_file_path, ang_dist_plot.title))
