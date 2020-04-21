@@ -59,7 +59,7 @@ int main(){
 
 	W_pol_dir w_pol_dir_e1(
 		State(0, positive), Transition(electric, 2, magnetic, 4, 0.), 
-		State(2, positive), Transition(electric, 2, magnetic, 4, 0.),
+		State(2, negative), Transition(electric, 2, magnetic, 4, 0.),
 		State(0, positive)
 	);
 
