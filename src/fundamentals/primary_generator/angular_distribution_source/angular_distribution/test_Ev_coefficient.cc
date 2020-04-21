@@ -17,23 +17,22 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#pragma once
+#include "EvCoefficient.hh"
+#include "TestUtilities.hh"
+#include "Transition.hh"
 
-#include <cassert>
-#include <cmath>
-#include <stdexcept>
-#include <sstream>
+int main(){
 
-using std::fabs;
-using std::runtime_error;
-using std::stringstream;
+	EvCoefficient ev_coef;
+	const double epsilon = 1e-4;
 
-template<typename T>
-void test_numerical_equality(const T a, const T b, const T epsilon) {
-	if(fabs(a-b) > fabs(epsilon)){
-        stringstream error_message;
-        error_message << "Test of numerical equality failed. | " << a << " - " << b << " | = " << std::scientific << fabs(a-b) << " > " << epsilon;
-        throw runtime_error(error_message.str());
-    };
-};
+	double ev_coef_num{0.};
 
+	// Eq. (88b) in \cite Biedenharn1960
+	ev_coef_num = ev_coef(4, electric, 4, magnetic, 6, 7, 3, 0.);
+	test_numerical_equality<double>(ev_coef_num, 0.07143, epsilon);
+	
+	// Eq. (89b) in \cite Biedenharn1960
+	ev_coef_num = ev_coef(4, magnetic, 2, electric, 4, 3, 3, 1.);
+	test_numerical_equality<double>(ev_coef_num, 0.20000 - 0.25820, epsilon);
+}

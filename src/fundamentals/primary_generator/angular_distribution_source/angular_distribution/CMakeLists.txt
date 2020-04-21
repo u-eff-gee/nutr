@@ -40,7 +40,7 @@ add_library(evCoefficient EvCoefficient.cc)
 target_link_libraries(evCoefficient fCoefficient)
 
 add_library(w_pol_dir SHARED W_pol_dir.cc)
-target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
+target_link_libraries(w_pol_dir alphavCoefficient avCoefficient evCoefficient w_dir_dir)
 configure_file(w_pol_dir.py.in w_pol_dir.py)
 
 add_library(spherePointSampler SpherePointSampler.cc)
@@ -58,6 +58,10 @@ add_test(test_w_dir_dir test_w_dir_dir)
 add_executable(test_kappa_coefficient test_kappa_coefficient.cc)
 target_link_libraries(test_kappa_coefficient kappa_coefficient)
 add_test(test_kappa_coefficient test_kappa_coefficient)
+
+add_executable(test_ev_coefficient test_Ev_coefficient.cc)
+target_link_libraries(test_ev_coefficient evCoefficient)
+add_test(test_ev_coefficient test_ev_coefficient)
 
 add_executable(test_w_pol_dir test_w_pol_dir.cc)
 target_link_libraries(test_w_pol_dir w_pol_dir ${GSL_LIBRARIES})
