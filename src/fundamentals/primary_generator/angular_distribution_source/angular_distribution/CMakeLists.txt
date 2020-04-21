@@ -36,6 +36,9 @@ target_link_libraries(kappa_coefficient ${GSL_LIBRARIES})
 add_library(alphavCoefficient AlphavCoefficient.cc)
 target_link_libraries(alphavCoefficient fCoefficient kappa_coefficient)
 
+add_library(evCoefficient EvCoefficient.cc)
+target_link_libraries(evCoefficient fCoefficient)
+
 add_library(w_pol_dir SHARED W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
 configure_file(w_pol_dir.py.in w_pol_dir.py)

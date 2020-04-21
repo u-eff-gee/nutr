@@ -28,7 +28,7 @@ using std::invalid_argument;
 
 double KappaCoefficient::operator()(const int two_nu, const int two_L, const double two_Lp) const {
     
-    int nu = two_nu/2;
+    const int nu = two_nu/2;
     if(nu < 2){
         throw invalid_argument("nu must be an integer larger than 1.");
     }
