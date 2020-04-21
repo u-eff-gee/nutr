@@ -153,3 +153,4 @@ for ang_dist_plot in angular_distributions:
 
     plt.savefig(output_file_path)
     print('Created output file {} for angular distribution {}'.format(output_file_path, ang_dist_plot.title))
+    plt.close(fig)
