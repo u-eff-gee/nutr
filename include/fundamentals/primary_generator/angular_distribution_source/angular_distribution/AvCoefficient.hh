@@ -28,7 +28,7 @@
  * first before the single constituents are described:
  *
  * \f[
- *	W \left( \theta \right) = \sum_\nu A_\nu \left( 1 \right) A_\nu \left( 2 \right) P_\nu \left( \cos \theta \right).
+ *	W \left( \theta \right) = \sum_\nu A_\nu \left( 1 \right) A_\nu \left( 2 \right) P_\nu \left[ \cos \left( \theta \right) \right].
 
  * \f]
  *
@@ -46,12 +46,14 @@
  * In principle, the equation above allows for an arbitrarily complicated combination of
  * angular momentum quantum numbers ('spins') \f$j\f$ of the intermediate excited state of 
  * the nucleus and multipolarities \f$L\f$ of the radiative transitions.
+ * Accordingly, the argument \f$n\f$ of \f$A_\nu \left( n \right)\f$ may stand for an arbitrary 
+ * number of parameters.
  * If only a single angular momentum quantum number is allowed for the intermediate state, and 
  * only the two dominant multipoles \f$L\f$ and \f$L^\prime\f$ are considered, the following
  * expression for the coefficients is obtained {Eq. (I-2) of Ref. \cite FaggHanna1959}:
  *
  * \f[
- *	A_\nu (n) \left( L_n, L_n^\prime, j_n, j, \delta_n \right) =
+ *	A_\nu \left( L_n, L_n^\prime, j_n, j, \delta_n \right) =
  *	F_\nu \left( L_n, L_n, j_n, j \right)
  *	+ 2 \delta_n F_\nu \left( L_n, L_n^\prime, j_n, j \right)
  *	+ \delta_n^2 F_\nu \left( L_n^\prime, L_n^\prime, j_n, j \right).
@@ -63,26 +65,19 @@
  * multipolarities \f$L_n\f$ and \f$L_n^\prime\f$ of the respective transition \f$^1\f$.
  * For each transition, the ratio of the intensities of both multipolarities is quantified 
  * by a multipole mixing ratio \f$\delta_n\f$.
+ * Note that several definitions of the multipole mixing ratio coexist in the literature which 
+ * differ by phase factors of the type \f$\left( -1 \right)^{L_n - L_n^\prime}\f$.
+ * For an early account of the problem, see for example the discussion in Sec. V.A of a review 
+ * article by Rose and Brink \cite RoseBrink1967
+ * or the corresponding section in the 'Procedures Manual for the Evaluated Nuclear Structure Data 
+ * File' \cite ENSDF1987.
+ * In principle, any phase convention can be used with the present code, if it is applied 
+ * consistently.
  *
  * The selection rules for the F coefficients eventually terminate the sum over the parameter 
  * \f$\nu\f$ in the definition of \f$W\left( \theta \right)\f$.
- * Explicitly, the selection rules for the Wigner symbols in the F coefficient,
+ * See also the definition of W_dir_dir for more information.
  *
- * \f[
- *	0 \leq k \leq 2j,
- * \f]
- *
- * \f[
- *	k \leq L + L^\prime,
- * \f]
- *
- * and 
- *
- * \f[
- *	2 j + k ~~~ \mathrm{even}
- * \f]
- *
- * are effective.
  * For this reason, the authors of Ref. \cite Kneissl1996 restrict the summation to 
  * \f$\nu = 0, 2, 4\f$ for photonic transitions with \f$L \leq 2\f$ of even-even nuclei.
  *
