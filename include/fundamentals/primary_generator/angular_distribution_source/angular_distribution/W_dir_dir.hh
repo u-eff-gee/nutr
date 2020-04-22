@@ -37,7 +37,8 @@ using std::vector;
  * It is assumed that only the direction of the two photons in the process is known,
  * but no polarization information.
  * In particular, this means that the dir-dir correlation does not depend on the parity
- * quantum number of the involved nuclear states.
+ * quantum number of the involved nuclear states, which translates into an independence of the
+ * azimuthal angle of the emitted photon.
  * 
  * The class uses Eqs. (I-1) and (I-2) of Ref. \cite FaggHanna1959 with a similar notation.
  * Note that Eq. (I-2) already includes the assumption that only two multipoles contribute
@@ -74,6 +75,8 @@ public:
 	 * The first transition proceeds via the multipolarities \f$L_1\f$ and \f$L_1^\prime\f$,
 	 * while the second has the multipolarities \f$L_2\f$ and \f$L_2^\prime\f$.
 	 * The symbol \f$P_v\f$ denotes a Legendre polynomial of the degree \f$\nu\f$.
+	 * It incorporates the dependence on the polar angle \f$\theta\f$, while the dependence on the
+	 * nuclear properties is encoded in the \f$A_\nu\f$ coefficients.
 	 * 
 	 * \param theta Polar angle between the direction of the incoming and 
 	 * the outgoing photon in radians.
@@ -113,15 +116,16 @@ public:
 
 protected:
 	/**
-	 * \brief Get the maximum value \f$\nu_\mathrm{max}\f$ for which the coefficient 
-	 * \f$A_\nu\f$ is nonzero
+	 * \brief Get the maximum value \f$\nu_\mathrm{max}\f$ for which the product of coefficients
+	 * \f$A_\nu \left( 1 \right) A_\nu \left( 2 \right)\f$ is nonzero.
+	 * This limits the sum over \f$\nu\f$ in the definition of the direction-direction correlation.
 	 *
-	 * The maximum value \f$\nu_\mathrm{max}\f$ for which the coefficients \f$A_\nu\f$ does not 
-	 * vanish is obtained here by considering the selection rules of the F coefficients, and
-	 * more specifically the selection rules of the underlying Clebsch-Gordan and Racah
+	 * The maximum value \f$\nu_\mathrm{max}\f$ for which a single coefficient \f$A_\nu\f$ does not
+	 * vanish is obtained here by considering the selection rules of the F coefficients, and,
+	 * more specifically, the selection rules of the constituting Clebsch-Gordan and Racah
 	 * coefficients.
 	 *
-	 * At first, note that the assumption of two multipole orders and a known spin of the
+	 * Note that the assumption of two multipole orders and a known spin of the
 	 * intermediate state lead to the restriction {mentioned above Eq. (I-2) in 
 	 * Ref. \cite FaggHanna1959}:
 	 *
@@ -232,7 +236,7 @@ protected:
 	 * They also impose the same triangle inequalities as the Clebsch-Gordan 
 	 * coefficients via the relation between \f$J_1\f$, \f$J_2\f$, 
 	 * and \f$J_3\f$ (in the notation of Ref. \cite Messiah19622).
-	 * All conditions of the type '\f$... + \nu\f$ is integer' confirm only that 
+	 * All conditions of the type '\f$... + \nu\f$ is integer' confirm that 
 	 * \f$\nu\f$ is an integer, since the multipolarities \f$L_n\f$ and \f$L_n^\prime\f$, 
 	 * as well as the quantity \f$2j\f$ are integers.
 	 *
@@ -245,39 +249,49 @@ protected:
 	 *	0 \leq \nu \leq \min \left[ 2 j, \max \left( 2 L_n, 2 L_n^\prime \right) \right],
 	 * \f]
 	 *
-	 * since at least of the three F coefficients will have a nonzero value.
-	 * The expression above is a algebraically correct.
-	 * Nevertheless, physical applications neglect the terms where, without loss of 
-	 * generality:
-	 *
+	 * since at least one of the three F coefficients will have a nonzero value.
+	 * 
+	 * Each term in the summation over \f$\nu\f$ in the expression for
+	 * \f$W\left( \theta \right)\f$ includes a product of \f$A_\nu\f$ coefficients 
+	 * {Eq. (I-2) in Ref. \cite FaggHanna1959}.
+	 * They are proportional to 9 unique products of F coefficients 
+	 * {see, e.g., Eqs. (I-1) and (I-2) in \cite FaggHanna1959} of which the first three are:
+	 * 
 	 * \f[
-	 *	L_n < \nu_i \leq L_n^\prime, 2j.
+	 * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2, L_2, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2 \right) \right]
 	 * \f]
-	 *
-	 * In this case, only the term proportional to \f$\delta_n^2\f$ in \f$A_{\nu_i}\f$ 
-	 * {Eq. (I-2) in Ref. \cite FaggHanna1959} remains, which describes the contribution 
-	 * by the higher-order multipole.
-	 * The author assumes that these contributions are not included because they belong
-	 * to a higher-order mixing of multipoles which goes beyond the assumed mixing of only
-	 * two multipolarities.
-	 * Therefore, \f$\nu\f$ is usually restricted to:
-	 *
 	 * \f[
-	 *	0 \leq \nu \leq \min \left( 2 j, 2 L_n, 2 L_n^\prime \right).
+	 * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2, L_2^\prime, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2 + 2L_2^\prime \right) \right]
 	 * \f]
-	 *
-	 * Considering that every term in the summation over \f$\nu\f$ in the expression for
-	 * \f$W\left( \theta \right)\f$ includes a product of \f$A_\nu\f$ coefficients for
-	 * \f$n=1\f$ and \f$n=2\f$ {Eq. (I-2) in Ref. \cite FaggHanna1959}, the value of 
-	 * \f$\nu\f$ is restricted to:
-	 *
 	 * \f[
-	 *	0 \leq \nu \leq \min \left[ 2 j, \min\left( 2 L_1, 2 L_1^\prime \right), \min\left( 2 L_2, 2 L_2^\prime \right) \right].
+	 * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2^\prime, L_2^\prime, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2^\prime \right) \right]
 	 * \f]
-	 *
-	 * The equation above is more general than Eq. (13) in Ref. \cite FerentzRosenzweig1955,
-	 * since it does not make an assumption about the relative magnitude of \f$L_n\f$ and
-	 * \f$L_n^\prime\f$.
+	 * \f[
+	 * 		...
+	 * \f]
+	 * 
+	 * In the equations above, the condition for each product to be nonzero is shown on the right,
+	 * which follows from the properties of the Clebsch-Gordan - and Wigner-6j symbols.
+	 * The terms which vanish last as \f$\nu\f$ increases are the ones that contain the maximum 
+	 * values for the multipole order \f$L_n\f$ of a given transition, if the sum is not 
+	 * terminated earlier by the condition which depends on \f$j\f$.
+	 * As it is also stated after Eq. (40) (an expression for the direction-direction correlation) 
+	 * in the review article by Biedenharn and Rose \cite BiedenharnRose1953 {the author found 
+	 * that such statements are sometimes wrong in the literature, like Eq. (13) in Ref. 
+	 * \cite FerentzRosenzweig1955, for example, or not given at all.}
+	 * the non-vanishing terms are then given by:
+	 * 
+	 * \f[
+	 * 		0 \leq \nu \leq \min \lbrace 2j, \max \left( 2 L_1, 2 L_1^\prime \right), \max \left( 2 L_2, 2 L_2^\prime \right) \rbrace
+	 * \f]
+	 * 
+	 * Note that the same argument applies for polarization-direction correlations.
+	 * Although they make use of more general coefficients than the \f$A_\nu\f$, they still depend
+	 * on the same F coefficients {compare, e.g., Eq. (I-2) and (I-9) in \cite FaggHanna1959}.
+	 * Note also that no assumption about the relative magnitude of \f$L_n\f$ and \f$L_n^\prime\f$
+	 * was made in this derivation.
+	 * Many authors also give simplified expressions for \f$L_n^\prime = L_n^\prime + 1\f$,
+	 * which represents a relatively common case, but the present code can take any values for \f$L_n\f$ and \f$L_n^\prime\f$.
 	 *
 	 * \param ini_to_int Transition from initial state to intermediate state
 	 * \param int_state Intermediate state

@@ -25,6 +25,7 @@
 #include "W_dir_dir.hh"
 
 using std::min;
+using std::max;
 
 W_dir_dir::W_dir_dir(const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state):
 initial_state(ini_state), initial_to_intermediate(ini_to_int),
@@ -52,8 +53,8 @@ int W_dir_dir::get_two_nu_max(const Transition &ini_to_int, const State &int_sta
 	return 
 	2*min(int_state.two_J, 
 		min(
-			min(ini_to_int.two_L, ini_to_int.two_Lp),
-			min(int_to_fin.two_L, int_to_fin.two_Lp)
+			max(ini_to_int.two_L, ini_to_int.two_Lp),
+			max(int_to_fin.two_L, int_to_fin.two_Lp)
 		)
 	);
 }

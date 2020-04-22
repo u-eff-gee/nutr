@@ -108,6 +108,11 @@ angular_distributions = [
     AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = 2.3,~\delta_2 = -1.3$', '3_2p_7_2p_5_2_delta_1_plus_2.3_delta_2_minus_1.3.pdf', [3, 1, -1, 4, 1, 6, 2.3, 7, 1, 2, 4, -1.3, 5]),
     AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = -2.3,~\delta_2 = 1.3$', '3_2p_7_2p_5_2_delta_1_minus_2.3_delta_2_plus_1.3.pdf', [3, 1, -1, 4, 1, 6, -2.3, 7, 1, 2, 4, 1.3, 5]),
     AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = -2.3,~\delta_2 = -1.3$', '3_2p_7_2p_5_2_delta_1_minus_2.3_delta_2_minus_1.3.pdf', [3, 1, -1, 4, 1, 6, -2.3, 7, 1, 2, 4, -1.3, 5]),
+
+    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = 2.3,~\delta_2 = 1.3$', '3_2_7_2_5_2_delta_1_plus_2.3_delta_2_plus_1.3.pdf', [3, 4, 6, 2.3, 7, 2, 4, 1.3, 5]),
+    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = 2.3,~\delta_2 = -1.3$', '3_2_7_2_5_2_delta_1_plus_2.3_delta_2_minus_1.3.pdf', [3, 4, 6, 2.3, 7, 2, 4, -1.3, 5]),
+    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = -2.3,~\delta_2 = 1.3$', '3_2_7_2_5_2_delta_1_minus_2.3_delta_2_plus_1.3.pdf', [3, 4, 6, -2.3, 7, 2, 4, 1.3, 5]),
+    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = -2.3,~\delta_2 = -1.3$', '3_2_7_2_5_2_delta_1_minus_2.3_delta_2_minus_1.3.pdf', [3, 4, 6, -2.3, 7, 2, 4, -1.3, 5]),
 ]
 
 for ang_dist_plot in angular_distributions:
