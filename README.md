@@ -14,7 +14,9 @@ This is a [Geant4](https://geant4.cern.ch) [1] simulation of experiments in the 
 
 3. [License](#3.-License)
 
-4. [References](#4.-References)
+4. [Acknowledgements](#4.-Acknowledgements)
+
+5. [References](#5.-References)
 
 ## 1. Description
 
@@ -67,7 +69,11 @@ This product includes software developed by Members of the Geant4 Collaboration 
 
 Copyright (C) 2020 Udo Friman-Gayer (ufg@email.unc.edu)
 
-## 4. References
+## 4. Acknowledgements
+
+UFG would like to thank Professor Christian Iliadis for enlightening discussions about the angular correlation formalism and for help with debugging the associated modules.
+
+## 5. References
 
 [1] S. Agostinelli *et al.*, “GEANT4 - a simulation toolkit”, Nucl. Inst. Meth. A **506**, 250-303 (2003). [`doi:10.1016/S0168-9002(03)01368-8`](https://doi.org/10.1016/S0168-9002(03)01368-8); J. Allison *et al.*, “GEANT4 developments and applications”, IEEE Transactions on Nuclear Science, **53**, 270-278 (2006). [`doi:10.1109/TNS.2006.869826`](https://doi.org/10.1109/TNS.2006.869826); J. Allison *et al.*, “Recent developments in GEANT4”, Nucl. Inst. Meth. A **835**, 186-225 (2016). [`doi:10.1016/j.nima.2016.06.125`](https://doi.org/10.1016/j.nima.2016.06.125)
 
