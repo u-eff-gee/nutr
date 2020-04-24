@@ -46,6 +46,9 @@ configure_file(w_pol_dir.py.in w_pol_dir.py)
 add_library(spherePointSampler SpherePointSampler.cc)
 target_link_libraries(spherePointSampler ${GSL_LIBRARIES})
 
+add_library(sphereIntegrator SphereIntegrator.cc)
+target_link_libraries(sphereIntegrator spherePointSampler)
+
 enable_testing()
 add_executable(test_f_coefficient test_f_coefficient.cc)
 target_link_libraries(test_f_coefficient fCoefficient)
@@ -93,6 +96,14 @@ add_test(test_spiral_segment test_spiral_segment)
 add_executable(test_find_c test_find_c.cc)
 target_link_libraries(test_find_c spherePointSampler)
 add_test(test_find_c test_find_c)
+
+add_executable(test_sphere_integrator test_sphere_integrator.cc)
+target_link_libraries(test_sphere_integrator sphereIntegrator)
+add_test(test_sphere_integrator test_sphere_integrator)
+
+add_executable(test_normalization test_normalization.cc)
+target_link_libraries(test_normalization sphereIntegrator w_dir_dir w_pol_dir)
+add_test(test_normalization test_normalization)
 
 add_executable(test_find_Theta_j test_find_Theta_j.cc)
 target_link_libraries(test_find_Theta_j spherePointSampler)

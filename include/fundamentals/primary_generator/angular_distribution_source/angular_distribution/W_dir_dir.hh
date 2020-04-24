@@ -43,7 +43,10 @@ using std::vector;
  * The class uses Eqs. (I-1) and (I-2) of Ref. \cite FaggHanna1959 with a similar notation.
  * Note that Eq. (I-2) already includes the assumption that only two multipoles contribute
  * to any of the two transitions, and that the spin of the intermediate state is known.
- *
+ * 
+ * The dir-dir correlation is normalized to \f$4 \pi\f$ here compared to Ref. \cite FaggHanna1959
+ * {see below Eq. (I-2) therein} for example, by dividing through the 
+ * \f$\left( 1 + \delta^2 \right)\f$ factors.
  */
 class W_dir_dir{
 public:

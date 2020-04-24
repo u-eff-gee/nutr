@@ -44,6 +44,8 @@
  * Ref. \cite Kneissl1996 and also used here.).
  * It makes use of the dir-dir correlation which is implemented in the class W_dir_dir.
  * See the corresponding files for more information.
+ * 
+ * The pol-dir correlation is normalized to \f$4 \pi\f$ as the dir-dir correlation.
  */
 class W_pol_dir{
 public:
