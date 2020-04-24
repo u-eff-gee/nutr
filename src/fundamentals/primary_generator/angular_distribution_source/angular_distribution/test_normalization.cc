@@ -23,6 +23,7 @@
 #include "TestUtilities.hh"
 #include "W_dir_dir.hh"
 #include "W_pol_dir.hh"
+
 /**
  * \brief Test the normalization of the angular correlation functions.
  * 
@@ -41,8 +42,9 @@ int main(){
 
     const double normalization = 4.*M_PI;
 
-    const unsigned int n = 2000;
+    const unsigned int n = 10000;
 
+    // Test direction-direction correlation with pure transition
     double integral_num = sph_int([](double theta, double phi){ 
         
         W_dir_dir w_dir_dir(
@@ -56,7 +58,8 @@ int main(){
 
     }, n, [](double theta, double phi){ return true ; });
 
-    test_numerical_equality<double>(integral_num, normalization, 1e-2);
+    // Test direction-direction correlation with mixed transition
+    test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
     integral_num = sph_int([](double theta, double phi){ 
         
@@ -71,13 +74,14 @@ int main(){
 
     }, n, [](double theta, double phi){ return true ; });
 
-    test_numerical_equality<double>(integral_num, normalization, 1e-2);
+    test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
+    // Test polarization-direction correlation with mixed transition
     integral_num = sph_int([](double theta, double phi){ 
-        
+
         W_pol_dir w_pol_dir(
             State(3, positive),
-            Transition(electric, 4, magnetic, 6, 2.),
+            Transition(electric, 6, magnetic, 8, 2.),
             State(9, positive),
             Transition(magnetic, 2, electric, 4, -2.),
             State(7, positive)
@@ -85,4 +89,7 @@ int main(){
         return w_pol_dir(theta, phi);
 
     }, n, [](double theta, double phi){ return true ; });
+
+    test_numerical_equality<double>(integral_num, normalization, 1e-3);
+
 }

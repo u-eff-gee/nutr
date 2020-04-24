@@ -244,7 +244,7 @@ public:
      * The present implementation uses the iterative algorithm suggested in \cite Koay2011, 
      * Appendix A.
      * Convergence is assumed if the \f$j+1\f$-th element of the sequence differs from the 
-     * \f$j\f$-th element by less than a number \f$epsilon\f$.
+     * \f$j\f$-th element by less than a number \f$\epsilon\f$.
      * By default, the value \f$\epsilon = 10^{-8}\f$ from Ref. \cite Koay2011 is used.
      * 
      * \param n \f$n\f$, number of points to be sampled. Must be larger than 1.
@@ -262,13 +262,33 @@ public:
      * at segment lengths {Eq. (11) in \cite Koay2011}:
      * 
      * \f[
-     *      S \left( \Theta_j \right) = \frac{(2j-1)\pi}{m},
+     *      S \left( \Theta_j \right) = \frac{(2j-1)\pi}{c},
      * \f]
      * 
      * where \f$j\f$ is a positive, nonzero integer in the range \f$ 1\leq j \leq n\f$.
      * 
      * The equation above is solved for \f$\Theta_j\f$ numerically, by using the iterative 
      * algorithm proposed by Koay \cite Koay2011.
+     * 
+     * The author of \cite Koay2011 does not give a convergence criterion for the determination of 
+     * \f$\Theta_j\f$ like they did for the determination of \f$c\f$.
+     * The difference between the determination of \f$c\f$ and \f$\Theta_j\f$ is that \f$c\f$ 
+     * has a lower limit of 1 (this is not a mathematical limit, but it rather does not make sense 
+     * for the intended application to use \f$c < 1\f$ or even \f$c \approx 1\f$).
+     * Therefore, the author of Ref. \cite Koay2011 simply uses a constant for the convergence 
+     * criterion for \f$c\f$.
+     * The difference between two subsequent iteration for \f$\Theta_j\f$, however, may become an 
+     * arbitrarily small number. 
+     * Therefore, convergence is assumed here if the \f$l+1\f$-th element of the sequence 
+     * \f$\Theta_{j, l}\f$ differs from the \f$l\f$-th element by less than a number 
+     * \f$\epsilon S\left( \pi \right) n^{-1}\f$, where 
+     * 
+     * \f[
+     *      \frac{S\left( \pi \right)}{n}
+     * \f] 
+     * 
+     * denotes the length of a single segment.
+     * 
      * See also the description of SpherePointSampler::find_c, which uses a similar iteration.
      * 
      * \param j \f$j\f$, index of the spiral segment whose mid point should be calculated
@@ -279,7 +299,7 @@ public:
      * 
      * \return \f$\Theta_j\f$
      */
-    double find_Theta_j(const unsigned int j, const unsigned int n, const double c, const double epsilon = 1e-8, const unsigned int max_n_iterations = 10000) const;
+    double find_Theta_j(const unsigned int j, const unsigned int n, const double c, const double epsilon = 1e-3, const unsigned int max_n_iterations = 10000) const;
 
     /**
      * \brief Elliptic integral of the first kind \f$F\left( \varphi | m \right)\f$ for arbitrary real parameters

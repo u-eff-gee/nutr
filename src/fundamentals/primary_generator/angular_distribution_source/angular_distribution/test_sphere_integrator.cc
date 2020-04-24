@@ -26,8 +26,8 @@ int main(){
 
     SphereIntegrator sph_int;
 
-    double integral_num = sph_int([](double theta, double phi){ return 1.; }, 2000, [](double theta, double phi){ return theta > M_PI_2 ; });
+    double integral_num = sph_int([](double theta, double phi){ return 1.; }, 100000, [](double theta, double phi){ return theta > M_PI_2 ; });
 
-    test_numerical_equality<double>(integral_num, 2.*M_PI, 1e-2);
+    test_numerical_equality<double>(integral_num, 2.*M_PI, 1e-3);
 
 }

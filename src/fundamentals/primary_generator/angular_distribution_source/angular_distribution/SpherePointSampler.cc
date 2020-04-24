@@ -236,7 +236,9 @@ double SpherePointSampler::find_Theta_j(const unsigned int j, const unsigned int
     // Initial guess from Ref. \cite Koay2011
     // Note that j is fixed here, and the iteration index is denoted as l
     const double Theta_j_0 = acos(1.-(2.*j-1.)/(double) n);
+    const double Theta_j_plus_minus_one_0 = j == n ? acos(1.-(2.*(j-1)-1.)/(double) n) : acos(1.-(2.*(j+1)-1.)/(double) n);
     double Theta_j_l = Theta_j_0;
+    const double epsilon_segment = epsilon*segment_length(M_PI, c)/(double) n;
 
     double Theta_j_l_plus_one = 0.;
 
@@ -245,7 +247,7 @@ double SpherePointSampler::find_Theta_j(const unsigned int j, const unsigned int
             +((2.*j - 1.)*M_PI - c*segment_length(Theta_j_l, c))
             /(c*sqrt(1.+c*c*pow(sin(Theta_j_l), 2)));
 
-        if(fabs(Theta_j_l_plus_one - Theta_j_l) < epsilon){
+        if(fabs(Theta_j_l_plus_one - Theta_j_l) < epsilon_segment){
             return Theta_j_l_plus_one;
         }
 
@@ -253,7 +255,7 @@ double SpherePointSampler::find_Theta_j(const unsigned int j, const unsigned int
     }
 
     stringstream error_message;
-    error_message << "No value for Theta_j found after " << max_n_iterations << " iterations with an initial value of Theta_j_0 = " << Theta_j_0;
+    error_message << "No value for Theta_j found after " << max_n_iterations << " iterations with an initial value of Theta_j_0 = " << Theta_j_0 << " " << epsilon_segment;
 
     throw runtime_error(error_message.str());
 }
