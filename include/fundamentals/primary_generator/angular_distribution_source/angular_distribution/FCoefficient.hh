@@ -130,11 +130,11 @@ public:
 	 * In the current implementation, the Wigner-3j and 6j symbols are calculated first, 
 	 * and if any of them is zero, a zero is returned immediately to avoid further calculations.
 	 *
-	 * \param two_nu 2\f$\nu\f$
-	 * \param two_L 2\f$L\f$
-	 * \param two_Lp 2\f$L^\prime\f$
-	 * \param two_j1 2\f$j_1\f$
-	 * \param two_j 2\f$j\f$
+	 * \param two_nu \f$2 \nu\f$
+	 * \param two_L \f$2 L\f$
+	 * \param two_Lp \f$2 L^\prime\f$
+	 * \param two_j1 \f$2 j_1\f$
+	 * \param two_j \f$2 j\f$
 	 *
 	 * \return \f$F_\nu(L, L^\prime, j_1, j)\f$
 	 */

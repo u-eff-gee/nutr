@@ -39,6 +39,9 @@ target_link_libraries(alphavCoefficient fCoefficient kappa_coefficient)
 add_library(evCoefficient EvCoefficient.cc)
 target_link_libraries(evCoefficient fCoefficient)
 
+add_library(uvCoefficient UvCoefficient.cc)
+target_link_libraries(uvCoefficient ${GSL_LIBRARIES})
+
 add_library(w_pol_dir SHARED W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
 configure_file(w_pol_dir.py.in w_pol_dir.py)
@@ -53,6 +56,10 @@ enable_testing()
 add_executable(test_f_coefficient test_f_coefficient.cc)
 target_link_libraries(test_f_coefficient fCoefficient)
 add_test(test_f_coefficient test_f_coefficient)
+
+add_executable(test_uv_coefficient test_Uv_coefficient.cc)
+target_link_libraries(test_uv_coefficient uvCoefficient)
+add_test(test_uv_coefficient test_uv_coefficient)
 
 add_executable(test_w_dir_dir test_w_dir_dir.cc)
 target_link_libraries(test_w_dir_dir w_dir_dir)

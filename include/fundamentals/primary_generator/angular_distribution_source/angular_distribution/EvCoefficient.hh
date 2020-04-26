@@ -27,9 +27,9 @@
  * 
  * The coefficients \f$E_\nu\f$ are a generalization of the \f$A_\nu\f$ coefficients that are 
  * encountered in the definition of the dir-dir correlation {Eq. (I-2) in \cite FaggHanna1959}.
- * They are introduced in a textbook chapter by Biedenharn \cite Biedenharn1960 to take into 
+ * They are introduced in a textbook chapter by Biedenharn \cite AjzenbergSelove1960 to take into 
  * account a linear polarization of a photon and given by the expression 
- * {Eq. (85a) in Ref. \cite Biedenharn1960}:
+ * {Eq. (85a) in Ref. \cite AjzenbergSelove1960}:
  * 
  * \f[
  * 		E_\nu \left( n \right) = \Bigg \lbrace \left( -1 \right)^{\sigma_{L_n}} F_\nu \left( L_n, L_n, j_n, j \right) \frac{2 \nu \left( \nu + 1 \right) L_n \left( L_n + 1 \right)}{\nu \left( \nu + 1 \right) - 2 L_n \left( L_n + 1 \right)}
@@ -46,7 +46,7 @@
  * 
  * In the equation above, the symbol \f$\sigma_L\f$ is equal to \f$1\f$ if the transition with 
  * multipolarity \f$L\f$ has magnetic character, and \f$0\f$ for electric character.
- * Note that Eq. (85) in Ref. \cite Biedenharn1960, which first introduces the coefficients 
+ * Note that Eq. (85) in Ref. \cite AjzenbergSelove1960, which first introduces the coefficients 
  * \f$E_\nuf$, includes an additional factor \f$\sin \left( \beta \right)\f$, where the angle
  * \f$\beta\f$ denotes the polar angle between the photon's direction of motion and its 
  * polarization. Here, \f$\beta = 90^\circ\f$, or \f$\sin \left( \beta \right) = 1\f$ was assumed.

@@ -24,12 +24,12 @@
 
 int main(){
 
-	// Test the E_v coefficients of Biedenharn \cite Biedenharn1960 against the alpha_v 
+	// Test the E_v coefficients of Biedenharn \cite AjzenbergSelove1960 against the alpha_v 
 	// coefficients of Fagg and Hanna \cite FaggHanna1959.
 	// Both references introduce a sign into the expression for the polarization-direction 
 	// correlation which is determined by the electromagnetic character of the associated 
 	// radiation.
-	// Note that in Ref. \cite Biedenharn1960 [Eq. (85a)], this sign is part of the E_v 
+	// Note that in Ref. \cite AjzenbergSelove1960 [Eq. (85a)], this sign is part of the E_v 
 	// coefficients, while it is factored out in Ref. \cite FaggHanna1959 [Eq. (I-8)].
 	AlphavCoefficient alphav_coef;
 	EvCoefficient ev_coef;
@@ -37,12 +37,12 @@ int main(){
 
 	double ev_coef_num{0.};
 
-	// Eq. (88b) in \cite Biedenharn1960
+	// Eq. (88b) in \cite AjzenbergSelove1960
 	ev_coef_num = ev_coef(4, electric, 4, magnetic, 6, 7, 3, 0.);
 	test_numerical_equality<double>(ev_coef_num, 0.07143, epsilon);
 	
 	// The primary transition is an electric transition.
-	// Equation (85a) in \cite Biedenharn1960 shows that the sign of the term which is independent 
+	// Equation (85a) in \cite AjzenbergSelove1960 shows that the sign of the term which is independent 
 	// of delta is positive.
 	// Equations (I-8) and (I-9) in \cite FaggHanna1959 show that the sign of the same term 
 	// is positive as well, i.e. no additional sign is needed here.
@@ -54,7 +54,7 @@ int main(){
 	// magnetic in character' \cite FaggHanna1959 means that 'electric' and + belong together.
 	test_numerical_equality<double>(ev_coef_num, alphav_coef(4, 4, 6, 7, 3, 0.), epsilon);
 
-	// Eq. (89b) in \cite Biedenharn1960
+	// Eq. (89b) in \cite AjzenbergSelove1960
 	ev_coef_num = ev_coef(4, magnetic, 2, electric, 4, 3, 3, 1.);
 	test_numerical_equality<double>(ev_coef_num, 0.20000 - 0.25820, epsilon);
 
