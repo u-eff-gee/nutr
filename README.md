@@ -30,7 +30,7 @@ A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4
 * [Geant4 10.6 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`.
 * [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is optional for building some tests of `nutr`. However, since the output is written in the ROOT format by default, it is highly recommended.
-* [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](www.doxygen.nl/index.html) formulas (optional) 
+* [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional) 
 * [python3](https://www.python.org/) to import the angular correlation function wrappers in python code (optional)
 
 In the following, the directory where the top-level `CMakeLists.txt` is located in a downloaded version of `nutr` is denoted as `NUTR_SOURCE_DIR`.
@@ -75,6 +75,8 @@ UFG would like to thank Professor Christian Iliadis for enlightening discussions
 
 ## 5. References
 
-[1] S. Agostinelli *et al.*, “GEANT4 - a simulation toolkit”, Nucl. Inst. Meth. A **506**, 250-303 (2003). [`doi:10.1016/S0168-9002(03)01368-8`](https://doi.org/10.1016/S0168-9002(03)01368-8); J. Allison *et al.*, “GEANT4 developments and applications”, IEEE Transactions on Nuclear Science, **53**, 270-278 (2006). [`doi:10.1109/TNS.2006.869826`](https://doi.org/10.1109/TNS.2006.869826); J. Allison *et al.*, “Recent developments in GEANT4”, Nucl. Inst. Meth. A **835**, 186-225 (2016). [`doi:10.1016/j.nima.2016.06.125`](https://doi.org/10.1016/j.nima.2016.06.125)
+[1] S. Agostinelli *et al.*, “GEANT4 - a simulation toolkit”, Nucl. Inst. Meth. A **506**, 250-303 (2003). [`doi:10.1016/S0168-9002(03)01368-8`](https://doi.org/10.1016/S0168-9002(03)01368-8); J. Allison *et al.*, “GEANT4 developments and applications”, IEEE T. Nucl. Sci., **53**, 270-278 (2006). [`doi:10.1109/TNS.2006.869826`](https://doi.org/10.1109/TNS.2006.869826); J. Allison *et al.*, “Recent developments in GEANT4”, Nucl. Inst. Meth. A **835**, 186-225 (2016). [`doi:10.1016/j.nima.2016.06.125`](https://doi.org/10.1016/j.nima.2016.06.125)
 
 [2] H. R. Weller *et al.*, “Research opportunities at the upgraded HIγS facility”, Prog. Part. Nucl. Phys. **62**, 257-303 (2009). [`doi:10.1016/j.ppnp.2008.07.001`](https://doi.org/10.1016/j.ppnp.2008.07.001)
+
+See also `NUTR_SOURCE_DIR/bibliography.bib`.
