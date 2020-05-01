@@ -163,7 +163,25 @@ public:
     ~UvCoefficient() = default;
 
     /**
-     * \brief Return value of a specific \f$U_\nu\f$ coefficient.
+     * \brief Return \f$U_\nu\f$ coefficient for a pure transition.
+     * 
+     * The order of arguments is meant to resemble the notation
+     * 
+     * \f[
+     *      j_m \left( L_{m+1} \right) j_{m+1}.
+     * \f]
+     * 
+     * \param two_nu \f$2 \nu\f$
+     * \param two_j \f$2 j_m\f$
+     * \param two_L \f$2 L_{m+1}\f$
+     * \param two_jp \f$2 j_{m+1}\f$
+     * 
+     * \return \f$U_\nu \left( m \right)\f$
+     */
+    double operator()(const unsigned int two_nu, const int two_j, const int two_L, const int two_jp) const;
+
+    /**
+     * \brief Return \f$U_\nu\f$ coefficient for a mixed transition.
      * 
      * The order of arguments is meant to resemble the notation
      * 
@@ -173,10 +191,12 @@ public:
      * 
      * \param two_nu \f$2 \nu\f$
      * \param two_j \f$2 j_m\f$
-     * \param two_L \f$2 L_m\f$
+     * \param two_L \f$2 L_{m+1}\f$
+     * \param two_Lp \f$2 L_{m+1}^\prime\f$
+     * \param delta \f$\delta_m\f$
      * \param two_jp \f$2 j_{m+1}\f$
      * 
      * \return \f$U_\nu \left( m \right)\f$
      */
-    double operator()(const unsigned int two_nu, const int two_j, const int two_L, const int two_jp) const;
+    double operator()(const unsigned int two_nu, const int two_j, const int two_L, const int two_Lp, const double delta, const int two_jp) const;
 };

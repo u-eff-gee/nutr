@@ -34,3 +34,10 @@ double UvCoefficient::operator()(const unsigned int two_nu, const int two_j, con
         two_j, two_j, two_nu,
         two_jp, two_jp, two_L);
 }
+
+double UvCoefficient::operator()(const unsigned int two_nu, const int two_j, const int two_L, const int two_Lp, const double delta, const int two_jp) const {
+
+    return (*this)(two_nu, two_j, two_L, two_jp) 
+        + delta*delta*(*this)(two_nu, two_j, two_Lp, two_jp);
+
+}
