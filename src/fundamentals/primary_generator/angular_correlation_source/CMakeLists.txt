@@ -49,6 +49,8 @@ add_library(w_pol_dir SHARED W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
 configure_file(w_pol_dir.py.in w_pol_dir.py)
 
+add_library(euler_angle_rotation EulerAngleRotation.cc)
+
 add_library(spherePointSampler SpherePointSampler.cc)
 target_link_libraries(spherePointSampler ${GSL_LIBRARIES})
 
