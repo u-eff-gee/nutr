@@ -21,7 +21,6 @@
 
 #include "AlphavCoefficient.hh"
 #include "AvCoefficient.hh"
-#include "KappaCoefficient.hh"
 #include "State.hh"
 #include "Transition.hh"
 #include "W_dir_dir.hh"
@@ -138,7 +137,7 @@ protected:
 	vector<double> calculate_expansion_coefficients_alphav_Av() const;
 
 	const AvCoefficient av_coef; /**< Instance of the AvCoefficient class */
-	const AlphavCoefficient alphav_coef; /**< Instance of the KappaCoefficient class */
+	const AlphavCoefficient alphav_coef; /**< Instance of the AlphavCoefficient class */
 	vector<double> expansion_coefficients; /**< Vector to store expansion coefficients */
 	const W_dir_dir w_dir_dir; /**< Instance of the W_dir_dir class */
 

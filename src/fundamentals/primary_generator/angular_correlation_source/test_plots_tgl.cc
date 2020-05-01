@@ -62,9 +62,12 @@
 #include "W_pol_dir.hh"
 
 W_pol_dir w_pol_dir(
-    State(0, positive), Transition(electric, 4, magnetic, 6, 0.), 
-    State(4, positive), Transition(electric, 4, magnetic, 6, 0.),
-    State(0, positive));
+    State(0, positive), 
+    {
+        {Transition(electric, 4, magnetic, 6, 0.), State(4, positive)}, 
+        {Transition(electric, 4, magnetic, 6, 0.), State(0, positive)}
+    }
+);
 
 void angdist_wrapper(TGLVertex3 &dst, double theta, double phi) {
 

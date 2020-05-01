@@ -21,7 +21,7 @@ include_directories(${GSL_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/angular_correlation_source/)
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
-target_link_libraries(primaryGeneratorAction w_dir_dir w_pol_dir)
+target_link_libraries(primaryGeneratorAction)
 
 add_library(fCoefficient FCoefficient.cc)
 target_link_libraries(fCoefficient ${GSL_LIBRARIES})
@@ -29,8 +29,8 @@ target_link_libraries(fCoefficient ${GSL_LIBRARIES})
 add_library(avCoefficient AvCoefficient.cc)
 target_link_libraries(avCoefficient fCoefficient)
 
-add_library(w_dir_dir SHARED W_dir_dir.cc)
-target_link_libraries(w_dir_dir avCoefficient)
+add_library(w_dir_dir W_dir_dir.cc)
+target_link_libraries(w_dir_dir avCoefficient uvCoefficient)
 configure_file(w_dir_dir.py.in w_dir_dir.py)
 
 add_library(kappa_coefficient KappaCoefficient.cc)
@@ -45,7 +45,7 @@ target_link_libraries(evCoefficient fCoefficient)
 add_library(uvCoefficient UvCoefficient.cc)
 target_link_libraries(uvCoefficient ${GSL_LIBRARIES})
 
-add_library(w_pol_dir SHARED W_pol_dir.cc)
+add_library(w_pol_dir W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
 configure_file(w_pol_dir.py.in w_pol_dir.py)
 

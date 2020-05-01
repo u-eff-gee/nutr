@@ -101,15 +101,21 @@ int main(){
 	double w_ana{0.};
 
 	W_pol_dir w_pol_dir_e1(
-		State(0, positive), Transition(electric, 2, magnetic, 4, 0.), 
-		State(2, negative), Transition(electric, 2, magnetic, 4, 0.),
-		State(0, positive)
+		State(0, positive), 
+		{
+			{Transition(electric, 2, magnetic, 4, 0.), State(2, negative)}, 
+			{Transition(electric, 2, magnetic, 4, 0.),
+			State(0, positive)}
+		}
 	);
 
 	W_pol_dir w_pol_dir_m1(
-		State(0, positive), Transition(magnetic, 2, electric, 4, 0.), 
-		State(2, positive), Transition(magnetic, 2, electric, 4, 0.),
-		State(0, positive)
+		State(0, positive), 
+		{
+			{Transition(magnetic, 2, electric, 4, 0.), State(2, positive)}, 
+			{Transition(magnetic, 2, electric, 4, 0.),
+			State(0, positive)}
+		}
 	);
 
 	for(double theta = 0.; theta < M_PI; theta += 0.5){
@@ -132,15 +138,19 @@ int main(){
 
 	for(double delta = -3.; delta <= 3.; delta += 0.5){
 		W_pol_dir Wa_num(
-			State(7, positive), Transition(electric, 4, magnetic, 6, 0.), 
-			State(3, positive), Transition(magnetic, 2, electric, 4, delta),
-			State(3, positive)		
+			State(7, positive), 
+			{
+				{Transition(electric, 4, magnetic, 6, 0.), State(3, positive)}, 
+				{Transition(magnetic, 2, electric, 4, delta), State(3, positive)}
+			}
 		);
 
 		W_pol_dir Wb_num(
-			State(3, positive), Transition(magnetic, 2, electric, 4, delta),
-			State(3, positive), Transition(electric, 4, magnetic, 6, 0.), 
-			State(7, positive)	
+			State(3, positive), 
+			{
+				{Transition(magnetic, 2, electric, 4, delta), State(3, positive)}, 
+				{Transition(electric, 4, magnetic, 6, 0.), State(7, positive)}
+			}
 		);
 
 		for(double theta = 0.; theta < M_PI; theta += 0.5){

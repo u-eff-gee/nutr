@@ -49,10 +49,10 @@ int main(){
         
         W_dir_dir w_dir_dir(
             State(0, parity_unknown),
-            Transition(em_unknown, 2, em_unknown, 4, 0.),
-            State(2, parity_unknown),
-            Transition(em_unknown, 2, em_unknown, 4, 0.),
-            State(4, parity_unknown)
+            {
+                {Transition(em_unknown, 2, em_unknown, 4, 0.), State(2, parity_unknown)},
+                {Transition(em_unknown, 2, em_unknown, 4, 0.), State(4, parity_unknown)}
+            }
         );        
         return w_dir_dir(theta);
 
@@ -65,10 +65,11 @@ int main(){
         
         W_dir_dir w_dir_dir(
             State(0, parity_unknown),
-            Transition(em_unknown, 2, em_unknown, 4, 0.),
-            State(2, parity_unknown),
-            Transition(em_unknown, 2, em_unknown, 4, 2.),
-            State(4, parity_unknown)
+            {
+                {Transition(em_unknown, 2, em_unknown, 4, 0.), State(2, parity_unknown)},
+                {Transition(em_unknown, 2, em_unknown, 4, 2.),
+                State(4, parity_unknown)}
+            }
         );        
         return w_dir_dir(theta);
 
@@ -81,10 +82,10 @@ int main(){
 
         W_pol_dir w_pol_dir(
             State(3, positive),
-            Transition(electric, 6, magnetic, 8, 2.),
-            State(9, positive),
-            Transition(magnetic, 2, electric, 4, -2.),
-            State(7, positive)
+            {
+                {Transition(electric, 6, magnetic, 8, 2.), State(9, positive)},
+                {Transition(magnetic, 2, electric, 4, -2.), State(7, positive)}
+            }
         );        
         return w_pol_dir(theta, phi);
 
