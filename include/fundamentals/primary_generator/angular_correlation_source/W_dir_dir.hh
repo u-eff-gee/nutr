@@ -144,6 +144,18 @@ public:
 	 */
 	int get_two_nu_max() const { return two_nu_max; };
 
+	double get_normalization_factor() const { return normalization_factor; };
+
+	/**
+	 * \brief Calculate products of \f$U_\nu\f$ coefficients for the dir-dir correlation.
+	 * 
+	 * See also the documentation of W_dir_dir::calculate_expansion_coefficients().
+	 * 
+	 * \return \f$U_\nu (2) ... U_\nu (n-1)\f$ for \f$ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace,~ \nu~\mathrm{even} \f$ sorted by increasing values
+	 *  of \f$\nu\f$ in a std::vector.
+	 */
+	vector<double> calculate_expansion_coefficients_Uv() const;
+
 protected:
 	/**
 	 * \brief Get the maximum value \f$\nu_\mathrm{max}\f$ for which the product of coefficients
@@ -195,7 +207,7 @@ protected:
 	 * \brief Calculate the set of expansion coefficients for the dir-dir correlation.
 	 * 
 	 * The sum over \f$\nu\f$ in Eqs. (I-1) and (I-1') of \cite FaggHanna1959 contains products of 
-	 * \f$A_v\f$ and potentially also \f$U_\nu\f$ coefficients.
+	 * \f$A_\nu\f$ and potentially also \f$U_\nu\f$ coefficients.
 	 * 
 	 * This function calls the function W_dir_dir::calculate_expansion_coefficients_Av() to 
 	 * calculate the products of \f$A_\nu\f$ coefficients from \f$\nu = 0\f$ up to, and including, 
@@ -219,16 +231,6 @@ protected:
 	 *  of \f$\nu\f$ in a std::vector.
 	 */
 	vector<double> calculate_expansion_coefficients_Av() const;
-
-	/**
-	 * \brief Calculate products of \f$U_\nu\f$ coefficients for the dir-dir correlation.
-	 * 
-	 * See also the documentation of W_dir_dir::calculate_expansion_coefficients().
-	 * 
-	 * \return \f$U_\nu (2) ... U_\nu (n-1)\f$ for \f$ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace,~ \nu~\mathrm{even} \f$ sorted by increasing values
-	 *  of \f$\nu\f$ in a std::vector.
-	 */
-	vector<double> calculate_expansion_coefficients_Uv() const;
 
 	/**
 	 * \brief Calculate the normalization factor for the angular correlation.
