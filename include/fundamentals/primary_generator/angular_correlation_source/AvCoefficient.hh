@@ -76,9 +76,177 @@
  *
  * The selection rules for the F coefficients eventually terminate the sum over the parameter 
  * \f$\nu\f$ in the definition of \f$W\left( \theta \right)\f$.
- * See also the definition of W_dir_dir for more information.
+ * The maximum value \f$\nu_\mathrm{max}\f$ for which a single coefficient \f$A_\nu\f$ does not
+ * vanish can be found by considering the selection rules of the F coefficients, and,
+ * more specifically, the selection rules of the constituting Clebsch-Gordan and Racah
+ * coefficients.
  *
- * For this reason, the authors of Ref. \cite Kneissl1996 restrict the summation to 
+ * Note that the assumption of two multipole orders and a known spin of the
+ * intermediate state lead to the restriction {mentioned above Eq. (I-2) in 
+ * Ref. \cite FaggHanna1959}:
+ *
+ * \f[
+ *	\nu \% 2 = 0,
+ * \f]
+ *
+ * i.e. \f$\nu\f$ can only be an even integer number.
+ *
+ * The following Clebsch-Gordan coefficients appear in the definition of a single 
+ * \f$A_\nu\f$ coefficient {see Eq. (I-2) in \cite FaggHanna1959 and Eq. (1) in 
+ * \cite FerentzRosenzweig1955}:
+ *
+ * \f[
+ * 	\left(
+ *		\begin{array}{ccc}
+ *			L_n & L_n & \nu \\
+ *			1 & -1 & 0
+ *		\end{array}
+ *	\right)
+ * \f]
+ * \f[
+ * 	\left(
+ *		\begin{array}{ccc}
+ *			L_n & L_n^\prime & \nu \\
+ *			1 & -1 & 0
+ *		\end{array}
+ *	\right)
+ * \f]
+ * \f[
+ * 	\left(
+ *		\begin{array}{ccc}
+ *			L_n^\prime & L_n^\prime & \nu \\
+ *			1 & -1 & 0
+ *		\end{array}
+ *	\right)
+ * \f]
+ *
+ * The selection rules for the Clebsch-Gordan coefficients above that involve \f$\nu\f$ are
+ * {Sec. C.I.3 in \cite Messiah19622}:
+ *
+ * \f[
+ *	\left| L_n - L_n \right| = 0 \leq \nu \leq 2 L_n
+ * \f]
+ * \f[
+ *	\left| L_n - L_n^\prime \right| \leq \nu \leq L_n + L_n^\prime
+ * \f]
+ * \f[
+ *	\left| L_n^\prime - L_n^\prime \right| = 0 \leq \nu \leq 2 L_n^\prime.
+ * \f]
+ *
+ * In principle, there is also the requirement that \f$ M \leq J\f$ 
+ * (in the notation of Ref. \cite Messiah19622), which is always fulfilled here since
+ * \f$M = 0\f$.
+ * From the selection rules, it can be concluded that:
+ *
+ * \f[
+ *	0 \leq \nu \leq \max \left( 2 L_n, 2 L_n^\prime \right).
+ * \f]
+ *
+ * In addition, the Wigner-6j symbols (Racah coefficients without the phase factor)
+ *
+ * \f[
+ *	\left\lbrace
+ *		\begin{array}{ccc}
+ *			j & j & \nu \\
+ *			L_n & L_n & j_n
+ *		\end{array}
+ *	\right\rbrace
+ * \f]
+ * \f[
+ *	\left\lbrace
+ *		\begin{array}{ccc}
+ *			j & j & \nu \\
+ *			L_n^\prime & L_n & j_n
+ *		\end{array}
+ *	\right\rbrace
+ * \f]
+ * \f[
+ *	\left\lbrace
+ *		\begin{array}{ccc}
+ *			j & j & \nu \\
+ *			L_n^\prime & L_n^\prime & j_n
+ *		\end{array}
+ *	\right\rbrace,
+ * \f]
+ *
+ * which appear in a coefficient \f$A_\nu\f$ {see Eq. (I-2) in \cite FaggHanna1959 and 
+ * Eq. (1) in \cite FerentzRosenzweig1955} provide the following selection rules 
+ * for \f$\nu\f$ {Sec. C.II.7 in \cite Messiah19622}:
+ * 
+ * \f[
+ *	\left| j - j \right| = 0 \leq \nu \leq 2j
+ * \f]
+ * \f[
+ *	2j + \nu ~~~~ \mathrm{integer}
+ * \f]
+ * \f[
+ *	2L_n + \nu ~~~~ \mathrm{integer}
+ * \f]
+ * \f[
+ *	L_n + L_n^\prime + \nu ~~~~ \mathrm{integer}
+ * \f]
+ * \f[
+ *	2L_n^\prime + \nu ~~~~ \mathrm{integer}.
+ * \f]
+ *
+ * They also impose the same triangle inequalities as the Clebsch-Gordan 
+ * coefficients via the relation between \f$J_1\f$, \f$J_2\f$, 
+ * and \f$J_3\f$ (in the notation of Ref. \cite Messiah19622).
+ * All conditions of the type '\f$... + \nu\f$ is integer' confirm that 
+ * \f$\nu\f$ is an integer, since the multipolarities \f$L_n\f$ and \f$L_n^\prime\f$, 
+ * as well as the quantity \f$2j\f$ are integers.
+ *
+ * In summary, the coefficients \f$A_\nu\f$ will be nonzero if
+ *
+ * \f[
+ *	\nu \% 2 = 0,
+ * \f]
+ * \f[
+ *	0 \leq \nu \leq \min \left[ 2 j, \max \left( 2 L_n, 2 L_n^\prime \right) \right],
+ * \f]
+ *
+ * since at least one of the three F coefficients will have a nonzero value.
+ * 
+ * Each term in the summation over \f$\nu\f$ in the expression for
+ * \f$W\left( \theta \right)\f$ includes a product of \f$A_\nu\f$ coefficients 
+ * {Eq. (I-2) in Ref. \cite FaggHanna1959}.
+ * They are proportional to 9 unique products of F coefficients 
+ * {see, e.g., Eqs. (I-1) and (I-2) in \cite FaggHanna1959} of which the first three are:
+ * 
+ * \f[
+ * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2, L_2, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2 \right) \right]
+ * \f]
+ * \f[
+ * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2, L_2^\prime, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2 + 2L_2^\prime \right) \right]
+ * \f]
+ * \f[
+ * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2^\prime, L_2^\prime, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2^\prime \right) \right]
+ * \f]
+ * \f[
+ * 		...
+ * \f]
+ * 
+ * In the equations above, the condition for each product to be nonzero is shown on the right,
+ * which follows from the properties of the Clebsch-Gordan - and Wigner-6j symbols.
+ * The terms which vanish last as \f$\nu\f$ increases are the ones that contain the maximum 
+ * values for the multipole order \f$L_n\f$ of a given transition, if the sum is not 
+ * terminated earlier by the condition which depends on \f$j\f$.
+ * As it is also stated after Eq. (40) (an expression for the direction-direction correlation) 
+ * in the review article by Biedenharn and Rose \cite BiedenharnRose1953 {the author found 
+ * that such statements are sometimes wrong in the literature, like Eq. (13) in Ref. 
+ * \cite FerentzRosenzweig1955, for example, or not given at all.}
+ * the non-vanishing terms are then given by:
+ * 
+ * \f[
+ * 		0 \leq \nu \leq \min \lbrace 2j, \max \left( 2 L_1, 2 L_1^\prime \right), \max \left( 2 L_2, 2 L_2^\prime \right) \rbrace.
+ * \f]
+ * 
+ * Note that no assumption about the relative magnitude of \f$L_n\f$ and \f$L_n^\prime\f$
+ * was made in this derivation.
+ * Many authors also give simplified expressions for \f$L_n^\prime = L_n^\prime + 1\f$,
+ * which represents a relatively common case, but the present code can take any values for \f$L_n\f$ and \f$L_n^\prime\f$.
+ *
+ * In this context, note also that the authors of Ref. \cite Kneissl1996 restrict the summation to 
  * \f$\nu = 0, 2, 4\f$ for photonic transitions with \f$L \leq 2\f$ of even-even nuclei.
  *
  * \f$^1\f$ To the author, the notation in Sec. B of Ref. \cite FaggHanna1959 appeared confusing 

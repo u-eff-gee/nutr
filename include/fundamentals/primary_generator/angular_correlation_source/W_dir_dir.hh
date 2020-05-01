@@ -33,34 +33,50 @@ using std::vector;
 /**
  * \brief Class for a direction-direction (dir-dir) correlation
  *
- * Evaluates the angular correlation between two photons in a nuclear reaction of the type 
- * \f$(\gamma, \gamma')\f$ in which a nucleus in an initial state with the spin 
- * \f$j_1\f$ absorbs a photon to render it in an excited state with the spin \f$j\f$, 
- * and emits another photon in a transition to another state with the spin \f$j_2\f$.
- * It is assumed that only the direction of the two photons in the process is known,
- * but no polarization information.
+ * Evaluates the angular correlation between two photons which are emitted from an oriented nuclear
+ * state.
+ * Without loss of generality, the orientation is assumed to be in the z direction.
+ * It may result from a nuclear reaction of the type 
+ * \f$\left( \gamma, \gamma^\prime \right)\f$, in which a nucleus in an initial state with the 
+ * total angular momentum quantum number ('spin') \f$j_1\f$ absorbs a photon from a beam 
+ * that travels in positive z direction to render it in an 
+ * excited state with the spin \f$j_2\f$, 
+ * and emits another photon in a transition to a lower-lying state with the spin \f$j_n\f$.
+ * An arbitrary number of intermediate states \f$j_i\f$ with labels \f$1 < i < n\f$ may be
+ * populated in the decay process.
+ * It is assumed that only the two photons associated with the transitions 
+ * \f$j_1 \to j_2\f$ and \f$j_{n-1} \to j_n\f$ are observed.
+ * Furthermore, the restriction to a dir-dir correlation implies that only information about the
+ * direction of the photons is available, but not about their polarization.
  * In particular, this means that the dir-dir correlation does not depend on the parity
  * quantum number of the involved nuclear states, which translates into an independence of the
  * azimuthal angle of the emitted photon.
  * 
- * The class uses Eqs. (I-1) and (I-2) of Ref. \cite FaggHanna1959 with a similar notation.
+ * The class uses Eqs. (I-1), (I-1') and (I-2) of Ref. \cite FaggHanna1959 with a similar notation.
  * Note that Eq. (I-2) already includes the assumption that only two multipoles contribute
- * to any of the two transitions, and that the spin of the intermediate state is known.
+ * to any of the two transitions, and that the spin of the intermediate states is known.
+ * The process can be denoted as {this notation is similar to the one used by Biedenharn 
+ * \cite AjzenbergSelove1960}:
+ * 
+ * \f[
+ * 		j_1 \left( \begin{array}{c} L_1 \\ L_1^\prime \end{array} \right) j_2 \left( \begin{array}{c} L_2 \\ L_2^\prime \end{array} \right) ... j_n,
+ * \f]
+ * 
+ * where the dots may represent an arbitrary number of intermediate transitions.
+ * The entire sequence of transitions, whose first and last transition are observed, is called
+ * a cascade.
  * 
  * The dir-dir correlation is normalized to \f$4 \pi\f$ here compared to Ref. \cite FaggHanna1959
- * {see below Eq. (I-2) therein} for example, by dividing through the 
- * \f$\left( 1 + \delta^2 \right)\f$ factors.
+ * {see below Eq. (I-2) therein} by dividing through the \f$\left( 1 + \delta^2 \right)\f$ factors.
  */
 class W_dir_dir{
 public:
 	/**
 	 * \brief Constructor
 	 * 
-	 * \param ini_state Intial state
-	 * \param ini_to_int Transition from initial state to intermediate state
-	 * \param int_state Intermediate state
-	 * \param int_to_fin Transition from intermediate state to final state
-	 * \param fin_state Final state
+	 * \param ini_sta Oriented intial state.
+	 * \param cas_ste Steps of the cascade which follow the exciation of the initial state.
+	 * Each step is a pair of a transition and the state which is populated by that transition.
 	 */
 	W_dir_dir(const State &ini_sta, const vector<pair<Transition, State>> cas_ste);
 	/**
@@ -71,18 +87,26 @@ public:
 	/**
 	 * \brief Return value of the dir-dir correlation at an angle \f$\theta\f$
 	 * 
-	 * It is given by the following expression {Eqs. (I-1) and (I-2) in Ref. \cite FaggHanna1959}:
+	 * For a two-step cascade, it is given by the following expression 
+	 * {Eqs. (I-1) and (I-2) in Ref. \cite FaggHanna1959}:
 	 * 
 	 * \f[
-	 * 		W \left( \theta, \varphi \right) = \sum_\nu A_v \left( L_1, L_1^\prime, j_1, j \right) A_v \left( L_2, L_2^\prime, j_2, j \right) P_\nu \left[ \cos \left( \theta \right) \right].
+	 * 		W \left( \theta, \varphi \right) = W \left( \theta \right) = \sum_\nu A_v \left( L_1, L_1^\prime, j_1, j_2 \right) A_v \left( L_2, L_2^\prime, j_3, j_2 \right) P_\nu \left[ \cos \left( \theta \right) \right].
 	 * \f]
 	 * 
-	 * Here, a level sequence \f$j_1 \to j \to \j_2\f$ is assumed.
 	 * The first transition proceeds via the multipolarities \f$L_1\f$ and \f$L_1^\prime\f$,
 	 * while the second has the multipolarities \f$L_2\f$ and \f$L_2^\prime\f$.
 	 * The symbol \f$P_v\f$ denotes a Legendre polynomial of the degree \f$\nu\f$.
 	 * It incorporates the dependence on the polar angle \f$\theta\f$, while the dependence on the
 	 * nuclear properties is encoded in the \f$A_\nu\f$ coefficients.
+	 * 
+	 * For a cascade with more than 2 steps, the so-called \f$U_\nu\f$ coefficients enter the 
+	 * previous equation to take into account the deorientation due to the addition decays
+	 * {Eq. (I-1') in Ref. \cite FaggHanna1959}:
+	 * 
+	 * \f[
+	 * 		W \left( \theta \right) = \sum_\nu A_v \left( L_1, L_1^\prime, j_1, j_2 \right) U_\nu \left( j_2, L_2, L_2^\prime, j_3 \right) ... A_v \left( L_{n-1}, L_{n-1}^\prime, j_n, j_{n-1} \right) P_\nu \left[ \cos \left( \theta \right) \right].
+	 * \f]
 	 * 
 	 * \param theta Polar angle between the direction of the incoming and 
 	 * the outgoing photon in radians.
@@ -123,181 +147,21 @@ public:
 protected:
 	/**
 	 * \brief Get the maximum value \f$\nu_\mathrm{max}\f$ for which the product of coefficients
-	 * \f$A_\nu \left( 1 \right) A_\nu \left( 2 \right)\f$ is nonzero.
+	 * \f$A_\nu\f$ and \f$U_\nu\f$ is nonzero.
+	 * 
 	 * This limits the sum over \f$\nu\f$ in the definition of the direction-direction correlation.
-	 *
-	 * The maximum value \f$\nu_\mathrm{max}\f$ for which a single coefficient \f$A_\nu\f$ does not
-	 * vanish is obtained here by considering the selection rules of the F coefficients, and,
-	 * more specifically, the selection rules of the constituting Clebsch-Gordan and Racah
-	 * coefficients.
-	 *
-	 * Note that the assumption of two multipole orders and a known spin of the
-	 * intermediate state lead to the restriction {mentioned above Eq. (I-2) in 
-	 * Ref. \cite FaggHanna1959}:
-	 *
-	 * \f[
-	 *	\nu \% 2 = 0,
-	 * \f]
-	 *
-	 * i.e. \f$\nu\f$ can only be an even integer number.
-	 *
-	 * The following Clebsch-Gordan coefficients appear in the definition of a single 
-	 * \f$A_\nu\f$ coefficient {see Eq. (I-2) in \cite FaggHanna1959 and Eq. (1) in 
-	 * \cite FerentzRosenzweig1955}:
-	 *
-	 * \f[
-	 * 	\left(
-	 *		\begin{array}{ccc}
-	 *			L_n & L_n & \nu \\
-	 *			1 & -1 & 0
-	 *		\end{array}
-	 *	\right)
-	 * \f]
-	 * \f[
-	 * 	\left(
-	 *		\begin{array}{ccc}
-	 *			L_n & L_n^\prime & \nu \\
-	 *			1 & -1 & 0
-	 *		\end{array}
-	 *	\right)
-	 * \f]
-	 * \f[
-	 * 	\left(
-	 *		\begin{array}{ccc}
-	 *			L_n^\prime & L_n^\prime & \nu \\
-	 *			1 & -1 & 0
-	 *		\end{array}
-	 *	\right)
-	 * \f]
-	 *
-	 * The selection rules for the Clebsch-Gordan coefficients above that involve \f$\nu\f$ are
-	 * {Sec. C.I.3 in \cite Messiah19622}:
-	 *
-	 * \f[
-	 *	\left| L_n - L_n \right| = 0 \leq \nu \leq 2 L_n
-	 * \f]
-	 * \f[
-	 *	\left| L_n - L_n^\prime \right| \leq \nu \leq L_n + L_n^\prime
-	 * \f]
-	 * \f[
-	 *	\left| L_n^\prime - L_n^\prime \right| = 0 \leq \nu \leq 2 L_n^\prime.
-	 * \f]
-	 *
-	 * In principle, there is also the requirement that \f$ M \leq J\f$ 
-	 * (in the notation of Ref. \cite Messiah19622), which is always fulfilled here since
-	 * \f$M = 0\f$.
-	 * From the selection rules, it can be concluded that:
-	 *
-	 * \f[
-	 *	0 \leq \nu \leq \max \left( 2 L_n, 2 L_n^\prime \right).
-	 * \f]
-	 *
-	 * In addition, the Wigner-6j symbols (Racah coefficients without the phase factor)
-	 *
-	 * \f[
-	 *	\left\lbrace
-	 *		\begin{array}{ccc}
-	 *			j & j & \nu \\
-	 *			L_n & L_n & j_n
-	 *		\end{array}
-	 *	\right\rbrace
-	 * \f]
-	 * \f[
-	 *	\left\lbrace
-	 *		\begin{array}{ccc}
-	 *			j & j & \nu \\
-	 *			L_n^\prime & L_n & j_n
-	 *		\end{array}
-	 *	\right\rbrace
-	 * \f]
-	 * \f[
-	 *	\left\lbrace
-	 *		\begin{array}{ccc}
-	 *			j & j & \nu \\
-	 *			L_n^\prime & L_n^\prime & j_n
-	 *		\end{array}
-	 *	\right\rbrace,
-	 * \f]
-	 *
-	 * which appear in a coefficient \f$A_\nu\f$ {see Eq. (I-2) in \cite FaggHanna1959 and 
-	 * Eq. (1) in \cite FerentzRosenzweig1955} provide the following selection rules 
-	 * for \f$\nu\f$ {Sec. C.II.7 in \cite Messiah19622}:
+	 * The respective upper limits are given in the documentation of the AvCoefficient and 
+	 * UvCoefficient classes.
 	 * 
-	 * \f[
-	 *	\left| j - j \right| = 0 \leq \nu \leq 2j
-	 * \f]
-	 * \f[
-	 *	2j + \nu ~~~~ \mathrm{integer}
-	 * \f]
-	 * \f[
-	 *	2L_n + \nu ~~~~ \mathrm{integer}
-	 * \f]
-	 * \f[
-	 *	L_n + L_n^\prime + \nu ~~~~ \mathrm{integer}
-	 * \f]
-	 * \f[
-	 *	2L_n^\prime + \nu ~~~~ \mathrm{integer}.
-	 * \f]
-	 *
-	 * They also impose the same triangle inequalities as the Clebsch-Gordan 
-	 * coefficients via the relation between \f$J_1\f$, \f$J_2\f$, 
-	 * and \f$J_3\f$ (in the notation of Ref. \cite Messiah19622).
-	 * All conditions of the type '\f$... + \nu\f$ is integer' confirm that 
-	 * \f$\nu\f$ is an integer, since the multipolarities \f$L_n\f$ and \f$L_n^\prime\f$, 
-	 * as well as the quantity \f$2j\f$ are integers.
-	 *
-	 * In summary, the coefficients \f$A_\nu\f$ will be nonzero if
-	 *
-	 * \f[
-	 *	\nu \% 2 = 0,
-	 * \f]
-	 * \f[
-	 *	0 \leq \nu \leq \min \left[ 2 j, \max \left( 2 L_n, 2 L_n^\prime \right) \right],
-	 * \f]
-	 *
-	 * since at least one of the three F coefficients will have a nonzero value.
+	 * This function calls the function W_dir_dir::calculate_two_nu_max_Av(), 
+	 * which calculates the upper limits for the \f$A_\nu\f$ coefficients, and, if there are 
+	 * unobserved intermediate transitions, the function W_dir_dir::calculate_two_nu_max_Uv() 
+	 * to do the same for the \f$U_\nu\f$ coefficients.
+	 * The net limit for \f$\nu\f$ will be the more restrictive of both.
 	 * 
-	 * Each term in the summation over \f$\nu\f$ in the expression for
-	 * \f$W\left( \theta \right)\f$ includes a product of \f$A_\nu\f$ coefficients 
-	 * {Eq. (I-2) in Ref. \cite FaggHanna1959}.
-	 * They are proportional to 9 unique products of F coefficients 
-	 * {see, e.g., Eqs. (I-1) and (I-2) in \cite FaggHanna1959} of which the first three are:
-	 * 
-	 * \f[
-	 * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2, L_2, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2 \right) \right]
-	 * \f]
-	 * \f[
-	 * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2, L_2^\prime, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2 + 2L_2^\prime \right) \right]
-	 * \f]
-	 * \f[
-	 * 		F_\nu \left( L_1, L_1, j_1, j \right) F_\nu \left( L_2^\prime, L_2^\prime, j_2, j \right), ~~~~ \nu \leq \min \left[ 2j, \min \left( 2L_1, 2L_2^\prime \right) \right]
-	 * \f]
-	 * \f[
-	 * 		...
-	 * \f]
-	 * 
-	 * In the equations above, the condition for each product to be nonzero is shown on the right,
-	 * which follows from the properties of the Clebsch-Gordan - and Wigner-6j symbols.
-	 * The terms which vanish last as \f$\nu\f$ increases are the ones that contain the maximum 
-	 * values for the multipole order \f$L_n\f$ of a given transition, if the sum is not 
-	 * terminated earlier by the condition which depends on \f$j\f$.
-	 * As it is also stated after Eq. (40) (an expression for the direction-direction correlation) 
-	 * in the review article by Biedenharn and Rose \cite BiedenharnRose1953 {the author found 
-	 * that such statements are sometimes wrong in the literature, like Eq. (13) in Ref. 
-	 * \cite FerentzRosenzweig1955, for example, or not given at all.}
-	 * the non-vanishing terms are then given by:
-	 * 
-	 * \f[
-	 * 		0 \leq \nu \leq \min \lbrace 2j, \max \left( 2 L_1, 2 L_1^\prime \right), \max \left( 2 L_2, 2 L_2^\prime \right) \rbrace
-	 * \f]
-	 * 
-	 * Note that the same argument applies for polarization-direction correlations.
+	 * Note that the same limit also applies for polarization-direction correlations.
 	 * Although they make use of more general coefficients than the \f$A_\nu\f$, they still depend
 	 * on the same F coefficients {compare, e.g., Eq. (I-2) and (I-9) in \cite FaggHanna1959}.
-	 * Note also that no assumption about the relative magnitude of \f$L_n\f$ and \f$L_n^\prime\f$
-	 * was made in this derivation.
-	 * Many authors also give simplified expressions for \f$L_n^\prime = L_n^\prime + 1\f$,
-	 * which represents a relatively common case, but the present code can take any values for \f$L_n\f$ and \f$L_n^\prime\f$.
 	 *
 	 * \param ini_to_int Transition from initial state to intermediate state
 	 * \param int_state Intermediate state
@@ -306,39 +170,84 @@ protected:
 	 * \return \f$2\nu_\mathrm{max}\f$
 	 */
 	int calculate_two_nu_max() const;
+
+	/**
+	 * \brief Get the maximum value \f$\nu_\mathrm{max}\f$ for which the product of coefficients
+	 * \f$A_\nu\f$ is nonzero.
+	 * 
+	 * See also the documentation of W_dir_dir::calculate_two_nu_max().
+	 * 
+	 * \return \f$2\nu_\mathrm{max}\f$, restriction due to properties of the \f$A_\nu\f$ coefficients
+	 */
 	int calculate_two_nu_max_Av() const;
+
+	/**
+	 * \brief Get the maximum value \f$\nu_\mathrm{max}\f$ for which the product of coefficients
+	 * \f$U_\nu\f$ is nonzero.
+	 * 
+	 * See also the documentation of W_dir_dir::calculate_two_nu_max().
+	 * 
+	 * \return \f$2\nu_\mathrm{max}\f$, restriction due to properties of the \f$U_\nu\f$ coefficients
+	 */
 	int calculate_two_nu_max_Uv() const;
 
 	/**
-	 * \brief Calculate set of products of \f$A_v\f$ coefficients
+	 * \brief Calculate the set of expansion coefficients for the dir-dir correlation.
 	 * 
-	 * The sum over \f$\nu\f$ in Eq. (I-1) of \cite FaggHanna1959 contains products of 
-	 * \f$A_v\f$ coefficients of the form:
+	 * The sum over \f$\nu\f$ in Eqs. (I-1) and (I-1') of \cite FaggHanna1959 contains products of 
+	 * \f$A_v\f$ and potentially also \f$U_\nu\f$ coefficients.
 	 * 
-	 * \f[
-	 * 		A_v \left( L_1, L_1^\prime, j_1, j, \delta_1 \right) 
-	 * 		A_v \left( L_2, L_2^\prime, j_2, j, \delta_2 \right).
-	 * \f]
+	 * This function calls the function W_dir_dir::calculate_expansion_coefficients_Av() to 
+	 * calculate the products of \f$A_\nu\f$ coefficients from \f$\nu = 0\f$ up to, and including, 
+	 * a maximum value of \f$\nu_\mathrm{max}\f$ for a given set of quantum numbers.
+	 * If the cascade contains more than two transitions, the corresponding products of 
+	 * \f$U_\nu\f$ coefficients for the same values of \f$\nu\f$ are calculated by the 
+	 * W_dir_dir::calculate_expansion_coefficients_Av() function.
+	 * This function merges the output of the two functions.
 	 * 
-	 * This function calculates all products from \f$\nu = 0\f$ up to, and including, a maximum 
-	 * value of \f$\nu_\mathrm{max}\f$ for a given set of quantum numbers, and returns them 
-	 * as a vector.
-	 * 
-	 * \param two_nu_max Maximum value of \f$2 \nu\f$
-	 * \param ini_state Intial state
-	 * \param ini_to_int Transition from initial state to intermediate state
-	 * \param int_state Intermediate state
-	 * \param int_to_fin Transition from intermediate state to final state
-	 * \param fin_state Final state
-	 * 
-	 * \return \f$A_v (L_1, L_1^\prime, j_1, j, \delta_1) A_v (L_2, L_2^\prime, j_2, j, \delta_2) ~~,
-	 * ~~ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace ~~,~~ \nu~\mathrm{even} \f$ sorted by increasing values
+	 * \return \f$A_\nu (1) A_\nu (2)\f$ (\f$n=3\f$) or \f$A_\nu (1) U_\nu (2) ... A_\nu (n)\f$ (\f$n>3\f$) for \f$ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace,~ \nu~\mathrm{even} \f$ sorted by increasing values
 	 *  of \f$\nu\f$ in a std::vector.
 	 */
 	vector<double> calculate_expansion_coefficients() const;
+	
+	/**
+	 * \brief Calculate products of \f$A_\nu\f$ coefficients for the dir-dir correlation.
+	 * 
+	 * See also the documentation of W_dir_dir::calculate_expansion_coefficients().
+	 * 
+	 * \return \f$A_\nu (1) A_\nu (n)\f$ for \f$ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace,~ \nu~\mathrm{even} \f$ sorted by increasing values
+	 *  of \f$\nu\f$ in a std::vector.
+	 */
 	vector<double> calculate_expansion_coefficients_Av() const;
+
+	/**
+	 * \brief Calculate products of \f$U_\nu\f$ coefficients for the dir-dir correlation.
+	 * 
+	 * See also the documentation of W_dir_dir::calculate_expansion_coefficients().
+	 * 
+	 * \return \f$U_\nu (2) ... U_\nu (n-1)\f$ for \f$ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace,~ \nu~\mathrm{even} \f$ sorted by increasing values
+	 *  of \f$\nu\f$ in a std::vector.
+	 */
 	vector<double> calculate_expansion_coefficients_Uv() const;
 
+	/**
+	 * \brief Calculate the normalization factor for the angular correlation.
+	 * 
+	 * As stated below Eqs. (I-2) and (I-1') in Ref. \cite FaggHanna1959, the \f$A_\nu\f$ 
+	 * and \f$U_\nu\f$ coefficients are 
+	 * normalized to \f$1 + \delta^2\f$, where \f$\delta\f$ is the multipole mixing ratio that
+	 * they contain.
+	 * 
+	 * In order to normalize the angular correlations to \f$4 \pi\f$, it must be multiplied by:
+	 * 
+	 * \f[
+	 * 		\prod_{i = 1}^{n-1} \frac{1}{1+\delta_i^2},
+	 * \f]
+	 * 
+	 * where \f$\delta_i\f$ is the multipole mixing ratio of the \f$i\f$-th transition.
+	 * 
+	 * \return \f$\prod_{i} \left( 1+\delta_i^2 \right)^{-1}\f$
+	 */
 	double calculate_normalization_factor() const;
 
 	const AvCoefficient av_coef; /**< Instance of the AvCoefficient class */
@@ -348,10 +257,11 @@ protected:
 	const State initial_state; /**< Initial state */
 	/** 
 	 * Steps of the gamma-ray cascade following an excitation.
-	 * Each step consists of an electromagnetic transition and a final state.
+	 * Each step consists of an electromagnetic transition and a state which is populated by 
+	 * that transition.
 	 */
 	const vector<pair<Transition, State>> cascade_steps; 
-	const size_t n_cascade_steps;
+	const size_t n_cascade_steps; /**< Number of transitions in the cascade. */
 
 	double normalization_factor; /**< Normalization factor for the angular distribution */
 	int nu_max; /**< Maximum value of \f$\nu\f$ for which the coefficients do not vanish */
