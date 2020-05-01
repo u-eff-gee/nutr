@@ -72,6 +72,16 @@ public:
     array<double, 3> rotate(const array<double, 3> x_y_z, const array<double, 3> phi_theta_psi) const;
 
     /**
+     * \brief Rotate a 3D vector.
+     * 
+     * \param theta_phi \f$v\f$, spherical coordinates \f$\theta\f$ and \f$\varphi\f$ in radians.
+     * \param phi_theta_psi Euler angles in radians
+     * 
+     * \return \f$v^\prime\f$, spherical coordinates \f$\theta\f$ and \f$\varphi\f$ in radians.
+     */
+    array<double, 2> rotate(const array<double, 2> theta_phi, const array<double, 3> phi_theta_psi) const;
+
+    /**
      * \brief Rotate a 3D vector back.
      * 
      * Performs the same action on a 3D vector which would be performed by 
@@ -84,6 +94,18 @@ public:
      * \return \f$v\f$, 3D vector
      */
     array<double, 3> rotate_back(const array<double, 3> xp_yp_zp, const array<double, 3> phi_theta_psi) const;
+    
+    /**
+     * \brief Rotate a 3D vector back.
+     * 
+     * See also the implementation of rotate_back for Cartesian vectors.
+     * 
+     * \param theta_phi \f$v^\prime\f$, spherical coordinates \f$\theta\f$ and \f$\varphi\f$ in radians.
+     * \param phi_theta_psi Euler angles in radians
+     * 
+     * \return \f$v\f$, spherical coordinates \f$\theta\f$ and \f$\varphi\f$ in radians.
+     */
+    array<double, 2> rotate_back(const array<double, 2> thetap_phip, const array<double, 3> phi_theta_psi) const;
 
 protected:
     /**
@@ -110,7 +132,7 @@ protected:
      * \param theta_phi Spherical coordinates \f$\theta\f$ and \f$\varphi\f$ in radians.
      * 
      * \return Normalized Cartesian vector.
-     */    
+     */
     array<double, 3> get_x_y_z_norm(const array<double, 2> theta_phi) const;
 
     /**

@@ -32,8 +32,18 @@ array<double, 3> EulerAngleRotation::rotate(const array<double, 3> x_y_z, const 
     };
 }
 
+array<double, 2> EulerAngleRotation::rotate(const array<double, 2> theta_phi, const array<double, 3> phi_theta_psi) const {
+
+    return get_theta_phi(rotate(get_x_y_z_norm(theta_phi), phi_theta_psi));
+}
+
 array<double, 3> EulerAngleRotation::rotate_back(const array<double, 3> xp_yp_zp, const array<double, 3> phi_theta_psi) const {
     return rotate(xp_yp_zp, {-phi_theta_psi[2], -phi_theta_psi[1], -phi_theta_psi[0]});
+}
+
+array<double, 2> EulerAngleRotation::rotate_back(const array<double, 2> thetap_phip, const array<double, 3> phi_theta_psi) const {
+
+    return get_theta_phi(rotate_back(get_x_y_z_norm(thetap_phip), phi_theta_psi));
 }
 
 array<double, 2> EulerAngleRotation::get_theta_phi(const array<double, 3> x_y_z_norm) const {

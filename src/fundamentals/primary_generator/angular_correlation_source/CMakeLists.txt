@@ -82,6 +82,10 @@ add_executable(test_w_pol_dir test_w_pol_dir.cc)
 target_link_libraries(test_w_pol_dir w_pol_dir ${GSL_LIBRARIES})
 add_test(test_w_pol_dir test_w_pol_dir)
 
+add_executable(test_euler_angle_rotation test_euler_angle_rotation.cc)
+target_link_libraries(test_euler_angle_rotation euler_angle_rotation ${GSL_LIBRARIES})
+add_test(test_euler_angle_rotation test_euler_angle_rotation)
+
 # Integration of ROOT libraries using information from the manual:
 # "Integrate ROOT into my project with CMake"
 # https://root.cern.ch/how/integrate-root-my-project-cmake (04/09/2020)

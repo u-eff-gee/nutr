@@ -37,3 +37,9 @@ void test_numerical_equality(const T a, const T b, const T epsilon) {
     };
 };
 
+template<typename T>
+void test_numerical_equality(const size_t n, T* a, T* b, const T epsilon){
+    for(size_t i = 0; i < n; ++i){
+        test_numerical_equality<T>(a[i], b[i], epsilon);
+    }
+}
