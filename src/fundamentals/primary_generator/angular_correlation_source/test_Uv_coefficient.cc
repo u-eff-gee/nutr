@@ -23,7 +23,7 @@
 int main(){
 
     // Test the calculation of \f$U_\nu\f$ coefficients using the example given in Sec. 1.a.1.iii
-    // [Eqs. (66) - (68)] in Ref. \cite AjzenbergSelove1960, which gives the values of two
+    // [Eqs. (66) - (68)] of Ref. \cite AjzenbergSelove1960, which gives the values of two
     // coefficients explicitly.
 
 	UvCoefficient uv_coef;

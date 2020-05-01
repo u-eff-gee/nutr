@@ -97,8 +97,7 @@ int main(){
 
 	double epsilon{1e-7};
 
-	double w_num{0.};
-	double w_ana{0.};
+	double w_num{0.}, w_ana{0.};
 
 	W_pol_dir w_pol_dir_e1(
 		State(0, positive), 

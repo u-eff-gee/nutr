@@ -82,6 +82,10 @@ add_executable(test_w_pol_dir test_w_pol_dir.cc)
 target_link_libraries(test_w_pol_dir w_pol_dir ${GSL_LIBRARIES})
 add_test(test_w_pol_dir test_w_pol_dir)
 
+add_executable(test_unobserved test_unobserved.cc)
+target_link_libraries(test_unobserved w_dir_dir ${GSL_LIBRARIES})
+add_test(test_unobserved test_unobserved)
+
 add_executable(test_euler_angle_rotation test_euler_angle_rotation.cc)
 target_link_libraries(test_euler_angle_rotation euler_angle_rotation ${GSL_LIBRARIES})
 add_test(test_euler_angle_rotation test_euler_angle_rotation)

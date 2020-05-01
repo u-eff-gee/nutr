@@ -82,7 +82,7 @@ int W_dir_dir::calculate_two_nu_max_Uv() const {
 		min_two_j = min(min_two_j, cascade_steps[i].second.two_J);
 	}
 
-	return min_two_j;
+	return 2*min_two_j;
 
 }
 
@@ -132,9 +132,9 @@ vector<double> W_dir_dir::calculate_expansion_coefficients_Uv() const {
 
 	for(int two_nu = 0; two_nu <= two_nu_max; two_nu += 4){
 		
-		for(size_t i = 2; i < n_cascade_steps - 1; ++i){
+		for(size_t i = 1; i < n_cascade_steps - 1; ++i){
 			uv_coef_product = uv_coef_product
-				*uv_coef(two_nu, 
+				*uv_coef(two_nu,
 					cascade_steps[i-1].second.two_J,
 					cascade_steps[i].first.two_L,
 					cascade_steps[i].first.two_Lp,
