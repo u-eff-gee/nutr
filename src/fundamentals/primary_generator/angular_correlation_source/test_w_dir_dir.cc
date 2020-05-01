@@ -59,9 +59,11 @@ int main(){
 	double w_dir_dir_ana{0.};
 
 	W_dir_dir w_dir_dir_2(
-		State(0), Transition(4, 6, 0.), 
-		State(4), Transition(4, 6, 0.),
-		State(0)
+		State(0), 
+		{
+			{Transition(4, 6, 0.), State(4)},
+			{Transition(4, 6, 0.), State(0)},
+		} 
 	);
 
 	for(double theta = 0.; theta < M_PI; theta += 0.5){

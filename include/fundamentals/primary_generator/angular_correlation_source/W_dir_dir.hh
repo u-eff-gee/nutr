@@ -19,12 +19,15 @@
 
 #pragma once
 
+#include <utility>
 #include <vector>
 
 #include "AvCoefficient.hh"
+#include "UvCoefficient.hh"
 #include "State.hh"
 #include "Transition.hh"
 
+using std::pair;
 using std::vector;
 
 /**
@@ -59,7 +62,7 @@ public:
 	 * \param int_to_fin Transition from intermediate state to final state
 	 * \param fin_state Final state
 	 */
-	W_dir_dir(const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state);
+	W_dir_dir(const State &ini_sta, const vector<pair<Transition, State>> cas_ste);
 	/**
 	 * \brief Destructor
 	 */
@@ -93,8 +96,8 @@ public:
 	 * 
 	 * This call operator accepts the angle \f$\varphi\f$ as a second argument, although the 
 	 * direction-direction correlation is independent of the azimuthal angle.
-	 * It is intended for easy switching between the two classes without having to change a lot
-	 * of code.
+	 * It is intended for easy switching between the two classes W_dir_dir and W_pol_dir without 
+	 * having to change a lot of code.
 	 * Internally, the method calls the single-argument call operator.
 	 * 
 	 * \param theta Polar angle between the direction of the incoming and 
@@ -302,7 +305,9 @@ protected:
 	 * 
 	 * \return \f$2\nu_\mathrm{max}\f$
 	 */
-	int get_two_nu_max(const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin) const;
+	int calculate_two_nu_max() const;
+	int calculate_two_nu_max_Av() const;
+	int calculate_two_nu_max_Uv() const;
 
 	/**
 	 * \brief Calculate set of products of \f$A_v\f$ coefficients
@@ -330,17 +335,25 @@ protected:
 	 * ~~ \nu \in \lbrace 0, ..., \nu_\mathrm{max} \rbrace ~~,~~ \nu~\mathrm{even} \f$ sorted by increasing values
 	 *  of \f$\nu\f$ in a std::vector.
 	 */
-	vector<double> get_av_products(const int two_nu_max, const State &ini_state, const Transition &ini_to_int, const State &int_state, const Transition &int_to_fin, const State &fin_state) const;
+	vector<double> calculate_expansion_coefficients() const;
+	vector<double> calculate_expansion_coefficients_Av() const;
+	vector<double> calculate_expansion_coefficients_Uv() const;
+
+	double calculate_normalization_factor() const;
 
 	const AvCoefficient av_coef; /**< Instance of the AvCoefficient class */
-	vector<double> av_prod_cache; /**< Vector to store \f$A_v\f$ coefficients */
+	const UvCoefficient uv_coef; /**< Instance of the UvCoefficient class */
+	vector<double> expansion_coefficients; /**< Vector to store expansion coefficients */
 
-	Transition initial_to_intermediate; /**< Transition from initial state to intermediate state */
-	Transition intermediate_to_final; /**< Transition from intermediate state to final state */
-	State initial_state; /**< Initial state */
-	State intermediate_state; /**< Intermediate state */
-	State final_state; /**< Final state */
+	const State initial_state; /**< Initial state */
+	/** 
+	 * Steps of the gamma-ray cascade following an excitation.
+	 * Each step consists of an electromagnetic transition and a final state.
+	 */
+	const vector<pair<Transition, State>> cascade_steps; 
+	const size_t n_cascade_steps;
 
+	double normalization_factor; /**< Normalization factor for the angular distribution */
 	int nu_max; /**< Maximum value of \f$\nu\f$ for which the coefficients do not vanish */
 	int two_nu_max; /**< Maximum value of \f$2 \nu\f$ for which the coefficients do not vanish */
 };
