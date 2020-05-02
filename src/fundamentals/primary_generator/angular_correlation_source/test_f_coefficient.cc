@@ -47,6 +47,15 @@ vector<FCoefficientLiteratureValue> f_coefficient_values {
 	FCoefficientLiteratureValue(2, 8,10,10, 4, -0.42426407),
 	FCoefficientLiteratureValue(2,10, 8, 8, 4, -0.21856028),
 	FCoefficientLiteratureValue(2,10, 8,10, 4,  0.25584086),
+
+	FCoefficientLiteratureValue(5, 7, 12, 12,  4, -0.78963548),
+	FCoefficientLiteratureValue(5, 7, 12, 12,  8,  0.29925498),
+	FCoefficientLiteratureValue(7, 9,  8,  8, 12, -0.02586818),
+	FCoefficientLiteratureValue(7, 9,  8, 10,  4, -0.24618300),
+	FCoefficientLiteratureValue(9, 5, 12, 14, 16,  0.45369384),
+	FCoefficientLiteratureValue(9, 5, 14, 14,  4, -0.96183098),
+	FCoefficientLiteratureValue(17, 1, 16, 16,  4, -1.06646191),
+	FCoefficientLiteratureValue(17, 1, 16, 16,  8, 0.95346668),
 };
 
 int main(){
