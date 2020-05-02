@@ -45,6 +45,7 @@ int main(){
     const unsigned int n = 10000;
 
     // Test direction-direction correlation with pure transition
+    // double integral_num = sph_int([](double theta, double phi){ 
     double integral_num = sph_int([](double theta, double phi){ 
         
         W_dir_dir w_dir_dir(
@@ -58,9 +59,9 @@ int main(){
 
     }, n, [](double theta, double phi){ return true ; });
 
-    // Test direction-direction correlation with mixed transition
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
+    // Test direction-direction correlation with mixed transition
     integral_num = sph_int([](double theta, double phi){ 
         
         W_dir_dir w_dir_dir(
@@ -77,13 +78,31 @@ int main(){
 
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
+    // Test direction-direction correlation with mixed unobserved transition
+    integral_num = sph_int([](double theta, double phi){ 
+        
+        W_dir_dir w_dir_dir(
+            State(0, parity_unknown),
+            {
+                {Transition(em_unknown, 2, em_unknown, 4, 0.), State(2, parity_unknown)},
+                {Transition(em_unknown, 2, em_unknown, 4, 2.), State(2, parity_unknown)},
+                {Transition(em_unknown, 2, em_unknown, 4, 0.),
+                State(4, parity_unknown)}
+            }
+        );        
+        return w_dir_dir(theta);
+
+    }, n, [](double theta, double phi){ return true ; });
+
+    test_numerical_equality<double>(integral_num, normalization, 1e-3);
+
     // Test polarization-direction correlation with mixed transition
     integral_num = sph_int([](double theta, double phi){ 
 
         W_pol_dir w_pol_dir(
             State(3, positive),
             {
-                {Transition(electric, 6, magnetic, 8, 2.), State(9, positive)},
+                {Transition(magnetic, 6, electric, 8, 2.), State(9, positive)},
                 {Transition(magnetic, 2, electric, 4, -2.), State(7, positive)}
             }
         );        
@@ -93,4 +112,21 @@ int main(){
 
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
+    // Test polarization-direction correlation with mixed unobserved transition
+    integral_num = sph_int([](double theta, double phi){ 
+
+        W_pol_dir w_pol_dir(
+            State(3, positive),
+            {
+                {Transition(magnetic, 6, electric, 8, 0.), State(9, positive)},
+                {Transition(magnetic, 2, electric, 4, 2.), State(7, positive)},
+                {Transition(magnetic, 2, electric, 4, 0.), State(7, positive)}
+            }
+        );
+
+        return w_pol_dir(theta, phi);
+
+    }, n, [](double theta, double phi){ return true ; });
+
+    test_numerical_equality<double>(integral_num, normalization, 1e-3);
 }

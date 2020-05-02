@@ -24,20 +24,38 @@
 
 double UvCoefficient::operator()(const unsigned int two_nu, const int two_j, const int two_L, const int two_jp) const {
 
-    const int phase_factor = (two_jp - two_j - two_L)/2 % 2 == 0 ? 1 : -1;
+    // Definition of Fagg and Hanna \cite FaggHanna1959 [Eq. (I-1') and the expression below that one].
+    // Causes some tests to fail.
+    //
+    // const int phase_factor = (((two_jp - two_j - two_L)/2) % 2) == 0 ? 1 : -1;
+
+    // return phase_factor
+    // *sqrt(
+    //     (two_jp + 1)*(two_j + 1)
+    // )
+    // *gsl_sf_coupling_6j(
+    //     two_j, two_j, two_nu,
+    //     two_jp, two_jp, two_L);
+
+    // Definition of Biedenharn \cite AjzenbergSelove1960 (Sec. 1.a.1.iii)
+    const int phase_factor = (((two_j + two_jp + two_L)/2) % 2) == 0 ? 1 : -1;
 
     return phase_factor
     *sqrt(
         (two_jp + 1)*(two_j + 1)
     )
     *gsl_sf_coupling_6j(
-        two_j, two_j, two_nu,
-        two_jp, two_jp, two_L);
+        two_j, two_nu, two_j,
+        two_jp, two_L, two_jp);
 }
 
 double UvCoefficient::operator()(const unsigned int two_nu, const int two_j, const int two_L, const int two_Lp, const double delta, const int two_jp) const {
 
-    return (*this)(two_nu, two_j, two_L, two_jp) 
-        + delta*delta*(*this)(two_nu, two_j, two_Lp, two_jp);
+    if(delta != 0.){
+        return (*this)(two_nu, two_j, two_L, two_jp) 
+            + delta*delta*(*this)(two_nu, two_j, two_Lp, two_jp);
+    }
+
+    return (*this)(two_nu, two_j, two_L, two_jp);
 
 }

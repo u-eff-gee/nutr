@@ -96,7 +96,8 @@
  *      j_m \left( \begin{array}{c} L_{m+1} \\ L_{m+1}^\prime \end{array} \right) j_{m+1}, ~~~~ 1 < m < n-1
  * \f]
  * 
- * is then given by {Eq. (I-1') and the expression below that one in Ref. \cite FaggHanna1959}:
+ * is given by Fagg and Hanna as {Eq. (I-1') and the expression below that one in 
+ * Ref. \cite FaggHanna1959}:
  * 
  * \f[
  *      U_\nu \left( m \right) = 
@@ -112,19 +113,50 @@
  * 
  * Here, \f$\delta_m\f$ denotes the mixing ratio of the two multipolarities that may
  * contribute to the \f$m\f$-th transition.
+ * 
+ * When testing the formulation above for transitions with half-integer angular momentum quantum 
+ * numbers, it was found that the \f$U_\nu\f$ coefficients of Fagg and Hanna could cause the
+ * entire angular to become negative.
+ * A comparison to other definitions in the literature, for example by Biedenharn (see below) or 
+ * Krane, Steffen, and Wheeler \cite KraneSteffenWheeler1973 [Eq. (53) therein] indicates that the
+ * phase factor is not correct in Ref. \cite FaggHanna1959.
+ * For this reason, the definition in Sec. 1.a.1.iii of the book chapter by Biedenharn 
+ * \cite AjzenbergSelove1960 is preferred here (such a straightforward replacement of one 
+ * definition by the other is possible because the rest of Biedenharn's formalism is equivalent 
+ * to the one of Fagg and Hanna):
+ * 
+ * \f[
+ *      U_\nu \left( m \right) = 
+ *      \left( -1 \right)^{\nu} 
+ *      \sqrt { \left( 2 j_{m+1} + 1 \right) \left( 2 j_m + 1 \right) }
+ *      W \left( j_m, \nu, L_m, j_{m+1}; j_m, j_{m+1} \right)
+ * \f]
+* \f[
+ *      + \delta_m^2 \left( -1 \right)^{\nu} 
+ *      \sqrt { \left( 2 j_{m+1} + 1 \right) \left( 2 j_m + 1 \right) }
+ *      W \left( j_m, \nu, L_m^\prime, j_{m+1}; j_m, j_{m+1} \right)
+ * \f]
+ * 
  * The Racah coefficients \f$W\f$ are related to the Wigner-6j symbols via 
  * {see, e.g., Eq. (C.30) in \cite Messiah19622}:
  * 
  * \f[
- *      W \left(j_m, j_m, j_{m+1}, j_{m+1}; \nu, L_m \right) = \left( -1 \right)^{2 j_m + 2 j_{m+1}} \Big \lbrace \begin{array}{ccc} j_m & j_m & \nu \\ j_{m+1} & j_{m+1} & L_m \end{array} \Big \rbrace
- * \f]
- * \f[
- *      = \Big \lbrace \begin{array}{ccc} j_m & j_m & \nu \\ j_{m+1} & j_{m+1} & L_m \end{array} \Big \rbrace
+ *      W \left( j_m, \nu, L_m, j_{m+1}; j_m, j_{m+1} \right) = \left( -1 \right)^{ \nu + j_m + L_m + j_{m+1} } \Big \lbrace \begin{array}{ccc} j_m & \nu & j_m \\ j_{m+1} & L_m & j_{m+1} \end{array} \Big \rbrace
  * \f]
  * 
- * The phase factor vanishes, because \f$j_m\f$ or \f$j_{m+1}\f$ are either both half-integer 
- * numbers or both integer numbers.
- * In both cases, \f$2 j_m + 2 j_{m+1} \f$ will be an even integer.
+ * Note that the lower left and lower central are in a different order than in the Racah 
+ * coefficient.
+ * In total, the \f$U_\nu\f$ coefficient, expressed in terms of a Wigner-6j symbol, is:
+ * 
+ * \f[
+ *      U_\nu \left( m \right) = \left( -1 \right)^{j_m + L_m + j_{m+1}} \sqrt { \left( 2 j_{m+1} + 1 \right) \left( 2 j_m + 1 \right) } \Big \lbrace \begin{array}{ccc} j_m & \nu & j_m \\ j_{m+1} & L_m & j_{m+1} \end{array} \Big \rbrace
+ * \f]
+ * \f[
+ *      + \delta_m^2 \left( -1 \right)^{j_m + L_m^\prime + j_{m+1}} \sqrt { \left( 2 j_{m+1} + 1 \right) \left( 2 j_m + 1 \right) } \Big \lbrace \begin{array}{ccc} j_m & \nu & j_m \\ j_{m+1} & L_m^\prime & j_{m+1} \end{array} \Big \rbrace
+ * \f]
+ * 
+ * The contribution to the phase factor which depends on \f$\nu\f$ vanishes, because for integer
+ * \f$\nu\f$, the number \f$2 \nu\f$ is always even.
  * 
  * According to the properties of the Wigner-6j symbol {see, e.g., Sec. C.II.7 in 
  * \cite Messiah19622}, the coefficients \f$U_\nu\f$ are nonzero for:
