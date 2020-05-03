@@ -28,6 +28,7 @@ A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4
 ### 2.1 Prerequisites
 
 * [Geant4 10.6 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`.
+* A compiler that supports the [C++14](https://en.cppreference.com/w/cpp/14) standard.
 * [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is optional for building some tests of `nutr`. However, since the output is written in the ROOT format by default, it is highly recommended.
 * [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional) 

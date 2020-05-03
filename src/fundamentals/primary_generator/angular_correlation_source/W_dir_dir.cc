@@ -28,7 +28,7 @@ using std::min;
 using std::max;
 
 W_dir_dir::W_dir_dir(const State &ini_sta, const vector<pair<Transition, State>> cas_ste):
-initial_state(ini_sta), cascade_steps(cas_ste), n_cascade_steps(cas_ste.size()), av_coef(AvCoefficient()), uv_coef(UvCoefficient())
+W_gamma_gamma(ini_sta, cas_ste), av_coef(AvCoefficient()), uv_coef(UvCoefficient())
 {
 	two_nu_max = calculate_two_nu_max();
 	nu_max = two_nu_max/2;
@@ -161,13 +161,3 @@ double W_dir_dir::calculate_normalization_factor() const {
 	return norm_fac;
 
 }
-
-// extern "C" double w_dir_dir(const double theta, const double phi, const int two_J_ini, const int two_L_ini_to_int, const int two_Lp_ini_to_int, const double delta_ini_to_int, const int two_J_int, const int two_L_int_to_fin, const int two_Lp_int_to_fin, const double delta_int_to_fin, const int two_J_fin){
-// 	W_dir_dir w_d_d(		
-// 			State(two_J_ini, parity_unknown),
-// 			Transition(em_unknown, two_L_ini_to_int, em_unknown, two_Lp_ini_to_int, delta_ini_to_int), 
-// 			State(two_J_int, parity_unknown),
-// 			Transition(em_unknown, two_L_int_to_fin, em_unknown, two_Lp_int_to_fin, delta_int_to_fin), 
-// 			State(two_J_fin, parity_unknown));
-// 	return w_d_d(theta, phi);
-// }

@@ -21,9 +21,8 @@
 
 #include "AlphavCoefficient.hh"
 #include "AvCoefficient.hh"
-#include "State.hh"
-#include "Transition.hh"
 #include "W_dir_dir.hh"
+#include "W_gamma_gamma.hh"
 
 /**
  * \brief Class for a polarization-direction (pol-dir) correlation
@@ -42,7 +41,7 @@
  * 
  * The pol-dir correlation is normalized to \f$4 \pi\f$ like the dir-dir correlation.
  */
-class W_pol_dir{
+class W_pol_dir : public W_gamma_gamma{
 public:
 	/**
 	 * \brief Constructor
@@ -92,7 +91,7 @@ public:
 	 * 
 	 * \return \f$W \left( \theta, \varphi \right)\f$
 	 */
-	double operator()(const double theta, const double phi) const;
+	double operator()(const double theta, const double phi) const override;
 
 protected:
 	/**
@@ -140,16 +139,5 @@ protected:
 	const AlphavCoefficient alphav_coef; /**< Instance of the AlphavCoefficient class */
 	vector<double> expansion_coefficients; /**< Vector to store expansion coefficients */
 	const W_dir_dir w_dir_dir; /**< Instance of the W_dir_dir class */
-
-	const State initial_state; /**< Initial state */
-	/** 
-	 * Steps of the gamma-ray cascade following an excitation.
-	 * Each step consists of an electromagnetic transition and a state which is populated by 
-	 * that transition.
-	 */
-	const vector<pair<Transition, State>> cascade_steps;
-	const size_t n_cascade_steps; /**< Number of transitions in the cascade. */
-
-	int two_nu_max; /**< Maximum value of \f$2 \nu\f$ for which the coefficients do not vanish */
 
 };

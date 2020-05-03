@@ -29,6 +29,8 @@ target_link_libraries(fCoefficient ${GSL_LIBRARIES})
 add_library(avCoefficient AvCoefficient.cc)
 target_link_libraries(avCoefficient fCoefficient)
 
+add_library(w_gamma_gamma W_gamma_gamma.cc)
+
 add_library(w_dir_dir W_dir_dir.cc)
 target_link_libraries(w_dir_dir avCoefficient uvCoefficient)
 configure_file(w_dir_dir.py.in w_dir_dir.py)
@@ -48,6 +50,10 @@ target_link_libraries(uvCoefficient ${GSL_LIBRARIES})
 add_library(w_pol_dir W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
 configure_file(w_pol_dir.py.in w_pol_dir.py)
+
+add_library(angular_correlation AngularCorrelation.cc)
+target_link_libraries(angular_correlation euler_angle_rotation w_dir_dir w_pol_dir)
+set_property(TARGET angular_correlation PROPERTY CXX_STANDARD 14)
 
 add_library(euler_angle_rotation EulerAngleRotation.cc)
 
@@ -89,6 +95,10 @@ add_test(test_unobserved test_unobserved)
 add_executable(test_euler_angle_rotation test_euler_angle_rotation.cc)
 target_link_libraries(test_euler_angle_rotation euler_angle_rotation ${GSL_LIBRARIES})
 add_test(test_euler_angle_rotation test_euler_angle_rotation)
+
+add_executable(test_angular_correlation test_angular_correlation.cc)
+target_link_libraries(test_angular_correlation angular_correlation w_dir_dir w_pol_dir ${GSL_LIBRARIES})
+add_test(test_angular_correlation test_angular_correlation)
 
 # Integration of ROOT libraries using information from the manual:
 # "Integrate ROOT into my project with CMake"

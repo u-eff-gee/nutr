@@ -19,16 +19,9 @@
 
 #pragma once
 
-#include <utility>
-#include <vector>
-
 #include "AvCoefficient.hh"
 #include "UvCoefficient.hh"
-#include "State.hh"
-#include "Transition.hh"
-
-using std::pair;
-using std::vector;
+#include "W_gamma_gamma.hh"
 
 /**
  * \brief Class for a direction-direction (dir-dir) correlation
@@ -69,7 +62,7 @@ using std::vector;
  * The dir-dir correlation is normalized to \f$4 \pi\f$ here compared to Ref. \cite FaggHanna1959
  * {see below Eq. (I-2) therein} by dividing through the \f$\left( 1 + \delta^2 \right)\f$ factors.
  */
-class W_dir_dir{
+class W_dir_dir : public W_gamma_gamma{
 public:
 	/**
 	 * \brief Constructor
@@ -120,8 +113,6 @@ public:
 	 * 
 	 * This call operator accepts the angle \f$\varphi\f$ as a second argument, although the 
 	 * direction-direction correlation is independent of the azimuthal angle.
-	 * It is intended for easy switching between the two classes W_dir_dir and W_pol_dir without 
-	 * having to change a lot of code.
 	 * Internally, the method calls the single-argument call operator.
 	 * 
 	 * \param theta Polar angle between the direction of the incoming and 
@@ -131,7 +122,7 @@ public:
 	 * 
 	 * \return \f$W \left( \theta \right)\f$
 	 */
-	double operator()(const double theta, const double phi) const {
+	double operator()(const double theta, const double phi) const override {
 		return operator()(theta);
 	}
 	
@@ -256,16 +247,4 @@ protected:
 	const UvCoefficient uv_coef; /**< Instance of the UvCoefficient class */
 	vector<double> expansion_coefficients; /**< Vector to store expansion coefficients */
 
-	const State initial_state; /**< Initial state */
-	/** 
-	 * Steps of the gamma-ray cascade following an excitation.
-	 * Each step consists of an electromagnetic transition and a state which is populated by 
-	 * that transition.
-	 */
-	const vector<pair<Transition, State>> cascade_steps; 
-	const size_t n_cascade_steps; /**< Number of transitions in the cascade. */
-
-	double normalization_factor; /**< Normalization factor for the angular distribution */
-	int nu_max; /**< Maximum value of \f$\nu\f$ for which the coefficients do not vanish */
-	int two_nu_max; /**< Maximum value of \f$2 \nu\f$ for which the coefficients do not vanish */
 };
