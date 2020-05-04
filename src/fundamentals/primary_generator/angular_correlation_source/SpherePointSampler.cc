@@ -142,11 +142,11 @@ double SpherePointSampler::segment_length(const double Theta, const double c) co
     if(Theta >= 0 && Theta <= M_PI_2){
         return elliptic_integral_2nd_kind_arbitrary_m(Theta, -c*c);
     }
-    if(Theta <= M_PI){
-        const double negative_c_squared = -c*c;
-        return 2.*elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, negative_c_squared)
-        - elliptic_integral_2nd_kind_arbitrary_m(M_PI - Theta, negative_c_squared);
-    }
+    
+    const double negative_c_squared = -c*c;
+    return 2.*elliptic_integral_2nd_kind_arbitrary_m(M_PI_2, negative_c_squared)
+    - elliptic_integral_2nd_kind_arbitrary_m(M_PI - Theta, negative_c_squared);
+
 }
 
 double SpherePointSampler::segment_length_linear_interpolation(const double Theta, const double c, const unsigned int n_points) const {
@@ -236,7 +236,6 @@ double SpherePointSampler::find_Theta_j(const unsigned int j, const unsigned int
     // Initial guess from Ref. \cite Koay2011
     // Note that j is fixed here, and the iteration index is denoted as l
     const double Theta_j_0 = acos(1.-(2.*j-1.)/(double) n);
-    const double Theta_j_plus_minus_one_0 = j == n ? acos(1.-(2.*(j-1)-1.)/(double) n) : acos(1.-(2.*(j+1)-1.)/(double) n);
     double Theta_j_l = Theta_j_0;
     const double epsilon_segment = epsilon*segment_length(M_PI, c)/(double) n;
 

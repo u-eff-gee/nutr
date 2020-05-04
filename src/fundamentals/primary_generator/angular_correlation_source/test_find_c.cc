@@ -32,7 +32,7 @@ int main(){
 
     SpherePointSampler sph_pt_samp;
 
-	bool error_thrown{false};
+	bool error_thrown = false;
 	try{
 		sph_pt_samp.find_c(1);
 	} catch(const std::invalid_argument e){

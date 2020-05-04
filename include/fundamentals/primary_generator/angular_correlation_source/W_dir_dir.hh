@@ -122,7 +122,7 @@ public:
 	 * 
 	 * \return \f$W \left( \theta \right)\f$
 	 */
-	double operator()(const double theta, const double phi) const override {
+	double operator()(const double theta, const double) const override {
 		return operator()(theta);
 	}
 	

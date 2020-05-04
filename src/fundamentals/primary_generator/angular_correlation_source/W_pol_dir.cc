@@ -26,7 +26,7 @@
 using std::min;
 
 W_pol_dir::W_pol_dir(const State &ini_sta, const vector<pair<Transition, State>> cas_ste):
-W_gamma_gamma(ini_sta, cas_ste), alphav_coef(AlphavCoefficient()), av_coef(AvCoefficient()), w_dir_dir(W_dir_dir(ini_sta, cas_ste))
+W_gamma_gamma(ini_sta, cas_ste), av_coef(AvCoefficient()), alphav_coef(AlphavCoefficient()), w_dir_dir(W_dir_dir(ini_sta, cas_ste))
 {
 	two_nu_max = w_dir_dir.get_two_nu_max();
 	nu_max = two_nu_max/2;
