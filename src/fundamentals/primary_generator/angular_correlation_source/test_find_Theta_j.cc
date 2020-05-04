@@ -45,7 +45,7 @@ int main(){
     double Theta_j = 0.;
 
     for(unsigned int j = 1; j <= n; ++j){
-        Theta_j = sph_pt_samp.find_Theta_j(j, n, c);
+        Theta_j = sph_pt_samp.find_Theta_j(j, n, c, 1e-8);
 
         // Test using the defining equation {Eq. (11) in Ref. \cite Koay2011} for Theta_j
         test_numerical_equality<double>(sph_pt_samp.segment_length(Theta_j, c), (2.*j-1)*M_PI/c, 1e-8);
