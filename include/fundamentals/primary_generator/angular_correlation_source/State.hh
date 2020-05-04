@@ -22,7 +22,7 @@
 /**
  * \brief Enum for the possible values of the parity quantum number.
  */
-enum Parity { negative, positive, parity_unknown };
+enum Parity : int { negative = -1, positive = 1, parity_unknown = 0 };
 
 /**
  * \brief Struct to store properties of a nuclear state.

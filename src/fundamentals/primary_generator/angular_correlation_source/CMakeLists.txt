@@ -33,7 +33,6 @@ add_library(w_gamma_gamma W_gamma_gamma.cc)
 
 add_library(w_dir_dir W_dir_dir.cc)
 target_link_libraries(w_dir_dir avCoefficient uvCoefficient)
-configure_file(w_dir_dir.py.in w_dir_dir.py)
 
 add_library(kappa_coefficient KappaCoefficient.cc)
 target_link_libraries(kappa_coefficient ${GSL_LIBRARIES})
@@ -49,11 +48,14 @@ target_link_libraries(uvCoefficient ${GSL_LIBRARIES})
 
 add_library(w_pol_dir W_pol_dir.cc)
 target_link_libraries(w_pol_dir alphavCoefficient avCoefficient w_dir_dir)
-configure_file(w_pol_dir.py.in w_pol_dir.py)
 
-add_library(angular_correlation AngularCorrelation.cc)
+add_library(angular_correlation SHARED AngularCorrelation.cc)
 target_link_libraries(angular_correlation euler_angle_rotation w_dir_dir w_pol_dir)
 set_property(TARGET angular_correlation PROPERTY CXX_STANDARD 14)
+configure_file(python/angular_correlation.in.py python/angular_correlation.py)
+configure_file(python/test_angular_correlation.in.py python/test_angular_correlation.py)
+configure_file(python/state.py python/state.py)
+configure_file(python/transition.py python/transition.py)
 
 add_library(euler_angle_rotation EulerAngleRotation.cc)
 
@@ -139,4 +141,4 @@ add_executable(test_find_Theta_j test_find_Theta_j.cc)
 target_link_libraries(test_find_Theta_j spherePointSampler)
 add_test(test_find_Theta_j test_find_Theta_j)
 
-configure_file(test_plots_matplotlib.py.in test_plots_matplotlib.py)
+configure_file(python/test_plots_matplotlib.in.py python/test_plots_matplotlib.py)

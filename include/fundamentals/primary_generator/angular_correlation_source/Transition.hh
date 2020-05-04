@@ -22,7 +22,7 @@
 /**
  * \brief Enum for the possible values of the electromagnetic character.
  */
-enum EMCharacter { electric, magnetic, em_unknown };
+enum EMCharacter : int { electric = -1, magnetic = 1, em_unknown = 0};
 
 /**
  * \brief Struct to store properties of a transition between nuclear states.

@@ -20,17 +20,19 @@ import matplotlib as mpl
 import numpy as np
 
 import os
-os.chdir('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_distribution_source/angular_distribution/')
-from w_dir_dir import w_dir_dir
-from w_pol_dir import w_pol_dir
+os.chdir('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_correlation_source/python/')
+from angular_correlation import angular_correlation
+from state import *
+from transition import *
 
 from pathlib import Path
 
 class AngularDistributionPlot:
-    def __init__(self, title, filename, params):
+    def __init__(self, title, filename, ini_sta, cas_ste):
         self.title=title
         self.filename=filename
-        self.params=params
+        self.ini_sta=ini_sta
+        self.cas_ste=cas_ste
 
 OUTPUT_DIR = Path('@PROJECT_BINARY_DIR@')
 
@@ -69,7 +71,7 @@ ZLIM = (-2., 2.)
 # and references therein.
 # According to these considerations, this script will also use different color maps for the two 
 # fundamentally different settings of COLOR_MAP_MAX.
-COLOR_MAP_MAX = -1
+COLOR_MAP_MAX = -1.
 
 N_THETA = 100
 N_PHI   = 100
@@ -81,38 +83,43 @@ ang_corr = np.zeros(np.shape(theta))
 x_y_z = np.zeros((3, np.shape(theta)[0], np.shape(theta)[1]))
 
 angular_distributions = [
-    AngularDistributionPlot(r'$0 \to 1 \to 0$', '0_1_0.pdf', [0, 2, 4, 0., 2, 2, 4, 0., 0]),
-    AngularDistributionPlot(r'$0 \to 2 \to 0$', '0_2_0.pdf', [0, 4, 6, 0., 4, 4, 6, 0., 0]),
+    AngularDistributionPlot(r'$0 \to 1 \to 0$', '0_1_0.pdf', 
+    State(0, PARITY_UNKNOWN), 
+    [
+        [Transition(EM_UNKNOWN, 2, EM_UNKNOWN, 4, 0.), State(2, PARITY_UNKNOWN)],
+        [Transition(EM_UNKNOWN, 2, EM_UNKNOWN, 4, 0.), State(0, PARITY_UNKNOWN)]
+    ]),
+    AngularDistributionPlot(r'$0 \to 2 \to 0$', '0_2_0.pdf', 
+    State(0, PARITY_UNKNOWN), 
+    [
+        [Transition(EM_UNKNOWN, 4, EM_UNKNOWN, 6, 0.), State(4, PARITY_UNKNOWN)],
+        [Transition(EM_UNKNOWN, 4, EM_UNKNOWN, 6, 0.), State(0, PARITY_UNKNOWN)]
+    ]),
 
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 0$', '0p_1p_0.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 0]),
-    AngularDistributionPlot(r'$0^+ \to 1^- \to 0$', '0p_1m_0.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 0., 0]),
-    AngularDistributionPlot(r'$0^+ \to 2^+ \to 0$', '0p_2p_0.pdf', [0, 1, -1, 4, 1, 6, 0., 4, 1, 4, 6, 0., 0]),
-    AngularDistributionPlot(r'$0^+ \to 2^- \to 0$', '0p_2m_0.pdf', [0, 1, 1, 4, -1, 6, 0., 4, -1, 4, 6, 0., 0]),
-
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = 0$', '0p_1p_1_delta_2_zero.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 0., 2]),
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = +1$', '0p_1p_1_delta_2_plus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 1., 2]),
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 = -1$', '0p_1p_1_delta_2_minus_one.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, -1., 2]),
-    AngularDistributionPlot(r'$0^+ \to 1^+ \to 1,~\delta_2 \to +\infty$', '0p_1p_1_delta_2_plus_infinity.pdf', [0, 1, 1, 2, -1, 4, 0., 2, 1, 2, 4, 100., 2]),
-
-    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 = 0$', '0p_1m_1_delta_2_zero.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 0., 2]),
-    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 = +1$', '0p_1m_1_delta_2_plus_one.pdf', [0, 1, -1, 2, 1, 4, 0., 2, -1, 2, 4, 1., 2]),
-    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 = -1$', '0p_1m_1_delta_2_minus_one.pdf', [0, 1, -1, 2, 1, 4, 0., 2, 1, 2, 4, -1., 2]),
-    AngularDistributionPlot(r'$0^+ \to 1^- \to 1,~\delta_2 \to +\infty$', '0p_1m_1_delta_2_plus_infinity.pdf', [0, 1, -1, 2, 1, 4, 0., 2, 1, 2, 4, 100., 2]),
-
-    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = 0$', '1_2p_3_2p_1_2_delta_1_zero_delta_2_zero.pdf', [1, 1, 1, 2, -1, 4, 0., 3, 1, 2, 4, 0., 1]),
-    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = +1$', '1_2p_3_2p_1_2_delta_1_plus_one_delta_2_plus_one.pdf', [1, 1, 1, 2, -1, 4, 1., 3, 1, 2, 4, 1., 1]),
-    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = -1$', '1_2p_3_2p_1_2_delta_1_minus_one_delta_2_minus_one.pdf', [1, 1, 1, 2, -1, 4, -1., 3, 1, 2, 4, -1., 1]),
-    AngularDistributionPlot(r'$1/2^+ \to 3/2^+ \to 1/2,~\delta_1 = \delta_2 = +\infty$', '1_2p_3_2p_1_2_delta_1_plus_infinity_delta_2_plus_infinity.pdf', [1, 1, 1, 2, -1, 4, 100., 3, 1, 2, 4, 100., 1]),
-
-    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = 2.3,~\delta_2 = 1.3$', '3_2p_7_2p_5_2_delta_1_plus_2.3_delta_2_plus_1.3.pdf', [3, 1, -1, 4, 1, 6, 2.3, 7, 1, 2, 4, 1.3, 5]),
-    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = 2.3,~\delta_2 = -1.3$', '3_2p_7_2p_5_2_delta_1_plus_2.3_delta_2_minus_1.3.pdf', [3, 1, -1, 4, 1, 6, 2.3, 7, 1, 2, 4, -1.3, 5]),
-    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = -2.3,~\delta_2 = 1.3$', '3_2p_7_2p_5_2_delta_1_minus_2.3_delta_2_plus_1.3.pdf', [3, 1, -1, 4, 1, 6, -2.3, 7, 1, 2, 4, 1.3, 5]),
-    AngularDistributionPlot(r'$3/2^+ \to 7/2^+ \to 5/2,~\delta_1 = -2.3,~\delta_2 = -1.3$', '3_2p_7_2p_5_2_delta_1_minus_2.3_delta_2_minus_1.3.pdf', [3, 1, -1, 4, 1, 6, -2.3, 7, 1, 2, 4, -1.3, 5]),
-
-    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = 2.3,~\delta_2 = 1.3$', '3_2_7_2_5_2_delta_1_plus_2.3_delta_2_plus_1.3.pdf', [3, 4, 6, 2.3, 7, 2, 4, 1.3, 5]),
-    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = 2.3,~\delta_2 = -1.3$', '3_2_7_2_5_2_delta_1_plus_2.3_delta_2_minus_1.3.pdf', [3, 4, 6, 2.3, 7, 2, 4, -1.3, 5]),
-    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = -2.3,~\delta_2 = 1.3$', '3_2_7_2_5_2_delta_1_minus_2.3_delta_2_plus_1.3.pdf', [3, 4, 6, -2.3, 7, 2, 4, 1.3, 5]),
-    AngularDistributionPlot(r'$3/2 \to 7/2 \to 5/2,~\delta_1 = -2.3,~\delta_2 = -1.3$', '3_2_7_2_5_2_delta_1_minus_2.3_delta_2_minus_1.3.pdf', [3, 4, 6, -2.3, 7, 2, 4, -1.3, 5]),
+    AngularDistributionPlot(r'$0^+ \to 1^+ \to 0$', '0p_1p_0.pdf', 
+    State(0, POSITIVE), 
+    [
+        [Transition(MAGNETIC, 2, ELECTRIC, 4, 0.), State(2, POSITIVE)],
+        [Transition(EM_UNKNOWN, 2, EM_UNKNOWN, 4, 0.), State(0, PARITY_UNKNOWN)]
+    ]),
+    AngularDistributionPlot(r'$0^+ \to 1^- \to 0$', '0p_1m_0.pdf', 
+    State(0, POSITIVE), 
+    [
+        [Transition(ELECTRIC, 2, MAGNETIC, 4, 0.), State(2, NEGATIVE)],
+        [Transition(EM_UNKNOWN, 2, EM_UNKNOWN, 4, 0.), State(0, PARITY_UNKNOWN)]
+    ]),
+    AngularDistributionPlot(r'$0^+ \to 2^+ \to 0$', '0p_2p_0.pdf', 
+    State(0, POSITIVE), 
+    [
+        [Transition(ELECTRIC, 4, MAGNETIC, 6, 0.), State(4, POSITIVE)],
+        [Transition(EM_UNKNOWN, 4, EM_UNKNOWN, 6, 0.), State(0, PARITY_UNKNOWN)]
+    ]),
+    AngularDistributionPlot(r'$0^+ \to 2^- \to 0$', '0p_2m_0.pdf', 
+    State(0, POSITIVE), 
+    [
+        [Transition(MAGNETIC, 4, ELECTRIC, 6, 0.), State(4, NEGATIVE)],
+        [Transition(EM_UNKNOWN, 4, EM_UNKNOWN, 6, 0.), State(0, PARITY_UNKNOWN)]
+    ]),
 ]
 
 for ang_dist_plot in angular_distributions:
@@ -124,10 +131,7 @@ for ang_dist_plot in angular_distributions:
     for i in range(N_THETA):
         for j in range(N_PHI):
 
-            if len(ang_dist_plot.params) != 9:
-                ang_corr[i][j] = w_pol_dir(theta[i][j], phi[i][j], *ang_dist_plot.params)
-            else:
-                ang_corr[i][j] = w_dir_dir(theta[i][j], phi[i][j], *ang_dist_plot.params)                
+            ang_corr[i][j] = angular_correlation(theta[i][j], phi[i][j], ang_dist_plot.ini_sta, ang_dist_plot.cas_ste)            
 
             x_y_z[AXES_INDICES[AXIS_POLARIZATION_LABEL]][i][j] = ang_corr[i][j]*np.sin(theta[i][j])*np.cos(phi[i][j])
             x_y_z[AXES_INDICES[AXIS_LAST_LABEL]][i][j] = ang_corr[i][j]*np.sin(theta[i][j])*np.sin(phi[i][j])
