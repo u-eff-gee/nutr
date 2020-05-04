@@ -202,26 +202,6 @@ protected:
 	bool racah_is_nonzero(const int two_j1, const int two_j2, const int two_j3, const int two_J1, const int two_J2, const int two_J3) const;
 
 	/**
-	 * \brief Check whether three integers fulfil the triangle inequality.
-	 *
-	 * Given three integers \f$j_1\f$, \f$j_2\f$, and \f$J\f$, check whether 
-	 *
-	 * \f[
-	 *	\left| j_1 - j_2 \right| <= J <= j_1 + j_2.
-	 * \f]
-	 *
-	 * In the present implementation, the function does not check whether the given
-	 * integers are positive, as commonly assumed when applying the triangle inequality.
-	 *
-	 * \param j1 \f$j_1\f$
-	 * \param j2 \f$j_2\f$
-	 * \param J \f$J\f$
-	 *
-	 * \return \f$ \left( \left| j_1 - j_2 \right| <= J \right) \&\& \left(J <= j_1 + j_2 \right)\f$
-	 */
-	bool fulfils_triangle_inequality(const int j1, const int j2, const int J) const;
-
-	/**
 	 * \brief Check whether the sum of three integers is an even number
 	 *
 	 * \param two_j1 \f$2 j_1\f$

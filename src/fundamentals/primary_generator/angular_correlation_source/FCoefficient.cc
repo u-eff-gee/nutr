@@ -21,6 +21,7 @@
 #include <gsl/gsl_sf.h>
 
 #include "FCoefficient.hh"
+#include "TestUtilities.hh"
 
 double FCoefficient::operator()(const int two_nu, const int two_L, const int two_Lp, const int two_j1, const int two_j) const {
 	double wigner3j{
@@ -76,7 +77,7 @@ bool FCoefficient::cg_is_nonzero(const int two_j1, const int two_j2, const int t
 		return false;
 
 	// Triangle inequality for coupling.
-	if(!fulfils_triangle_inequality(two_j1, two_j2, two_J))
+	if(!fulfils_triangle_inequality<int>(two_j1, two_j2, two_J))
 		return false;
 
 	return true;
@@ -86,25 +87,15 @@ bool FCoefficient::racah_is_nonzero(const int two_j1, const int two_j2, const in
 
 	if(
 		   !sum_is_even(two_j1, two_j2, two_j3)
-		|| !fulfils_triangle_inequality(two_j1, two_j2, two_j3)
+		|| !fulfils_triangle_inequality<int>(two_j1, two_j2, two_j3)
 		|| !sum_is_even(two_j1, two_J2, two_J3)
-		|| !fulfils_triangle_inequality(two_j1, two_J2, two_J3)
+		|| !fulfils_triangle_inequality<int>(two_j1, two_J2, two_J3)
 		|| !sum_is_even(two_J1, two_j2, two_J3)
-		|| !fulfils_triangle_inequality(two_J1, two_j2, two_J3)
+		|| !fulfils_triangle_inequality<int>(two_J1, two_j2, two_J3)
 		|| !sum_is_even(two_J1, two_J2, two_j3)
-		|| !fulfils_triangle_inequality(two_J1, two_J2, two_j3)
+		|| !fulfils_triangle_inequality<int>(two_J1, two_J2, two_j3)
 	)
 		return false;
 
 	return true;
-}
-
-bool FCoefficient::fulfils_triangle_inequality(const int j1, const int j2, const int J) const {
-	if(
-		(J >= abs(j1 - j2))
-		&& (J <= j1 + j2)
-	)
-		return true;
-
-	return false;	
 }

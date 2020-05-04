@@ -17,13 +17,22 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
+#include <stdexcept>
+#include <string>
+
 #include "AngularCorrelation.hh"
+#include "TestUtilities.hh"
 #include "W_dir_dir.hh"
 #include "W_pol_dir.hh"
+
+using std::invalid_argument;
+using std::to_string;
 
 AngularCorrelation::AngularCorrelation(const State ini_sta, const vector<pair<Transition, State>> cas_ste):
     euler_angle_rotation(EulerAngleRotation()), w_gamma_gamma(nullptr)
 {
+    check_cascade(ini_sta, cas_ste);
+
     if(cas_ste[0].first.em_char == em_unknown){
         w_gamma_gamma = std::make_unique<W_dir_dir>(ini_sta, cas_ste);
     } else{
@@ -39,6 +48,28 @@ double AngularCorrelation::operator()(const double theta, const double phi, cons
     array<double, 2> thetap_phip = euler_angle_rotation.rotate_back(array<double, 2>{theta, phi}, euler_angles);
 
     return (*this)(thetap_phip[0], thetap_phip[1]);
+}
+
+void AngularCorrelation::check_cascade(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const {
+    
+    check_triangle_inequalities(ini_sta, cas_ste);
+
+}
+
+void AngularCorrelation::check_triangle_inequalities(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const {
+    if(
+        !fulfils_triangle_inequality<int>(ini_sta.two_J, cas_ste[0].second.two_J, cas_ste[0].first.two_L) && !fulfils_triangle_inequality<int>(ini_sta.two_J, cas_ste[0].second.two_J, cas_ste[0].first.two_Lp)
+    ){
+        throw invalid_argument("Triangle inequality not fulfilled for any multipolarity of transition #1: " + to_string(ini_sta.two_J/2) + " -- ( " + to_string(cas_ste[0].first.two_L/2) + " , " + to_string(cas_ste[0].first.two_Lp/2) + " ) --> " + to_string(cas_ste[0].second.two_J/2));
+    }
+
+    for(size_t i = 1; i < cas_ste.size(); ++i){
+        if(
+            !fulfils_triangle_inequality<int>(cas_ste[i-1].second.two_J, cas_ste[i].second.two_J, cas_ste[i].first.two_L) && !fulfils_triangle_inequality<int>(cas_ste[i-1].second.two_J, cas_ste[i].second.two_J, cas_ste[i].first.two_Lp)
+        ){
+            throw invalid_argument("Triangle inequality not fulfilled for any multipolarity of transition #" + to_string(i+1) + ": " + to_string(cas_ste[i-1].second.two_J/2) + " -- ( " + to_string(cas_ste[i].first.two_L/2) + " , " + to_string(cas_ste[i].first.two_Lp/2) + " ) --> " + to_string(cas_ste[i].second.two_J/2));
+        }
+    }
 }
 
 extern "C" double angular_correlation(const double theta, const double phi, const size_t n_cas_ste, int* two_J, int* par, int* em_char, int* two_L, int* em_charp, int* two_Lp, double* delta){

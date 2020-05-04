@@ -37,13 +37,17 @@ using std::vector;
 class AngularCorrelation{
 
 public:
-    AngularCorrelation(const State ini_sta, const vector<pair<Transition, State>> st);
+    AngularCorrelation(const State ini_sta, const vector<pair<Transition, State>> cas_ste);
     ~AngularCorrelation() = default;
 
     double operator()(const double theta, const double phi) const;
     double operator()(const double theta, const double phi, const array<double, 3> euler_angles) const;
 
 protected:
+    void check_cascade(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const;
+    void check_triangle_inequalities(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const;
+    void check_em_transitions() const;
+
     const EulerAngleRotation euler_angle_rotation;
     unique_ptr<W_gamma_gamma> w_gamma_gamma;
 };
