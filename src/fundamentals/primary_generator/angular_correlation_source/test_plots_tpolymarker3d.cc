@@ -128,5 +128,11 @@ int main(int argc, char *argv[]){
         marker->Draw();
     }
 
-    app->Run();
+    canvas->Modified();
+    canvas->Update();
+    canvas->SaveAs("test_plots_tpolymarker3d.pdf");    
+
+    delete app;
+    // Replace 'delete app' by the following statement to get an interactive view.
+    // app->Run();
 }

@@ -83,6 +83,12 @@ int main(int argc, char *argv[]){
     TCanvas *canvas = new TCanvas("Angular Distribution");
     TGLParametricEquation *peq = new TGLParametricEquation("Angular Distribution", angdist_wrapper, 0., TMath::Pi(), 0., TMath::TwoPi());
     peq->Draw();
-
-    app->Run();
+    canvas->Modified();
+    canvas->Update();
+    // Did not work to output a PDF image, so chose PNG instead.
+    canvas->SaveAs("test_plots_tgl.png");
+    
+    delete app;
+    // Replace 'delete app' by the following statement to get an interactive view.
+    // app->Run();
 }
