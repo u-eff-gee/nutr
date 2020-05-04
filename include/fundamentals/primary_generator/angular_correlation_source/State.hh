@@ -19,10 +19,18 @@
 
 #pragma once
 
+#include <stdexcept>
+#include <string>
+
+using std::invalid_argument;
+using std::runtime_error;
+using std::string;
+using std::to_string;
+
 /**
  * \brief Enum for the possible values of the parity quantum number.
  */
-enum Parity : int { negative = -1, positive = 1, parity_unknown = 0 };
+enum Parity : char { negative = -1, positive = 1, parity_unknown = 0 };
 
 /**
  * \brief Struct to store properties of a nuclear state.
@@ -36,7 +44,7 @@ struct State{
 	 * Parity quantum numbers are initialized as unknown.
 	 */
 	State(const int t_J):
-		two_J(t_J),
+		two_J(check_two_J(t_J)),
 		parity(parity_unknown){};
 	/**
 	 * \brief Constructor
@@ -48,4 +56,64 @@ struct State{
 
 	int two_J; /**< Angular momentum quantum number in units of the reduced Planck constant times two. */
 	Parity parity; /**< Parity quantum number */
+
+	/**
+	 * \brief String representation of parities.
+	 * 
+	 * \param parity Parity
+	 * 
+	 * \return "+" or "-"
+	 * 
+	 * \throw runtime_error if parity is neither negative (-1) or positive (1).
+	 */
+	string parity_str_rep(const Parity parity) const {
+		
+		if(parity == positive){
+			return "+";
+		} 
+		if(parity == negative){
+			return "-";
+		}
+
+		throw runtime_error("No string representation for unknown parity.");
+
+	}
+
+	/**
+	 * \brief String representation of a State.
+	 * 
+	 * If the parity is unknown, it is omitted.
+	 * 
+	 * \param state State
+	 * 
+	 * \return String representation
+	 */
+	string str_rep() const {
+		if(parity != parity_unknown){
+			return to_string(two_J/2) + "^" + parity_str_rep(parity); 
+		}
+
+		return to_string(two_J/2);
+	}
+	
+	/**
+	 * \brief Ensure that given angular momentum quantum number is valid.
+	 * 
+	 * The reason why two_J was defined as an 'int' and not an 'unsigned int' is because the 
+	 * GSL functions accepts 'int'.
+	 * 
+	 * \param int two_J
+	 * 
+	 * \returns two_J, if it is valid
+	 * 
+	 * \throw std::invalid_argument if two_J is invalid
+	 */
+	int check_two_J(const int two_J) const {
+		
+		if(two_J < 0){
+			throw invalid_argument("two_J must be a nonnegative integer.");
+		}
+
+		return two_J;
+	}
 };

@@ -115,6 +115,10 @@ add_executable(test_angular_correlation test_angular_correlation.cc)
 target_link_libraries(test_angular_correlation angular_correlation w_dir_dir w_pol_dir ${GSL_LIBRARIES})
 add_test(test_angular_correlation test_angular_correlation)
 
+add_executable(test_angular_correlation_io test_angular_correlation_io.cc)
+target_link_libraries(test_angular_correlation_io angular_correlation)
+add_test(test_angular_correlation_io test_angular_correlation_io)
+
 # Integration of ROOT libraries using information from the manual:
 # "Integrate ROOT into my project with CMake"
 # https://root.cern.ch/how/integrate-root-my-project-cmake (04/09/2020)

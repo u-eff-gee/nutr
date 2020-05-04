@@ -46,7 +46,8 @@ public:
 protected:
     void check_cascade(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const;
     void check_triangle_inequalities(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const;
-    void check_em_transitions() const;
+    void check_em_transitions(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const;
+    bool valid_em_character(const Parity p0, const Parity p1, const int two_L, const EMCharacter em) const;
 
     const EulerAngleRotation euler_angle_rotation;
     unique_ptr<W_gamma_gamma> w_gamma_gamma;
