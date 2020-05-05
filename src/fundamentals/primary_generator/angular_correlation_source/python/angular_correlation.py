@@ -25,7 +25,7 @@
 # This leads to repetitive calculations of the expansion coefficients of the angular correlations
 # and definitely impacts the performance.
 
-from ctypes import cdll, c_double, c_int, c_size_t, POINTER
+from ctypes import cdll, c_double, c_int, c_short, c_size_t, POINTER
 
 from state import *
 from transition import *
@@ -38,10 +38,10 @@ lib.angular_correlation.argtypes = [
     c_double,          # Azimuthal angle phi
     c_size_t,          # Number of cascade steps
     POINTER(c_int),    # Angular momenta
-    POINTER(c_int),    # Parities
-    POINTER(c_int),    # EM characters
+    POINTER(c_short),  # Parities
+    POINTER(c_short),    # EM characters
     POINTER(c_int),    # Multipolarities
-    POINTER(c_int),    # Alternative EM characters
+    POINTER(c_short),    # Alternative EM characters
     POINTER(c_int),    # Alternative multipolarities
     POINTER(c_double), # Multipole mixing ratios
 ]
@@ -53,10 +53,10 @@ lib.angular_correlation_rotated.argtypes = [
     c_double,          # Azimuthal angle phi
     c_size_t,          # Number of cascade steps
     POINTER(c_int),    # Angular momenta
-    POINTER(c_int),    # Parities
-    POINTER(c_int),    # EM characters
+    POINTER(c_short),  # Parities
+    POINTER(c_short),    # EM characters
     POINTER(c_int),    # Multipolarities
-    POINTER(c_int),    # Alternative EM characters
+    POINTER(c_short),    # Alternative EM characters
     POINTER(c_int),    # Alternative multipolarities
     POINTER(c_double), # Multipole mixing ratios
     c_double,          # Euler angle Phi
@@ -232,14 +232,14 @@ def angular_correlation(theta, phi,
     two_J = (c_int * len(two_J))(*two_J)
     par = [cas_ste[1].parity for cas_ste in cascade_steps]
     par.insert(0, initial_state.parity)
-    par = (c_int * len(par))(*par)
+    par = (c_short * len(par))(*par)
 
     em_char = [cas_ste[0].em_char for cas_ste in cascade_steps]
-    em_char = (c_int * len(em_char))(*em_char)
+    em_char = (c_short * len(em_char))(*em_char)
     two_L = [cas_ste[0].two_L for cas_ste in cascade_steps]
     two_L = (c_int * len(two_L))(*two_L)
     em_charp = [cas_ste[0].em_charp for cas_ste in cascade_steps]
-    em_charp = (c_int * len(em_charp))(*em_charp)
+    em_charp = (c_short * len(em_charp))(*em_charp)
     two_Lp = [cas_ste[0].two_Lp for cas_ste in cascade_steps]
     two_Lp = (c_int * len(two_Lp))(*two_Lp)
     delta = [cas_ste[0].delta for cas_ste in cascade_steps]

@@ -158,7 +158,7 @@ bool AngularCorrelation::valid_em_character(const Parity p0, const Parity p1, co
 
 }
 
-extern "C" double angular_correlation(const double theta, const double phi, const size_t n_cas_ste, int* two_J, char* par, int* em_char, int* two_L, char* em_charp, int* two_Lp, double* delta){
+extern "C" double angular_correlation(const double theta, const double phi, const size_t n_cas_ste, int* two_J, short* par, short* em_char, int* two_L, short* em_charp, int* two_Lp, double* delta){
 
     State initial_state{two_J[0], (Parity) par[0]};
     vector<pair<Transition, State>> cascade_steps;
@@ -177,7 +177,7 @@ extern "C" double angular_correlation(const double theta, const double phi, cons
     return ang_corr(theta, phi);
 }
 
-extern "C" double angular_correlation_rotated(const double theta, const double phi, const size_t n_cas_ste, int* two_J, char* par, int* em_char, int* two_L, char* em_charp, int* two_Lp, double* delta, const double Phi, const double Theta, const double Psi){
+extern "C" double angular_correlation_rotated(const double theta, const double phi, const size_t n_cas_ste, int* two_J, short* par, short* em_char, int* two_L, short* em_charp, int* two_Lp, double* delta, const double Phi, const double Theta, const double Psi){
 
     State initial_state{two_J[0], (Parity) par[0]};
     vector<pair<Transition, State>> cascade_steps;

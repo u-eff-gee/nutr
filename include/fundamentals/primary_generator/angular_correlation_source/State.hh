@@ -30,7 +30,7 @@ using std::to_string;
 /**
  * \brief Enum for the possible values of the parity quantum number.
  */
-enum Parity : char { negative = -1, positive = 1, parity_unknown = 0 };
+enum Parity : short { negative = -1, positive = 1, parity_unknown = 0 };
 
 /**
  * \brief Struct to store properties of a nuclear state.

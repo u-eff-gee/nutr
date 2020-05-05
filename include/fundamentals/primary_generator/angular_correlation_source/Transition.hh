@@ -31,7 +31,7 @@ using std::string;
 /**
  * \brief Enum for the possible values of the electromagnetic (EM) character.
  */
-enum EMCharacter : char { electric = -1, magnetic = 1, em_unknown = 0};
+enum EMCharacter : short { electric = -1, magnetic = 1, em_unknown = 0};
 
 /**
  * \brief Struct to store properties of an EM transition between nuclear states.
