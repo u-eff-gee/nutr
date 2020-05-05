@@ -63,7 +63,7 @@ add_library(angular_correlation SHARED AngularCorrelation.cc)
 target_link_libraries(angular_correlation euler_angle_rotation w_dir_dir w_pol_dir)
 set_property(TARGET angular_correlation PROPERTY CXX_STANDARD 14)
 target_compile_options(angular_correlation PRIVATE -Wall -Wextra)
-configure_file(python/angular_correlation.in.py python/angular_correlation.py)
+configure_file(python/angular_correlation.in.py python/angular_correlation.py @ONLY)
 configure_file(python/state.py python/state.py)
 configure_file(python/transition.py python/transition.py)
 

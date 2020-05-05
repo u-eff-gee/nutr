@@ -42,20 +42,29 @@ struct State{
 	 * \brief Constructor which does not take parity information
 	 *
 	 * Parity quantum numbers are initialized as unknown.
+	 * 
+	 * \param t_J Two times the angular momentum quantum number in units of the reduced Planck constant.
+	 * 
+ 	 * \throw std::invalid_argument if two_J is invalid
 	 */
 	State(const int t_J):
 		two_J(check_two_J(t_J)),
 		parity(parity_unknown){};
 	/**
 	 * \brief Constructor
+	 * 
+	 * \param t_J Two times the angular momentum quantum number in units of the reduced Planck constant.
+	 * \param parity Parity quantum number.
+	 * 
+	 * \throw std::invalid_argument if two_J is invalid
 	 */
 	State(const int t_J, const Parity p):
 		two_J(t_J),
 		parity(p){};
 	~State() = default;
 
-	int two_J; /**< Angular momentum quantum number in units of the reduced Planck constant times two. */
-	Parity parity; /**< Parity quantum number */
+	int two_J; /**< Two times the angular momentum quantum number in units of the reduced Planck constant. */
+	Parity parity; /**< Parity quantum number. */
 
 	/**
 	 * \brief String representation of parities.

@@ -176,3 +176,22 @@ extern "C" double angular_correlation(const double theta, const double phi, cons
 
     return ang_corr(theta, phi);
 }
+
+extern "C" double angular_correlation_rotated(const double theta, const double phi, const size_t n_cas_ste, int* two_J, char* par, int* em_char, int* two_L, char* em_charp, int* two_Lp, double* delta, const double Phi, const double Theta, const double Psi){
+
+    State initial_state{two_J[0], (Parity) par[0]};
+    vector<pair<Transition, State>> cascade_steps;
+
+    for(size_t i = 0; i < n_cas_ste; ++i){
+        cascade_steps.push_back(
+            {
+                Transition{(EMCharacter) em_char[i], two_L[i], (EMCharacter) em_charp[i], two_Lp[i], delta[i]},
+                State{two_J[i+1], (Parity) par[i+1]}
+            }
+        );
+    }
+
+    AngularCorrelation ang_corr(initial_state, cascade_steps);
+
+    return ang_corr(theta, phi, {Phi, Theta, Psi});
+}

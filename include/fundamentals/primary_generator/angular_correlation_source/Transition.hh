@@ -29,21 +29,29 @@ using std::runtime_error;
 using std::string;
 
 /**
- * \brief Enum for the possible values of the electromagnetic character.
+ * \brief Enum for the possible values of the electromagnetic (EM) character.
  */
 enum EMCharacter : char { electric = -1, magnetic = 1, em_unknown = 0};
 
 /**
- * \brief Struct to store properties of a transition between nuclear states.
+ * \brief Struct to store properties of an EM transition between nuclear states.
  *
- * The transition can have two different multipolarities with their associated electromagnetic
+ * The transition can have two different multipolarities with their associated EM
  * character, whose relative intensity is given by the multipole mixing ratio.
  */
 struct Transition{
 	/**
-	 * \brief Constructor which does not take information about the electromagnetic character
+	 * \brief Constructor which does not take information about the EM character
 	 *
-	 * The electromagnetic characters are initialized as unknown.
+	 * The EM characters are initialized as unknown.
+	 * 
+	 * \param t_L Two times the multipolarity.
+	 * \param t_Lp Two times the alternative multipolarity. 
+	 * Must be different from t_L.
+	 * \param del Multipole mixing ratio.
+	 * 
+	 * \throw invalid_argument if an invalid value for \f$2 L\f$ or \f$2 L^\prime\f$ was given,
+	 * or if the two are equal.
 	 */
 	Transition(const int t_L, const int t_Lp, const double del):
 		em_char(em_unknown),
@@ -57,6 +65,16 @@ struct Transition{
 		};
 	/**
 	 * \brief Constructor
+	 * 
+	 * \param em Primary EM character.
+	 * \param t_L Two times the primary multipolarity.
+	 * \param emp Secondary EM character.
+	 * \param t_Lp Two times the secondary multipolarity. 
+	 * Must be different from t_L.
+	 * \param del Multipole mixing ratio.
+	 * 
+	 * \throw invalid_argument if an invalid value for \f$2 L\f$ or \f$2 L^\prime\f$ was given,
+	 * or if the two are equal.
 	 */
 	Transition(const EMCharacter em, const int t_L, const EMCharacter emp, const int t_Lp, const double del):
 		em_char(em),
@@ -71,9 +89,9 @@ struct Transition{
 	~Transition() = default;
 
 	/**
-	 * \brief String representation of electromagnetic characters.
+	 * \brief String representation of EM characters.
 	 * 
-	 * \param em Electromagnetic character
+	 * \param em \f$\lambda\f$, EM character
 	 * 
 	 * \return "E" or "M"
 	 * 
@@ -95,7 +113,7 @@ struct Transition{
 	/**
 	 * \brief String representation of a transition between two states.
 	 * 
-	 * If parities or electromagnetic characters are unknown, they are omitted.
+	 * If parities or EM characters are unknown, they are omitted.
 	 * At the moment, the secondary multipolarity will be shown even if the transition is pure.
 	 * 
 	 * \param initial_state Initial state of the transition
@@ -126,11 +144,11 @@ struct Transition{
 		return string_representation;
 	}
 
-	EMCharacter em_char; /**< Primary electromagnetic character */
-	int two_L; /**< Primary multipolarity times two */
-	EMCharacter em_charp; /**< Secondary electromagnetic character */
-	int two_Lp; /**< Secondary multipolarity times two */
-	double delta; /**< Multipole mixing ratio */
+	EMCharacter em_char; /**< Primary EM character. */
+	int two_L; /**< Two times the primary multipolarity. */
+	EMCharacter em_charp; /**< Secondary EM character. */
+	int two_Lp; /**< Two times the secondary multipolarity. */
+	double delta; /**< Multipole mixing ratio. */
 
 	/**
 	 * \brief Ensure that given multipolarity is valid.
