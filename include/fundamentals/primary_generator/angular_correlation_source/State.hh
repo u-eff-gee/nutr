@@ -100,7 +100,7 @@ struct State{
 	 * \brief Ensure that given angular momentum quantum number is valid.
 	 * 
 	 * The reason why two_J was defined as an 'int' and not an 'unsigned int' is because the 
-	 * GSL functions accepts 'int'.
+	 * GSL \cite Galassi2009 functions accept 'int'.
 	 * 
 	 * \param int two_J
 	 * 

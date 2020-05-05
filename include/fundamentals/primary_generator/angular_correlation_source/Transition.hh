@@ -24,6 +24,7 @@
 
 #include "State.hh"
 
+using std::invalid_argument;
 using std::runtime_error;
 using std::string;
 
@@ -49,7 +50,11 @@ struct Transition{
 		two_L(check_two_L(t_L)),
 		em_charp(em_unknown),
 		two_Lp(check_two_L(t_Lp)),
-		delta(del){};
+		delta(del){
+			if(two_L == two_Lp){
+				throw invalid_argument("The two multipolarities for a transition may not be equal. This holds even if the coupling allows only a single multipolarity.");
+			}
+		};
 	/**
 	 * \brief Constructor
 	 */
@@ -58,7 +63,11 @@ struct Transition{
 		two_L(check_two_L(t_L)),
 		em_charp(emp),
 		two_Lp(check_two_L(t_Lp)),
-		delta(del){};
+		delta(del){
+			if(two_L == two_Lp){
+				throw invalid_argument("The two multipolarities for a transition may not be equal. This holds even if the coupling allows only a single multipolarity.");
+			}
+		};
 	~Transition() = default;
 
 	/**
@@ -127,7 +136,7 @@ struct Transition{
 	 * \brief Ensure that given multipolarity is valid.
 	 * 
 	 * The reason why two_L was defined as an 'int' and not an 'unsigned int' is because the 
-	 * GSL functions accepts 'int'.
+	 * GSL \cite Galassi2009 functions accept 'int'.
 	 * 
 	 * \param int two_L
 	 * 
