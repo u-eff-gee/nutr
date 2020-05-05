@@ -48,9 +48,14 @@ array<double, 2> EulerAngleRotation::rotate_back(const array<double, 2> thetap_p
 
 array<double, 2> EulerAngleRotation::get_theta_phi(const array<double, 3> x_y_z_norm) const {
     
-    return array<double, 2>{ 
-        acos(x_y_z_norm[2]), 
-        atan(x_y_z_norm[1]/x_y_z_norm[0]) 
+    return array<double, 2>{
+        acos(x_y_z_norm[2]),
+        // atan can handle 'INFINITY', but 
+        // (double) d / (double) 0.
+        // returns nan, so this situation must be treated as a special case here.
+        atan(x_y_z_norm[0] != 0. ? 
+            x_y_z_norm[1]/x_y_z_norm[0] : 
+            x_y_z_norm[1] >=0 ? INFINITY : -INFINITY) 
     };
 
 }
