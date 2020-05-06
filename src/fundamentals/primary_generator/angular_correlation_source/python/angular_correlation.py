@@ -54,9 +54,9 @@ lib.angular_correlation_rotated.argtypes = [
     c_size_t,          # Number of cascade steps
     POINTER(c_int),    # Angular momenta
     POINTER(c_short),  # Parities
-    POINTER(c_short),    # EM characters
+    POINTER(c_short),  # EM characters
     POINTER(c_int),    # Multipolarities
-    POINTER(c_short),    # Alternative EM characters
+    POINTER(c_short),  # Alternative EM characters
     POINTER(c_int),    # Alternative multipolarities
     POINTER(c_double), # Multipole mixing ratios
     c_double,          # Euler angle Phi
@@ -255,7 +255,7 @@ def angular_correlation(theta, phi,
             delta
         )
 
-    return lib.angular_correlation(
+    return lib.angular_correlation_rotated(
         theta, phi,
         n_cas_ste,
         two_J, par,
