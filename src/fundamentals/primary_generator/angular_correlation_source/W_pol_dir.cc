@@ -28,6 +28,7 @@ using std::min;
 W_pol_dir::W_pol_dir(const State &ini_sta, const vector<pair<Transition, State>> cas_ste):
 W_gamma_gamma(ini_sta, cas_ste), av_coef(AvCoefficient()), alphav_coef(AlphavCoefficient()), w_dir_dir(W_dir_dir(ini_sta, cas_ste))
 {
+	
 	two_nu_max = w_dir_dir.get_two_nu_max();
 	nu_max = two_nu_max/2;
 	expansion_coefficients = calculate_expansion_coefficients();
@@ -59,8 +60,8 @@ vector<double> W_pol_dir::calculate_expansion_coefficients() const {
 		vector<double> exp_coef_Uv = w_dir_dir.calculate_expansion_coefficients_Uv();
 		vector<double> exp_coef(exp_coef_Uv.size(), 0.);
 
-		for(size_t i = 0; i < exp_coef_Uv.size(); ++i){
-			exp_coef[i] = exp_coef_alphav_Av[i]*exp_coef_Uv[i];
+		for(size_t i = 1; i < exp_coef_Uv.size(); ++i){
+			exp_coef[i-1] = exp_coef_alphav_Av[i-1]*exp_coef_Uv[i];
 		}
 
 		return exp_coef;
