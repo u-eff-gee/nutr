@@ -40,6 +40,12 @@ int main(){
     array<double, 3> y_axis{0., 1., 0.};
     array<double, 2> y_axis_sph{M_PI_2, M_PI_2};
     array<double, 3> z_axis{0., 0., 1.};
+    // Warning: On the z axis, the angle phi in spherical coordinates is actually undefined.
+    // Therefore, a test in which, after a rotation into the z axis, Cartesian coordinates are
+    // converted back into spherical coordinates, may not result in the coordinates theta = 0,
+    // phi =0.
+    // This is taken into account in the tests by only requiring that the value of theta is 
+    // (numerically close to) zero.
     array<double, 2> z_axis_sph{0., 0.};
 
     array<double, 3> euler_angles{0., 0., 0.};
@@ -102,6 +108,9 @@ int main(){
     test_numerical_equality<double>(2, thetap_phip.data(), z_axis_sph.data(), epsilon);
     test_numerical_equality<double>(2, eul_ang_rot.rotate_back(thetap_phip, euler_angles).data(), y_axis_sph.data(), epsilon);
 
+    // From here on, note the special role of the z axis in spherical coordinates which leads
+    // to arbitrary values for phi.
+
     // Rotate z axis into x axis
     // Phi   = 0
     // Theta = pi/2
@@ -114,7 +123,7 @@ int main(){
 
     thetap_phip = eul_ang_rot.rotate(z_axis_sph, euler_angles);
     test_numerical_equality<double>(2, thetap_phip.data(), x_axis_sph.data(), epsilon);
-    test_numerical_equality<double>(2, eul_ang_rot.rotate_back(thetap_phip, euler_angles).data(), z_axis_sph.data(), epsilon);
+    test_numerical_equality<double>(eul_ang_rot.rotate_back(thetap_phip, euler_angles)[0], z_axis_sph[0], epsilon);
 
     // Rotate z axis into y axis
     // Phi   = 0
@@ -128,7 +137,7 @@ int main(){
     
     thetap_phip = eul_ang_rot.rotate(z_axis_sph, euler_angles);
     test_numerical_equality<double>(2, thetap_phip.data(), y_axis_sph.data(), epsilon);
-    test_numerical_equality<double>(2, eul_ang_rot.rotate_back(thetap_phip, euler_angles).data(), z_axis_sph.data(), epsilon);
+    test_numerical_equality<double>(eul_ang_rot.rotate_back(thetap_phip, euler_angles)[0], z_axis_sph[0], epsilon);
 
     // Rotate z axis into z axis (trivial)
     // Phi   = 0
@@ -141,7 +150,7 @@ int main(){
     test_numerical_equality<double>(3, eul_ang_rot.rotate_back(xp_yp_zp, euler_angles).data(), z_axis.data(), epsilon);
 
     thetap_phip = eul_ang_rot.rotate(z_axis_sph, euler_angles);
-    test_numerical_equality<double>(2, thetap_phip.data(), z_axis_sph.data(), epsilon);
-    test_numerical_equality<double>(2, eul_ang_rot.rotate_back(thetap_phip, euler_angles).data(), z_axis_sph.data(), epsilon);
+    test_numerical_equality<double>(thetap_phip[0], z_axis_sph[0], epsilon);
+    test_numerical_equality<double>(eul_ang_rot.rotate_back(thetap_phip, euler_angles)[0], z_axis_sph[0], epsilon);
 
 }
