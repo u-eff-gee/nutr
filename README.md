@@ -32,7 +32,7 @@ A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4
 * [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is optional for building some tests of `nutr`. However, since the output is written in the ROOT format by default, it is highly recommended.
 * [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional) 
-* [python3](https://www.python.org/) to import the angular correlation function wrappers in python code (optional)
+* [python3](https://www.python.org/) to import the angular correlation function wrappers in python code, and the [matplotlib](https://matplotlib.org/) and [numpy](https://numpy.org/) packages to be able to reproduce the test plots (optional).
 
 In the following, the directory where the top-level `CMakeLists.txt` is located in a downloaded version of `nutr` is denoted as `NUTR_SOURCE_DIR`.
 In a build directory `NUTR_BUILD_DIR`, execute:
@@ -72,7 +72,9 @@ Copyright (C) 2020 Udo Friman-Gayer (ufg@email.unc.edu)
 
 ## 4. Acknowledgements
 
-UFG would like to thank Professor Christian Iliadis for enlightening discussions about the angular correlation formalism and for help with debugging the associated modules.
+The author would like to thank C. Iliadis for enlightening discussions about the angular correlation formalism and for help with debugging the associated modules.
+The author would also like to thank O. Papst for helpful discussions about the angular correlation formalism and advertise OP's angular correlation code [angcorrwat](https://github.com/op3/angcorrwat).
+`angcorrwat` is complementary to the present code in the sense that it uses the python package [sympy](https://www.sympy.org/) to obtain symbolic expressions for the angular correlations.
 
 ## 5. References
 
