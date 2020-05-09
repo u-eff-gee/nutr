@@ -23,6 +23,7 @@
 #include <gsl/gsl_sf.h>
 
 #include "KappaCoefficient.hh"
+#include "TestUtilities.hh"
 
 using std::invalid_argument;
 
@@ -31,6 +32,11 @@ double KappaCoefficient::operator()(const int two_nu, const int two_L, const dou
     const int nu = two_nu/2;
     if(nu < 2){
         throw invalid_argument("nu must be an integer larger than 1.");
+    }
+
+    // Avoid division by zero.
+    if(!fulfils_triangle_inequality<int>(two_L, two_Lp, two_nu)){
+        return 0.;
     }
 
     /*
