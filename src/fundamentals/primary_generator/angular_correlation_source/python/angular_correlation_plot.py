@@ -15,6 +15,8 @@
 
 # Copyright (C) 2020 Udo Friman-Gayer
 
+from time import time
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
@@ -32,6 +34,8 @@ class AngularCorrelationPlotGrid:
         self.ang_corr_list = ang_corr_list
 
     def plot(self, file_name):
+        t_start = time()
+
         EULER_ANGLES = (0., 0.5*np.pi, 0.5*np.pi)
 
         N_THETA = 100
@@ -105,3 +109,4 @@ class AngularCorrelationPlotGrid:
                 fig.colorbar(mpl.cm.ScalarMappable(norm=mpl.colors.Normalize(vmin=color_map_min, vmax=color_map_max), cmap=(plt.get_cmap('jet'))), shrink=0.8, label=r'$W(\theta, \varphi)$')
 
         plt.savefig(file_name)
+        print('Created output file {}. Execution took {:4.2f} seconds.'.format(file_name, time() - t_start))

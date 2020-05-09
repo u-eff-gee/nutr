@@ -173,6 +173,10 @@ configure_file(python/test_plot_11_0.5p_2.5p_0.5.py python/test_plot_11_0.5p_2.5
 configure_file(python/test_plot_12_1.5p_1.5p_1.5.py python/test_plot_12_1.5p_1.5p_1.5.py)
 configure_file(python/test_plot_13_1.5p_2.5p_1.5.py python/test_plot_13_1.5p_2.5p_1.5.py)
 configure_file(python/test_plot_14_1.5p_3.5p_1.5.py python/test_plot_14_1.5p_3.5p_1.5.py)
+configure_file(python/test_plot_15_2.5p_1.5p_2.5.py python/test_plot_15_2.5p_1.5p_2.5.py)
+configure_file(python/test_plot_16_2.5p_2.5p_2.5.py python/test_plot_16_2.5p_2.5p_2.5.py)
+configure_file(python/test_plot_17_2.5p_3.5p_2.5.py python/test_plot_17_2.5p_3.5p_2.5.py)
+configure_file(python/test_plot_18_2.5p_4.5p_2.5.py python/test_plot_18_2.5p_4.5p_2.5.py)
 
-configure_file(python/test_plot_06_0_1_1_0.py python/test_plot_06_0_1_1_0.py)
-configure_file(python/test_plot_07_0_2_2_0.py python/test_plot_07_0_2_2_0.py)
+configure_file(python/test_plot_19_0_1_1_0.py python/test_plot_19_0_1_1_0.py)
+configure_file(python/test_plot_20_0_2_2_0.py python/test_plot_20_0_2_2_0.py)

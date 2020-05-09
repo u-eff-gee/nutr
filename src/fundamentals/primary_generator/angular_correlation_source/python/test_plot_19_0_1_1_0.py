@@ -78,4 +78,4 @@ ang_corr_grid = AngularCorrelationPlotGrid([
     ],
 ])
 
-ang_corr_grid.plot(Path('@PROJECT_BINARY_DIR@') / 'test_plot_06_0_1_1_0.pdf')
+ang_corr_grid.plot(Path('@PROJECT_BINARY_DIR@') / 'test_plot_19_0_1_1_0.pdf')
