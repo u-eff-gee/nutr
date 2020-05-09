@@ -120,7 +120,7 @@ struct State{
 			return spin_str_rep(two_J) + "^" + parity_str_rep(parity); 
 		}
 
-		return spin_str_rep(two_J) + parity_str_rep(parity);
+		return spin_str_rep(two_J);
 	}
 	
 	/**
