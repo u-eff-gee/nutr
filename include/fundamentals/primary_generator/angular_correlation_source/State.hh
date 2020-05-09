@@ -89,6 +89,23 @@ struct State{
 	}
 
 	/**
+	 * \brief String representation of angular momentum quantum numbers.
+	 * 
+	 * \param two_J Two times the angular momentum quantum number in units of the reduced Planck constant.
+	 * 
+	 * \return String representation
+	 */
+	string spin_str_rep(const int two_J) const {
+
+		if(two_J % 2 == 0){
+			return to_string(two_J/2);
+		}
+
+		return to_string(two_J) + "/2";
+		
+	}
+
+	/**
 	 * \brief String representation of a State.
 	 * 
 	 * If the parity is unknown, it is omitted.
@@ -98,11 +115,12 @@ struct State{
 	 * \return String representation
 	 */
 	string str_rep() const {
+
 		if(parity != parity_unknown){
-			return to_string(two_J/2) + "^" + parity_str_rep(parity); 
+			return spin_str_rep(two_J) + "^" + parity_str_rep(parity); 
 		}
 
-		return to_string(two_J/2);
+		return spin_str_rep(two_J) + parity_str_rep(parity);
 	}
 	
 	/**

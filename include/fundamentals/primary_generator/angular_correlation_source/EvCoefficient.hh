@@ -47,7 +47,7 @@
  * In the equation above, the symbol \f$\sigma_L\f$ is equal to \f$1\f$ if the transition with 
  * multipolarity \f$L\f$ has magnetic character, and \f$0\f$ for electric character.
  * Note that Eq. (85) in Ref. \cite AjzenbergSelove1960, which first introduces the coefficients 
- * \f$E_\nuf$, includes an additional factor \f$\sin \left( \beta \right)\f$, where the angle
+ * \f$E_\nu\f$, includes an additional factor \f$\sin \left( \beta \right)\f$, where the angle
  * \f$\beta\f$ denotes the polar angle between the photon's direction of motion and its 
  * polarization. Here, \f$\beta = 90^\circ\f$, or \f$\sin \left( \beta \right) = 1\f$ was assumed.
  * 

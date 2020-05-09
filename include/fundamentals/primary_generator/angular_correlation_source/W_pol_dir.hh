@@ -73,7 +73,7 @@ public:
 	 * transition.
 	 * Explicitly, \f$\left( \pm \right)_{L_1^\prime} = +1\f$ if it has electric character, and 
 	 * \f$\left( \pm \right)_{L_1^\prime} = -1\f$ if it has magnetic character.
-	 * The \f$\cos \left( 2\varphi \right)\f$ term introduces a dependence on the azimuthal angle $\varphi$ with respect to the polarization axis of the first photon.
+	 * The \f$\cos \left( 2\varphi \right)\f$ term introduces a dependence on the azimuthal angle \f$\varphi\f$ with respect to the polarization axis of the first photon.
 	 * In Ref. \cite Kneissl1996, the symbol \f$\kappa_\nu \left( L_1, L_1^\prime \right)\f$ is 
 	 * called the 'polarization coefficient'.
 	 * It is defined in Eq. (I-7) of Ref. \cite FaggHanna1959.
