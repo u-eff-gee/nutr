@@ -39,11 +39,14 @@ class AngularCorrelationPlotGrid:
 
         XLABEL = 'Beam direction'
         YLABEL = 'Polarization axis'
-        ZLABEL = 'z'
+        ZLABEL = ''
 
         XLIM = (-2., 2.)
+        XTICKS = (-2., -1., 0., 1., 2.)
         YLIM = (-2., 2.)
+        YTICKS = (-2., -1., 0., 1., 2.)
         ZLIM = (-2., 2.)
+        ZTICKS = (-2., -1., 0., 1., 2.)
 
         theta, phi = np.meshgrid(np.linspace(0., np.pi, N_THETA),
                                 np.linspace(0., 2.*np.pi, N_PHI))
@@ -54,7 +57,7 @@ class AngularCorrelationPlotGrid:
         ang_corr = np.zeros(np.shape(theta))
         x_y_z = np.zeros((3, np.shape(theta)[0], np.shape(theta)[1]))
 
-        fig = plt.figure(figsize=(16, 8))
+        fig = plt.figure(figsize=(5.3*n_columns, 4*n_lines))
 
         for lin in range(n_lines):
             for col in range(n_columns):
@@ -76,11 +79,13 @@ class AngularCorrelationPlotGrid:
                 ax.set_title(self.ang_corr_list[lin][col].title)
                 ax.set_xlabel(XLABEL)
                 ax.set_xlim(XLIM)
+                ax.set_xticks(XTICKS)
                 ax.set_ylabel(YLABEL)
                 ax.set_ylim(YLIM)
+                ax.set_yticks(YTICKS)
                 ax.set_zlabel(ZLABEL)
                 ax.set_zlim(ZLIM)
-
+                ax.set_zticks(ZTICKS)
 
                 # Note the importance of the choice of the color scheme.
                 # While the 'rainbow' or 'jet' color schemes of matplotlib give appealing and colorful,
