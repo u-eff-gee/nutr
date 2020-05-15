@@ -56,10 +56,23 @@ void AngularCorrelation::check_cascade(const State ini_sta, const vector<pair<Tr
         throw invalid_argument("Cascade must have at least two transition - state pairs.");
     }
 
+    check_angular_momenta(ini_sta, cas_ste);
+
     check_triangle_inequalities(ini_sta, cas_ste);
 
     check_em_transitions(ini_sta, cas_ste);
 
+}
+
+void AngularCorrelation::check_angular_momenta(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const {
+
+    const int even_odd = ini_sta.two_J % 2;
+
+    for(size_t i = 0; i < cas_ste.size(); ++i){
+        if(cas_ste[i].second.two_J % 2 != even_odd){
+            throw invalid_argument("Unphysical mixing of half-integer and integer spins in cascade.");
+        }
+    }
 }
 
 void AngularCorrelation::check_triangle_inequalities(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const {

@@ -234,6 +234,23 @@ protected:
     void check_cascade(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const;
 
 /**
+ * \brief Check whether angular momenta are either all half integer or all integer.
+ * 
+ * Since photons are particles with a helicity ('spin') of \f$1 \hbar\f$, half-integer momentum 
+ * transfers in transitions are not possible (see, e.g., Sec. XXI.IV.26 in \cite Messiah19622 or 
+ * any textbook on the quantization of electromagnetic radiation).
+ * Therefore, a series of states must have uniformly half-integer or integer angular momentum
+ * quantum numbers.
+ * 
+ * \param ini_sta Initial state of the cascade.
+ * \param cas_ste Cascade steps, given as a list of arbitrary length which contains 
+ * Transition-State pairs.
+ * 
+ * \throw invalid_argument if a mixed use of half-integer and integer angular momentum quantum 
+ * numbers is detected.
+ */
+    void check_angular_momenta(const State ini_sta, const vector<pair<Transition, State>> cas_ste) const;
+/**
  * \brief Check triangle inequality for all cascade steps.
  * 
  * Checks whether at least one of

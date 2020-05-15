@@ -82,6 +82,7 @@ int main(){
     }
 
     assert(error_thrown);
+    error_thrown = false;
 
     // Error: EM character given, but first spin missing
     try{
@@ -210,6 +211,29 @@ int main(){
     } catch(const std::invalid_argument e) {
         error_thrown = true;
     }
+
+    assert(error_thrown);
+    error_thrown = false;
+
+    // Error: Mixing of half-integer and integer spins
+    try{
+        AngularCorrelation ang_corr(
+            State(0, positive), 
+            {
+                {
+                    Transition(electric, 2, magnetic, 4, 0.),
+                    State(1, negative)
+                },
+                {
+                    Transition(electric, 2, magnetic, 4, 0.),
+                    State(0, positive)
+                }
+            }
+        );
+    } catch(const std::invalid_argument e) {
+        error_thrown = true;
+    }
+
 
     assert(error_thrown);
     error_thrown = false;
