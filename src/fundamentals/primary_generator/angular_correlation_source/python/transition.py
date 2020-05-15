@@ -27,6 +27,15 @@ EM_UNKNOWN = 0
 ## EM character: magnetic
 MAGNETIC = 1
 
+def em_str_rep(em):
+    
+    if em == ELECTRIC:
+        return 'E'
+    if em == MAGNETIC:
+        return 'M'
+
+    return ' '
+
 class Transition:
     """Class to store properties of an EM transition between nuclear states.
 
@@ -73,3 +82,20 @@ class Transition:
         self.two_Lp = t_Lp
         ## Multipole mixing ratio.
         self.delta = de
+
+    def __str__(self):
+
+        str_rep = ''
+        str_repp = ''
+
+        if self.em_char != EM_UNKNOWN:
+            str_rep = em_str_rep(self.em_char) + str(int(self.two_L/2))
+        else:
+            str_rep = str(int(self.two_L/2))
+
+        if self.em_charp != EM_UNKNOWN:
+            str_repp = em_str_rep(self.em_charp) + str(int(self.two_Lp/2))
+        else:
+            str_repp = str(int(self.two_Lp/2))
+
+        return str_rep + '\n' + str_repp

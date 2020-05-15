@@ -28,6 +28,21 @@ POSITIVE = 1
 ## Parity: negative
 NEGATIVE = -1
 
+
+def parity_str_rep(parity):
+    if parity == POSITIVE:
+        return '+'
+    if parity == NEGATIVE:
+        return '-'
+
+    raise ValueError('No string representation for unknown parity.')
+
+def spin_str_rep(two_J):
+    if two_J % 2 == 0:
+        return str(int(two_J/2))
+
+    return str(two_J) + '/2'
+
 class State:
     """Class to store properties of a nuclear state
 
@@ -53,3 +68,10 @@ class State:
         self.two_J = t_J 
         ## Parity quantum number
         self.parity = par
+
+    def __str__(self):
+
+        if self.parity != PARITY_UNKNOWN:
+            return spin_str_rep(self.two_J) + '^' + parity_str_rep(self.parity)
+        
+        return spin_str_rep(self.two_J)
