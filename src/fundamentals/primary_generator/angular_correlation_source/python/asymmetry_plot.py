@@ -19,6 +19,7 @@ import os
 import warnings
 os.chdir('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_correlation_source/python/')
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from mpl_toolkits.mplot3d import axes3d
@@ -465,19 +466,200 @@ class AsymmetryPlotter:
                     levels=contour_levels, colors=color_shadow, alpha=alpha_shadow)
         ax2.set_xlabel('arctan(' + delta_labels[0] + ')', fontsize=fontsize_axis_label)
         ax2.set_ylabel('arctan(' + delta_labels[1] + ')', fontsize=fontsize_axis_label)
-        
+
         ax2y = ax2.twinx()
         ax2y.set_ylim(self.arctan_del_lim)
         ax2y.set_ylabel(delta_labels[1], fontsize=fontsize_axis_label)
         ax2y.set_yticks(self.del_ticks)
         ax2y.set_yticklabels(self.del_tick_labels) 
-        
+
         ax3 = plt.subplot(gs[3])
         cb2 = fig.colorbar(cs2, ax3)
         cb2.set_label(self.asy_90_label, fontsize=fontsize_axis_label)
 
         plt.tight_layout()
         
+        if output_file:
+            plt.savefig(output_file)
+
+    def plot_double_contour_inverse(self, delta_labels, output_file=None):
+
+        if isinstance(self.asy_45[0], (int, float)):
+            raise ValueError('Inverse contour plot requested when only one multipole mixing ratio was varied. This is not possible.')
+
+        fontsize_ticks = 9
+
+        label_delta_min = r'$\delta_{min}$'
+        label_delta_max = r'$\delta_{max}$'
+        label_delta_diff = label_delta_max + ' - ' + label_delta_min
+
+        label_arctan_delta_min = r'$\mathrm{arctan}(\delta_{min})$'
+        label_arctan_delta_max = r'$\mathrm{arctan}(\delta_{max})$'
+        label_arctan_delta_diff = label_arctan_delta_max + ' - ' + label_arctan_delta_min
+
+        arctan_delta_ticks_diff = [0., 0.25*np.pi, 0.5*np.pi, 0.75*np.pi, np.pi]
+        arctan_delta_labels_diff = [r'$0$', r'$\pi/4$', '$\pi/2$', r'$3\pi/4$', r'$\pi$']
+
+        arctan_deltas_1, arctan_deltas_2 = np.meshgrid(self.arctan_deltas, self.arctan_deltas)
+
+        n_bins = 100
+        bins_asy_45 = np.linspace(self.asy_45_lim[0], self.asy_45_lim[1], n_bins)
+        bins_asy_90 = np.linspace(self.asy_90_lim[0], self.asy_90_lim[1], n_bins)
+
+        hist_min_1 = np.ones((n_bins, n_bins))*np.pi
+        hist_max_1 = np.ones((n_bins, n_bins))*-np.pi
+        hist_counts_1 = np.zeros((n_bins, n_bins))
+        hist_min_2 = np.ones((n_bins, n_bins))*np.pi
+        hist_max_2 = np.ones((n_bins, n_bins))*-np.pi
+        hist_counts_2 = np.zeros((n_bins, n_bins))
+
+        for i in range(len(self.arctan_deltas)):
+            for j in range(len(self.arctan_deltas)):
+                asy_45_value = self.asy_45[i][j]
+                asy_90_value = self.asy_90[i][j]
+
+                asy_45_bin = np.argmin(np.abs(bins_asy_45-asy_45_value))
+                asy_90_bin = np.argmin(np.abs(bins_asy_90-asy_90_value))
+
+                arctan_delta_1 = arctan_deltas_1[i][j]
+                
+                if arctan_delta_1 < hist_min_1[asy_90_bin][asy_45_bin]:
+                    hist_min_1[asy_90_bin][asy_45_bin] = arctan_delta_1
+                if arctan_delta_1 > hist_max_1[asy_90_bin][asy_45_bin]:
+                    hist_max_1[asy_90_bin][asy_45_bin] = arctan_delta_1
+                hist_counts_1[asy_90_bin][asy_45_bin] += 1
+
+                arctan_delta_2 = arctan_deltas_2[i][j]
+
+                if arctan_delta_2 < hist_min_2[asy_90_bin][asy_45_bin]:
+                    hist_min_2[asy_90_bin][asy_45_bin] = arctan_delta_2
+                if arctan_delta_2 > hist_max_2[asy_90_bin][asy_45_bin]:
+                    hist_max_2[asy_90_bin][asy_45_bin] = arctan_delta_2
+                hist_counts_2[asy_90_bin][asy_45_bin] += 1
+
+        bins_asy_45_grid, bins_asy_90_grid = np.meshgrid(bins_asy_45, bins_asy_90)
+
+        hist_min_1[hist_counts_1 < 1] = np.nan
+        hist_max_1[hist_counts_1 < 1] = np.nan
+        hist_min_2[hist_counts_2 < 1] = np.nan
+        hist_max_2[hist_counts_2 < 1] = np.nan
+
+        fig = plt.figure(figsize=(10, 12))
+        gs = gridspec.GridSpec(3, 4, width_ratios=(1, 0.1, 1., 0.1))
+
+        ax0 = plt.subplot(gs[0])
+        ax0.set_title(r'First column: $\delta_1$')
+        ax0.tick_params(labelsize=fontsize_ticks)
+        ax0.set_xticklabels([])
+        ax0.set_ylabel(r'$A(\theta = 90^\circ)$')
+        ax0.grid()
+        cs0 = ax0.contourf(
+            bins_asy_45_grid,
+            bins_asy_90_grid,
+            hist_max_1,
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+        )
+        ax1 = plt.subplot(gs[1])
+        cb0 = fig.colorbar(cs0, ax1)
+        cb0.set_label(label_delta_max)
+        cb0.ax.tick_params(labelsize=fontsize_ticks)
+        cb0.set_ticks(self.del_ticks)
+        cb0.ax.set_yticklabels(self.del_tick_labels)
+
+        ax2 = plt.subplot(gs[2])
+        ax2.set_title(r'Second column: $\delta_2$')
+        ax2.tick_params(labelsize=fontsize_ticks)
+        ax2.set_xticklabels([])
+        ax2.set_yticklabels([])
+        ax2.grid()
+        cs2 = ax2.contourf(
+            bins_asy_45_grid,
+            bins_asy_90_grid,
+            hist_max_2,
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+        )
+        ax3 = plt.subplot(gs[3])
+        cb2 = fig.colorbar(cs2, ax3)
+        cb2.set_label(label_arctan_delta_max)
+        cb2.ax.tick_params(labelsize=fontsize_ticks)
+        cb2.set_ticks(self.arctan_del_ticks)
+        cb2.ax.set_yticklabels(self.arctan_del_tick_labels)
+
+        ax4 = plt.subplot(gs[4])
+        ax4.tick_params(labelsize=fontsize_ticks)
+        ax4.set_xticklabels([])
+        ax4.set_ylabel(r'$A(\theta = 90^\circ)$')
+        ax4.grid()
+        cs4 = ax4.contourf(
+            bins_asy_45_grid,
+            bins_asy_90_grid,
+            hist_min_1,
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+        )
+        ax5 = plt.subplot(gs[5])
+        cb4 = fig.colorbar(cs4, ax5)
+        cb4.set_label(label_delta_min)
+        cb4.ax.tick_params(labelsize=fontsize_ticks)
+        cb4.set_ticks(self.del_ticks)
+        cb4.ax.set_yticklabels(self.del_tick_labels)
+
+        ax6 = plt.subplot(gs[6])
+        ax6.tick_params(labelsize=fontsize_ticks)
+        ax6.set_xticklabels([])
+        ax6.set_yticklabels([])
+        ax6.grid()
+        cs6 = ax6.contourf(
+            bins_asy_45_grid,
+            bins_asy_90_grid,
+            hist_min_2,
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+        )
+        ax7 = plt.subplot(gs[7])
+        cb6 = fig.colorbar(cs6, ax7)
+        cb6.set_label(label_arctan_delta_min)
+        cb6.ax.tick_params(labelsize=fontsize_ticks)
+        cb6.set_ticks(self.arctan_del_ticks)
+        cb6.ax.set_yticklabels(self.arctan_del_tick_labels)
+
+        ax8 = plt.subplot(gs[8])
+        ax8.tick_params(labelsize=fontsize_ticks)
+        ax8.set_xlabel(r'$A(\theta = 45^\circ)$')
+        ax8.grid()
+        ax8.set_ylabel(r'$A(\theta = 90^\circ)$')
+        cs8 = ax8.contourf(
+            bins_asy_45_grid,
+            bins_asy_90_grid,
+            hist_max_1 - hist_min_1, 
+            cmap='inferno', levels=np.linspace(0., np.pi, 9)
+        )
+        ax9 = plt.subplot(gs[9])
+        cb9 = fig.colorbar(cs8, ax9)
+        cb9.set_label(label_arctan_delta_diff)
+        cb9.ax.tick_params(labelsize=fontsize_ticks)
+        cb9.set_ticks(arctan_delta_ticks_diff)
+        cb9.ax.set_yticklabels(arctan_delta_labels_diff)
+
+        ax10 = plt.subplot(gs[10])
+        ax10.tick_params(labelsize=fontsize_ticks)
+        ax10.set_xlabel(r'$A(\theta = 45^\circ)$')
+        ax10.set_yticklabels([])
+        ax10.grid()
+        cs10 = ax10.contourf(
+            bins_asy_45_grid,
+            bins_asy_90_grid,
+            hist_max_2 - hist_min_2,
+            cmap='inferno', levels=np.linspace(0., np.pi, 9)
+        )
+        ax11 = plt.subplot(gs[11])
+        cb10 = fig.colorbar(cs10, ax11)
+        cb10.set_label(label_arctan_delta_diff)
+        cb10.ax.tick_params(labelsize=fontsize_ticks)
+        cb10.set_ticks(arctan_delta_ticks_diff)
+        cb10.ax.set_yticklabels(arctan_delta_labels_diff)
+
+        fig.align_labels()
+        plt.tight_layout()
+
         if output_file:
             plt.savefig(output_file)
 

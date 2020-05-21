@@ -35,7 +35,7 @@ ang_cor = AngularCorrelation(
     ['delta_1', 'delta_2']
 )
 
-arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=101)
+arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=301)
 
 asy_plo = AsymmetryPlotter(ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True)
 
@@ -48,4 +48,7 @@ asy_plo.plot_single_3d(r'$\delta_1$', output_file_single_3d)
 output_file_contour = Path('@PROJECT_BINARY_DIR@') / 'test_plot_04_mixing_inelastic_asy_contour.pdf'
 asy_plo.plot_double_contour([r'$\delta_1$', r'$\delta_2$'], output_file_contour)
 
-print('Created output files \n\'{}\',\n\'{}\',\n and \'{}\'.\nExecution took {:4.2f} seconds.'.format(output_file_single_2d, output_file_single_3d, output_file_contour, time() - t_start))
+output_file_contour_inverse = Path('@PROJECT_BINARY_DIR@') / 'test_plot_04_mixing_inelastic_asy_contour_inv.pdf'
+asy_plo.plot_double_contour_inverse([r'$\delta_1$', r'$\delta_2$'], output_file_contour_inverse)
+
+print('Created output files\n\'{}\',\n\'{}\',\n\'{}\',\nand \'{}\'.\nExecution took {:4.2f} seconds.'.format(output_file_single_2d, output_file_single_3d, output_file_contour, output_file_contour_inverse, time() - t_start))
