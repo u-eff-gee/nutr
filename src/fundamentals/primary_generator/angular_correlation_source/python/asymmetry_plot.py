@@ -557,7 +557,8 @@ class AsymmetryPlotter:
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_max_1,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            cmap='coolwarm'
         )
         ax1 = plt.subplot(gs[1])
         cb0 = fig.colorbar(cs0, ax1)
@@ -576,7 +577,8 @@ class AsymmetryPlotter:
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_max_2,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            cmap='coolwarm'
         )
         ax3 = plt.subplot(gs[3])
         cb2 = fig.colorbar(cs2, ax3)
@@ -594,7 +596,8 @@ class AsymmetryPlotter:
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_min_1,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            cmap='coolwarm'
         )
         ax5 = plt.subplot(gs[5])
         cb4 = fig.colorbar(cs4, ax5)
@@ -612,7 +615,8 @@ class AsymmetryPlotter:
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_min_2,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9)
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            cmap='coolwarm'
         )
         ax7 = plt.subplot(gs[7])
         cb6 = fig.colorbar(cs6, ax7)
