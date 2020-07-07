@@ -25,14 +25,9 @@ add_library(eventAction EventAction.cc)
 target_include_directories(eventAction PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals/analysis)
 target_link_libraries(eventAction tupleManager)
 
-add_library(trackerHit TrackerHit.cc)
-
 add_library(runAction RunAction.cc)
 target_include_directories(runAction PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals/analysis)
 target_link_libraries(runAction tupleManager)
-
-add_library(trackerSD TrackerSD.cc)
-target_link_libraries(trackerSD trackerHit)
 
 set(PRIMARY_GENERATOR_DIR "general_particle_source" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator that contains the desired primary generator.")
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator/${PRIMARY_GENERATOR_DIR})

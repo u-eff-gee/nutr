@@ -25,5 +25,5 @@ class Physics : public G4VModularPhysicsList {
 
 public:
 	Physics();
-
+    ~Physics(){};
 };

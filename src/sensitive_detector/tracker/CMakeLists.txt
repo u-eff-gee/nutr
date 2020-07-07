@@ -15,6 +15,11 @@
 #
 #    Copyright (C) 2020 Udo Friman-Gayer
 
-add_library(tupleManager TupleManager.cc)
-target_include_directories(tupleManager PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals/analysis ${PROJECT_SOURCE_DIR}/include/sensitive_detector)
-target_link_libraries(tupleManager trackerHit)
+include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector)
+
+find_package(Geant4 REQUIRED)
+link_libraries(${Geant4_LIBRARIES})
+
+add_library(trackerHit TrackerHit.cc)
+add_library(trackerSD TrackerSD.cc)
+target_link_libraries(trackerSD trackerHit)

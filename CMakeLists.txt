@@ -49,9 +49,12 @@ if(BUILD_DOCUMENTATION)
 	add_custom_target(doc_doxygen ALL COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
 endif(BUILD_DOCUMENTATION)
 
+set(SENSITIVE_DETECTOR_DIR "tracker" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector.")
+
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)
 add_subdirectory(src/physics)
+add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 
 add_executable(nutr src/fundamentals/nutr.cc)
 target_include_directories(nutr PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
