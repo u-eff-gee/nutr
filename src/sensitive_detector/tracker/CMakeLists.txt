@@ -15,7 +15,7 @@
 #
 #    Copyright (C) 2020 Udo Friman-Gayer
 
-include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector)
+include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
@@ -23,3 +23,12 @@ link_libraries(${Geant4_LIBRARIES})
 add_library(trackerHit TrackerHit.cc)
 add_library(trackerSD TrackerSD.cc)
 target_link_libraries(trackerSD trackerHit)
+
+add_library(tupleManager TupleManager.cc)
+target_link_libraries(tupleManager trackerHit)
+
+add_library(eventAction EventAction.cc)
+target_link_libraries(eventAction tupleManager)
+
+add_library(runAction RunAction.cc)
+target_link_libraries(runAction tupleManager)

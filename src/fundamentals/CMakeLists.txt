@@ -20,15 +20,6 @@ include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals)
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/fundamentals/analysis)
-add_library(eventAction EventAction.cc)
-target_include_directories(eventAction PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals/analysis)
-target_link_libraries(eventAction tupleManager)
-
-add_library(runAction RunAction.cc)
-target_include_directories(runAction PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals/analysis)
-target_link_libraries(runAction tupleManager)
-
 set(PRIMARY_GENERATOR_DIR "general_particle_source" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator that contains the desired primary generator.")
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator/${PRIMARY_GENERATOR_DIR})
 
@@ -37,5 +28,5 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator/${PRIM
 #endif()
 
 add_library(actionInitialization ActionInitialization.cc)
-target_include_directories(actionInitialization PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/${PRIMARY_GENERATOR_DIR})
+target_include_directories(actionInitialization PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/${PRIMARY_GENERATOR_DIR} ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 target_link_libraries(actionInitialization eventAction primaryGeneratorAction runAction)
