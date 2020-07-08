@@ -15,6 +15,9 @@
 #
 #    Copyright (C) 2020 Udo Friman-Gayer
 
-include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/general_particle_source)
+find_package(Geant4 REQUIRED)
+link_libraries(${Geant4_LIBRARIES})
+
+include_directories(${PROJECT_SOURCE_DIR}/include/primary_generator/gps)
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)

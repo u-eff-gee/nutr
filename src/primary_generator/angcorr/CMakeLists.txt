@@ -18,7 +18,10 @@
 find_package(GSL REQUIRED)
 include_directories(${GSL_INCLUDE_DIRS})
 
-include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals/primary_generator/angular_correlation_source/)
+find_package(Geant4 REQUIRED)
+link_libraries(${Geant4_LIBRARIES})
+
+include_directories(${PROJECT_SOURCE_DIR}/include/primary_generator/angcorr/)
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
 target_link_libraries(primaryGeneratorAction)

@@ -54,6 +54,7 @@ set(SENSITIVE_DETECTOR_DIR "tracker" CACHE STRING "Select directory in ${PROJECT
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)
 add_subdirectory(src/physics)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/${PRIMARY_GENERATOR_DIR})
 add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 
 add_executable(nutr src/fundamentals/nutr.cc)
