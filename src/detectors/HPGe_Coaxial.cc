@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with utr.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <sstream>
+#include <string>
 
 #include "G4Color.hh"
 #include "G4NistManager.hh"
@@ -31,7 +31,8 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 #include "HPGe_Coaxial.hh"
 #include "OptimizePolycone.hh"
 
-using std::stringstream;
+using std::string;
+using std::to_string;
 
 void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) const {
 
@@ -230,17 +231,17 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 	if(filter_materials.size()){
 		G4Tubs *filter_solid = nullptr;
 		G4LogicalVolume *filter_logical = nullptr;
-		stringstream filter_solid_name, filter_logical_name, filter_name;
+		string filter_solid_name, filter_logical_name, filter_name;
 		for(unsigned int i = 0; i < filter_materials.size(); ++i){
-			filter_solid_name << "filter_" << detector_name << "_" << i << "_solid";
-			filter_solid = new G4Tubs(filter_solid_name.str(), 0., filter_radii[i],
+			filter_solid_name = "filter_" + detector_name + "_" + to_string(i) + "_solid";
+			filter_solid = new G4Tubs(filter_solid_name, 0., filter_radii[i],
 					filter_thicknesses[i]*0.5, 0., twopi);
 			filter_solid_name.clear();
 
-			filter_logical_name << "filter_" << detector_name << "_" << i << "_logical";
+			filter_logical_name = "filter_" + detector_name + "_" + to_string(i) + "_logical";
 			filter_logical = new G4LogicalVolume(filter_solid,
 					nist->FindOrBuildMaterial(filter_materials[i]),
-					filter_logical_name.str());
+					filter_logical_name);
 			filter_logical_name.clear();
 			if(i % 2 == 0){
 				filter_logical->SetVisAttributes(new G4VisAttributes(G4Color::Red()));
@@ -248,8 +249,8 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 				filter_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
 			}
 
-			filter_name << "filter_" << detector_name << "_" << i;
-			new G4PVPlacement(rotation, global_coordinates + (dist_from_center - filter_position_z - filter_thicknesses[i]*0.5)*symmetry_axis, filter_logical, filter_name.str(), world_Logical, 0, 0, false);
+			filter_name = "filter_" + detector_name + "_" + to_string(i);
+			new G4PVPlacement(rotation, global_coordinates + (dist_from_center - filter_position_z - filter_thicknesses[i]*0.5)*symmetry_axis, filter_logical, filter_name, world_Logical, 0, 0, false);
 			filter_name.clear();
 			filter_position_z = filter_position_z + filter_thicknesses[i];
 		}
@@ -261,21 +262,21 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 					// wraps on top of each other
 		G4Tubs *wrap_solid = nullptr;
 		G4LogicalVolume *wrap_logical = nullptr;
-		stringstream wrap_solid_name, wrap_logical_name, wrap_name;
+		string wrap_solid_name, wrap_logical_name, wrap_name;
 		for(unsigned int i = 0; i < wrap_materials.size(); ++i){
-			wrap_solid_name << "wrap_" << detector_name << "_" << i << "_solid";
-			wrap_solid = new G4Tubs(wrap_solid_name.str(), wrap_radius, wrap_radius + wrap_thicknesses[i], properties.end_cap_length*0.5, 0., twopi);
+			wrap_solid_name = "wrap_" + detector_name + "_" + to_string(i) + "_solid";
+			wrap_solid = new G4Tubs(wrap_solid_name, wrap_radius, wrap_radius + wrap_thicknesses[i], properties.end_cap_length*0.5, 0., twopi);
 			wrap_solid_name.clear();
 
-			wrap_logical_name << "wrap_" << detector_name << "_" << i << "_logical";
+			wrap_logical_name = "wrap_" + detector_name + "_" + to_string(i) + "_logical";
 			wrap_logical = new G4LogicalVolume(wrap_solid,
 					nist->FindOrBuildMaterial(wrap_materials[i]),
-					wrap_logical_name.str());
+					wrap_logical_name);
 			wrap_logical_name.clear();
 			wrap_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
 
-			wrap_name << "wrap_" << detector_name << "_" << i;
-			new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_length*0.5)*symmetry_axis, wrap_logical, wrap_name.str(), world_Logical, 0, 0, false);
+			wrap_name = "wrap_" + detector_name + "_" + to_string(i);
+			new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_length*0.5)*symmetry_axis, wrap_logical, wrap_name, world_Logical, 0, 0, false);
 			wrap_name.clear();
 			wrap_radius = wrap_radius + wrap_thicknesses[i];
 		}
