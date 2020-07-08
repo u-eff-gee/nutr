@@ -22,6 +22,7 @@ This is a [Geant4](https://geant4.cern.ch) [1] simulation of experiments in the 
 
 The main program, user actions, and visualization macros of `nutr` are based on example B2a of Geant4 (`$G4_INSTALL_DIR/share/Geant4-10.6.1/examples/basic/B2/B2a`).
 A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4 (`$G4_INSTALL_DIR/share/Geant4-10.6.1/examples/extended/analysis/AnaEx02`).
+Some code has been adapted from a previous simulation of the UTR ([utr](https://github.com/uga-uga/utr) [3]).
 
 ## 2. Build
 
@@ -81,5 +82,7 @@ The author would also like to thank O. Papst for helpful discussions about the a
 [1] S. Agostinelli *et al.*, “GEANT4 - a simulation toolkit”, Nucl. Inst. Meth. A **506**, 250-303 (2003). [`doi:10.1016/S0168-9002(03)01368-8`](https://doi.org/10.1016/S0168-9002(03)01368-8); J. Allison *et al.*, “GEANT4 developments and applications”, IEEE T. Nucl. Sci., **53**, 270-278 (2006). [`doi:10.1109/TNS.2006.869826`](https://doi.org/10.1109/TNS.2006.869826); J. Allison *et al.*, “Recent developments in GEANT4”, Nucl. Inst. Meth. A **835**, 186-225 (2016). [`doi:10.1016/j.nima.2016.06.125`](https://doi.org/10.1016/j.nima.2016.06.125)
 
 [2] H. R. Weller *et al.*, “Research opportunities at the upgraded HIγS facility”, Prog. Part. Nucl. Phys. **62**, 257-303 (2009). [`doi:10.1016/j.ppnp.2008.07.001`](https://doi.org/10.1016/j.ppnp.2008.07.001)
+
+[3] U. Friman-Gayer, J. Kleemann, and O. Papst, “GEANT4 simulation of the Upstream Target Room (UTR) at the HIγS facility“ (2019) [`doi:10.5281/zenodo.3430154`](https://doi.org/10.5281/zenodo.3430154)
 
 See also `NUTR_SOURCE_DIR/bibliography.bib`.
