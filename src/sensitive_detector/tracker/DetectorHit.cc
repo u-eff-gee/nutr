@@ -17,7 +17,7 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "TrackerHit.hh"
+#include "DetectorHit.hh"
 
 #include "G4UnitsTable.hh"
 #include "G4VVisManager.hh"
@@ -27,9 +27,9 @@
 
 #include <iomanip>
 
-G4ThreadLocal G4Allocator<TrackerHit>* TrackerHitAllocator=0;
+G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
 
-TrackerHit::TrackerHit()
+DetectorHit::DetectorHit()
  : G4VHit(),
    fTrackID(-1),
    fParticleID(0),
@@ -38,9 +38,9 @@ TrackerHit::TrackerHit()
    fPos(G4ThreeVector())
 {}
 
-TrackerHit::~TrackerHit() {}
+DetectorHit::~DetectorHit() {}
 
-TrackerHit::TrackerHit(const TrackerHit& right)
+DetectorHit::DetectorHit(const DetectorHit& right)
   : G4VHit()
 {
   fTrackID   = right.fTrackID;
@@ -50,7 +50,7 @@ TrackerHit::TrackerHit(const TrackerHit& right)
   fPos       = right.fPos;
 }
 
-const TrackerHit& TrackerHit::operator=(const TrackerHit& right)
+const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
 {
   fTrackID   = right.fTrackID;
   fParticleID = right.fParticleID;
@@ -61,12 +61,12 @@ const TrackerHit& TrackerHit::operator=(const TrackerHit& right)
   return *this;
 }
 
-G4bool TrackerHit::operator==(const TrackerHit& right) const
+G4bool DetectorHit::operator==(const DetectorHit& right) const
 {
   return ( this == &right ) ? true : false;
 }
 
-void TrackerHit::Draw()
+void DetectorHit::Draw()
 {
   G4VVisManager* pVVisManager = G4VVisManager::GetConcreteInstance();
   if(pVVisManager)

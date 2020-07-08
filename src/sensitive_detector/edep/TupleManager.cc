@@ -38,15 +38,9 @@ void TupleManager::Book()
     return;
   }
 
-  analysisManager->CreateNtuple("hits", "Hits");
-  analysisManager->CreateNtupleIColumn("evid");
-  analysisManager->CreateNtupleIColumn("trid");
-  analysisManager->CreateNtupleIColumn("paid");
+  analysisManager->CreateNtuple("edep", "Energy Deposition");
   analysisManager->CreateNtupleIColumn("deid");
   analysisManager->CreateNtupleDColumn("edep");
-  analysisManager->CreateNtupleDColumn("posx");
-  analysisManager->CreateNtupleDColumn("posy");
-  analysisManager->CreateNtupleDColumn("posz");
   analysisManager->FinishNtuple();
 
   fFactoryOn = true;
@@ -65,17 +59,11 @@ void TupleManager::Save()
   fFactoryOn = false;
 }
 
-void TupleManager::FillNtuple(G4int eventID, DetectorHit* hit)
+void TupleManager::FillNtuple(G4int deid, G4double edep)
 {
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->FillNtupleIColumn(0, 0, eventID);
-  analysisManager->FillNtupleIColumn(0, 1, hit->GetTrackID());
-  analysisManager->FillNtupleIColumn(0, 2, hit->GetParticleID());
-  analysisManager->FillNtupleIColumn(0, 3, hit->GetDetectorID());
-  analysisManager->FillNtupleDColumn(0, 4, hit->GetEdep());
-  analysisManager->FillNtupleDColumn(0, 5, hit->GetPos().x());
-  analysisManager->FillNtupleDColumn(0, 6, hit->GetPos().y());
-  analysisManager->FillNtupleDColumn(0, 7, hit->GetPos().z());
+  analysisManager->FillNtupleIColumn(0, 0, deid);
+  analysisManager->FillNtupleDColumn(0, 1, edep);
 
   analysisManager->AddNtupleRow(0);
 }

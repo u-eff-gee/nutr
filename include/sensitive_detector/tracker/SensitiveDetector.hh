@@ -16,29 +16,30 @@
 
     Copyright (C) 2020 Udo Friman-Gayer
 */
-
-// Based on Geant4 10.6.1 example
-//
-// ${CMAKE_INSTALL_PREFIX}/share/Geant4/examples/extended/analysis/AnaEx02
-
 #pragma once
 
-#include "g4root.hh"
-#include "globals.hh"
+#include "G4HCofThisEvent.hh"
+#include "G4Step.hh"
+#include "G4VSensitiveDetector.hh"
 
 #include "DetectorHit.hh"
 
-class TupleManager
+class SensitiveDetector : public G4VSensitiveDetector
 {
   public:
-    TupleManager();
-   ~TupleManager();
+    SensitiveDetector(const G4String& name,
+                const G4String& hitsCollectionName);
+    virtual ~SensitiveDetector();
+  
+    virtual void   Initialize(G4HCofThisEvent* hitCollection);
+    virtual G4bool ProcessHits(G4Step* step, G4TouchableHistory* history);
+    virtual void   EndOfEvent(G4HCofThisEvent* hitCollection);
 
-    void Book();
-    void Save();
+    unsigned int GetDetectorID() const { return fDetectorID; };
 
-    void FillNtuple(G4int eventID, DetectorHit* hit);
+    void SetDetectorID(const unsigned int id){ fDetectorID = id; };
 
   private:
-    G4bool fFactoryOn;
+    G4THitsCollection<DetectorHit>* fDetectorHitsCollection;
+    unsigned int fDetectorID;
 };

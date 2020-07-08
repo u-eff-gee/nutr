@@ -27,7 +27,7 @@
 #include "G4VisAttributes.hh"
 
 #include "DetectorConstruction.hh"
-#include "TrackerSD.hh"
+#include "SensitiveDetector.hh"
 
 DetectorConstruction::DetectorConstruction()
 :G4VUserDetectorConstruction()
@@ -44,18 +44,28 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4LogicalVolume *world_logical = new G4LogicalVolume(world_solid, nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical");
 	G4VPhysicalVolume *world_phys = new G4PVPlacement(0, G4ThreeVector(), world_logical, "world", 0, false, 0);
 
-	G4Box *water_solid = new G4Box("water_solid", 0.25*m, 0.25*m, 0.25*m);
+	G4Box *water_solid = new G4Box("water_solid", 0.25*m, 0.125*m, 0.25*m);
 	G4LogicalVolume *water_logical = new G4LogicalVolume(water_solid, nist_manager->FindOrBuildMaterial("G4_WATER"), "water_logical");
 	water_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
-	new G4PVPlacement(0, G4ThreeVector(), water_logical, "water", world_logical, false, 0);
+	new G4PVPlacement(0, G4ThreeVector(0., 0.12*m, 0.), water_logical, "water", world_logical, false, 0);
+
+	G4Box *water_solid2 = new G4Box("water_solid2", 0.25*m, 0.125*m, 0.25*m);
+	G4LogicalVolume *water_logical2 = new G4LogicalVolume(water_solid2, nist_manager->FindOrBuildMaterial("G4_WATER"), "water_logical2");
+	water_logical2->SetVisAttributes(new G4VisAttributes(G4Color::Yellow()));
+	new G4PVPlacement(0, G4ThreeVector(0., -0.13*m, 0.), water_logical2, "water2", world_logical, false, 0);
 
 	return world_phys;
 }
 
 void DetectorConstruction::ConstructSDandField(){
 
-	TrackerSD *water_tracker = new TrackerSD("water", "water");
+	SensitiveDetector *water_tracker = new SensitiveDetector("water", "water");
 	water_tracker->SetDetectorID(0);
 	G4SDManager::GetSDMpointer()->AddNewDetector(water_tracker);
 	SetSensitiveDetector("water_logical", water_tracker, true);
+
+	SensitiveDetector *water_tracker2 = new SensitiveDetector("water2", "water2");
+	water_tracker2->SetDetectorID(1);
+	G4SDManager::GetSDMpointer()->AddNewDetector(water_tracker2);
+	SetSensitiveDetector("water_logical2", water_tracker2, true);
 }

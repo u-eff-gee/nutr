@@ -16,30 +16,23 @@
 
     Copyright (C) 2020 Udo Friman-Gayer
 */
+
 #pragma once
 
-#include "G4HCofThisEvent.hh"
-#include "G4Step.hh"
-#include "G4VSensitiveDetector.hh"
+#include "G4UserRunAction.hh"
+#include "globals.hh"
 
-#include "TrackerHit.hh"
+#include "TupleManager.hh"
 
-class TrackerSD : public G4VSensitiveDetector
+class RunAction : public G4UserRunAction
 {
   public:
-    TrackerSD(const G4String& name,
-                const G4String& hitsCollectionName);
-    virtual ~TrackerSD();
-  
-    virtual void   Initialize(G4HCofThisEvent* hitCollection);
-    virtual G4bool ProcessHits(G4Step* step, G4TouchableHistory* history);
-    virtual void   EndOfEvent(G4HCofThisEvent* hitCollection);
+    RunAction(TupleManager* histo);
+    virtual ~RunAction();
 
-    unsigned int GetDetectorID() const { return fDetectorID; };
-
-    void SetDetectorID(const unsigned int id){ fDetectorID = id; };
+    virtual void BeginOfRunAction(const G4Run* run);
+    virtual void   EndOfRunAction(const G4Run* run);
 
   private:
-    G4THitsCollection<TrackerHit>* fTrackerHitsCollection;
-    unsigned int fDetectorID;
+    TupleManager *fTupleManager;
 };

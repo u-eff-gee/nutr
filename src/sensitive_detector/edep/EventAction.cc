@@ -42,10 +42,16 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	G4int n_trajectories = 0;
 	if (trajectoryContainer) n_trajectories = trajectoryContainer->entries();
 
-	G4int eventID = event->GetEventID();
+    for(size_t n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
+	    
+        G4VHitsCollection* hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
-	G4VHitsCollection* hc = event->GetHCofThisEvent()->GetHC(0);
+        if(hc->GetSize() > 0){
+            double edep = 0.;
+            for(size_t i = 0; i < hc->GetSize(); ++i)
+                edep += ((DetectorHit*) hc->GetHit(i))->GetEdep();
 
-	for(size_t i = 0; i < hc->GetSize(); ++i)
-		fTupleManager->FillNtuple(eventID, (DetectorHit*) hc->GetHit(i));
+            fTupleManager->FillNtuple(((DetectorHit*) hc->GetHit(0))->GetDetectorID(), edep);
+        }
+    }
 }

@@ -25,51 +25,45 @@
 #include "G4ThreeVector.hh"
 #include "tls.hh"
 
-class TrackerHit : public G4VHit
+class DetectorHit : public G4VHit
 {
   public:
-    TrackerHit();
-    TrackerHit(const TrackerHit&);
-    virtual ~TrackerHit();
+    DetectorHit();
+    DetectorHit(const DetectorHit&);
+    virtual ~DetectorHit();
 
-    const TrackerHit& operator=(const TrackerHit&);
-    G4bool operator==(const TrackerHit&) const;
+    const DetectorHit& operator=(const DetectorHit&);
+    G4bool operator==(const DetectorHit&) const;
 
     inline void* operator new(size_t);
     inline void  operator delete(void*);
 
-    virtual void Draw();
+    virtual void Draw(){};
 
-    void SetTrackID  (const G4int track) { fTrackID = track; };
-    void SetParticleID (const G4int pid) {fParticleID = pid; };
     void SetDetectorID (const unsigned int detectorID) { fDetectorID = detectorID; };
     void SetEdep     (const G4double de) { fEdep = de; };
     void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
 
-    G4int GetTrackID() const { return fTrackID; };
-    G4int GetParticleID() const { return fParticleID; };
     G4double GetDetectorID() const { return fDetectorID; };
     G4double GetEdep() const { return fEdep; };
     G4ThreeVector GetPos() const { return fPos; };
 
   private:
-      G4int         fTrackID;
-      G4int 		fParticleID;
       unsigned int  fDetectorID;
       G4double      fEdep;
       G4ThreeVector fPos;
 };
 
-extern G4ThreadLocal G4Allocator<TrackerHit>* TrackerHitAllocator;
+extern G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator;
 
-inline void* TrackerHit::operator new(size_t)
+inline void* DetectorHit::operator new(size_t)
 {
-  if(!TrackerHitAllocator)
-      TrackerHitAllocator = new G4Allocator<TrackerHit>;
-  return (void *) TrackerHitAllocator->MallocSingle();
+  if(!DetectorHitAllocator)
+      DetectorHitAllocator = new G4Allocator<DetectorHit>;
+  return (void *) DetectorHitAllocator->MallocSingle();
 }
 
-inline void TrackerHit::operator delete(void *hit)
+inline void DetectorHit::operator delete(void *hit)
 {
-  TrackerHitAllocator->FreeSingle((TrackerHit*) hit);
+  DetectorHitAllocator->FreeSingle((DetectorHit*) hit);
 }

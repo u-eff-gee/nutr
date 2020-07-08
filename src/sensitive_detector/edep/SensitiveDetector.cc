@@ -17,7 +17,7 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "TrackerSD.hh"
+#include "SensitiveDetector.hh"
 
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
@@ -25,47 +25,43 @@
 #include "G4SDManager.hh"
 #include "G4ios.hh"
 
-TrackerSD::TrackerSD(const G4String& name,
-                         const G4String& TrackerHitsCollectionName)
+SensitiveDetector::SensitiveDetector(const G4String& name,
+                         const G4String& DetectorHitsCollectionName)
  : G4VSensitiveDetector(name),
-   fTrackerHitsCollection(NULL)
+   fDetectorHitsCollection(NULL)
 {
-  collectionName.insert(TrackerHitsCollectionName);
+  collectionName.insert(DetectorHitsCollectionName);
 }
 
-TrackerSD::~TrackerSD()
+SensitiveDetector::~SensitiveDetector()
 {}
 
-void TrackerSD::Initialize(G4HCofThisEvent* hce)
+void SensitiveDetector::Initialize(G4HCofThisEvent* hce)
 {
 
-  fTrackerHitsCollection
-    = new G4THitsCollection<TrackerHit>(SensitiveDetectorName, collectionName[0]);
+  fDetectorHitsCollection
+    = new G4THitsCollection<DetectorHit>(SensitiveDetectorName, collectionName[0]);
 
   G4int hcID 
     = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
-  hce->AddHitsCollection( hcID, fTrackerHitsCollection );
+  hce->AddHitsCollection( hcID, fDetectorHitsCollection );
 }
 
-G4bool TrackerSD::ProcessHits(G4Step* aStep,
+G4bool SensitiveDetector::ProcessHits(G4Step* aStep,
                                      G4TouchableHistory*)
 {
   G4double edep = aStep->GetTotalEnergyDeposit();
-
   if (edep==0.) return false;
 
-  TrackerHit* newTrackerHit = new TrackerHit();
+  DetectorHit* newDetectorHit = new DetectorHit();
 
-  newTrackerHit->SetTrackID(aStep->GetTrack()->GetTrackID());
-  newTrackerHit->SetParticleID(aStep->GetTrack()->GetDynamicParticle()->GetPDGcode());
-  newTrackerHit->SetDetectorID(fDetectorID);
-  newTrackerHit->SetEdep(edep);
-  newTrackerHit->SetPos(aStep->GetPostStepPoint()->GetPosition());
+  newDetectorHit->SetDetectorID(fDetectorID);
+  newDetectorHit->SetEdep(edep);
 
-  fTrackerHitsCollection->insert( newTrackerHit );
+  fDetectorHitsCollection->insert( newDetectorHit );
 
   return true;
 }
 
-void TrackerSD::EndOfEvent(G4HCofThisEvent*)
+void SensitiveDetector::EndOfEvent(G4HCofThisEvent*)
 {}

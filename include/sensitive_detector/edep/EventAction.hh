@@ -17,28 +17,22 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-// Based on Geant4 10.6.1 example
-//
-// ${CMAKE_INSTALL_PREFIX}/share/Geant4/examples/extended/analysis/AnaEx02
-
 #pragma once
 
-#include "g4root.hh"
+#include "G4UserEventAction.hh"
 #include "globals.hh"
 
-#include "DetectorHit.hh"
+#include "TupleManager.hh"
 
-class TupleManager
+class EventAction : public G4UserEventAction
 {
   public:
-    TupleManager();
-   ~TupleManager();
+    EventAction(TupleManager* histo);
+    virtual ~EventAction();
 
-    void Book();
-    void Save();
-
-    void FillNtuple(G4int eventID, DetectorHit* hit);
+    virtual void  BeginOfEventAction(const G4Event* );
+    virtual void    EndOfEventAction(const G4Event* );
 
   private:
-    G4bool fFactoryOn;
+    TupleManager *fTupleManager;
 };

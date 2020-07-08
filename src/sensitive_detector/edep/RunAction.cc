@@ -17,28 +17,24 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-// Based on Geant4 10.6.1 example
-//
-// ${CMAKE_INSTALL_PREFIX}/share/Geant4/examples/extended/analysis/AnaEx02
+#include "RunAction.hh"
 
-#pragma once
+#include "G4Run.hh"
+#include "G4RunManager.hh"
 
-#include "g4root.hh"
-#include "globals.hh"
+RunAction::RunAction(TupleManager* tuple)
+ : G4UserRunAction(), fTupleManager(tuple)
+{}
 
-#include "DetectorHit.hh"
+RunAction::~RunAction()
+{}
 
-class TupleManager
+void RunAction::BeginOfRunAction(const G4Run*)
+{ 
+	fTupleManager->Book();
+}
+
+void RunAction::EndOfRunAction(const G4Run* )
 {
-  public:
-    TupleManager();
-   ~TupleManager();
-
-    void Book();
-    void Save();
-
-    void FillNtuple(G4int eventID, DetectorHit* hit);
-
-  private:
-    G4bool fFactoryOn;
-};
+	fTupleManager->Save();
+}

@@ -37,7 +37,7 @@ class TupleManager
     void Book();
     void Save();
 
-    void FillNtuple(G4int eventID, DetectorHit* hit);
+    void FillNtuple(G4int deid, G4double edep);
 
   private:
     G4bool fFactoryOn;
