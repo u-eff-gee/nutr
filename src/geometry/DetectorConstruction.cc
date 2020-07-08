@@ -52,22 +52,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	HPGe_Coaxial hpge1(world_logical, "hpge1");
 	hpge1.setProperties(hpge_collection.HPGe_60_TUNL_21033);
 	hpge1.useDewar();
-	hpge1.Construct(G4ThreeVector(), 90.*deg, 0.*deg, 100.*mm, 0.*deg);
+	hpge1.Construct(G4ThreeVector(), 90.*deg, 0.*deg, 100.*mm);
 
 	HPGe_Coaxial hpge2(world_logical, "hpge2");
 	hpge2.setProperties(hpge_collection.HPGe_60_TUNL_21033);
 	hpge2.useDewar();
-	hpge2.Construct(G4ThreeVector(), 90.*deg, 90.*deg, 100.*mm, 0.*deg);
+	hpge2.Construct(G4ThreeVector(), 90.*deg, 90.*deg, 100.*mm);
 
 	HPGe_Coaxial hpge3(world_logical, "hpge3");
 	hpge3.setProperties(hpge_collection.HPGe_60_TUNL_21033);
 	hpge3.useDewar();
-	hpge3.Construct(G4ThreeVector(), 90.*deg, 180.*deg, 100.*mm, 0.*deg);
+	hpge3.Construct(G4ThreeVector(), 90.*deg, 180.*deg, 100.*mm);
 
 	HPGe_Coaxial hpge4(world_logical, "hpge4");
 	hpge4.setProperties(hpge_collection.HPGe_60_TUNL_21033);
 	hpge4.useDewar();
-	hpge4.Construct(G4ThreeVector(), 90.*deg, 270.*deg, 100.*mm, 0.*deg);
+	hpge4.Construct(G4ThreeVector(), 90.*deg, 270.*deg, 100.*mm);
 
 	return world_phys;
 }
