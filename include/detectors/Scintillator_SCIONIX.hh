@@ -44,5 +44,5 @@ class Scintillator_SCIONIX : public Detector{
     public:
         Scintillator_SCIONIX(G4LogicalVolume *World_Logical, G4String name) : Detector (World_Logical, name){};
 
-		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) const override;
+		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override;
 };

@@ -22,7 +22,8 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 
 Detector::Detector(G4LogicalVolume *World_Logical, G4String name):
 	world_Logical(World_Logical),
-	detector_name(name)
+	detector_name(name),
+	rotation_matrix(nullptr)
 {}
 
 void Detector::Add_Filter(G4String filter_material, G4double filter_thickness, G4double filter_radius){
@@ -34,4 +35,27 @@ void Detector::Add_Filter(G4String filter_material, G4double filter_thickness, G
 void Detector::Add_Wrap(G4String wrap_material, G4double wrap_thickness){
 	wrap_materials.push_back(wrap_material);
 	wrap_thicknesses.push_back(wrap_thickness);
+}
+
+G4ThreeVector Detector::unit_vector_r(const double theta, const double phi) const {
+	return G4ThreeVector(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
+}
+
+G4ThreeVector Detector::unit_vector_theta(const double theta, const double phi) const {
+	return G4ThreeVector(cos(theta)*cos(phi), cos(theta)*sin(phi), -sin(theta));
+}
+
+G4ThreeVector Detector::unit_vector_phi(const double theta, const double phi) const {
+	return G4ThreeVector(-sin(phi), cos(phi), 0.);
+}
+
+void Detector::rotate(const double theta, const double phi, const double alpha){
+	
+	rotation_matrix = new G4RotationMatrix();
+
+	rotation_matrix->rotateZ(-phi);
+	rotation_matrix->rotateY(-theta);
+	if(alpha != 0.){
+		rotation_matrix->rotateZ(alpha);
+	}
 }

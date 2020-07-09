@@ -27,7 +27,7 @@
 
 #include "Scintillator_SCIONIX.hh"
 
-void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) const {
+void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) {
 
     /*********** Dimensions ***********/
     // Front
@@ -82,15 +82,11 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
 
     /*********** Orientation in space ***********/
 
-	G4ThreeVector symmetry_axis(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta)); // Symmetry axis along which the single elements of the detector are constructed
-	G4ThreeVector symmetry_axis_orthogonal(cos(theta)*cos(phi), cos(theta)*sin(phi), -sin(theta)); // Vector which is orthogonal to the symmetry axes. Needed for the construction of off-axis elements. As an arbitrary choice, take the unit vector with respect to theta in spherical coordinates.
+	G4ThreeVector e_r = unit_vector_r(theta, phi);
+	G4ThreeVector e_theta = unit_vector_theta(theta, phi);
+	G4ThreeVector e_phi = unit_vector_phi(theta, phi);
 
-	G4RotationMatrix* rotation = new G4RotationMatrix();
-	rotation->rotateZ(-phi);
-	rotation->rotateY(-theta);
-	if(intrinsic_rotation_angle != 0.){
-		rotation->rotateZ(intrinsic_rotation_angle);
-	}
+    rotate(theta, phi, intrinsic_rotation_angle);
 
     /*********** Front ***********/
     
@@ -98,82 +94,82 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
     G4Tubs *front_entrance_window_solid = new G4Tubs(detector_name + "_front_entrance_window_sold", 0., front_case_outer_radius - front_case_wall_thickness, 0.5*front_entrance_window_thickness, 0., twopi);
     G4LogicalVolume *front_entrance_window_logical = new G4LogicalVolume(front_entrance_window_solid, nist->FindOrBuildMaterial(front_case_material), detector_name + "_front_entrance_window_logical");
     front_entrance_window_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + 0.5*front_entrance_window_thickness)*symmetry_axis, front_entrance_window_logical, detector_name + "_front_entrance_window", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + 0.5*front_entrance_window_thickness)*e_r, front_entrance_window_logical, detector_name + "_front_entrance_window", world_Logical, 0, 0, false);
 
     // Case
     G4Tubs *front_case_wall_solid = new G4Tubs(detector_name + "_front_case_wall_sold", front_case_outer_radius - front_case_wall_thickness, front_case_outer_radius, 0.5*front_case_length, 0., twopi);
     G4LogicalVolume *front_case_wall_logical = new G4LogicalVolume(front_case_wall_solid, nist->FindOrBuildMaterial(front_case_material), detector_name + "_front_case_wall_logical");
     front_case_wall_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + 0.5*front_case_length)*symmetry_axis, front_case_wall_logical, detector_name + "_front_case_wall", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + 0.5*front_case_length)*e_r, front_case_wall_logical, detector_name + "_front_case_wall", world_Logical, 0, 0, false);
 
     G4Tubs *front_entrance_vacuum_solid = new G4Tubs(detector_name + "_front_entrance_vacuum_sold", 0., crystal_radius, 0.5*crystal_to_entrance_window, 0., twopi);
     G4LogicalVolume *front_entrance_vacuum_logical = new G4LogicalVolume(front_entrance_vacuum_solid, nist->FindOrBuildMaterial("G4_Galactic"), detector_name + "_front_entrance_vacuum_logical");
     front_entrance_vacuum_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_entrance_window_thickness + 0.5*crystal_to_entrance_window)*symmetry_axis, front_entrance_vacuum_logical, detector_name + "_front_entrance_vacuum", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + 0.5*crystal_to_entrance_window)*e_r, front_entrance_vacuum_logical, detector_name + "_front_entrance_vacuum", world_Logical, 0, 0, false);
 
     G4Tubs *front_case_vacuum_solid = new G4Tubs(detector_name + "_front_case_vacuum_sold", crystal_radius, front_case_outer_radius - front_case_wall_thickness, 0.5*front_case_length, 0., twopi);
     G4LogicalVolume *front_case_vacuum_logical = new G4LogicalVolume(front_case_vacuum_solid, nist->FindOrBuildMaterial("G4_Galactic"), detector_name + "_front_case_vacuum_logical");
     front_case_vacuum_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_entrance_window_thickness + 0.5*front_case_length)*symmetry_axis, front_case_vacuum_logical, detector_name + "_front_case_vacuum", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + 0.5*front_case_length)*e_r, front_case_vacuum_logical, detector_name + "_front_case_vacuum", world_Logical, 0, 0, false);
 
     /*********** Crystal ***********/
 
     G4Tubs *crystal_solid = new G4Tubs(detector_name + "_crystal_sold", 0., crystal_radius, 0.5*crystal_length, 0., twopi);
     G4LogicalVolume *crystal_logical = new G4LogicalVolume(crystal_solid, crystal_material, detector_name);
     crystal_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + 0.5*crystal_length)*symmetry_axis, crystal_logical, detector_name + "_crystal", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + 0.5*crystal_length)*e_r, crystal_logical, detector_name + "_crystal", world_Logical, 0, 0, false);
 
     /*********** PMT ***********/
     // PMT
     G4Tubs *pmt_solid = new G4Tubs(detector_name + "_pmt_sold", pmt_outer_radius - pmt_wall_thickness, pmt_outer_radius, 0.5*pmt_length, 0., twopi);
     G4LogicalVolume *pmt_logical = new G4LogicalVolume(pmt_solid, nist->FindOrBuildMaterial(pmt_material), detector_name + "_pmt_logical");
     pmt_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + crystal_length + 0.5*pmt_length)*symmetry_axis, pmt_logical, detector_name + "_pmt", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + crystal_length + 0.5*pmt_length)*e_r, pmt_logical, detector_name + "_pmt", world_Logical, 0, 0, false);
 
     G4Tubs *pmt_vacuum_solid = new G4Tubs(detector_name + "_pmt_vacuum_sold", 0., pmt_outer_radius - pmt_wall_thickness, 0.5*pmt_length, 0., twopi);
     G4LogicalVolume *pmt_vacuum_logical = new G4LogicalVolume(pmt_vacuum_solid, nist->FindOrBuildMaterial("G4_Galactic"), detector_name + "_pmt_vacuum_logical");
     pmt_vacuum_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + crystal_length + 0.5*pmt_length)*symmetry_axis, pmt_vacuum_logical, detector_name + "_pmt_vacuum", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + crystal_length + 0.5*pmt_length)*e_r, pmt_vacuum_logical, detector_name + "_pmt_vacuum", world_Logical, 0, 0, false);
 
     // PMT case
     G4Tubs *pmt_case_solid = new G4Tubs(detector_name + "_pmt_case_sold", pmt_case_outer_radius - pmt_case_wall_thickness, pmt_case_outer_radius, 0.5*pmt_case_length, 0., twopi);
     G4LogicalVolume *pmt_case_logical = new G4LogicalVolume(pmt_case_solid, nist->FindOrBuildMaterial(pmt_case_material), detector_name + "_pmt_case_logical");
     pmt_case_logical->SetVisAttributes(new G4VisAttributes(G4Color(0.75, 0.75, 0.75)));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_case_length + 0.5*pmt_case_length)*symmetry_axis, pmt_case_logical, detector_name + "_pmt_case", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_case_length + 0.5*pmt_case_length)*e_r, pmt_case_logical, detector_name + "_pmt_case", world_Logical, 0, 0, false);
 
     G4Tubs *pmt_case_vacuum_solid = new G4Tubs(detector_name + "_pmt_case_vacuum_sold", pmt_outer_radius, pmt_case_outer_radius-pmt_wall_thickness, 0.5*pmt_case_length, 0., twopi);
     G4LogicalVolume *pmt_case_vacuum_logical = new G4LogicalVolume(pmt_case_vacuum_solid, nist->FindOrBuildMaterial(pmt_case_material), detector_name + "_pmt_case_vacuum_logical");
     pmt_case_vacuum_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_case_length + 0.5*pmt_case_length)*symmetry_axis, pmt_case_vacuum_logical, detector_name + "_pmt_case_vacuum", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_case_length + 0.5*pmt_case_length)*e_r, pmt_case_vacuum_logical, detector_name + "_pmt_case_vacuum", world_Logical, 0, 0, false);
 
     /*********** PMT ***********/
     // Connector base
     G4Tubs *connector_base_solid = new G4Tubs(detector_name + "_connector_base_sold", connector_base_outer_radius-connector_base_wall_thickness, connector_base_outer_radius, 0.5*connector_base_length, 0., twopi);
     G4LogicalVolume *connector_base_logical = new G4LogicalVolume(connector_base_solid, nist->FindOrBuildMaterial(connector_material), detector_name + "_connector_base_logical");
     connector_base_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_and_pmt_length + 0.5*connector_base_length)*symmetry_axis, connector_base_logical, detector_name + "_connector_base", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_and_pmt_length + 0.5*connector_base_length)*e_r, connector_base_logical, detector_name + "_connector_base", world_Logical, 0, 0, false);
 
     G4Tubs *connector_base_inside_solid = new G4Tubs(detector_name + "_connector_base_inside_sold", 0., connector_base_outer_radius - connector_base_wall_thickness, 0.5*(connector_base_length - connector_base_wall_thickness), 0., twopi);
     G4LogicalVolume *connector_base_inside_logical = new G4LogicalVolume(connector_base_inside_solid, nist->FindOrBuildMaterial("G4_AIR"), detector_name + "_connector_base_inside_logical"); // Assume it is filled predominantly with low-density material.
     connector_base_inside_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_and_pmt_length + 0.5*(connector_base_length-connector_base_wall_thickness))*symmetry_axis, connector_base_inside_logical, detector_name + "_connector_base_inside", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_and_pmt_length + 0.5*(connector_base_length-connector_base_wall_thickness))*e_r, connector_base_inside_logical, detector_name + "_connector_base_inside", world_Logical, 0, 0, false);
 
 
     // Connector lid
     G4Tubs *connector_lid_solid = new G4Tubs(detector_name + "_connector_lid_sold", 0., connector_base_outer_radius - connector_base_wall_thickness, 0.5*connector_base_wall_thickness, 0., twopi);
     G4LogicalVolume *connector_lid_logical = new G4LogicalVolume(connector_lid_solid, nist->FindOrBuildMaterial(connector_material), detector_name + "_connector_lid_logical");
     connector_lid_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length - 0.5*connector_base_wall_thickness)*symmetry_axis, connector_lid_logical, detector_name + "_connector_lid", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length - 0.5*connector_base_wall_thickness)*e_r, connector_lid_logical, detector_name + "_connector_lid", world_Logical, 0, 0, false);
 
     // HV connector
     G4Tubs *hv_connector_solid = new G4Tubs(detector_name + "_hv_connector_sold", 0., hv_connector_radius, 0.5*hv_connector_length, 0., twopi);
     G4LogicalVolume *hv_connector_logical = new G4LogicalVolume(hv_connector_solid, nist->FindOrBuildMaterial(connector_material), detector_name + "_hv_connector_logical");
     hv_connector_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length + 0.5*hv_connector_length)*symmetry_axis + 0.5*connector_base_outer_radius*symmetry_axis_orthogonal, hv_connector_logical, detector_name + "_hv_connector", world_Logical, 0, 0, false);
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length + 0.5*hv_connector_length)*e_r + 0.5/sqrt(2.)*connector_base_outer_radius*e_theta + 0.5/sqrt(2.)*connector_base_outer_radius*e_phi, hv_connector_logical, detector_name + "_hv_connector", world_Logical, 0, 0, false);
 
     // Signal connector
     G4Tubs *signal_connector_solid = new G4Tubs(detector_name + "_signal_connector_sold", 0., signal_connector_radius, 0.5*signal_connector_length, 0., twopi);
     G4LogicalVolume *signal_connector_logical = new G4LogicalVolume(signal_connector_solid, nist->FindOrBuildMaterial(connector_material), detector_name + "_signal_connector_logical");
     signal_connector_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
-    new G4PVPlacement(rotation, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length + 0.5*signal_connector_length)*symmetry_axis - 0.5*connector_base_outer_radius*symmetry_axis_orthogonal, signal_connector_logical, detector_name + "_signal_connector", world_Logical, 0, 0, false);  
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length + 0.5*signal_connector_length)*e_r + 0.5/sqrt(2.)*connector_base_outer_radius*e_theta - 0.5/sqrt(2.)*connector_base_outer_radius*e_phi, signal_connector_logical, detector_name + "_signal_connector", world_Logical, 0, 0, false);  
 };

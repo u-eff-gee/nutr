@@ -88,7 +88,7 @@ class Detector{
 		 * \param intrinsic_rotation_angle \f$\alpha\f$, intrinsic rotation angle of the detector
 		 * around its main axis (default: 0).
 		 */
-		virtual void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) const = 0;
+		virtual void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) = 0;
 
 		/**
 		 * \brief Add a filter layer
@@ -127,4 +127,61 @@ class Detector{
 
 		vector<G4String> wrap_materials; /**< List of filter materials given as G4Material names. */
 		vector<G4double> wrap_thicknesses; /**< List of filter thicknesses. */
+
+		/**
+		 * \brief Return radial unit vector in spherical coordinates
+		 * 
+		 * The radial unit vector \f$\hat{e_r}\f$ is the direction along which the main axis of 
+		 * the detector is oriented.
+		 * 
+		 * \param theta \f$\theta\f$, polar angle
+		 * \param phi \f$\varphi\f$, aximuthal angle
+		 * 
+		 * \return \f$\hat{e_r}\f$
+		 */
+		G4ThreeVector unit_vector_r(const double theta, const double phi) const;
+
+		/**
+		 * \brief Return polar unit vector in spherical coordinates
+		 * 
+		 * The polar unit vector \f$\hat{e_\theta}\f$ is perpendicular to the main axis of the 
+		 * detector and can be used to place off-axis elements in the geometry.
+		 * 
+		 * \param theta \f$\theta\f$, polar angle
+		 * \param phi \f$\varphi\f$, aximuthal angle
+		 * 
+		 * \return \f$\hat{e_\theta}\f$
+		 */
+		G4ThreeVector unit_vector_theta(const double theta, const double phi) const;
+
+		/**
+		 * \brief Return azimuthal unit vector in spherical coordinates
+		 * 
+		 * The azimuthal unit vector \f$\hat{e_\theta}\f$ is perpendicular to the main axis of the 
+		 * detector and can be used to place off-axis elements in the geometry.
+		 * 
+		 * \param theta \f$\theta\f$, polar angle
+		 * \param phi \f$\varphi\f$, aximuthal angle
+		 * 
+		 * \return \f$\hat{e_\varphi}\f$
+		 */
+		G4ThreeVector unit_vector_phi(const double theta, const double phi) const;
+
+		/**
+		 * \brief Set up rotation matrix for transformation into the desired coordinate system
+		 * 
+		 * This function sets the member rotation_matrix to a G4RotationMatrix that will transform
+		 * an object with a main axis that was originally oriented along the z axis into an 
+		 * orientation along a new axis given by \f$\theta\f$ and \f$\varphi\f$.
+		 * Furthermore, a third angle \f$\alpha\f$ can be provided to rotate the object around 
+		 * its main axis.
+		 * 
+		 * \param theta \f$\theta\f$, polar angle
+		 * \param phi \f$\varphi\f$, aximuthal angle
+		 * \param alpha \f$\alpha\f$, intrinsic rotation angle of the detector
+		 * around its main axis
+		 */
+		void rotate(const double theta, const double phi, const double alpha);
+
+		G4RotationMatrix *rotation_matrix; /**< Rotation matrix for transformation into desired coordinate system.*/
 };

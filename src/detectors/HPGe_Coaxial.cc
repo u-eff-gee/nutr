@@ -34,18 +34,13 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 using std::string;
 using std::to_string;
 
-void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) const {
+void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) {
 
 	G4NistManager *nist = G4NistManager::Instance();
-	G4ThreeVector symmetry_axis(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta)); // Symmetry axis along which the single elements of the detector are constructed
-	G4ThreeVector symmetry_axis_orthogonal(cos(theta)*cos(phi), cos(theta)*sin(phi), -sin(theta)); // Vector which is orthogonal to the symmetry axes. Needed for the construction of off-axis elements. As an arbitrary choice, take the unit vector with respect to theta in spherical coordinates.
+	G4ThreeVector e_r = unit_vector_r(theta, phi);
+	G4ThreeVector e_theta = unit_vector_theta(theta, phi);
 
-	G4RotationMatrix* rotation = new G4RotationMatrix();
-	rotation->rotateZ(-phi);
-	rotation->rotateY(-theta);
-	if(intrinsic_rotation_angle != 0.){
-		rotation->rotateZ(intrinsic_rotation_angle);
-	}
+	rotate(theta, phi, intrinsic_rotation_angle);
 
 	/************* End cap *************/
 	// End cap side
@@ -56,19 +51,19 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 	G4Tubs *end_cap_side_solid = new G4Tubs(detector_name + "_end_cap_side_solid", end_cap_inner_radius, end_cap_outer_radius, end_cap_side_length*0.5, 0., twopi);
 	G4LogicalVolume *end_cap_side_logical = new G4LogicalVolume(end_cap_side_solid, nist->FindOrBuildMaterial(properties.end_cap_material), detector_name + "_end_cap_side_logical");
 	end_cap_side_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-	new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length*0.5)*symmetry_axis, end_cap_side_logical, detector_name + "_end_cap_side", world_Logical, 0, 0, false);
+	new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length*0.5)*e_r, end_cap_side_logical, detector_name + "_end_cap_side", world_Logical, 0, 0, false);
 
 	// End cap window
 	G4Tubs *end_cap_window_solid = new G4Tubs(detector_name + "_end_cap_window_solid", 0., end_cap_outer_radius, properties.end_cap_window_thickness*0.5, 0., twopi);
 	G4LogicalVolume *end_cap_window_logical = new G4LogicalVolume(end_cap_window_solid, nist->FindOrBuildMaterial(properties.end_cap_window_material), detector_name + "_end_cap_window_logical");
 	end_cap_window_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-	new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_window_thickness*0.5)*symmetry_axis, end_cap_window_logical, detector_name + "_end_cap_window", world_Logical, 0, 0, false);
+	new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness*0.5)*e_r, end_cap_window_logical, detector_name + "_end_cap_window", world_Logical, 0, 0, false);
 
 	// Vacuum inside end cap
 	G4Tubs *end_cap_vacuum_solid = new G4Tubs(detector_name + "_end_cap_vacuum_solid", 0., end_cap_inner_radius, end_cap_side_length*0.5, 0., twopi);
 	G4LogicalVolume *end_cap_vacuum_logical = new G4LogicalVolume(end_cap_vacuum_solid, nist->FindOrBuildMaterial("G4_Galactic"), detector_name + "_end_cap_vacuum_logical");
 	end_cap_vacuum_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
-	new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length*0.5)*symmetry_axis, end_cap_vacuum_logical, detector_name + "_end_cap_vacuum", world_Logical, 0, 0, false);
+	new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length*0.5)*e_r, end_cap_vacuum_logical, detector_name + "_end_cap_vacuum", world_Logical, 0, 0, false);
 
 	/************* Mount cup *************/
 	// Mount cup side
@@ -198,10 +193,10 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 		G4Tubs *connection_solid = new G4Tubs(detector_name + "connection_solid", 0., properties.connection_radius, properties.connection_length*0.5, 0., twopi);
 		G4LogicalVolume *connection_logical = new G4LogicalVolume(connection_solid, nist->FindOrBuildMaterial(properties.connection_material), detector_name + "connection_logical");
 		connection_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
-		new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length*0.5)*symmetry_axis, connection_logical, detector_name + "connection", world_Logical, 0, 0, false);
+		new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length*0.5)*e_r, connection_logical, detector_name + "connection", world_Logical, 0, 0, false);
 
 		if(intrinsic_rotation_angle != 0.)
-			symmetry_axis_orthogonal.rotate(intrinsic_rotation_angle, symmetry_axis);
+			e_theta.rotate(intrinsic_rotation_angle, e_r);
 
 		/************* Dewar *************/
 		G4double dewar_side_length = properties.dewar_length - 2.*properties.dewar_wall_thickness;
@@ -210,19 +205,19 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 		G4Tubs *dewar_face_solid = new G4Tubs(detector_name + "_dewar_face_solid", 0., properties.dewar_outer_radius, properties.dewar_wall_thickness*0.5, 0., twopi);
 		G4LogicalVolume *dewar_face_logical = new G4LogicalVolume(dewar_face_solid, nist->FindOrBuildMaterial(properties.dewar_material),detector_name +  "_dewar_face_logical");
 		dewar_face_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
-		new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length + properties.dewar_wall_thickness*0.5)*symmetry_axis + properties.dewar_offset*symmetry_axis_orthogonal, dewar_face_logical, detector_name + "_dewar_face", world_Logical, 0, 0, false);
+		new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length + properties.dewar_wall_thickness*0.5)*e_r + properties.dewar_offset*e_theta, dewar_face_logical, detector_name + "_dewar_face", world_Logical, 0, 0, false);
 
 		// Dewar side
 		G4Tubs *dewar_side_solid = new G4Tubs(detector_name + "_dewar_side_solid", properties.dewar_outer_radius - properties.dewar_wall_thickness, properties.dewar_outer_radius, dewar_side_length*0.5, 0., twopi);
 		G4LogicalVolume *dewar_side_logical = new G4LogicalVolume(dewar_side_solid, nist->FindOrBuildMaterial(properties.dewar_material), detector_name + "_dewar_side_logical");
 		dewar_side_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
-		new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length + properties.dewar_wall_thickness + dewar_side_length*0.5)*symmetry_axis + properties.dewar_offset*symmetry_axis_orthogonal, dewar_side_logical, detector_name + "_dewar_side", world_Logical, 0, 0, false);
+		new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length + properties.dewar_wall_thickness + dewar_side_length*0.5)*e_r + properties.dewar_offset*e_theta, dewar_side_logical, detector_name + "_dewar_side", world_Logical, 0, 0, false);
 		
 		// Dewar base
 		G4Tubs *dewar_base_solid = new G4Tubs(detector_name + "_dewar_base_solid", 0., properties.dewar_outer_radius, properties.dewar_wall_thickness*0.5, 0., twopi);
 		G4LogicalVolume *dewar_base_logical = new G4LogicalVolume(dewar_base_solid, nist->FindOrBuildMaterial(properties.dewar_material), detector_name + "_dewar_base_logical");
 		dewar_base_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
-		new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length + properties.dewar_wall_thickness*1.5 + dewar_side_length)*symmetry_axis + properties.dewar_offset*symmetry_axis_orthogonal, dewar_base_logical, detector_name + "_dewar_base", world_Logical, 0, 0, false);
+		new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length + properties.dewar_wall_thickness*1.5 + dewar_side_length)*e_r + properties.dewar_offset*e_theta, dewar_base_logical, detector_name + "_dewar_base", world_Logical, 0, 0, false);
 	}
 
 	// Filters
@@ -250,7 +245,7 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 			}
 
 			filter_name = "filter_" + detector_name + "_" + to_string(i);
-			new G4PVPlacement(rotation, global_coordinates + (dist_from_center - filter_position_z - filter_thicknesses[i]*0.5)*symmetry_axis, filter_logical, filter_name, world_Logical, 0, 0, false);
+			new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center - filter_position_z - filter_thicknesses[i]*0.5)*e_r, filter_logical, filter_name, world_Logical, 0, 0, false);
 			filter_name.clear();
 			filter_position_z = filter_position_z + filter_thicknesses[i];
 		}
@@ -276,7 +271,7 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 			wrap_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
 
 			wrap_name = "wrap_" + detector_name + "_" + to_string(i);
-			new G4PVPlacement(rotation, global_coordinates + (dist_from_center + properties.end_cap_length*0.5)*symmetry_axis, wrap_logical, wrap_name, world_Logical, 0, 0, false);
+			new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_length*0.5)*e_r, wrap_logical, wrap_name, world_Logical, 0, 0, false);
 			wrap_name.clear();
 			wrap_radius = wrap_radius + wrap_thicknesses[i];
 		}
