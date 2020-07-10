@@ -19,17 +19,10 @@
 
 #pragma once
 
-#include "G4VUserDetectorConstruction.hh"
+#include "NDetectorConstruction.hh"
 
-class G4VPhysicalVolume;
-
-class DetectorConstruction : public G4VUserDetectorConstruction
+class DetectorConstruction : public NDetectorConstruction
 {
   public:
-    DetectorConstruction();
-    virtual ~DetectorConstruction();
-
-  public:
-    virtual G4VPhysicalVolume* Construct();
-    virtual void ConstructSDandField();
+    G4VPhysicalVolume* Construct() override final;
 };

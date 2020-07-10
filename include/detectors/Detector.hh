@@ -116,6 +116,8 @@ class Detector{
 		 * \param wrap_thickness Thickness of the wrapping.
 		 */
 		void Add_Wrap(G4String wrap_material, G4double wrap_thickness);
+
+		virtual vector<G4LogicalVolume*> get_sensitive_logical_volumes() = 0;
 	
 	protected:
 		G4LogicalVolume *world_Logical; /**< Logical volume in which the detector will be placed. */

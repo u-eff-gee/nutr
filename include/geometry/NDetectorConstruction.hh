@@ -19,10 +19,26 @@
 
 #pragma once
 
-#include "NDetectorConstruction.hh"
+#include <vector>
 
-class DetectorConstruction : public NDetectorConstruction
+using std::vector;
+
+#include "G4LogicalVolume.hh"
+#include "G4VUserDetectorConstruction.hh"
+
+class G4VPhysicalVolume;
+
+class NDetectorConstruction : public G4VUserDetectorConstruction
 {
-  public:
-    G4VPhysicalVolume* Construct() override final;
+public:
+    NDetectorConstruction();
+    virtual ~NDetectorConstruction();
+
+    virtual G4VPhysicalVolume* Construct() = 0;
+    void ConstructSDandField() override final;
+
+    void RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes);
+
+protected:
+    vector<G4LogicalVolume*> sensitive_logical_volumes;
 };

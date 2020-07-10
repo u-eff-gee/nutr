@@ -181,7 +181,7 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 	    new G4Polycone("crystal_solid", 0. * deg, 360. * deg,
 	                   nsteps_optimized, zPlane, rInner, rOuter);
 
-	G4LogicalVolume *crystal_logical = new G4LogicalVolume(
+	crystal_logical = new G4LogicalVolume(
 	    crystal_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name, 0, 0, 0);
 
 	crystal_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
@@ -276,4 +276,8 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 			wrap_radius = wrap_radius + wrap_thicknesses[i];
 		}
 	}
+}
+
+vector<G4LogicalVolume*> HPGe_Coaxial::get_sensitive_logical_volumes(){
+    return vector<G4LogicalVolume*>{crystal_logical};
 }

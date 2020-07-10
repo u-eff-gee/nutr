@@ -43,8 +43,11 @@ class HPGe_Coaxial : public Detector{
 		void useFilterCaseRing(){use_filter_case_ring = true;};
 		void useDewar(){use_dewar = true;};
 
+        vector<G4LogicalVolume*> get_sensitive_logical_volumes() override final;
+
 	private:
 		HPGe_Coaxial_Properties properties;
+		G4LogicalVolume* crystal_logical;
 		bool use_filter_case;
 		bool use_filter_case_ring;
 		bool use_dewar;

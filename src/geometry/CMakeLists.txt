@@ -18,6 +18,6 @@
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
-add_library(detectorConstruction DetectorConstruction.cc)
-target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/hpge ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
-target_link_libraries(detectorConstruction nDetectorConstruction hpgeCoaxial SensitiveDetector)
+add_library(nDetectorConstruction NDetectorConstruction.cc)
+target_include_directories(nDetectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
+target_link_libraries(nDetectorConstruction SensitiveDetector)

@@ -21,21 +21,12 @@
 #include "G4LogicalVolume.hh"
 #include "G4NistManager.hh"
 #include "G4PVPlacement.hh"
-#include "G4SDManager.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 
 #include "DetectorConstruction.hh"
-#include "SensitiveDetector.hh"
 
 #include "Scintillator_SCIONIX.hh"
-
-DetectorConstruction::DetectorConstruction()
-:G4VUserDetectorConstruction()
-{}
-
-DetectorConstruction::~DetectorConstruction()
-{}
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
@@ -48,23 +39,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	Scintillator_SCIONIX cebr1(world_logical, "cebr1");
 	cebr1.Construct(G4ThreeVector(), 0., 0., 150.*mm);
+    RegisterSensitiveLogicalVolumes(cebr1.get_sensitive_logical_volumes());
 
 	Scintillator_SCIONIX cebr2(world_logical, "cebr2");
 	cebr2.Construct(G4ThreeVector(), 180.*deg, 0.*deg, 150.*mm);
+    RegisterSensitiveLogicalVolumes(cebr2.get_sensitive_logical_volumes());
 
 	return world_phys;
-}
-
-void DetectorConstruction::ConstructSDandField(){
-
-	SensitiveDetector *cebr1 = new SensitiveDetector("cebr1", "cebr1");
-	cebr1->SetDetectorID(1);
-	G4SDManager::GetSDMpointer()->AddNewDetector(cebr1);
-	SetSensitiveDetector("cebr1", cebr1, true);
-
-	SensitiveDetector *cebr2 = new SensitiveDetector("cebr2", "cebr2");
-	cebr2->SetDetectorID(2);
-	G4SDManager::GetSDMpointer()->AddNewDetector(cebr2);
-	SetSensitiveDetector("cebr2", cebr2, true);
-    
 }
