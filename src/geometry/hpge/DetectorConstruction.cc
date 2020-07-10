@@ -40,26 +40,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	HPGe_Collection hpge_collection;
 
-	HPGe_Coaxial hpge1(world_logical, "hpge1");
-	hpge1.setProperties(hpge_collection.HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge1(world_logical, "hpge1", HPGe_Collection::HPGe_60_TUNL_21033);
 	hpge1.useDewar();
 	hpge1.Construct(G4ThreeVector(), 90.*deg, 0.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge1.get_sensitive_logical_volumes());
 
-	HPGe_Coaxial hpge2(world_logical, "hpge2");
-	hpge2.setProperties(hpge_collection.HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge2(world_logical, "hpge2", hpge_collection.HPGe_60_TUNL_21033);
 	hpge2.useDewar();
 	hpge2.Construct(G4ThreeVector(), 90.*deg, 90.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge2.get_sensitive_logical_volumes());
 
-	HPGe_Coaxial hpge3(world_logical, "hpge3");
-	hpge3.setProperties(hpge_collection.HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge3(world_logical, "hpge3", hpge_collection.HPGe_60_TUNL_21033);
 	hpge3.useDewar();
 	hpge3.Construct(G4ThreeVector(), 90.*deg, 180.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge3.get_sensitive_logical_volumes());
 
-	HPGe_Coaxial hpge4(world_logical, "hpge4");
-	hpge4.setProperties(hpge_collection.HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge4(world_logical, "hpge4", hpge_collection.HPGe_60_TUNL_21033);
 	hpge4.useDewar();
 	hpge4.Construct(G4ThreeVector(), 90.*deg, 270.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge4.get_sensitive_logical_volumes());

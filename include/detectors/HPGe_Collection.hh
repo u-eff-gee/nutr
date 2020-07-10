@@ -28,21 +28,21 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 const double inch = 25.4*mm;
 
 struct HPGe_Collection{
-	HPGe_Coaxial_Properties HPGe_55_TUNL_21638;
-	HPGe_Coaxial_Properties HPGe_55_TUNL_31524;
-	HPGe_Coaxial_Properties HPGe_60_TUNL_21033;
-	HPGe_Coaxial_Properties HPGe_60_TUNL_30986;
-	HPGe_Coaxial_Properties HPGe_60_TUNL_31061;
-	HPGe_Coaxial_Properties HPGe_60_TUNL_40663;
-	HPGe_Coaxial_Properties HPGe_120_TUNL_40383;
-	HPGe_Coaxial_Properties HPGe_80_TUD_90006;
-	HPGe_Coaxial_Properties HPGe_100_TUD_72902;
-	HPGe_Coaxial_Properties HPGe_100_TUD_72930;
-	HPGe_Coaxial_Properties HPGe_100_TUD_73760;
-	HPGe_Coaxial_Properties HPGe_100_Cologne_73954;
-	HPGe_Coaxial_Properties HPGe_86_Stuttgart_31120;
-	HPGe_Coaxial_Properties HPGe_ANL_31670;
-	HPGe_Coaxial_Properties HPGe_ANL_41203;
+	static HPGe_Coaxial_Properties HPGe_55_TUNL_21638;
+	static HPGe_Coaxial_Properties HPGe_55_TUNL_31524;
+	static HPGe_Coaxial_Properties HPGe_60_TUNL_21033;
+	static HPGe_Coaxial_Properties HPGe_60_TUNL_30986;
+	static HPGe_Coaxial_Properties HPGe_60_TUNL_31061;
+	static HPGe_Coaxial_Properties HPGe_60_TUNL_40663;
+	static HPGe_Coaxial_Properties HPGe_120_TUNL_40383;
+	static HPGe_Coaxial_Properties HPGe_80_TUD_90006;
+	static HPGe_Coaxial_Properties HPGe_100_TUD_72902;
+	static HPGe_Coaxial_Properties HPGe_100_TUD_72930;
+	static HPGe_Coaxial_Properties HPGe_100_TUD_73760;
+	static HPGe_Coaxial_Properties HPGe_100_Cologne_73954;
+	static HPGe_Coaxial_Properties HPGe_86_Stuttgart_31120;
+	static HPGe_Coaxial_Properties HPGe_ANL_31670;
+	static HPGe_Coaxial_Properties HPGe_ANL_41203;
 
 	HPGe_Collection(){
 		// 55% coaxial HPGe with ORTEC serial number 4-TN21638A
@@ -162,8 +162,8 @@ struct HPGe_Collection{
 		HPGe_60_TUNL_21033.dewar_wall_thickness = 5.*mm; // Estimated
 		HPGe_60_TUNL_21033.dewar_material = "G4_Al"; // Estimated
 
-		// 60% coaxial HPGe with ORTEC serial number 36-TN30986A
-		// Property of TUNL
+		// // 60% coaxial HPGe with ORTEC serial number 36-TN30986A
+		// // Property of TUNL
 		HPGe_60_TUNL_30986.detector_radius = 0.5*68.2*mm; // ORTEC data sheet
 		HPGe_60_TUNL_30986.detector_length = 77.5*mm; // ORTEC data sheet
 		HPGe_60_TUNL_30986.detector_face_radius = 8.*mm; // (J) in ORTEC data sheet
@@ -661,3 +661,19 @@ struct HPGe_Collection{
 		HPGe_ANL_31670.dewar_material = HPGe_ANL_41203.dewar_material;
 	}
 };
+
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_55_TUNL_21638;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_55_TUNL_31524;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_60_TUNL_21033;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_60_TUNL_30986;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_60_TUNL_31061;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_60_TUNL_40663;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_120_TUNL_40383;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_80_TUD_90006;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_100_TUD_72902;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_100_TUD_72930;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_100_TUD_73760;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_100_Cologne_73954;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_86_Stuttgart_31120;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_ANL_31670;
+HPGe_Coaxial_Properties HPGe_Collection::HPGe_ANL_41203;
