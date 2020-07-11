@@ -52,7 +52,7 @@ Besides the usual Geant4 build variables, `nutr` provides the following options:
 * `GEOMETRY_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/geometry` that contains the desired geometry.
 * `OUTPUT_FORMAT`: Determine the format of the output. Possible choices: `root` (default), `csv`, and `xml`.
 * `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator (default: `general_particle_source`).
-* `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector.
+* `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector (default: `edep`).
 * `WITH_GEANT4_UIVIS`: Build `nutr` with Geant4 UI and Vis drivers (default: ON).
 
 ## 3. License

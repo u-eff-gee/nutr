@@ -1,2 +1,6 @@
 build
 __pycache__
+
+# CMake - configured files
+include/sensitive_detector/edep/TupleManager.hh
+include/sensitive_detector/tracker/TupleManager.hh

@@ -58,7 +58,7 @@ if(${PRIMARY_GENERATOR_DIR} STREQUAL "angcorr")
     set(ANGCORR_PYTHON_DIR "${PROJECT_SOURCE_DIR}/src/primary_generator/angcorr/python")
 endif()
 
-set(SENSITIVE_DETECTOR_DIR "tracker" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector.")
+set(SENSITIVE_DETECTOR_DIR "edep" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector (default: `edep`).")
 
 add_subdirectory(src/detectors)
 add_subdirectory(src/fundamentals)
