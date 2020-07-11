@@ -28,7 +28,19 @@ EM_UNKNOWN = 0
 MAGNETIC = 1
 
 def em_str_rep(em):
+    """String representation of an electromagnetic character
     
+    Parameters
+    ----------
+    em: int
+        EM character.
+    
+    Returns
+    -------
+    string
+        'E', if em==-1 (electric character), 'M' if em==1 magnetic, and ' ' (one space) if em has \
+any other value.
+    """
     if em == ELECTRIC:
         return 'E'
     if em == MAGNETIC:
@@ -84,7 +96,15 @@ class Transition:
         self.delta = de
 
     def __str__(self):
-
+        """String representation of an EM transition between nuclear states.
+        
+        Returns
+        -------
+        string
+            String representation of the EM transition in the form \
+'em_char two_L/2 separator em_charp two_Lp/2', i.e. with a newline between the two possible \
+multipolarities.
+        """
         str_rep = ''
         str_repp = ''
 

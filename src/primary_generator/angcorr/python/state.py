@@ -30,6 +30,23 @@ NEGATIVE = -1
 
 
 def parity_str_rep(parity):
+    """String representation of a parity quantum number
+    
+    Parameters
+    ----------
+    parity: int
+        Parity quantum number, which may be 1 (positive parity), -1 (negative), or 0 (parity unknown).
+
+    Returns
+    -------
+    string
+        '+', if positive parity, and '-' if negative parity.
+
+    Raises
+    ------
+    ValueError
+        If parity is neither -1 or 1.
+    """
     if parity == POSITIVE:
         return '+'
     if parity == NEGATIVE:
@@ -38,6 +55,19 @@ def parity_str_rep(parity):
     raise ValueError('No string representation for unknown parity.')
 
 def spin_str_rep(two_J):
+    """String representation of an angular momentum ('spin') quantum number
+    
+    Parameters
+    ----------
+    two_J: int
+        Two times the angular momentum quantum number in units of the reduced Planck constant.
+    
+    Returns
+    -------
+    string
+        If two_J is an even number, the string representation of two_J/2 is returned. \
+If two_J is an odd number 'two_J/2' is returned.
+    """
     if two_J % 2 == 0:
         return str(int(two_J/2))
 
@@ -70,7 +100,14 @@ class State:
         self.parity = par
 
     def __str__(self):
-
+        """String representation of a nuclear state
+        
+        Returns
+        -------
+        string
+            String representation of the state in the form '(two_J/2)^parity'.
+For more information, see the spin_str_rep and parity_str_rep functions.
+        """
         if self.parity != PARITY_UNKNOWN:
             return spin_str_rep(self.two_J) + '^' + parity_str_rep(self.parity)
         
