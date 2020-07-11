@@ -17,7 +17,7 @@
 
 from pathlib import Path
 import os
-os.chdir('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_correlation_source/python/')
+os.chdir('@ANGCORR_PYTHON_DIR@')
 from time import time
 
 from asymmetry_plot import AngularCorrelation, AsymmetryPlotter

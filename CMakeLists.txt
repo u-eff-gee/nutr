@@ -49,6 +49,13 @@ if(BUILD_DOCUMENTATION)
 	add_custom_target(doc_doxygen ALL COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
 endif(BUILD_DOCUMENTATION)
 
+set(GEOMETRY_DIR "hpge" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry.")
+
+set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/primary_generator that contains the desired primary generator.")
+if(${PRIMARY_GENERATOR_DIR} STREQUAL "angcorr")
+    set(ANGCORR_PYTHON_DIR "${PROJECT_SOURCE_DIR}/src/primary_generator/angcorr/python")
+endif()
+
 set(SENSITIVE_DETECTOR_DIR "tracker" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector.")
 
 add_subdirectory(src/detectors)

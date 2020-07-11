@@ -161,6 +161,7 @@ add_executable(test_find_Theta_j test_find_Theta_j.cc)
 target_link_libraries(test_find_Theta_j spherePointSampler)
 add_test(test_find_Theta_j test_find_Theta_j)
 
+message(STATUS "ANGCORR_PYTHON_DIR = ${ANGCORR_PYTHON_DIR}")
 configure_file(python/angular_correlation_plot.py python/angular_correlation_plot.py)
 configure_file(python/asymmetry_plot.py python/asymmetry_plot.py)
 configure_file(python/test_plot_01_polarization.py python/test_plot_01_polarization.py)

@@ -16,7 +16,7 @@
 # Copyright (C) 2020 Udo Friman-Gayer
 
 import os
-os.chdir('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_correlation_source/python/')
+os.chdir('@ANGCORR_PYTHON_DIR@')
 from angular_correlation_plot import AngularCorrelationPlot, AngularCorrelationPlotGrid
 import state as st
 import transition as tr

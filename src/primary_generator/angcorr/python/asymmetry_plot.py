@@ -17,7 +17,7 @@
 
 import os
 import warnings
-os.chdir('@PROJECT_BINARY_DIR@/src/fundamentals/primary_generator/angular_correlation_source/python/')
+os.chdir('@ANGCORR_PYTHON_DIR@')
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
