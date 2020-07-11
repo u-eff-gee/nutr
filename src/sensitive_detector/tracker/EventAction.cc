@@ -44,8 +44,11 @@ void EventAction::EndOfEventAction(const G4Event* event)
 
 	G4int eventID = event->GetEventID();
 
-	G4VHitsCollection* hc = event->GetHCofThisEvent()->GetHC(0);
+    G4VHitsCollection* hc = nullptr;
+    for(size_t n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
+        hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
-	for(size_t i = 0; i < hc->GetSize(); ++i)
-		fTupleManager->FillNtuple(eventID, (DetectorHit*) hc->GetHit(i));
+        for(size_t i = 0; i < hc->GetSize(); ++i)
+            fTupleManager->FillNtuple(eventID, (DetectorHit*) hc->GetHit(i));
+    }
 }

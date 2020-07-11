@@ -42,9 +42,10 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	G4int n_trajectories = 0;
 	if (trajectoryContainer) n_trajectories = trajectoryContainer->entries();
 
+    G4VHitsCollection* hc = nullptr;
     for(size_t n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
 	    
-        G4VHitsCollection* hc = event->GetHCofThisEvent()->GetHC(n_hc);
+        hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
         if(hc->GetSize() > 0){
             double edep = 0.;
