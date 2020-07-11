@@ -40,16 +40,16 @@ class DetectorHit : public G4VHit
 
     virtual void Draw(){};
 
-    void SetDetectorID (const unsigned int detectorID) { fDetectorID = detectorID; };
+    void SetDetectorID (const G4int detectorID) { fDetectorID = detectorID; };
     void SetEdep     (const G4double de) { fEdep = de; };
     void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
 
-    G4double GetDetectorID() const { return fDetectorID; };
+    G4int GetDetectorID() const { return fDetectorID; };
     G4double GetEdep() const { return fEdep; };
     G4ThreeVector GetPos() const { return fPos; };
 
   private:
-      unsigned int  fDetectorID;
+      G4int         fDetectorID;
       G4double      fEdep;
       G4ThreeVector fPos;
 };

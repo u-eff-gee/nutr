@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "g4root.hh"
+#include "g4@OUTPUT_FORMAT@.hh"
 #include "globals.hh"
 
 #include "DetectorHit.hh"
@@ -37,7 +37,7 @@ class TupleManager
     void Book();
     void Save();
 
-    void FillNtuple(G4int deid, G4double edep);
+    void FillNtuple(G4int eventID, DetectorHit* hit);
 
   private:
     G4bool fFactoryOn;

@@ -24,6 +24,7 @@ add_library(DetectorHit DetectorHit.cc)
 add_library(SensitiveDetector SensitiveDetector.cc)
 target_link_libraries(SensitiveDetector DetectorHit)
 
+configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/tracker/TupleManager.hh.in ${PROJECT_SOURCE_DIR}/include/sensitive_detector/tracker/TupleManager.hh)
 add_library(tupleManager TupleManager.cc)
 target_link_libraries(tupleManager DetectorHit)
 

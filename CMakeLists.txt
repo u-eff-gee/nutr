@@ -49,6 +49,8 @@ if(BUILD_DOCUMENTATION)
 	add_custom_target(doc_doxygen ALL COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
 endif(BUILD_DOCUMENTATION)
 
+set(OUTPUT_FORMAT "root" CACHE STRING "Determine the format of the output. Possible choices: 'root' (default), 'csv', and 'xml'.")
+
 set(GEOMETRY_DIR "hpge" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry.")
 
 set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/primary_generator that contains the desired primary generator.")

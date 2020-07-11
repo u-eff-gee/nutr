@@ -21,7 +21,7 @@ This is a [Geant4](https://geant4.cern.ch) [1] simulation of experiments in the 
 ## 1. Description
 
 The main program, user actions, and visualization macros of `nutr` are based on example B2a of Geant4 (`$G4_INSTALL_DIR/share/Geant4-10.6.1/examples/basic/B2/B2a`).
-A `ROOT` analysis manager was added, which is based on example AnaEx02 of Geant4 (`$G4_INSTALL_DIR/share/Geant4-10.6.1/examples/extended/analysis/AnaEx02`).
+An analysis manager was added, which is based on the examples AnaEx* of Geant4 (`$G4_INSTALL_DIR/share/Geant4-10.6.1/examples/extended/analysis/AnaEx*`).
 Some code has been adapted from a previous simulation of the UTR ([utr](https://github.com/uga-uga/utr) [3]).
 
 ## 2. Build
@@ -49,7 +49,10 @@ After the first build step, several `CMake` build variables will be available fo
 Besides the usual Geant4 build variables, `nutr` provides the following options:
 
 * `BUILD_DOCUMENTATION`: Create the code documentation using Doxygen (default: OFF).
+* `GEOMETRY_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/geometry` that contains the desired geometry.
+* `OUTPUT_FORMAT`: Determine the format of the output. Possible choices: `root` (default), `csv`, and `xml`.
 * `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator (default: `general_particle_source`).
+* `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector.
 * `WITH_GEANT4_UIVIS`: Build `nutr` with Geant4 UI and Vis drivers (default: ON).
 
 ## 3. License
