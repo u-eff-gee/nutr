@@ -19,8 +19,8 @@
 
 #include "TupleManager.hh"
 
-TupleManager::TupleManager()
-: fFactoryOn(false)
+TupleManager::TupleManager(const string out_file_name)
+: fFactoryOn(false), output_file_name(out_file_name)
 {}
 
 TupleManager::~TupleManager()
@@ -28,54 +28,56 @@ TupleManager::~TupleManager()
 
 void TupleManager::Book()
 {
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->SetNtupleMerging(true);
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    analysisManager->SetNtupleMerging(true);
 
-  G4bool fileOpen = analysisManager->OpenFile("out");
-  if (! fileOpen) {
-    G4cerr << "\n---> HistoManager::Book(): cannot open "
-           << analysisManager->GetFileName() << G4endl;
-    return;
-  }
+    G4bool fileOpen = analysisManager->OpenFile(output_file_name);
+    if (! fileOpen) {
+        G4cerr << "\n---> HistoManager::Book(): cannot open "
+            << analysisManager->GetFileName() << G4endl;
+        return;
+    }
 
-  analysisManager->CreateNtuple("hits", "Hits");
-  analysisManager->CreateNtupleIColumn("evid");
-  analysisManager->CreateNtupleIColumn("trid");
-  analysisManager->CreateNtupleIColumn("paid");
-  analysisManager->CreateNtupleIColumn("deid");
-  analysisManager->CreateNtupleDColumn("edep");
-  analysisManager->CreateNtupleDColumn("posx");
-  analysisManager->CreateNtupleDColumn("posy");
-  analysisManager->CreateNtupleDColumn("posz");
-  analysisManager->FinishNtuple();
+    analysisManager->CreateNtuple("hits", "Hits");
+    analysisManager->CreateNtupleIColumn("evid");
+    analysisManager->CreateNtupleIColumn("trid");
+    analysisManager->CreateNtupleIColumn("paid");
+    analysisManager->CreateNtupleIColumn("deid");
+    analysisManager->CreateNtupleDColumn("edep");
+    analysisManager->CreateNtupleDColumn("posx");
+    analysisManager->CreateNtupleDColumn("posy");
+    analysisManager->CreateNtupleDColumn("posz");
+    analysisManager->FinishNtuple();
 
-  fFactoryOn = true;
+    fFactoryOn = true;
 
 }
 
 void TupleManager::Save()
 {
-  if (! fFactoryOn) return;
+    if (! fFactoryOn) return;
 
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->Write();
-  analysisManager->CloseFile();
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    analysisManager->Write();
+    analysisManager->CloseFile();
 
-  delete G4AnalysisManager::Instance();
-  fFactoryOn = false;
+    G4cout << "Created output file '" << output_file_name << "' (Geant4 will have added a '.root' extension automatically if not specified)" << G4endl;
+
+    delete G4AnalysisManager::Instance();
+    fFactoryOn = false;
 }
 
 void TupleManager::FillNtuple(G4int eventID, DetectorHit* hit)
 {
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->FillNtupleIColumn(0, 0, eventID);
-  analysisManager->FillNtupleIColumn(0, 1, hit->GetTrackID());
-  analysisManager->FillNtupleIColumn(0, 2, hit->GetParticleID());
-  analysisManager->FillNtupleIColumn(0, 3, hit->GetDetectorID());
-  analysisManager->FillNtupleDColumn(0, 4, hit->GetEdep());
-  analysisManager->FillNtupleDColumn(0, 5, hit->GetPos().x());
-  analysisManager->FillNtupleDColumn(0, 6, hit->GetPos().y());
-  analysisManager->FillNtupleDColumn(0, 7, hit->GetPos().z());
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    analysisManager->FillNtupleIColumn(0, 0, eventID);
+    analysisManager->FillNtupleIColumn(0, 1, hit->GetTrackID());
+    analysisManager->FillNtupleIColumn(0, 2, hit->GetParticleID());
+    analysisManager->FillNtupleIColumn(0, 3, hit->GetDetectorID());
+    analysisManager->FillNtupleDColumn(0, 4, hit->GetEdep());
+    analysisManager->FillNtupleDColumn(0, 5, hit->GetPos().x());
+    analysisManager->FillNtupleDColumn(0, 6, hit->GetPos().y());
+    analysisManager->FillNtupleDColumn(0, 7, hit->GetPos().z());
 
-  analysisManager->AddNtupleRow(0);
+    analysisManager->AddNtupleRow(0);
 }

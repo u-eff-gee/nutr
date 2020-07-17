@@ -26,13 +26,13 @@
 
 class RunAction : public G4UserRunAction
 {
-  public:
+public:
     RunAction(TupleManager* histo);
     virtual ~RunAction();
 
     virtual void BeginOfRunAction(const G4Run* run);
     virtual void   EndOfRunAction(const G4Run* run);
 
-  private:
+private:
     TupleManager *fTupleManager;
 };

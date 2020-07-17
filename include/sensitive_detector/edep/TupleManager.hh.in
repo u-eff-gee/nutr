@@ -23,6 +23,10 @@
 
 #pragma once
 
+#include <string>
+
+using std::string;
+
 #include "g4@OUTPUT_FORMAT@.hh"
 #include "globals.hh"
 
@@ -30,8 +34,8 @@
 
 class TupleManager
 {
-  public:
-    TupleManager();
+public:
+    TupleManager(const string out_file_name);
    ~TupleManager();
 
     void Book();
@@ -39,6 +43,7 @@ class TupleManager
 
     void FillNtuple(G4int deid, G4double edep);
 
-  private:
+private:
+    const string output_file_name;
     G4bool fFactoryOn;
 };

@@ -19,16 +19,23 @@
 
 #pragma once
 
+#include <string>
+
+using std::string;
+
 #include "G4VUserActionInitialization.hh"
 
 class B4DetectorConstruction;
 
 class ActionInitialization : public G4VUserActionInitialization
 {
-  public:
-    ActionInitialization();
+public:
+    ActionInitialization(const string out_file_name);
     virtual ~ActionInitialization();
 
     virtual void BuildForMaster() const;
     virtual void Build() const;
+
+private:
+    const string output_file_name;
 };

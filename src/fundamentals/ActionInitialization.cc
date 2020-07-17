@@ -23,8 +23,8 @@
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
 
-ActionInitialization::ActionInitialization()
- : G4VUserActionInitialization()
+ActionInitialization::ActionInitialization(const string out_file_name)
+ : G4VUserActionInitialization(), output_file_name(out_file_name)
 {}
 
 ActionInitialization::~ActionInitialization()
@@ -32,14 +32,14 @@ ActionInitialization::~ActionInitialization()
 
 void ActionInitialization::BuildForMaster() const
 {
-	TupleManager *tuple = new TupleManager();
+	TupleManager *tuple = new TupleManager(output_file_name);
 
 	SetUserAction(new RunAction(tuple));
 }
 
 void ActionInitialization::Build() const
 {
-	TupleManager *tuple = new TupleManager();
+	TupleManager *tuple = new TupleManager(output_file_name);
 
 	SetUserAction(new PrimaryGeneratorAction);
 	SetUserAction(new RunAction(tuple));
