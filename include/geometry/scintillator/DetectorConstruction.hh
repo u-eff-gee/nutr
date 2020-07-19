@@ -23,6 +23,6 @@
 
 class DetectorConstruction : public NDetectorConstruction
 {
-  public:
+public:
     G4VPhysicalVolume* Construct() override final;
 };

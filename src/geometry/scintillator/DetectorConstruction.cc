@@ -32,18 +32,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 {
 	G4NistManager *nist_manager = G4NistManager::Instance();
 
-	G4Box *world_solid = new G4Box("world_solid", 2.*m, 2.*m, 2.*m);
-	G4LogicalVolume *world_logical = new G4LogicalVolume(world_solid, nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical");
+	world_solid = unique_ptr<G4Box>(new G4Box("world_solid", 2.*m, 2.*m, 2.*m));
+	world_logical = unique_ptr<G4LogicalVolume>(new G4LogicalVolume(world_solid.get(), nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical"));
 	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
-	G4VPhysicalVolume *world_phys = new G4PVPlacement(0, G4ThreeVector(), world_logical, "world", 0, false, 0);
+	world_phys = unique_ptr<G4VPhysicalVolume>(new G4PVPlacement(0, G4ThreeVector(), world_logical.get(), "world", 0, false, 0));
 
-	Scintillator_SCIONIX cebr1(world_logical, "cebr1");
+	Scintillator_SCIONIX cebr1(world_logical.get(), "cebr1");
 	cebr1.Construct(G4ThreeVector(), 0., 0., 150.*mm);
     RegisterSensitiveLogicalVolumes(cebr1.get_sensitive_logical_volumes());
 
-	Scintillator_SCIONIX cebr2(world_logical, "cebr2");
+	Scintillator_SCIONIX cebr2(world_logical.get(), "cebr2");
 	cebr2.Construct(G4ThreeVector(), 180.*deg, 0.*deg, 150.*mm);
     RegisterSensitiveLogicalVolumes(cebr2.get_sensitive_logical_volumes());
 
-	return world_phys;
+	return world_phys.get();
 }

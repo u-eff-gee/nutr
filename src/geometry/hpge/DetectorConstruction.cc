@@ -31,34 +31,34 @@
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
-	G4NistManager *nist_manager = G4NistManager::Instance();
+	G4NistManager* nist_manager = G4NistManager::Instance();
 
-	G4Box *world_solid = new G4Box("world_solid", 2.*m, 2.*m, 2.*m);
-	G4LogicalVolume *world_logical = new G4LogicalVolume(world_solid, nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical");
+	world_solid = unique_ptr<G4Box>(new G4Box("world_solid", 2.*m, 2.*m, 2.*m));
+	world_logical = unique_ptr<G4LogicalVolume>(new G4LogicalVolume(world_solid.get(), nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical"));
 	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
-	G4VPhysicalVolume *world_phys = new G4PVPlacement(0, G4ThreeVector(), world_logical, "world", 0, false, 0);
+	world_phys = unique_ptr<G4VPhysicalVolume>(new G4PVPlacement(0, G4ThreeVector(), world_logical.get(), "world", 0, false, 0));
 
 	HPGe_Collection hpge_collection;
 
-	HPGe_Coaxial hpge1(world_logical, "hpge1", HPGe_Collection::HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge1(world_logical.get(), "hpge1", HPGe_Collection::HPGe_60_TUNL_21033);
 	hpge1.useDewar();
 	hpge1.Construct(G4ThreeVector(), 90.*deg, 0.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge1.get_sensitive_logical_volumes());
 
-	HPGe_Coaxial hpge2(world_logical, "hpge2", hpge_collection.HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge2(world_logical.get(), "hpge2", hpge_collection.HPGe_60_TUNL_21033);
 	hpge2.useDewar();
 	hpge2.Construct(G4ThreeVector(), 90.*deg, 90.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge2.get_sensitive_logical_volumes());
 
-	HPGe_Coaxial hpge3(world_logical, "hpge3", hpge_collection.HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge3(world_logical.get(), "hpge3", hpge_collection.HPGe_60_TUNL_21033);
 	hpge3.useDewar();
 	hpge3.Construct(G4ThreeVector(), 90.*deg, 180.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge3.get_sensitive_logical_volumes());
 
-	HPGe_Coaxial hpge4(world_logical, "hpge4", hpge_collection.HPGe_60_TUNL_21033);
+	HPGe_Coaxial hpge4(world_logical.get(), "hpge4", hpge_collection.HPGe_60_TUNL_21033);
 	hpge4.useDewar();
 	hpge4.Construct(G4ThreeVector(), 90.*deg, 270.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge4.get_sensitive_logical_volumes());
 
-	return world_phys;
+	return world_phys.get();
 }

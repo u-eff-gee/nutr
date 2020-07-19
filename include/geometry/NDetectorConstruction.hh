@@ -19,10 +19,13 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 
+using std::unique_ptr;
 using std::vector;
 
+#include "G4VSolid.hh"
 #include "G4LogicalVolume.hh"
 #include "G4VUserDetectorConstruction.hh"
 
@@ -31,14 +34,15 @@ class G4VPhysicalVolume;
 class NDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
-    NDetectorConstruction();
-    virtual ~NDetectorConstruction();
-
     virtual G4VPhysicalVolume* Construct() = 0;
     void ConstructSDandField() override final;
 
     void RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes);
 
 protected:
+    unique_ptr<G4VSolid> world_solid;
+    unique_ptr<G4LogicalVolume> world_logical;
+    unique_ptr<G4VPhysicalVolume> world_phys;
+
     vector<G4LogicalVolume*> sensitive_logical_volumes;
 };

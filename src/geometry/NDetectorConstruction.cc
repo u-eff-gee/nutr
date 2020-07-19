@@ -22,13 +22,6 @@
 #include "NDetectorConstruction.hh"
 #include "SensitiveDetector.hh"
 
-NDetectorConstruction::NDetectorConstruction()
-:G4VUserDetectorConstruction()
-{}
-
-NDetectorConstruction::~NDetectorConstruction()
-{}
-
 void NDetectorConstruction::RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes){
     for(auto log_vol: logical_volumes){
         sensitive_logical_volumes.push_back(log_vol);
