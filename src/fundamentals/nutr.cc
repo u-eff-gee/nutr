@@ -17,12 +17,9 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include <ctime>
 #include <string>
 
 using std::string;
-using std::time;
-using std::to_string;
 
 #include "DetectorConstruction.hh"
 #include "ActionInitialization.hh"
@@ -58,7 +55,7 @@ int main(int argc,char** argv)
     G4VModularPhysicsList* physicsList = new Physics();
     runManager->SetUserInitialization(physicsList);
 
-    string output_file_name = to_string(time(nullptr)) + ".root";
+    string output_file_name = "";
     if(argc == 3){
         output_file_name = argv[2];
     }

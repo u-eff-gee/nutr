@@ -17,27 +17,11 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
+#include "DetectorHit.hh"
 #include "TupleManager.hh"
 
-TupleManager::TupleManager(const string out_file_name)
-: fFactoryOn(false), output_file_name(out_file_name)
-{}
-
-TupleManager::~TupleManager()
-{}
-
-void TupleManager::Book()
+void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
 {
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    analysisManager->SetNtupleMerging(true);
-
-    G4bool fileOpen = analysisManager->OpenFile(output_file_name);
-    if (! fileOpen) {
-        G4cerr << "\n---> HistoManager::Book(): cannot open "
-            << analysisManager->GetFileName() << G4endl;
-        return;
-    }
-
     analysisManager->CreateNtuple("hits", "Hits");
     analysisManager->CreateNtupleIColumn("evid");
     analysisManager->CreateNtupleIColumn("trid");
@@ -47,37 +31,16 @@ void TupleManager::Book()
     analysisManager->CreateNtupleDColumn("posx");
     analysisManager->CreateNtupleDColumn("posy");
     analysisManager->CreateNtupleDColumn("posz");
-    analysisManager->FinishNtuple();
-
-    fFactoryOn = true;
-
 }
 
-void TupleManager::Save()
+void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, G4VHit* hit)
 {
-    if (! fFactoryOn) return;
-
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    analysisManager->Write();
-    analysisManager->CloseFile();
-
-    G4cout << "Created output file '" << output_file_name << "' (Geant4 will have added a '.root' extension automatically if not specified)" << G4endl;
-
-    delete G4AnalysisManager::Instance();
-    fFactoryOn = false;
-}
-
-void TupleManager::FillNtuple(G4int eventID, DetectorHit* hit)
-{
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     analysisManager->FillNtupleIColumn(0, 0, eventID);
-    analysisManager->FillNtupleIColumn(0, 1, hit->GetTrackID());
-    analysisManager->FillNtupleIColumn(0, 2, hit->GetParticleID());
-    analysisManager->FillNtupleIColumn(0, 3, hit->GetDetectorID());
-    analysisManager->FillNtupleDColumn(0, 4, hit->GetEdep());
-    analysisManager->FillNtupleDColumn(0, 5, hit->GetPos().x());
-    analysisManager->FillNtupleDColumn(0, 6, hit->GetPos().y());
-    analysisManager->FillNtupleDColumn(0, 7, hit->GetPos().z());
-
-    analysisManager->AddNtupleRow(0);
+    analysisManager->FillNtupleIColumn(0, 1, ((DetectorHit*) hit)->GetTrackID());
+    analysisManager->FillNtupleIColumn(0, 2, ((DetectorHit*) hit)->GetParticleID());
+    analysisManager->FillNtupleIColumn(0, 3, ((DetectorHit*) hit)->GetDetectorID());
+    analysisManager->FillNtupleDColumn(0, 4, ((DetectorHit*) hit)->GetEdep());
+    analysisManager->FillNtupleDColumn(0, 5, ((DetectorHit*) hit)->GetPos().x());
+    analysisManager->FillNtupleDColumn(0, 6, ((DetectorHit*) hit)->GetPos().y());
+    analysisManager->FillNtupleDColumn(0, 7, ((DetectorHit*) hit)->GetPos().z());
 }

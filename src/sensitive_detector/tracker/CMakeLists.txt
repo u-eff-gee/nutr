@@ -24,9 +24,9 @@ add_library(DetectorHit DetectorHit.cc)
 add_library(SensitiveDetector SensitiveDetector.cc)
 target_link_libraries(SensitiveDetector DetectorHit)
 
-configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/tracker/TupleManager.hh.in ${PROJECT_SOURCE_DIR}/include/sensitive_detector/tracker/TupleManager.hh)
 add_library(tupleManager TupleManager.cc)
-target_link_libraries(tupleManager DetectorHit)
+target_include_directories(tupleManager PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector/)
+target_link_libraries(tupleManager analysisManager DetectorHit)
 
 add_library(eventAction EventAction.cc)
 target_link_libraries(eventAction tupleManager)

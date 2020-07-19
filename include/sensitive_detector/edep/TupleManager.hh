@@ -17,33 +17,16 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-// Based on Geant4 10.6.1 example
-//
-// ${CMAKE_INSTALL_PREFIX}/share/Geant4/examples/extended/analysis/AnaEx02
-
 #pragma once
 
-#include <string>
+#include "AnalysisManager.hh"
 
-using std::string;
-
-#include "g4@OUTPUT_FORMAT@.hh"
-#include "globals.hh"
-
-#include "DetectorHit.hh"
-
-class TupleManager
+class TupleManager : public AnalysisManager
 {
 public:
-    TupleManager(const string out_file_name);
-   ~TupleManager();
+    TupleManager(const string out_file_name): AnalysisManager(out_file_name){};
 
-    void Book();
-    void Save();
+    void CreateNtupleColumns(G4VAnalysisManager* analysisManager) override;
 
-    void FillNtuple(G4int deid, G4double edep);
-
-private:
-    const string output_file_name;
-    G4bool fFactoryOn;
+    void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, G4VHit* hit) override;
 };

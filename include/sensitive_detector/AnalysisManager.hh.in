@@ -17,12 +17,34 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
+// Based on Geant4 10.6.1 example
+//
+// ${CMAKE_INSTALL_PREFIX}/examples/extended/analysis/AnaEx02
+
 #pragma once
 
-#include "NDetectorConstruction.hh"
+#include <string>
 
-class DetectorConstruction : public NDetectorConstruction
+using std::string;
+using std::to_string;
+
+#include "g4@OUTPUT_FORMAT@.hh"
+#include "G4VHit.hh"
+#include "globals.hh"
+
+class AnalysisManager
 {
 public:
-    G4VPhysicalVolume* Construct() override final;
+    AnalysisManager(const string out_file_name);
+   ~AnalysisManager();
+
+    void Book();
+    virtual void CreateNtupleColumns(G4VAnalysisManager* analysisManager) = 0;
+    virtual void FillNtuple(G4int eventID, G4VHit* hit);
+    virtual void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, G4VHit* hit) = 0;
+    void Save();
+
+protected:
+    string output_file_name;
+    G4bool fFactoryOn;
 };

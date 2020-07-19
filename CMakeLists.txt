@@ -66,6 +66,7 @@ add_subdirectory(src/geometry)
 add_subdirectory(src/geometry/${GEOMETRY_DIR})
 add_subdirectory(src/physics)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/${PRIMARY_GENERATOR_DIR})
+add_subdirectory(src/sensitive_detector)
 add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 
 add_executable(nutr src/fundamentals/nutr.cc)
