@@ -28,6 +28,7 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 #include "G4Tubs.hh"
 #include "G4VisAttributes.hh"
 
+#include "Filter_Case.hh"
 #include "HPGe_Coaxial.hh"
 #include "OptimizePolycone.hh"
 
@@ -220,10 +221,21 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 		new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + properties.end_cap_window_thickness + end_cap_side_length + properties.connection_length + properties.dewar_wall_thickness*1.5 + dewar_side_length)*e_r + properties.dewar_offset*e_theta, dewar_base_logical, detector_name + "_dewar_base", world_Logical, 0, 0, false);
 	}
 
+	// Filter case
+	Filter_Case filter_case(world_Logical, detector_name);
+	if(use_filter_case_ring){
+		filter_case.Construct_Ring(global_coordinates, theta, phi,
+				dist_from_center - 
+				filter_case.get_filter_case_ring_thickness()*0.5);
+	}
+
 	// Filters
 	G4double filter_position_z = 0.; // Will be gradually increased to be able to place
 					// filters on top of each other
 	if(filter_materials.size()){
+		if(use_filter_case_ring){
+					filter_position_z = filter_position_z + filter_case.get_filter_case_ring_thickness();
+		}
 		G4Tubs *filter_solid = nullptr;
 		G4LogicalVolume *filter_logical = nullptr;
 		string filter_solid_name, filter_logical_name, filter_name;
@@ -249,6 +261,12 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 			filter_name.clear();
 			filter_position_z = filter_position_z + filter_thicknesses[i];
 		}
+	}
+
+	if(use_filter_case){
+		filter_case.Construct_Case(global_coordinates, theta, phi,
+				dist_from_center - filter_case.get_filter_case_bottom_thickness()*0.5-
+				filter_position_z);
 	}
 
 	// Wraps

@@ -22,8 +22,10 @@ include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
 
 add_library(detector Detector.cc)
 
+add_library(filterCase Filter_Case.cc)
+
 add_library(hpgeCoaxial HPGe_Coaxial.cc)
-target_link_libraries(hpgeCoaxial detector)
+target_link_libraries(hpgeCoaxial detector filterCase)
 
 add_library(scintillatorSCIONIX Scintillator_SCIONIX.cc)
 target_link_libraries(scintillatorSCIONIX detector)
