@@ -19,5 +19,6 @@ find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
 add_library(detectorConstruction DetectorConstruction.cc)
+set_property(TARGET detectorConstruction PROPERTY CXX_STANDARD 14)
 target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/scintillator ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 target_link_libraries(detectorConstruction nDetectorConstruction scintillatorSCIONIX SensitiveDetector)
