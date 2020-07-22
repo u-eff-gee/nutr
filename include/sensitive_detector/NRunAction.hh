@@ -19,17 +19,19 @@
 
 #pragma once
 
+#include "G4UserRunAction.hh"
 #include "globals.hh"
 
 #include "AnalysisManager.hh"
-#include "NEventAction.hh"
 
-class EventAction : public NEventAction
+class NRunAction : public G4UserRunAction
 {
 public:
-    EventAction(AnalysisManager* ana_man);
+    NRunAction(AnalysisManager* ana_man);
 
-    void BeginOfEventAction(const G4Event* ) override final;
-    void EndOfEventAction(const G4Event* ) override final;
+    void BeginOfRunAction(const G4Run* run) override;
+    void EndOfRunAction(const G4Run* run) override;
 
+private:
+    AnalysisManager* analysis_manager;
 };

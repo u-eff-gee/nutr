@@ -30,15 +30,13 @@
 G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
 
 DetectorHit::DetectorHit()
- : G4VHit(),
-   fDetectorID(0),
-   fEdep(0.)
+ : NDetectorHit(),
+   fEdep(0.),
+   fPos(G4ThreeVector())
 {}
 
-DetectorHit::~DetectorHit() {}
-
 DetectorHit::DetectorHit(const DetectorHit& right)
-  : G4VHit()
+  : NDetectorHit()
 {
   fDetectorID = right.fDetectorID;
   fEdep      = right.fEdep;
@@ -50,9 +48,4 @@ const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
   fEdep      = right.fEdep;
 
   return *this;
-}
-
-G4bool DetectorHit::operator==(const DetectorHit& right) const
-{
-  return ( this == &right ) ? true : false;
 }

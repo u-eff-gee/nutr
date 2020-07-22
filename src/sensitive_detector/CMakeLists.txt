@@ -15,10 +15,14 @@
 #
 #    Copyright (C) 2020 Udo Friman-Gayer
 
-include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector/)
+include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector)
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
 configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh.in ${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh)
 add_library(analysisManager AnalysisManager.cc)
+
+add_library(nDetectorHit NDetectorHit.cc)
+add_library(nEventAction NEventAction.cc)
+add_library(nRunAction NRunAction.cc)

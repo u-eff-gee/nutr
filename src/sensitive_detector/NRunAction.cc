@@ -17,19 +17,21 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#pragma once
+#include "NRunAction.hh"
 
-#include "globals.hh"
+#include "G4Run.hh"
+#include "G4RunManager.hh"
 
-#include "AnalysisManager.hh"
-#include "NEventAction.hh"
+NRunAction::NRunAction(AnalysisManager* ana_man)
+ : G4UserRunAction(), analysis_manager(ana_man)
+{}
 
-class EventAction : public NEventAction
+void NRunAction::BeginOfRunAction(const G4Run*)
+{ 
+	analysis_manager->Book();
+}
+
+void NRunAction::EndOfRunAction(const G4Run* )
 {
-public:
-    EventAction(AnalysisManager* ana_man);
-
-    void BeginOfEventAction(const G4Event* ) override final;
-    void EndOfEventAction(const G4Event* ) override final;
-
-};
+	analysis_manager->Save();
+}

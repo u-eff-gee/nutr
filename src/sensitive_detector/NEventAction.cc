@@ -17,19 +17,8 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#pragma once
-
-#include "globals.hh"
-
-#include "AnalysisManager.hh"
 #include "NEventAction.hh"
 
-class EventAction : public NEventAction
-{
-public:
-    EventAction(AnalysisManager* ana_man);
-
-    void BeginOfEventAction(const G4Event* ) override final;
-    void EndOfEventAction(const G4Event* ) override final;
-
-};
+NEventAction::NEventAction(AnalysisManager* ana_man)
+: G4UserEventAction(), analysis_manager(ana_man)
+{}
