@@ -25,7 +25,7 @@ target_include_directories(DetectorHit PUBLIC ${PROJECT_SOURCE_DIR}/include/sens
 target_link_libraries(DetectorHit nDetectorHit)
 
 add_library(SensitiveDetector SensitiveDetector.cc)
-target_link_libraries(SensitiveDetector DetectorHit)
+target_link_libraries(SensitiveDetector nSensitiveDetector DetectorHit)
 
 add_library(tupleManager TupleManager.cc)
 target_link_libraries(tupleManager analysisManager DetectorHit)

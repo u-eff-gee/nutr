@@ -16,20 +16,20 @@
 
     Copyright (C) 2020 Udo Friman-Gayer
 */
-#pragma once
 
-#include "DetectorHit.hh"
+#include "G4HCofThisEvent.hh"
+#include "G4Step.hh"
+#include "G4ThreeVector.hh"
+#include "G4SDManager.hh"
+#include "G4ios.hh"
+
 #include "NSensitiveDetector.hh"
 
-class SensitiveDetector : public NSensitiveDetector
-{
-public:
-    SensitiveDetector(const G4String& name,
-                const G4String& hitsCollectionName):NSensitiveDetector(name, hitsCollectionName), fDetectorHitsCollection(nullptr){};
+NSensitiveDetector::NSensitiveDetector(const G4String& name,
+                         const G4String& DetectorHitsCollectionName)
+ : G4VSensitiveDetector(name){
+    collectionName.insert(DetectorHitsCollectionName);
+}
 
-    void Initialize(G4HCofThisEvent* hce) override final;
-    G4bool ProcessHits(G4Step* step, G4TouchableHistory* history) override final;
-
-protected:
-    G4THitsCollection<DetectorHit>* fDetectorHitsCollection;
-};
+void NSensitiveDetector::EndOfEvent(G4HCofThisEvent*)
+{}

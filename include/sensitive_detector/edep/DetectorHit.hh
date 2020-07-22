@@ -34,6 +34,9 @@ class DetectorHit : public NDetectorHit
 
     const DetectorHit& operator=(const DetectorHit&);
 
+    inline void* operator new(size_t);
+    inline void  operator delete(void*);
+
     void SetDetectorID (const G4int detectorID) { fDetectorID = detectorID; };
     void SetEdep     (const G4double de) { fEdep = de; };
     void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
@@ -47,3 +50,17 @@ class DetectorHit : public NDetectorHit
       G4double      fEdep;
       G4ThreeVector fPos;
 };
+
+extern G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator;
+
+inline void* DetectorHit::operator new(size_t)
+{
+    if(!DetectorHitAllocator)
+        DetectorHitAllocator = new G4Allocator<DetectorHit>;
+    return (void *) DetectorHitAllocator->MallocSingle();
+}
+
+inline void DetectorHit::operator delete(void *hit)
+{
+    DetectorHitAllocator->FreeSingle((DetectorHit*) hit);
+}
