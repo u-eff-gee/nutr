@@ -26,14 +26,8 @@
 #include "EventAction.hh"
 #include "DetectorHit.hh"
 
-EventAction::EventAction(TupleManager* tuple)
-: G4UserEventAction(), fTupleManager(tuple)
-{}
-
-EventAction::~EventAction()
-{}
-
-void EventAction::BeginOfEventAction(const G4Event*)
+EventAction::EventAction(AnalysisManager* ana_man)
+: NEventAction(ana_man)
 {}
 
 void EventAction::EndOfEventAction(const G4Event* event)
@@ -49,6 +43,6 @@ void EventAction::EndOfEventAction(const G4Event* event)
         hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
         for(size_t i = 0; i < hc->GetSize(); ++i)
-            fTupleManager->FillNtuple(eventID, (DetectorHit*) hc->GetHit(i));
+            analysis_manager->FillNtuple(eventID, (DetectorHit*) hc->GetHit(i));
     }
 }

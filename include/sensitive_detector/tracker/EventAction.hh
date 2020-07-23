@@ -19,20 +19,17 @@
 
 #pragma once
 
-#include "G4UserEventAction.hh"
 #include "globals.hh"
 
-#include "TupleManager.hh"
+#include "AnalysisManager.hh"
+#include "NEventAction.hh"
 
-class EventAction : public G4UserEventAction
+class EventAction : public NEventAction
 {
-  public:
-    EventAction(TupleManager* histo);
-    virtual ~EventAction();
+public:
+    EventAction(AnalysisManager* ana_man);
 
-    virtual void  BeginOfEventAction(const G4Event* );
-    virtual void    EndOfEventAction(const G4Event* );
+    void EndOfEventAction(const G4Event* ) override final;
 
-  private:
-    TupleManager *fTupleManager;
 };
+

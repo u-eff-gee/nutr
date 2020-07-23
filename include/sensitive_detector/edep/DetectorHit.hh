@@ -37,11 +37,9 @@ class DetectorHit : public NDetectorHit
     inline void* operator new(size_t);
     inline void  operator delete(void*);
 
-    void SetDetectorID (const G4int detectorID) { fDetectorID = detectorID; };
     void SetEdep     (const G4double de) { fEdep = de; };
     void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
 
-    G4int GetDetectorID() const { return fDetectorID; };
     G4double GetEdep() const { return fEdep; };
     G4ThreeVector GetPos() const { return fPos; };
 

@@ -18,28 +18,18 @@
 */
 #pragma once
 
-#include "G4HCofThisEvent.hh"
-#include "G4Step.hh"
-#include "G4VSensitiveDetector.hh"
-
 #include "DetectorHit.hh"
+#include "NSensitiveDetector.hh"
 
-class SensitiveDetector : public G4VSensitiveDetector
+class SensitiveDetector : public NSensitiveDetector
 {
-  public:
+public:
     SensitiveDetector(const G4String& name,
-                const G4String& hitsCollectionName);
-    virtual ~SensitiveDetector();
-  
-    virtual void   Initialize(G4HCofThisEvent* hitCollection);
-    virtual G4bool ProcessHits(G4Step* step, G4TouchableHistory* history);
-    virtual void   EndOfEvent(G4HCofThisEvent* hitCollection);
+                const G4String& hitsCollectionName):NSensitiveDetector(name, hitsCollectionName), fDetectorHitsCollection(nullptr){};
 
-    unsigned int GetDetectorID() const { return fDetectorID; };
+    void Initialize(G4HCofThisEvent* hce) override final;
+    G4bool ProcessHits(G4Step* step, G4TouchableHistory* history) override final;
 
-    void SetDetectorID(const unsigned int id){ fDetectorID = id; };
-
-  private:
+protected:
     G4THitsCollection<DetectorHit>* fDetectorHitsCollection;
-    unsigned int fDetectorID;
 };

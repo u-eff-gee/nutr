@@ -37,7 +37,6 @@ class DetectorHit : public NDetectorHit
     inline void* operator new(size_t);
     inline void  operator delete(void*);
 
-    void SetDetectorID (const G4int detectorID) { fDetectorID = detectorID; };
     void SetParticleID (const G4int pid) {fParticleID = pid; };
     void SetParentID (const G4int pid) {fParentID = pid; };
     void SetTrackID (const G4int tid) {fTrackID = tid; };
@@ -45,7 +44,6 @@ class DetectorHit : public NDetectorHit
     void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
     void SetMom      (const G4ThreeVector pxpypz) { fMom = pxpypz; };
 
-    G4int GetDetectorID() const { return fDetectorID; };
     G4int GetParticleID() const { return fParticleID; };
     G4int GetParentID() const { return fParentID; };
     G4int GetTrackID() const { return fTrackID; };
