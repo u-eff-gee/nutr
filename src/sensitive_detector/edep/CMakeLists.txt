@@ -15,7 +15,7 @@
 #
 #    Copyright (C) 2020 Udo Friman-Gayer
 
-include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector/edep)
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})

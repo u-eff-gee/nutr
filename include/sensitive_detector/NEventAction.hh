@@ -29,8 +29,8 @@ class NEventAction : public G4UserEventAction
 public:
     NEventAction(AnalysisManager* ana_man);
 
-    virtual void  BeginOfEventAction(const G4Event* ) = 0;
-    virtual void    EndOfEventAction(const G4Event* ) = 0;
+    virtual void BeginOfEventAction(const G4Event* ){};
+    virtual void EndOfEventAction(const G4Event* ) = 0;
 
 protected:
     AnalysisManager* analysis_manager;

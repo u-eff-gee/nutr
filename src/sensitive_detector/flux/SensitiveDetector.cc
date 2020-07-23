@@ -17,24 +17,9 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "SensitiveDetector.hh"
-
-#include "G4HCofThisEvent.hh"
-#include "G4Step.hh"
-#include "G4ThreeVector.hh"
 #include "G4SDManager.hh"
-#include "G4ios.hh"
 
-SensitiveDetector::SensitiveDetector(const G4String& name,
-                         const G4String& DetectorHitsCollectionName)
- : G4VSensitiveDetector(name),
-   fDetectorHitsCollection(NULL)
-{
-  collectionName.insert(DetectorHitsCollectionName);
-}
-
-SensitiveDetector::~SensitiveDetector()
-{}
+#include "SensitiveDetector.hh"
 
 void SensitiveDetector::Initialize(G4HCofThisEvent* hce)
 {
@@ -64,6 +49,3 @@ G4bool SensitiveDetector::ProcessHits(G4Step* aStep,
 
   return true;
 }
-
-void SensitiveDetector::EndOfEvent(G4HCofThisEvent*)
-{}

@@ -19,20 +19,13 @@
 
 #pragma once
 
-#include "G4UserRunAction.hh"
+#include "NRunAction.hh"
 #include "globals.hh"
 
 #include "TupleManager.hh"
 
-class RunAction : public G4UserRunAction
+class RunAction : public NRunAction
 {
-  public:
-    RunAction(TupleManager* histo);
-    virtual ~RunAction();
-
-    virtual void BeginOfRunAction(const G4Run* run);
-    virtual void   EndOfRunAction(const G4Run* run);
-
-  private:
-    TupleManager *fTupleManager;
+public:
+    RunAction(TupleManager* tup_man):NRunAction(tup_man){};
 };

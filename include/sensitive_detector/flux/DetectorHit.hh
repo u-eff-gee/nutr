@@ -19,26 +19,23 @@
 
 #pragma once
 
-#include "G4VHit.hh"
 #include "G4THitsCollection.hh"
 #include "G4Allocator.hh"
 #include "G4ThreeVector.hh"
 #include "tls.hh"
 
-class DetectorHit : public G4VHit
+#include "NDetectorHit.hh"
+
+class DetectorHit : public NDetectorHit
 {
   public:
     DetectorHit();
     DetectorHit(const DetectorHit&);
-    virtual ~DetectorHit();
 
     const DetectorHit& operator=(const DetectorHit&);
-    G4bool operator==(const DetectorHit&) const;
 
     inline void* operator new(size_t);
     inline void  operator delete(void*);
-
-    virtual void Draw(){};
 
     void SetDetectorID (const G4int detectorID) { fDetectorID = detectorID; };
     void SetParticleID (const G4int pid) {fParticleID = pid; };
@@ -57,7 +54,6 @@ class DetectorHit : public G4VHit
     G4ThreeVector GetMom() const { return fMom; };
 
   private:
-      G4int         fDetectorID;
       G4int 		    fParticleID;
       G4int         fParentID;
       G4int         fTrackID;

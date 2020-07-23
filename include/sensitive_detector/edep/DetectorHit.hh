@@ -46,8 +46,7 @@ class DetectorHit : public NDetectorHit
     G4ThreeVector GetPos() const { return fPos; };
 
   private:
-      G4int         fDetectorID;
-      G4double      fEdep;
+      G4double fEdep;
       G4ThreeVector fPos;
 };
 

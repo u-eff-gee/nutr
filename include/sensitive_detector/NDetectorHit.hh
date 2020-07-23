@@ -43,8 +43,8 @@ public:
 
     G4int GetDetectorID() const { return fDetectorID; };
 
-private:
-      G4int         fDetectorID;
+protected:
+      G4int fDetectorID;
 
 };
 

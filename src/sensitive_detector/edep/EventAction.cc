@@ -30,9 +30,6 @@ EventAction::EventAction(AnalysisManager* ana_man)
 : NEventAction(ana_man)
 {}
 
-void EventAction::BeginOfEventAction(const G4Event*)
-{}
-
 void EventAction::EndOfEventAction(const G4Event* event)
 {
 	G4TrajectoryContainer* trajectoryContainer = event->GetTrajectoryContainer();

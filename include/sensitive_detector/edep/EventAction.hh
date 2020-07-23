@@ -29,7 +29,6 @@ class EventAction : public NEventAction
 public:
     EventAction(AnalysisManager* ana_man);
 
-    void BeginOfEventAction(const G4Event* ) override final;
     void EndOfEventAction(const G4Event* ) override final;
 
 };
