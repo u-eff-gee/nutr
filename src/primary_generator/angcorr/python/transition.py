@@ -29,12 +29,12 @@ MAGNETIC = 1
 
 def em_str_rep(em):
     """String representation of an electromagnetic character
-    
+
     Parameters
     ----------
     em: int
         EM character.
-    
+
     Returns
     -------
     string
@@ -46,7 +46,30 @@ any other value.
     if em == MAGNETIC:
         return 'M'
 
-    return ' '
+    return 'σ'
+
+def multipolarity_str_rep(two_L):
+    """String representation of an multipolarity
+    
+    Parameters
+    ----------
+    two_L: int
+        Two times the multipolarity.
+
+    Returns
+    -------
+    string
+        If two_L is an even number, the string representation of two_L/2 is returned. \
+If two_L is an odd number, an error is raised.
+
+    Raises
+    ------
+    ValueError
+        If two_L is not even.
+    """
+    if two_L % 2 == 1:
+        raise ValueError()
+    return str(int(two_L/2))
 
 class Transition:
     """Class to store properties of an EM transition between nuclear states.
@@ -69,7 +92,7 @@ class Transition:
     """
     def __init__(self, em, t_L, emp, t_Lp, de):
         """Constructor
-        
+
         Parameters
         ----------
         em: int
@@ -97,7 +120,7 @@ class Transition:
 
     def __str__(self):
         """String representation of an EM transition between nuclear states.
-        
+
         Returns
         -------
         string
@@ -105,17 +128,9 @@ class Transition:
 'em_char two_L/2 separator em_charp two_Lp/2', i.e. with a newline between the two possible \
 multipolarities.
         """
-        str_rep = ''
-        str_repp = ''
 
-        if self.em_char != EM_UNKNOWN:
-            str_rep = em_str_rep(self.em_char) + str(int(self.two_L/2))
-        else:
-            str_rep = str(int(self.two_L/2))
+        str_rep = em_str_rep(self.em_char) + str(int(self.two_L/2))
 
-        if self.em_charp != EM_UNKNOWN:
-            str_repp = em_str_rep(self.em_charp) + str(int(self.two_Lp/2))
-        else:
-            str_repp = str(int(self.two_Lp/2))
+        str_repp = em_str_rep(self.em_charp) + multipolarity_str_rep(self.two_Lp)
 
-        return str_rep + '\n' + str_repp
+        return str_rep + ' (' + str_repp + ')'

@@ -709,7 +709,7 @@ class LevelSchemePlotter:
         # Multipole mixing ratio (delta) labels
         self.delta_label_left_x = 0.4*self.range_x + self.min_x
         self.delta_label_right_x = 0.74*self.range_x + self.min_x
-        
+
     def plot(self):
         # Initial and excited state
         self.ax.plot([self.state_x, self.state_x + self.state_width],
