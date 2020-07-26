@@ -127,9 +127,69 @@ public:
 	}
 	
 	/**
+	 * \brief Return upper limit for the dir-dir correlation.
+	 * 
+	 * For the dir-dir correlation, the maximum possible value cannot be calculated analytically,
+	 * but an upper limit can be given.
+	 * In the following, the angular correlation without unobserved intermediate transitions is
+	 * considered without loss of generality.
+	 * Start from the exact expression for the maximum absolute value of \f$W\f$ 
+	 * {Eq. (I-1') in Ref. \cite FaggHanna1959} and apply the triangle inequality:
+	 * 
+	 * \f[
+	 * 		\mathrm{max}_{\theta \in \left[ 0, \pi \right], \varphi \in \left[ 0, 2\pi \right]} 
+	 * | W \left( \theta, \varphi \right) | = 
+	 * \f]
+	 * \f[
+	 * 		= \mathrm{max}_{\theta \in \left[ 0, \pi \right], \varphi \in \left[ 0, 2\pi \right]} 
+	 * | \sum_\nu A_v \left( L_1, L_1^\prime, j_1, j_2 \right) A_v \left( L_2, L_2^\prime, j_3, j_2 \right) P_\nu \left[ \cos \left( \theta \right) \right] |
+	 * \f]
+	 * \f[
+	 * 		\leq 
+	 * \sum_\nu | A_v \left( L_1, L_1^\prime, j_1, j_2 \right) A_v \left( L_2, L_2^\prime, j_3, j_2 \right) | \mathrm{max}_{\theta \in \left[ 0, \pi \right]} | P_\nu \left[ \cos \left( \theta \right) \right] |.
+	 * \f]
+	 * 
+	 * The last line summarizes the result of three steps,
+	 * 
+	 * \f[
+	 * 		\mathrm{max}_x | \sum_i a_i f_i \left( x \right) | 
+	 * 		\leq \mathrm{max}_x \sum_i | a_i f_i \left( x \right) | 
+	 * 		= \mathrm{max}_x \sum_i | a_i | | f_i \left( x \right) | 
+	 * 		\leq \sum_i | a_i | | \mathrm{max}_x f_i \left( x \right) |,
+	 * \f]
+	 * 
+	 * where the $a_i$ are real coefficients and the \f$f_i\f$ real-valued function of a 
+	 * scalar variable \f$x\f$.
+	 * 
+	 * For the Legendre polynomials \f$P_\nu\f$, the following inequality holds [See, e.g. 
+	 * Eq. (18.14.1) in \cite DLMF2020, which gives an upper limit for the more general Jacobi
+	 * polynomials.\
+	 * The relation between Jacobi and Legendre polynomials is given in Eq. (18.7.9) therein]:
+	 * 
+	 * \f[
+	 * 		|P_\nu \left[ \cos \left( \theta \right) \right]| \leq P_\nu \left( 1 \right) = 1.
+	 * \f]
+	 * 
+	 * Therefore, this function returns
+	 * 
+	 * \f[
+	 * 		\sum_\nu | A_v \left( L_1, L_1^\prime, j_1, j_2 \right) A_v \left( L_2, L_2^\prime, j_3, j_2 \right) | \geq \mathrm{max}_{\theta \in \left[ 0, \pi \right], \varphi \in \left[ 0, 2\pi \right]} 
+	 * | W \left( \theta, \varphi \right) |
+	 * \f]
+	 * 
+	 * as an upper limit.
+	 * 
+	 * \return \f$\mathrm{max}_{\theta \in \left[ 0, \pi \right], \varphi \in \left[ 0, 2\pi \right]} 
+	 * | W \left( \theta, \varphi \right) | \f$, or an upper limit for this quantity.
+	 * If no useful upper limit can be given or if there is no limit, a negative number is returned.
+	 */
+	double get_upper_limit() const override;
+	
+	/**
 	 * \brief Return \f$\nu_\mathrm{max}\f$
 	 */
 	int get_nu_max() const { return nu_max; };
+
 	/**
 	 * \brief Return \f$2 \nu_\mathrm{max}\f$
 	 */

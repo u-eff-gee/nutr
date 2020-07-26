@@ -19,6 +19,7 @@
 
 #include <cmath>
 
+#include <gsl/gsl_math.h>
 #include <gsl/gsl_sf.h>
 
 #include "W_pol_dir.hh"
@@ -50,6 +51,19 @@ double W_pol_dir::operator()(const double theta, const double phi) const {
 	}
 
 	return w_dir_dir(theta)+polarization_sign*cos(2.*phi)*sum_over_nu*w_dir_dir.get_normalization_factor();
+}
+
+double W_pol_dir::get_upper_limit() const {
+
+	double upper_limit = 0.;
+
+	double associated_Legendre_upper_limit_factor = 4.*pow(M_1_PI, 0.75);
+
+	for(int i = 0; i <= nu_max/2; ++i){
+		upper_limit += fabs(expansion_coefficients[i])*associated_Legendre_upper_limit_factor*sqrt(gsl_sf_fact(2*i+2)/(2*i-2));
+	}
+
+	return w_dir_dir.get_upper_limit() + upper_limit;
 }
 
 vector<double> W_pol_dir::calculate_expansion_coefficients() const {
