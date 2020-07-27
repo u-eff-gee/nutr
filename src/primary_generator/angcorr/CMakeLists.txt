@@ -161,6 +161,10 @@ add_executable(test_find_Theta_j test_find_Theta_j.cc)
 target_link_libraries(test_find_Theta_j spherePointSampler)
 add_test(test_find_Theta_j test_find_Theta_j)
 
+add_executable(test_upper_limit test_upper_limit.cc)
+set_property(TARGET test_upper_limit PROPERTY CXX_STANDARD 14)
+target_link_libraries(test_upper_limit spherePointSampler w_dir_dir w_gamma_gamma w_pol_dir)
+
 configure_file(python/angular_correlation_plot.py python/angular_correlation_plot.py)
 configure_file(python/asymmetry_plot.py python/asymmetry_plot.py)
 configure_file(python/test_plot_01_polarization.py python/test_plot_01_polarization.py)

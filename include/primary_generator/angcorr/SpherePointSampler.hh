@@ -67,6 +67,8 @@ public:
      * \param n \f$n\f$, desired number of points
      * 
      * \return std::array that contains two std::vectors with size \f$n\f$. The first vector contains the values \f$\theta_i\f$, and the second vector contains the values \f$\varphi_i\f$.
+     * Note that the values of \f$\varphi_i\f$ are strictly increasing, i.e. values of 
+     * \f$\varphi_i > 2\pi\f$ will always be sampled, except for cases with \f$c \approx 1\f$.
      */
     array<vector<double>, 2> sample(const unsigned int n) const;
 

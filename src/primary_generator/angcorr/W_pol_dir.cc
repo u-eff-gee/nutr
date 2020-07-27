@@ -59,11 +59,11 @@ double W_pol_dir::get_upper_limit() const {
 
 	double associated_Legendre_upper_limit_factor = 4.*pow(M_1_PI, 0.75);
 
-	for(int i = 0; i <= nu_max/2; ++i){
-		upper_limit += fabs(expansion_coefficients[i])*associated_Legendre_upper_limit_factor*sqrt(gsl_sf_fact(2*i+2)/(2*i-2));
+	for(int i = 1; i <= nu_max/2; ++i){
+		upper_limit += fabs(expansion_coefficients[i-1])*associated_Legendre_upper_limit_factor*sqrt(gsl_sf_fact(2*i+2)/gsl_sf_fact(2*i-2));
 	}
 
-	return w_dir_dir.get_upper_limit() + upper_limit;
+	return w_dir_dir.get_upper_limit() + upper_limit*w_dir_dir.get_normalization_factor();
 }
 
 vector<double> W_pol_dir::calculate_expansion_coefficients() const {

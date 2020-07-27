@@ -48,13 +48,14 @@ double W_dir_dir::operator()(const double theta) const {
 }
 
 double W_dir_dir::get_upper_limit() const {
+
 	double upper_limit = 0.;
 
 	for(int i = 0; i <= nu_max/2; ++i){
 		upper_limit += fabs(expansion_coefficients[i]);
 	}
 
-	return upper_limit;
+	return normalization_factor*upper_limit;
 }
 
 int W_dir_dir::calculate_two_nu_max() const {
