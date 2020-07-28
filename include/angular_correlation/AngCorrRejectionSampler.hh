@@ -52,7 +52,7 @@ public:
      * \f$\left( \theta_\mathrm{rand}, \varphi_\mathrm{rand} \right)\f$
      * before the algorithm terminates without success and returns \f$\left( 0, 0 \right)\f$.
      */
-    AngCorrRejectionSampler(W_gamma_gamma* w, const int seed, const unsigned int max_tri = 1000): SphereRejectionSampler(nullptr, w->get_upper_limit(), seed, max_tri), w_gamma_gamma(w){};
+    AngCorrRejectionSampler(W_gamma_gamma* w, const int seed, const unsigned int max_tri = 1000);
 
     /**
      * \brief Sample a random vector from probability distribution and record the number of tries.
@@ -63,24 +63,7 @@ public:
      * Returns \f$\left( N_\mathrm{max}, 0, 0 \right)\f$ if the maximum number of trials \f$N_\mathrm{max}\f$ is
      * reached by the algorithm and no random vector was accepted.
      */
-    tuple<unsigned int, double, double> sample() override final {
-
-        pair<double, double> theta_phi;
-        double dis_val;
-
-        for(unsigned int i = 0; i < max_tries; ++i){
-
-            theta_phi = sample_theta_phi();
-            dis_val = uniform_random(random_engine)*distribution_maximum;
-
-            if(dis_val <= w_gamma_gamma->operator()(theta_phi.first, theta_phi.second)){
-                return {i+1, theta_phi.first, theta_phi.second};
-            }
-
-        }
-
-        return {max_tries, 0., 0.};
-    };
+    tuple<unsigned int, double, double> sample() override final;
 
 protected:
     unique_ptr<W_gamma_gamma> w_gamma_gamma; /**< Gamma-ray angular correlation */

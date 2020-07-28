@@ -18,3 +18,27 @@
 */
 
 #include "AngCorrRejectionSampler.hh"
+
+AngCorrRejectionSampler::AngCorrRejectionSampler(W_gamma_gamma* w, const int seed, const unsigned int max_tri): 
+    SphereRejectionSampler(nullptr, w->get_upper_limit(), seed, max_tri),
+    w_gamma_gamma(w)
+{};
+
+tuple<unsigned int, double, double> AngCorrRejectionSampler::sample(){
+
+    pair<double, double> theta_phi;
+    double dis_val;
+
+    for(unsigned int i = 0; i < max_tries; ++i){
+
+        theta_phi = sample_theta_phi();
+        dis_val = uniform_random(random_engine)*distribution_maximum;
+
+        if(dis_val <= w_gamma_gamma->operator()(theta_phi.first, theta_phi.second)){
+            return {i+1, theta_phi.first, theta_phi.second};
+        }
+
+    }
+
+    return {max_tries, 0., 0.};
+};
