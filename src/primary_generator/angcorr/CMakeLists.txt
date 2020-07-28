@@ -81,6 +81,9 @@ add_library(sphereIntegrator SphereIntegrator.cc)
 target_link_libraries(sphereIntegrator spherePointSampler)
 target_compile_options(sphereIntegrator PRIVATE -Wall -Wextra)
 
+add_library(sphereRejectionSampler SphereRejectionSampler.cc)
+target_compile_options(sphereIntegrator PRIVATE -Wall -Wextra)
+
 enable_testing()
 add_executable(test_f_coefficient test_f_coefficient.cc)
 target_link_libraries(test_f_coefficient fCoefficient)
@@ -162,8 +165,10 @@ target_link_libraries(test_find_Theta_j spherePointSampler)
 add_test(test_find_Theta_j test_find_Theta_j)
 
 add_executable(test_upper_limit test_upper_limit.cc)
-set_property(TARGET test_upper_limit PROPERTY CXX_STANDARD 14)
 target_link_libraries(test_upper_limit spherePointSampler w_dir_dir w_gamma_gamma w_pol_dir)
+
+add_executable(test_sphere_rejection_sampler test_sphere_rejection_sampler.cc)
+target_link_libraries(test_sphere_rejection_sampler sphereRejectionSampler w_dir_dir)
 
 configure_file(python/angular_correlation_plot.py python/angular_correlation_plot.py)
 configure_file(python/asymmetry_plot.py python/asymmetry_plot.py)
