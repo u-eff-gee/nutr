@@ -122,7 +122,7 @@ public:
      * Returns \f$\left( N_\mathrm{max}, 0, 0 \right)\f$ if the maximum number of trials \f$N_\mathrm{max}\f$ is
      * reached by the algorithm and no random vector was accepted.
      */
-    tuple<unsigned int, double, double> sample();
+    virtual tuple<unsigned int, double, double> sample();
 
     /**
      * \brief Sample a random vector from probability distribution.

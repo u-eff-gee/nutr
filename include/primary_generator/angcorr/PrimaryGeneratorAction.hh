@@ -19,16 +19,25 @@
 
 #pragma once
 
+#include <functional>
+#include <memory>
+
+using std::unique_ptr;
+
+#include "G4ParticleGun.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
-#include "W_dir_dir.hh"
+#include "AngCorrRejectionSampler.hh"
+#include "SphereRejectionSampler.hh"
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-  public:
+public:
     PrimaryGeneratorAction();
-   ~PrimaryGeneratorAction();
 
-    virtual void GeneratePrimaries(G4Event*);
+    void GeneratePrimaries(G4Event*) override final;
 
+private:
+    unique_ptr<G4ParticleGun> particle_gun;
+	unique_ptr<AngCorrRejectionSampler> sph_rej_sam;
 };

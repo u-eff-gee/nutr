@@ -60,6 +60,7 @@ endif()
 
 set(SENSITIVE_DETECTOR_DIR "edep" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector (default: `edep`).")
 
+add_subdirectory(src/angular_correlation)
 add_subdirectory(src/detectors)
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)

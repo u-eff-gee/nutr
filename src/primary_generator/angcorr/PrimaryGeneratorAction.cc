@@ -17,16 +17,48 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "PrimaryGeneratorAction.hh"
+#include <utility>
+
+using std::pair;
 
 #include "G4Event.hh"
+#include "G4ParticleTable.hh"
+#include "G4SystemOfUnits.hh"
+
+#include "PrimaryGeneratorAction.hh"
+#include "W_pol_dir.hh"
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
- : G4VUserPrimaryGeneratorAction()
-{}
+ : G4VUserPrimaryGeneratorAction(), particle_gun(new G4ParticleGun(1))
+{
+    particle_gun->SetParticleDefinition(G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
+    particle_gun->SetParticleEnergy(1.*MeV);
+    particle_gun->SetParticlePosition(G4ThreeVector());
 
-PrimaryGeneratorAction::~PrimaryGeneratorAction()
-{}
+    sph_rej_sam = std::make_unique<AngCorrRejectionSampler>(
+        new W_pol_dir(
+            State(0, positive),
+            {
+                {Transition(magnetic, 2, electric, 4, 0.), State(2, positive)},
+                {Transition(em_unknown, 2, em_unknown, 4, 0.), State(0, parity_unknown)}
+            }
+        ), 0
+    );
 
-void PrimaryGeneratorAction::GeneratePrimaries(G4Event*)
-{}
+}
+
+void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
+{
+    pair<double, double> theta_phi = sph_rej_sam->operator()();
+    double sine_theta = sin(theta_phi.first);
+
+    particle_gun->SetParticleMomentumDirection(
+        G4ThreeVector(
+            sine_theta*cos(theta_phi.second),
+            sine_theta*sin(theta_phi.second),
+            cos(theta_phi.first)
+        )
+    );
+
+    particle_gun->GeneratePrimaryVertex(event);
+}
