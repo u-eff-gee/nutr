@@ -21,3 +21,9 @@ link_libraries(${Geant4_LIBRARIES})
 add_library(nDetectorConstruction NDetectorConstruction.cc)
 target_include_directories(nDetectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 target_link_libraries(nDetectorConstruction SensitiveDetector)
+
+add_library(sourceVolume SourceVolume.cc)
+target_include_directories(sourceVolume PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
+
+add_library(sourceVolumeTubs SourceVolumeTubs.cc)
+target_include_directories(sourceVolumeTubs PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
