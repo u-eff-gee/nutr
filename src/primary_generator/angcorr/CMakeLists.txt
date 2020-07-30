@@ -21,6 +21,6 @@ find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
-target_include_directories(primaryGeneratorAction PUBLIC ${PROJECT_SOURCE_DIR}/include/angular_correlation)
+target_include_directories(primaryGeneratorAction PUBLIC ${PROJECT_SOURCE_DIR}/include/angular_correlation ${PROJECT_SOURCE_DIR}/include/geometry/ ${PROJECT_SOURCE_DIR}/include/geometry/${GEOMETRY_DIR})
 target_link_libraries(primaryGeneratorAction angcorrRejectionSampler sphereRejectionSampler w_pol_dir)
 set_property(TARGET primaryGeneratorAction PROPERTY CXX_STANDARD 14)

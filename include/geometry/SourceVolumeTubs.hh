@@ -25,7 +25,7 @@
 
 class SourceVolumeTubs : public SourceVolume{
 public:
-    SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const int seed);
+    SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const double rel_int, const int seed);
 
     G4ThreeVector operator()() override final;
 

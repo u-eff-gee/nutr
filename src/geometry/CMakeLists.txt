@@ -27,3 +27,4 @@ target_include_directories(sourceVolume PUBLIC ${PROJECT_SOURCE_DIR}/include/geo
 
 add_library(sourceVolumeTubs SourceVolumeTubs.cc)
 target_include_directories(sourceVolumeTubs PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
+target_link_libraries(sourceVolumeTubs sourceVolume)

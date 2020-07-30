@@ -33,9 +33,11 @@ using std::unique_ptr;
 
 class SourceVolume{
 public:
-    SourceVolume(G4VSolid *solid, G4VPhysicalVolume *physical, const int seed);
+    SourceVolume(G4VSolid *solid, G4VPhysicalVolume *physical, const double rel_int, const int seed);
 
     virtual G4ThreeVector operator()() = 0;
+    double get_relative_intensity() const { return relative_intensity; }
+    int get_seed() const { return random_seed; }
 
 protected:
     shared_ptr<G4VSolid> source_solid;
@@ -43,4 +45,7 @@ protected:
 
     mt19937 random_engine; /**< Deterministic random number engine. */
     uniform_real_distribution<double> uniform_random; /**< Uniform distribution from which all random numbers are derived here. */
+
+    const double relative_intensity;
+    const int random_seed;
 };

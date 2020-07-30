@@ -19,6 +19,10 @@
 
 #include "SourceVolume.hh"
 
-SourceVolume::SourceVolume(G4VSolid *solid, G4VPhysicalVolume *physical, const int seed):source_solid(solid), source_physical(physical){
+SourceVolume::SourceVolume(G4VSolid *solid, G4VPhysicalVolume *physical, const double rel_int, const int seed):
+source_solid(solid), 
+source_physical(physical),
+random_seed(seed),
+relative_intensity(rel_int){
     random_engine = mt19937(seed);
 };

@@ -31,6 +31,8 @@ using std::vector;
 
 class G4VPhysicalVolume;
 
+#include "SourceVolume.hh"
+
 class NDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
@@ -38,6 +40,7 @@ public:
     void ConstructSDandField() override final;
 
     void RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes);
+    vector<shared_ptr<SourceVolume>> GetSourceVolumes(){ return source_volumes; }
 
 protected:
     unique_ptr<G4VSolid> world_solid;
@@ -45,4 +48,5 @@ protected:
     unique_ptr<G4VPhysicalVolume> world_phys;
 
     vector<G4LogicalVolume*> sensitive_logical_volumes;
+    vector<shared_ptr<SourceVolume>> source_volumes;
 };

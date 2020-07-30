@@ -23,8 +23,10 @@ using std::pair;
 
 #include "G4Event.hh"
 #include "G4ParticleTable.hh"
+#include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "W_pol_dir.hh"
 
@@ -33,7 +35,13 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
     particle_gun->SetParticleDefinition(G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
     particle_gun->SetParticleEnergy(1.*MeV);
-    particle_gun->SetParticlePosition(G4ThreeVector());
+
+    source_volumes = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSourceVolumes();
+    normalize_intensities();
+
+    if(source_volumes.size() > 0){
+        random_engine = mt19937(source_volumes[0]->get_seed());
+    }
 
     sph_rej_sam = std::make_unique<AngCorrRejectionSampler>(
         new W_pol_dir(
@@ -49,6 +57,14 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
+
+    const double ran_uni = uniform_random(random_engine);
+    for(size_t i = 0; i < source_volumes.size(); ++i){
+        if(ran_uni <= relative_intensities_normalized[i]){
+            particle_gun->SetParticlePosition(source_volumes[i]->operator()());
+            break;
+        }
+    }
     pair<double, double> theta_phi = sph_rej_sam->operator()();
     double sine_theta = sin(theta_phi.first);
 
@@ -61,4 +77,20 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
     );
 
     particle_gun->GeneratePrimaryVertex(event);
+}
+
+void PrimaryGeneratorAction::normalize_intensities(){
+
+    double unnormalized_intensities_sum = 0.;
+    for(size_t i = 0; i < source_volumes.size(); ++i){
+        unnormalized_intensities_sum += source_volumes[i]->get_relative_intensity();
+        relative_intensities_normalized.push_back(unnormalized_intensities_sum);
+    }
+
+    double norm_factor = 1./unnormalized_intensities_sum;
+
+    for(size_t i = 0; i < source_volumes.size(); ++i){
+        relative_intensities_normalized[i] = norm_factor*relative_intensities_normalized[i];
+    }
+
 }

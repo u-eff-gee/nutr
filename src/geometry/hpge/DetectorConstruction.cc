@@ -19,19 +19,23 @@
 
 #include <memory>
 
+using std::make_shared;
 using std::make_unique;
 
 #include "G4Box.hh"
+#include "G4Colour.hh"
 #include "G4LogicalVolume.hh"
 #include "G4NistManager.hh"
+#include "G4PhysicalConstants.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4Tubs.hh"
 #include "G4VisAttributes.hh"
 
 #include "DetectorConstruction.hh"
-
 #include "HPGe_Coaxial.hh"
 #include "HPGe_Collection.hh"
+#include "SourceVolumeTubs.hh"
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
@@ -63,6 +67,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	hpge4.useDewar();
 	hpge4.Construct(G4ThreeVector(), 90.*deg, 270.*deg, 100.*mm);
 	RegisterSensitiveLogicalVolumes(hpge4.get_sensitive_logical_volumes());
+
+	G4Tubs* target_solid = new G4Tubs("target_solid", 0., 10.*mm, 5.*mm, 0., twopi);
+	G4LogicalVolume* target_logical = new G4LogicalVolume(target_solid, nist_manager->FindOrBuildMaterial("G4_Al"), "target_logical");
+	target_logical->SetVisAttributes(G4Color::Red());
+	G4VPhysicalVolume* target_physical = new G4PVPlacement(new G4RotationMatrix(), G4ThreeVector(), target_logical, "target", world_logical.get(), false, 0);
+	source_volumes.push_back(make_shared<SourceVolumeTubs>(target_solid, target_physical, 1., 0));
 
 	return world_phys.get();
 }

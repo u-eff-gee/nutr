@@ -25,7 +25,7 @@ using std::dynamic_pointer_cast;
 
 #include "SourceVolumeTubs.hh"
 
-SourceVolumeTubs::SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const int seed):SourceVolume(tubs, physical, seed){};
+SourceVolumeTubs::SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const double rel_int, const int seed):SourceVolume(tubs, physical, rel_int, seed){};
 
 G4ThreeVector SourceVolumeTubs::operator()(){
 
@@ -37,7 +37,7 @@ G4ThreeVector SourceVolumeTubs::operator()(){
 
     double random_r = source_tubs->GetOuterRadius()
     *sqrt(min_r+(1.-min_r)*uniform_random(random_engine));
-    double random_phi = twopi*uniform_random(random_engine);
+    double random_phi = source_tubs->GetSPhi()+uniform_random(random_engine)*source_tubs->GetDPhi();
     double random_z = (2.*uniform_random(random_engine)-1.)*source_tubs->GetZHalfLength();
 
     return G4ThreeVector(
