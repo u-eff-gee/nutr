@@ -21,7 +21,7 @@ link_libraries(${Geant4_LIBRARIES})
 include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
 
 add_library(detector Detector.cc)
-target_compile_options(detector PUBLIC ${COMPILER_WARNINGS})
+target_compile_options(detector PUBLIC -Wall -Wextra)
 
 add_library(filterCase Filter_Case.cc)
 

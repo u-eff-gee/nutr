@@ -21,4 +21,4 @@ find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
 add_library(physics Physics.cc)
-target_compile_options(physics PUBLIC ${COMPILER_WARNINGS})
+target_compile_options(physics PUBLIC -Wall -Wextra)
