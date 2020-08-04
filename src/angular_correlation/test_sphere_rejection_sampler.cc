@@ -31,13 +31,13 @@
  */
 int main(){
 
-    SphereRejectionSampler sph_rej_sam([](const double theta, const double phi){ return phi < M_PI ? 1. : 0.; }, 1., 0);
+    SphereRejectionSampler sph_rej_sam([]([[maybe_unused]] const double theta, const double phi){ return phi < M_PI ? 1. : 0.; }, 1., 0);
 
     double efficiency = sph_rej_sam.estimate_efficiency(1e5);
 
     test_numerical_equality<double>(efficiency, 0.5, 1e-3);
 
-    SphereRejectionSampler sph_rej_sam_2([](const double theta, const double phi){ return phi < M_PI ? 1. : 0.; }, 2., 0);
+    SphereRejectionSampler sph_rej_sam_2([]([[maybe_unused]] const double theta, const double phi){ return phi < M_PI ? 1. : 0.; }, 2., 0);
 
     efficiency = sph_rej_sam_2.estimate_efficiency(1e5);
 

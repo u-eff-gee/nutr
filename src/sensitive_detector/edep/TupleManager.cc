@@ -29,7 +29,7 @@ void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
 
 }
 
-void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, G4VHit* hit)
+void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, G4VHit* hit)
 {
 
     analysisManager->FillNtupleIColumn(0, 0, ((DetectorHit*) hit)->GetDetectorID());

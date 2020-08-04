@@ -36,7 +36,7 @@ class G4VPhysicalVolume;
 class NDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
-    virtual G4VPhysicalVolume* Construct() = 0;
+    virtual G4VPhysicalVolume* Construct() override = 0;
     void ConstructSDandField() override final;
 
     void RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes);

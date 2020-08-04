@@ -53,9 +53,6 @@ using std::vector;
 class SpherePointSampler{
 
 public:
-    SpherePointSampler() = default;
-    ~SpherePointSampler() = default;
-
     /**
      * \brief Sample \f$n\f$ points approximately uniformly on the surface of a unit sphere
      * 

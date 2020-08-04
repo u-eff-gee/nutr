@@ -46,7 +46,7 @@ int main(){
 
     // Test direction-direction correlation with pure transition
     // double integral_num = sph_int([](double theta, double phi){ 
-    double integral_num = sph_int([](double theta, double phi){ 
+    double integral_num = sph_int([](double theta, [[maybe_unused]] double phi){ 
         
         W_dir_dir w_dir_dir(
             State(0, parity_unknown),
@@ -57,12 +57,12 @@ int main(){
         );        
         return w_dir_dir(theta);
 
-    }, n, [](double theta, double phi){ return true ; });
+    }, n, []([[maybe_unused]] double theta, [[maybe_unused]] double phi){ return true ; });
 
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
     // Test direction-direction correlation with mixed transition
-    integral_num = sph_int([](double theta, double phi){ 
+    integral_num = sph_int([](double theta, [[maybe_unused]] double phi){ 
         
         W_dir_dir w_dir_dir(
             State(0, parity_unknown),
@@ -74,12 +74,12 @@ int main(){
         );        
         return w_dir_dir(theta);
 
-    }, n, [](double theta, double phi){ return true ; });
+    }, n, []([[maybe_unused]] double theta, [[maybe_unused]] double phi){ return true ; });
 
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
     // Test direction-direction correlation with mixed unobserved transition
-    integral_num = sph_int([](double theta, double phi){ 
+    integral_num = sph_int([](double theta, [[maybe_unused]] double phi){ 
         
         W_dir_dir w_dir_dir(
             State(0, parity_unknown),
@@ -92,7 +92,7 @@ int main(){
         );        
         return w_dir_dir(theta);
 
-    }, n, [](double theta, double phi){ return true ; });
+    }, n, []([[maybe_unused]] double theta, [[maybe_unused]] double phi){ return true ; });
 
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
@@ -108,7 +108,7 @@ int main(){
         );        
         return w_pol_dir(theta, phi);
 
-    }, n, [](double theta, double phi){ return true ; });
+    }, n, []([[maybe_unused]] double theta, [[maybe_unused]] double phi){ return true ; });
 
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 
@@ -126,7 +126,7 @@ int main(){
 
         return w_pol_dir(theta, phi);
 
-    }, n, [](double theta, double phi){ return true ; });
+    }, n, []([[maybe_unused]] double theta, [[maybe_unused]] double phi){ return true ; });
 
     test_numerical_equality<double>(integral_num, normalization, 1e-3);
 }

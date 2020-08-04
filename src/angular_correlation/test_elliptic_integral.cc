@@ -71,7 +71,6 @@ int main(){
 
     SpherePointSampler sph_pt_samp;
 
-    double ell_int_ana = 0.;
     double ell_int_num = 0.;
 
     /**

@@ -19,8 +19,6 @@
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
-#include "G4TrajectoryContainer.hh"
-#include "G4Trajectory.hh"
 #include "G4ios.hh"
 
 #include "EventAction.hh"
@@ -32,13 +30,9 @@ EventAction::EventAction(AnalysisManager* ana_man)
 
 void EventAction::EndOfEventAction(const G4Event* event)
 {
-	G4TrajectoryContainer* trajectoryContainer = event->GetTrajectoryContainer();
-	G4int n_trajectories = 0;
-	if (trajectoryContainer) n_trajectories = trajectoryContainer->entries();
-
     G4VHitsCollection* hc = nullptr;
     DetectorHit* cumulative_hit = nullptr;
-    for(size_t n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
+    for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
 	    
         hc = event->GetHCofThisEvent()->GetHC(n_hc);
     	G4int eventID = event->GetEventID();

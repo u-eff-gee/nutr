@@ -98,7 +98,6 @@ int main(int argc, char *argv[]){
     array<vector<double>, 2> theta_phi = sph_pt_samp.sample(n);
 
     /*** Evaluate function on grid and plot points ***/
-    int color_index;
     double sine_theta{0.}, w{0.};
 
     W_pol_dir w_pol_dir(

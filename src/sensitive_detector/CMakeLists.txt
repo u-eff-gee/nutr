@@ -22,8 +22,16 @@ link_libraries(${Geant4_LIBRARIES})
 
 configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh.in ${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh)
 add_library(analysisManager AnalysisManager.cc)
+target_compile_options(analysisManager PUBLIC ${COMPILER_WARNINGS})
 
 add_library(nDetectorHit NDetectorHit.cc)
+target_compile_options(nDetectorHit PUBLIC ${COMPILER_WARNINGS})
+
 add_library(nEventAction NEventAction.cc)
+target_compile_options(nEventAction PUBLIC ${COMPILER_WARNINGS})
+
 add_library(nRunAction NRunAction.cc)
+target_compile_options(nRunAction PUBLIC ${COMPILER_WARNINGS})
+
 add_library(nSensitiveDetector NSensitiveDetector.cc)
+target_compile_options(nSensitiveDetector PUBLIC ${COMPILER_WARNINGS})

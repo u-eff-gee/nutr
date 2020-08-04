@@ -45,7 +45,7 @@ G4ThreeVector Detector::unit_vector_theta(const double theta, const double phi) 
 	return G4ThreeVector(cos(theta)*cos(phi), cos(theta)*sin(phi), -sin(theta));
 }
 
-G4ThreeVector Detector::unit_vector_phi(const double theta, const double phi) const {
+G4ThreeVector Detector::unit_vector_phi([[maybe_unused]] const double theta, const double phi) const {
 	return G4ThreeVector(-sin(phi), cos(phi), 0.);
 }
 

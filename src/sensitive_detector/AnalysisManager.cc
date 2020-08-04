@@ -18,7 +18,7 @@ void AnalysisManager::Book(){
 
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     analysisManager->SetNtupleMerging(true);
-    G4bool fileOpen = analysisManager->OpenFile(output_file_name);
+    analysisManager->OpenFile(output_file_name);
     CreateNtupleColumns(analysisManager);
     analysisManager->FinishNtuple();
 

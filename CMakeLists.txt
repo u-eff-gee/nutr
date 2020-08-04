@@ -73,6 +73,7 @@ add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 add_executable(nutr src/fundamentals/nutr.cc)
 target_include_directories(nutr PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
 target_link_libraries(nutr actionInitialization detectorConstruction physics ${Geant4_LIBRARIES})
+target_compile_options(nutr PUBLIC -Wall -Wextra)
 
 set(MACROS_ESSENTIAL init_vis.mac vis.mac)
 foreach(macro ${MACROS_ESSENTIAL})
