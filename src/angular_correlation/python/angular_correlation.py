@@ -30,7 +30,7 @@ from ctypes import cdll, c_double, c_int, c_short, c_size_t, POINTER
 from state import *
 from transition import *
 
-lib = cdll.LoadLibrary('@PROJECT_BINARY_DIR@/src/primary_generator/angcorr/libangular_correlation.so')
+lib = cdll.LoadLibrary('@PROJECT_BINARY_DIR@/src/angular_correlation/libangular_correlation.so')
 
 lib.angular_correlation.restype = c_double
 lib.angular_correlation.argtypes = [

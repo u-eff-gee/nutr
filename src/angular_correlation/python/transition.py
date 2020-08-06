@@ -27,26 +27,28 @@ EM_UNKNOWN = 0
 ## EM character: magnetic
 MAGNETIC = 1
 
-def em_str_rep(em):
+def em_str_rep(em, em_variable_symbol='σ'):
     """String representation of an electromagnetic character
 
     Parameters
     ----------
     em: int
         EM character.
+    em_variable_symbol: string
+        Symbol to be displayed when the electromagnetic character is not known.
 
     Returns
     -------
     string
-        'E', if em==-1 (electric character), 'M' if em==1 magnetic, and ' ' (one space) if em has \
-any other value.
+        'E', if em==-1 (electric character), 'M' if em==1 magnetic, and em_variable_symbol if em \
+has any other value.
     """
     if em == ELECTRIC:
         return 'E'
     if em == MAGNETIC:
         return 'M'
 
-    return 'σ'
+    return em_variable_symbol 
 
 def multipolarity_str_rep(two_L):
     """String representation of an multipolarity
@@ -68,7 +70,7 @@ If two_L is an odd number, an error is raised.
         If two_L is not even.
     """
     if two_L % 2 == 1:
-        raise ValueError()
+        raise ValueError('Odd value given for two_L.')
     return str(int(two_L/2))
 
 class Transition:
@@ -111,26 +113,101 @@ class Transition:
         self.em_char = em
         ## Two times the primary multipolarity.
         self.two_L = t_L
-        ## Primary EM character.
+        ## Secondary EM character.
         self.em_charp = emp
-        ## Two times the primary multipolarity.
+        ## Two times the secondary multipolarity.
         self.two_Lp = t_Lp
         ## Multipole mixing ratio.
         self.delta = de
 
-    def __str__(self):
+    def str(self, separator=' ', secondary_in_parentheses=True, always_show_secondary=True, em_variable_symbol='σ'):
         """String representation of an EM transition between nuclear states.
 
-        Returns
-        -------
-        string
-            String representation of the EM transition in the form \
-'em_char two_L/2 separator em_charp two_Lp/2', i.e. with a newline between the two possible \
-multipolarities.
+Returns a customizable string representation of the EM transition in the form: 
+
+str(em_char) + str(two_L) + separator + '(' + str(em_charp) + str(two_Lp) + ')'
+
+Here, str(x) is assumed to be a function that creates a string representation of the attribute x.
+It does not have to be equal to the actual 'str()' function of python.
+
+Parameters
+----------
+separator: string
+    Separator between the two possible multipolarities.
+secondary_in_parentheses: bool
+    Determines whether the parentheses around the secondary multipolarity are shown or not. \
+(default: True)
+always_show_secondary: bool
+    If 'no', the separator, the parentheses and the string representation of the secondary \
+multipolarity are not shown if delta == 0. \
+(default: True)
+em_variable_symbol: string
+    Symbol to be displayed when the electromagnetic character is not known. \
+[default: σ (Greek letter'sigma')]
+
+Returns
+-------
+string
+    String representation.
         """
 
-        str_rep = em_str_rep(self.em_char) + str(int(self.two_L/2))
+        str_rep = em_str_rep(self.em_char, em_variable_symbol=em_variable_symbol) + multipolarity_str_rep(self.two_L)
 
-        str_repp = em_str_rep(self.em_charp) + multipolarity_str_rep(self.two_Lp)
+        if (self.delta == 0 or self.delta == 0.) and not always_show_secondary:
+            return str_rep
 
-        return str_rep + ' (' + str_repp + ')'
+        str_repp = em_str_rep(self.em_charp, em_variable_symbol=em_variable_symbol) + multipolarity_str_rep(self.two_Lp)
+
+        return str_rep + separator + ('(' if secondary_in_parentheses else '') + str_repp + (')' if secondary_in_parentheses else '')
+
+    def __str__(self):
+        """'Official' string representation of a transition
+
+Uses the str() function with default arguments.
+
+Returns
+-------
+string
+    String representation.
+        """
+        return self.str()
+
+    def tex(self, em_variable_symbol=r'\sigma', always_show_secondary=True, dollar=True):
+        """TeX representation of an EM transition between nuclear states.
+
+Parameters
+----------
+em_variable_symbol: string
+    Symbol to be displayed when the electromagnetic character is not known. \
+[default: r'\sigma']
+always_show_secondary: bool
+    If 'no', the second multipolarity is not shown if delta == 0.
+dollar: bool
+    Determines whether the returned string contains the dollar symbols for math expressions in TeX.
+
+Returns
+-------
+string
+    TeX code
+        """
+
+        tex = ('$' if dollar else '')
+        if (self.delta == 0 or self.delta == 0.) and not always_show_secondary:
+            tex += r'\left('
+        else:
+            tex += r' \genfrac{(}{)}{0}{}{'
+
+        tex_rep = em_str_rep(self.em_char, em_variable_symbol=em_variable_symbol) + ' ' + multipolarity_str_rep(self.two_L)
+
+        if EM_UNKNOWN not in (self.em_char, self.em_charp):
+            tex_rep = r'\overrightarrow{' + tex_rep + '}'
+
+        tex += tex_rep
+
+        if (self.delta == 0 or self.delta == 0.) and not always_show_secondary:
+            tex += r'\right)'
+            return tex + ('$' if dollar else '')
+
+        tex_repp = em_str_rep(self.em_charp, em_variable_symbol=em_variable_symbol) + ' ' + multipolarity_str_rep(self.two_Lp)
+
+        return tex + '}{' + tex_repp + '}' + ('$' if dollar else '')

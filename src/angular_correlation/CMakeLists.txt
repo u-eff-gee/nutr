@@ -172,6 +172,7 @@ target_link_libraries(test_sphere_rejection_sampler sphereRejectionSampler w_dir
 
 configure_file(python/angular_correlation_plot.py python/angular_correlation_plot.py)
 configure_file(python/asymmetry_plot.py python/asymmetry_plot.py)
+configure_file(python/level_scheme_plotter.py python/level_scheme_plotter.py)
 configure_file(python/test_plot_01_polarization.py python/test_plot_01_polarization.py)
 configure_file(python/test_plot_02_mixing_single_asy.py python/test_plot_02_mixing_single_asy.py)
 configure_file(python/test_plot_02_mixing_single.py python/test_plot_02_mixing_single.py)

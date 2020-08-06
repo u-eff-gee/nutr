@@ -29,30 +29,28 @@ POSITIVE = 1
 NEGATIVE = -1
 
 
-def parity_str_rep(parity):
+def parity_str_rep(parity, parity_variable_symbol='±'):
     """String representation of a parity quantum number
     
     Parameters
     ----------
     parity: int
         Parity quantum number, which may be 1 (positive parity), -1 (negative), or 0 (parity unknown).
+    parity_variable_symbol: string
+        Symbol to be displayed when the parity is not known (default: ±).
 
     Returns
     -------
     string
-        '+', if positive parity, and '-' if negative parity.
+        '+', if positive parity, '-' if negative parity, and parity_variable_symbol otherwise.
 
-    Raises
-    ------
-    ValueError
-        If parity is neither -1 or 1.
     """
     if parity == POSITIVE:
         return '+'
     if parity == NEGATIVE:
         return '-'
 
-    raise ValueError('No string representation for unknown parity.')
+    return parity_variable_symbol
 
 def spin_str_rep(two_J):
     """String representation of an angular momentum ('spin') quantum number
@@ -72,6 +70,30 @@ If two_J is an odd number 'two_J/2' is returned.
         return str(int(two_J/2))
 
     return str(two_J) + '/2'
+
+def spin_tex_rep(two_J, dollar=False):
+    """Tex representation of the angular momentum quantum number of an excited state.
+    
+    Parameters
+    ----------
+    two_J: int
+        Two times the angular momentum quantum number in units of the reduced Planck constant.
+    dollar: bool
+        Determines whether the returned string contains the dollar symbols for math expressions in TeX (default: False).
+    
+    Returns
+    -------
+    string
+        If two_J is an even number, the string representation of two_J/2 is returned. \
+If two_J is an odd number '\frac{two_J}{2}' or '$\frac{two_J}{2}$' is returned.    
+    """
+
+    tex = ('$' if dollar else '')
+
+    if two_J % 2 == 0:
+        return tex + str(int(two_J/2)) + ('$' if dollar else '')
+
+    return tex + r'\frac{' + str(two_J) + '}{2}' + ('$' if dollar else '')
 
 class State:
     """Class to store properties of a nuclear state
@@ -112,3 +134,21 @@ For more information, see the spin_str_rep and parity_str_rep functions.
             return spin_str_rep(self.two_J) + '^' + parity_str_rep(self.parity)
         
         return spin_str_rep(self.two_J)
+
+    def tex(self, parity_variable_symbol=r'\pm', dollar=True):
+        """TeX representation of a nuclear state.
+
+Parameters
+----------
+parity_variable_symbol: string
+    Symbol to be displayed when the parity is not known (default: '\pm').
+dollar: bool
+    Determines whether the returned string contains the dollar symbols for math expressions in TeX (default: True).
+
+Returns
+-------
+string
+    TeX code
+        """
+
+        return ('$' if dollar else '') + spin_tex_rep(self.two_J) + '^{' + parity_str_rep(self.parity, parity_variable_symbol=r'\pm') + '}' + ('$' if dollar else '')
