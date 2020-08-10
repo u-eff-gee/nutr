@@ -37,7 +37,11 @@ ang_cor = AngularCorrelation(
 
 arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=101)
 
-asy_plo = AsymmetryPlotter(ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True)
+asy_plo = AsymmetryPlotter(
+    ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True,
+    asy_45_exp=[-0.5, 0.1, 0.1],
+    asy_90_exp=[-0.8, 0.2, 0.2]
+)
 
 output_file_single_2d = Path('@PROJECT_BINARY_DIR@') / 'test_plot_02_mixing_single_asy_2d.pdf'
 asy_plo.plot_single_2d(r'$\delta_2$', [r'$\delta_1 = 0$', r'$\delta_2$'], False, output_file_single_2d)

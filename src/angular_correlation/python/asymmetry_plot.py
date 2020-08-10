@@ -28,6 +28,31 @@ import numpy as np
 from angular_correlation import angular_correlation
 from level_scheme_plotter import LevelSchemePlotter
 
+def values_in_range(array, mean, sigma_low, sigma_up):
+    return (array >= mean-sigma_low)*(array <= mean+sigma_up)
+
+def find_true_intervals(array):
+    true_intervals = []
+
+    last_entry = False
+    interval_start = 0
+    if array[0] > 0.:
+        last_entry = True
+
+    for i, ele in enumerate(array):
+        if ele != last_entry:
+            if ele:
+                interval_start = i
+                last_entry = True
+            else:
+                true_intervals.append([interval_start, i])
+                last_entry = False
+
+    if last_entry:
+        true_intervals.append([interval_start, len(array)-1])
+
+    return true_intervals
+
 class AngularCorrelation:
     def __init__(self, ini_sta, cas_ste, delta_dict):
         self.initial_state = ini_sta
@@ -88,7 +113,7 @@ class AngularCorrelation:
                 (w_90_0 - w_90_90)/(w_90_0 + w_90_90))
 
 class AsymmetryPlotter:
-    def __init__(self, ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True):
+    def __init__(self, ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True, asy_45_exp=None, asy_90_exp=None):
 
         ## Input data
         self.ang_cor = ang_cor
@@ -100,6 +125,10 @@ class AsymmetryPlotter:
         # If scale_asymmetries is False, they will be plotted in the range [-1, 1],
         # otherwise in the range [min(A(δ)), max(A(δ))].
         self.scale_asymmetries = scale_asymmetries
+
+        self.asy_45_exp = asy_45_exp
+        self.asy_90_exp = asy_90_exp 
+
         # This factor can be used to create a margin around the plotted data.
         # If the data are in the range [a, b], a margin factor which is not unity
         # will set a plot range of [a - margin_factor*(b-a), b + margin_factor*(b-a)].
@@ -109,9 +138,14 @@ class AsymmetryPlotter:
         self.asy_45_label = r'$A(\theta = 45^\circ)$'
         self.asy_90_label = r'$A(\theta = 90^\circ)$'
 
-        self.asy_45_single_color = 'crimson'
-        self.asy_90_single_color = 'purple'
-        self.asy_asy_single_color = 'forestgreen'
+        self.asy_2d_color = 'black'
+
+        self.asy_45_single_color = 'forestgreen'
+        self.asy_45_single_style = '-'
+        self.asy_90_single_color = 'crimson'
+        self.asy_90_single_style = '-'
+        self.asy_asy_single_color = 'purple'
+        self.asy_asy_single_style = '-'
 
         del_ticks_for_arctan = np.array([-10., -1.5, -0.4, 0.,
                                          0.4, 1.5, 10.])
@@ -161,25 +195,43 @@ class AsymmetryPlotter:
         else:
             asy_45_single = self.asy_45
             asy_90_single = self.asy_90
+
+            asy_45_delta_ranges_single = self.asy_45_delta_ranges
+            asy_45_delta_ranges_single = self.asy_45_delta_ranges
             
             asy_45_single_lim = self.asy_45_lim
             asy_90_single_lim = self.asy_90_lim
 
+        if self.asy_45_exp is not None:
+            asy_45_delta_ranges_single = find_true_intervals(
+                values_in_range(asy_45_single, self.asy_45_exp[0], self.asy_45_exp[1], self.asy_45_exp[2])
+            )
+        if self.asy_90_exp is not None:
+            asy_90_delta_ranges_single = find_true_intervals(
+                values_in_range(asy_90_single, self.asy_90_exp[0], self.asy_90_exp[1], self.asy_90_exp[2])
+            )
+
         aux_line_asy_45_style = '--'
-        aux_line_asy_90_style = '-'
-        aux_line_color = 'grey'
+        aux_line_asy_90_style = '--'
+        aux_line_color = 'black'
 
         fontsize_ticks = 9
 
         markersize = 8
         markersize_asy_45 = 14
         markersize_asy_90 = 8
-        delta_zero_marker = 'o'
-        delta_infinity_marker = 'P'
-        asy_45_min_marker = '+'
-        asy_45_max_marker = 'x'
-        asy_90_min_marker = 'v'
-        asy_90_max_marker = '^'
+        delta_zero_marker = ''
+        delta_infinity_marker = ''
+        asy_45_min_marker = ''
+        asy_45_max_marker = ''
+        asy_90_min_marker = ''
+        asy_90_max_marker = ''
+
+        exp_arctan_delta = -0.5*np.pi
+        exp_band_alpha = 0.5
+        exp_band_color = 'brown'
+        exp_capsize = 4
+        exp_color = 'black'
 
         delta_zero_index = np.argmin(np.abs(self.arctan_deltas))
         if self.arctan_deltas[delta_zero_index] != 0.:
@@ -210,7 +262,7 @@ class AsymmetryPlotter:
                       [self.arctan_del_lim[0], self.arctan_deltas[asy_45_max_index]],
                       aux_line_asy_45_style, color=aux_line_color)
 
-        ax[0][0].plot(asy_45_single, self.arctan_deltas, color=self.asy_45_single_color)
+        ax[0][0].plot(asy_45_single, self.arctan_deltas, self.asy_45_single_style, color=self.asy_2d_color)
         ax[0][0].plot(asy_45_single[delta_zero_index], [0.], delta_zero_marker,
                       markersize=markersize, color='black')
         ax[0][0].plot(asy_45_single[0], self.arctan_deltas[0], delta_infinity_marker,
@@ -221,6 +273,13 @@ class AsymmetryPlotter:
                       marker=asy_45_min_marker, markersize=markersize_asy_45, color='black')
         ax[0][0].plot(asy_45_single[asy_45_max_index], self.arctan_deltas[asy_45_max_index],
                       marker=asy_45_max_marker, markersize=markersize_asy_45, color='black')
+
+        if self.asy_45_exp is not None:
+            ax[0][0].fill_betweenx(self.arctan_del_lim, [self.asy_45_exp[0]-self.asy_45_exp[1]]*2, [self.asy_45_exp[0]+self.asy_45_exp[2]], color=exp_band_color, alpha=exp_band_alpha)
+            ax[0][0].errorbar([self.asy_45_exp[0]], [exp_arctan_delta], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]], fmt='o', color=exp_color, capsize=exp_capsize)
+
+            for r in asy_45_delta_ranges_single:
+                ax[0][0].fill_between(asy_45_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]]]*2, color=exp_band_color, alpha=exp_band_alpha)
 
         ax00x = ax[0][0].twiny()
         ax00x.tick_params(labelsize=fontsize_ticks)
@@ -273,7 +332,7 @@ class AsymmetryPlotter:
                       [asy_90_single[asy_45_max_index], self.asy_90_lim[1]],
                       aux_line_asy_45_style, color=aux_line_color)
 
-        ax[1][0].plot(asy_45_single, asy_90_single, color=self.asy_asy_single_color)
+        ax[1][0].plot(asy_45_single, asy_90_single, self.asy_asy_single_style, color=self.asy_2d_color)
         ax[1][0].plot(asy_45_single[delta_zero_index], asy_90_single[delta_zero_index], delta_zero_marker,
                       markersize=markersize, color='black')
         ax[1][0].plot(asy_45_single[0], asy_90_single[0], delta_infinity_marker,
@@ -286,6 +345,14 @@ class AsymmetryPlotter:
                       marker=asy_90_min_marker, markersize=markersize_asy_90, color='black')
         ax[1][0].plot(asy_45_single[asy_90_max_index], asy_90_single[asy_90_max_index],
                       marker=asy_90_max_marker, markersize=markersize_asy_90, color='black')
+
+        if self.asy_45_exp is not None:
+            ax[1][0].fill_betweenx(self.asy_90_lim, [self.asy_45_exp[0]-self.asy_45_exp[1]]*2, [self.asy_45_exp[0]+self.asy_45_exp[2]], color=exp_band_color, alpha=exp_band_alpha)
+        if self.asy_90_exp is not None:
+            ax[1][0].fill_between(self.asy_45_lim, [self.asy_90_exp[0]-self.asy_90_exp[1]]*2, [self.asy_90_exp[0]+self.asy_90_exp[2]], color=exp_band_color, alpha=exp_band_alpha)
+        if None not in (self.asy_45_exp, self.asy_90_exp):
+            ax[1][0].errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', color=exp_color, capsize=exp_capsize)
 
         ax[1][1].tick_params(labelsize=fontsize_ticks)
         ax[1][1].set_xlabel('arctan(' + delta_label + ')')
@@ -304,7 +371,7 @@ class AsymmetryPlotter:
                       [asy_90_single[asy_90_max_index]]*2,
                       aux_line_asy_90_style, color=aux_line_color)
 
-        ax[1][1].plot(self.arctan_deltas, asy_90_single, color=self.asy_90_single_color)
+        ax[1][1].plot(self.arctan_deltas, asy_90_single, self.asy_90_single_style, color=self.asy_2d_color)
         ax[1][1].plot(self.arctan_deltas[0], asy_90_single[0], delta_infinity_marker,
                       markersize=markersize, color='black')
         ax[1][1].plot(self.arctan_deltas[-1], asy_90_single[-1], delta_infinity_marker,
@@ -315,6 +382,13 @@ class AsymmetryPlotter:
                       marker=asy_90_min_marker, markersize=markersize_asy_90, color='black')
         ax[1][1].plot(self.arctan_deltas[asy_90_max_index], asy_90_single[asy_90_max_index],
                       marker=asy_90_max_marker, markersize=markersize_asy_90, color='black')
+
+        if self.asy_90_exp is not None:
+            ax[1][1].fill_between(self.arctan_del_lim, [self.asy_90_exp[0]-self.asy_90_exp[1]]*2, [self.asy_90_exp[0]+self.asy_90_exp[2]], color=exp_band_color, alpha=exp_band_alpha)
+            ax[1][1].errorbar([exp_arctan_delta], [self.asy_90_exp[0]], yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', color=exp_color, capsize=exp_capsize)
+
+            for r in asy_90_delta_ranges_single:
+                ax[1][1].fill_betweenx(asy_90_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]]]*2, color=exp_band_color, alpha=exp_band_alpha)
 
         ax11x = ax[1][1].twinx()
         ax11x.tick_params(labelsize=fontsize_ticks)

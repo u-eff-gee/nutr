@@ -30,7 +30,7 @@ ang_cor = AngularCorrelation(
     st.State(3, st.POSITIVE),
     [
         [tr.Transition(tr.ELECTRIC, 4, tr.MAGNETIC, 6, 0.), st.State(7, st.POSITIVE)],
-        [tr.Transition(tr.MAGNETIC, 2, tr.ELECTRIC, 4, 0.), st.State(5, st.POSITIVE)],
+        [tr.Transition(tr.EM_UNKNOWN, 2, tr.EM_UNKNOWN, 4, 0.), st.State(5, st.PARITY_UNKNOWN)],
     ],
     ['delta_1', 'delta_2']
 )
