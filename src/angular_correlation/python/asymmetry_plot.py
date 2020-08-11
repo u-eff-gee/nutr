@@ -228,7 +228,7 @@ class AsymmetryPlotter:
 
         exp_arctan_delta = -0.5*np.pi
         exp_band_alpha = 0.5
-        exp_band_color = 'brown'
+        exp_band_color = 'chocolate'
         exp_capsize = 4
         exp_color = 'black'
 
@@ -556,10 +556,15 @@ class AsymmetryPlotter:
         if output_file:
             plt.savefig(output_file)
 
-    def plot_double_contour_inverse(self, delta_labels, output_file=None):
+    def plot_double_contour_inverse(self, delta_labels, output_file=None, returns_to_initial_state=True):
 
         if isinstance(self.asy_45[0], (int, float)):
             raise ValueError('Inverse contour plot requested when only one multipole mixing ratio was varied. This is not possible.')
+
+        exp_capsize = 4
+        exp_capthick = 2
+        exp_color = 'black'
+        exp_elinewidth = 2
 
         fontsize_ticks = 9
 
@@ -587,10 +592,17 @@ class AsymmetryPlotter:
         hist_max_2 = np.ones((n_bins, n_bins))*-np.pi
         hist_counts_2 = np.zeros((n_bins, n_bins))
 
+        hist_deltas = np.zeros((len(self.arctan_deltas), len(self.arctan_deltas)))
+        bins_delta1_grid, bins_delta2_grid = np.meshgrid(self.arctan_deltas, self.arctan_deltas)
+
         for i in range(len(self.arctan_deltas)):
             for j in range(len(self.arctan_deltas)):
                 asy_45_value = self.asy_45[i][j]
                 asy_90_value = self.asy_90[i][j]
+
+                if self.asy_45_exp is not None and self.asy_90_exp is not None:
+                    if self.asy_45_exp[0] - self.asy_45_exp[1] <= asy_45_value and self.asy_45_exp[0] + self.asy_45_exp[2] >= asy_45_value and self.asy_90_exp[0] - self.asy_90_exp[1] <= asy_90_value and self.asy_90_exp[0] + self.asy_90_exp[2] >= asy_90_value:
+                        hist_deltas[i][j] = 1
 
                 asy_45_bin = np.argmin(np.abs(bins_asy_45-asy_45_value))
                 asy_90_bin = np.argmin(np.abs(bins_asy_90-asy_90_value))
@@ -627,6 +639,10 @@ class AsymmetryPlotter:
         ax0.set_xticklabels([])
         ax0.set_ylabel(r'$A(\theta = 90^\circ)$')
         ax0.grid()
+        if None not in (self.asy_45_exp, self.asy_90_exp):
+            ax0.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
+
         cs0 = ax0.contourf(
             bins_asy_45_grid,
             bins_asy_90_grid,
@@ -646,6 +662,9 @@ class AsymmetryPlotter:
         ax2.tick_params(labelsize=fontsize_ticks)
         ax2.set_xticklabels([])
         ax2.set_yticklabels([])
+        if None not in (self.asy_45_exp, self.asy_90_exp):
+            ax2.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
         ax2.grid()
         cs2 = ax2.contourf(
             bins_asy_45_grid,
@@ -663,8 +682,14 @@ class AsymmetryPlotter:
 
         ax4 = plt.subplot(gs[4])
         ax4.tick_params(labelsize=fontsize_ticks)
-        ax4.set_xticklabels([])
+        if self.asy_45_exp is not None and self.asy_90_exp is not None:
+            ax4.set_xlabel(r'$A(\theta = 45^\circ)$')
+        else:
+            ax4.set_xticklabels([])
         ax4.set_ylabel(r'$A(\theta = 90^\circ)$')
+        if None not in (self.asy_45_exp, self.asy_90_exp):
+            ax4.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
         ax4.grid()
         cs4 = ax4.contourf(
             bins_asy_45_grid,
@@ -673,6 +698,7 @@ class AsymmetryPlotter:
             levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
             cmap='coolwarm'
         )
+
         ax5 = plt.subplot(gs[5])
         cb4 = fig.colorbar(cs4, ax5)
         cb4.set_label(label_delta_min)
@@ -682,8 +708,15 @@ class AsymmetryPlotter:
 
         ax6 = plt.subplot(gs[6])
         ax6.tick_params(labelsize=fontsize_ticks)
-        ax6.set_xticklabels([])
+        if self.asy_45_exp is not None and self.asy_90_exp is not None:
+            ax6.set_xlabel(r'$A(\theta = 45^\circ)$')
+        else:
+            ax6.set_xticklabels([])
+
         ax6.set_yticklabels([])
+        if None not in (self.asy_45_exp, self.asy_90_exp):
+            ax6.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
         ax6.grid()
         cs6 = ax6.contourf(
             bins_asy_45_grid,
@@ -699,41 +732,66 @@ class AsymmetryPlotter:
         cb6.set_ticks(self.arctan_del_ticks)
         cb6.ax.set_yticklabels(self.arctan_del_tick_labels)
 
-        ax8 = plt.subplot(gs[8])
-        ax8.tick_params(labelsize=fontsize_ticks)
-        ax8.set_xlabel(r'$A(\theta = 45^\circ)$')
-        ax8.grid()
-        ax8.set_ylabel(r'$A(\theta = 90^\circ)$')
-        cs8 = ax8.contourf(
-            bins_asy_45_grid,
-            bins_asy_90_grid,
-            hist_max_1 - hist_min_1, 
-            cmap='inferno', levels=np.linspace(0., np.pi, 9)
-        )
-        ax9 = plt.subplot(gs[9])
-        cb9 = fig.colorbar(cs8, ax9)
-        cb9.set_label(label_arctan_delta_diff)
-        cb9.ax.tick_params(labelsize=fontsize_ticks)
-        cb9.set_ticks(arctan_delta_ticks_diff)
-        cb9.ax.set_yticklabels(arctan_delta_labels_diff)
+        if self.asy_45_exp is not None and self.asy_90_exp is not None:
+            ax8 = plt.subplot(gs[8])
+            ax8.axis('off')
+            ax8.set_xlim(-1., 1.)
+            ax8.set_ylim(-1., 1.)
+            lsplt = LevelSchemePlotter(ax8, self.ang_cor.initial_state, self.ang_cor.cascade_steps,
+                                    delta_labels, show_polarization=self.show_polarization,
+                                    returns_to_initial_state=returns_to_initial_state)
+            lsplt.plot()
 
-        ax10 = plt.subplot(gs[10])
-        ax10.tick_params(labelsize=fontsize_ticks)
-        ax10.set_xlabel(r'$A(\theta = 45^\circ)$')
-        ax10.set_yticklabels([])
-        ax10.grid()
-        cs10 = ax10.contourf(
-            bins_asy_45_grid,
-            bins_asy_90_grid,
-            hist_max_2 - hist_min_2,
-            cmap='inferno', levels=np.linspace(0., np.pi, 9)
-        )
-        ax11 = plt.subplot(gs[11])
-        cb10 = fig.colorbar(cs10, ax11)
-        cb10.set_label(label_arctan_delta_diff)
-        cb10.ax.tick_params(labelsize=fontsize_ticks)
-        cb10.set_ticks(arctan_delta_ticks_diff)
-        cb10.ax.set_yticklabels(arctan_delta_labels_diff)
+            ax10 = plt.subplot(gs[9:])
+            ax10.set_xlabel(r'$\mathrm{arctan}(\delta_1)$')
+            ax10.set_xlim(self.arctan_del_lim)
+            ax10.set_xticks(self.arctan_del_ticks)
+            ax10.set_xticklabels(self.arctan_del_tick_labels)
+            ax10.set_ylim(self.arctan_del_lim)
+            ax10.set_yticks([])
+            ax10.contourf(bins_delta1_grid, bins_delta2_grid, hist_deltas, cmap='binary', levels=3)
+            ax10_2 = ax10.twinx()
+            ax10_2.set_ylabel(r'$\mathrm{arctan}(\delta_2)$')
+            ax10_2.set_ylim(self.arctan_del_lim)
+            ax10_2.set_yticks(self.arctan_del_ticks)
+            ax10_2.set_yticklabels(self.arctan_del_tick_labels)
+
+        else:
+            ax8 = plt.subplot(gs[8])
+            ax8.tick_params(labelsize=fontsize_ticks)
+            ax8.set_xlabel(r'$A(\theta = 45^\circ)$')
+            ax8.grid()
+            ax8.set_ylabel(r'$A(\theta = 90^\circ)$')
+            cs8 = ax8.contourf(
+                bins_asy_45_grid,
+                bins_asy_90_grid,
+                hist_max_1 - hist_min_1, 
+                cmap='inferno', levels=np.linspace(0., np.pi, 9)
+            )
+            ax9 = plt.subplot(gs[9])
+            cb9 = fig.colorbar(cs8, ax9)
+            cb9.set_label(label_arctan_delta_diff)
+            cb9.ax.tick_params(labelsize=fontsize_ticks)
+            cb9.set_ticks(arctan_delta_ticks_diff)
+            cb9.ax.set_yticklabels(arctan_delta_labels_diff)
+
+            ax10 = plt.subplot(gs[10])
+            ax10.tick_params(labelsize=fontsize_ticks)
+            ax10.set_xlabel(r'$A(\theta = 45^\circ)$')
+            ax10.set_yticklabels([])
+            ax10.grid()
+            cs10 = ax10.contourf(
+                bins_asy_45_grid,
+                bins_asy_90_grid,
+                hist_max_2 - hist_min_2,
+                cmap='inferno', levels=np.linspace(0., np.pi, 9)
+            )
+            ax11 = plt.subplot(gs[11])
+            cb10 = fig.colorbar(cs10, ax11)
+            cb10.set_label(label_arctan_delta_diff)
+            cb10.ax.tick_params(labelsize=fontsize_ticks)
+            cb10.set_ticks(arctan_delta_ticks_diff)
+            cb10.ax.set_yticklabels(arctan_delta_labels_diff)
 
         fig.align_labels()
         plt.tight_layout()
