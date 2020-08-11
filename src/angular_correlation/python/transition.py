@@ -172,7 +172,7 @@ string
         """
         return self.str()
 
-    def tex(self, em_variable_symbol=r'\sigma', always_show_secondary=True, dollar=True):
+    def tex(self, em_variable_symbol=r'\sigma', always_show_secondary=True, show_polarization=True, dollar=True):
         """TeX representation of an EM transition between nuclear states.
 
 Parameters
@@ -182,6 +182,10 @@ em_variable_symbol: string
 [default: r'\sigma']
 always_show_secondary: bool
     If 'no', the second multipolarity is not shown if delta == 0.
+show_polarization: bool
+    If True and all multipolarities are given, indicate that the polarization of the photon \
+which was absorbed/emitted in this transition is known by printing a vector arrow above the \
+first multipolarity.
 dollar: bool
     Determines whether the returned string contains the dollar symbols for math expressions in TeX.
 
@@ -199,7 +203,7 @@ string
 
         tex_rep = em_str_rep(self.em_char, em_variable_symbol=em_variable_symbol) + ' ' + multipolarity_str_rep(self.two_L)
 
-        if EM_UNKNOWN not in (self.em_char, self.em_charp):
+        if (EM_UNKNOWN not in (self.em_char, self.em_charp)) and show_polarization:
             tex_rep = r'\overrightarrow{' + tex_rep + '}'
 
         tex += tex_rep

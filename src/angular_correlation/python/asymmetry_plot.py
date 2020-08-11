@@ -113,7 +113,7 @@ class AngularCorrelation:
                 (w_90_0 - w_90_90)/(w_90_0 + w_90_90))
 
 class AsymmetryPlotter:
-    def __init__(self, ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True, asy_45_exp=None, asy_90_exp=None):
+    def __init__(self, ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True, asy_45_exp=None, asy_90_exp=None, show_polarization=None):
 
         ## Input data
         self.ang_cor = ang_cor
@@ -127,7 +127,9 @@ class AsymmetryPlotter:
         self.scale_asymmetries = scale_asymmetries
 
         self.asy_45_exp = asy_45_exp
-        self.asy_90_exp = asy_90_exp 
+        self.asy_90_exp = asy_90_exp
+
+        self.show_polarization = show_polarization
 
         # This factor can be used to create a margin around the plotted data.
         # If the data are in the range [a, b], a margin factor which is not unity
@@ -195,9 +197,6 @@ class AsymmetryPlotter:
         else:
             asy_45_single = self.asy_45
             asy_90_single = self.asy_90
-
-            asy_45_delta_ranges_single = self.asy_45_delta_ranges
-            asy_45_delta_ranges_single = self.asy_45_delta_ranges
             
             asy_45_single_lim = self.asy_45_lim
             asy_90_single_lim = self.asy_90_lim
@@ -299,7 +298,7 @@ class AsymmetryPlotter:
         ax[0][1].set_xlim(-1., 1.)
         ax[0][1].set_ylim(-1., 1.)
         lsplt = LevelSchemePlotter(ax[0][1], self.ang_cor.initial_state, self.ang_cor.cascade_steps,
-                                   delta_labels_level_scheme,
+                                   delta_labels_level_scheme, show_polarization=self.show_polarization,
                                    returns_to_initial_state=returns_to_initial_state)
         lsplt.plot()
 

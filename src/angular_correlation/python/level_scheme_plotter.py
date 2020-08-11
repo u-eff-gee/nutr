@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class LevelSchemePlotter:
-    def __init__(self, axis, initial_state, cascade_steps, delta_labels, returns_to_initial_state=False):
+    def __init__(self, axis, initial_state, cascade_steps, delta_labels, returns_to_initial_state=False, show_polarization=None):
         self.ax = axis
         self.min_x, self.max_x = axis.get_xlim()
         self.range_x = self.max_x - self.min_x
@@ -31,7 +31,10 @@ class LevelSchemePlotter:
         self.ini_sta = initial_state
         self.cas_ste = cascade_steps
         self.del_lab = delta_labels
-        self.returns_to_initial_state = returns_to_initial_state        
+        self.returns_to_initial_state = returns_to_initial_state
+        self.show_polarization = [False]*len(cascade_steps)
+        if show_polarization is not None:
+            self.show_polarization = show_polarization
 
         ## Parameters for the plot
         # Fonts
@@ -83,7 +86,7 @@ class LevelSchemePlotter:
                       facecolor='blue', edgecolor='blue')
         self.ax.text(self.excitation_label_left_x,
                      0.5*(self.excited_state_y-self.initial_state_y)+self.initial_state_y,
-                     self.cas_ste[0][0].tex(always_show_secondary=False),
+                     self.cas_ste[0][0].tex(always_show_secondary=False, show_polarization=self.show_polarization[0]),
                      verticalalignment='center', fontsize=self.fontsize)
         self.ax.text(self.delta_label_left_x,
                      0.5*(self.excited_state_y-self.initial_state_y)+self.initial_state_y,
@@ -118,7 +121,7 @@ class LevelSchemePlotter:
                       color='red')
         self.ax.text(self.decay_label_right_x,
                      0.5*(self.excited_state_y-cascade_states_y[0]) + cascade_states_y[0],
-                     self.cas_ste[1][0].tex(),
+                     self.cas_ste[1][0].tex(show_polarization=self.show_polarization[1]),
                      verticalalignment='center', fontsize=self.fontsize)
         self.ax.text(self.delta_label_right_x,
                      0.5*(self.excited_state_y-cascade_states_y[0]) + cascade_states_y[0],
@@ -136,5 +139,5 @@ class LevelSchemePlotter:
                       color='red')
             self.ax.text(self.decay_label_right_x,
                          0.5*(cascade_states_y[i-1]-cascade_states_y[i]) + cascade_states_y[i],
-                         self.cas_ste[i][0].tex(),
+                         self.cas_ste[i][0].tex(show_polarization=self.show_polarization[i]),
                          verticalalignment='center', fontsize=self.fontsize)
