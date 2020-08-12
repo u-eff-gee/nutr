@@ -177,7 +177,7 @@ class AsymmetryPlotter:
         self.arctan_del_tick_labels = [r'$-\pi/2$', r'$-\pi/4$', 
                            '$0$', r'$\pi/4$', r'$\pi/2$']
 
-    def plot_single_2d(self, delta_label, delta_labels_level_scheme, returns_to_initial_state=True, output_file=None):
+    def plot_single_2d(self, delta_label, delta_labels_level_scheme, returns_to_initial_state=True, output_file=None, auxiliary_lines_and_markers=False):
 
         if not isinstance(self.asy_45[0], (int, float)):
             warnings.warn('Line plot requested when two multipole mixing ratios were varied. Assuming delta_1 = delta_2.')
@@ -219,12 +219,12 @@ class AsymmetryPlotter:
         markersize = 8
         markersize_asy_45 = 14
         markersize_asy_90 = 8
-        delta_zero_marker = ''
-        delta_infinity_marker = ''
-        asy_45_min_marker = ''
-        asy_45_max_marker = ''
-        asy_90_min_marker = ''
-        asy_90_max_marker = ''
+        delta_zero_marker = 'o'
+        delta_infinity_marker = 'o'
+        asy_45_min_marker = 'o'
+        asy_45_max_marker = 'o'
+        asy_90_min_marker = 'o'
+        asy_90_max_marker = 'o'
 
         exp_arctan_delta = -0.5*np.pi
         exp_band_alpha = 0.5
@@ -251,27 +251,30 @@ class AsymmetryPlotter:
         ax[0][0].set_yticks(self.arctan_del_ticks)
         ax[0][0].set_yticklabels(self.arctan_del_tick_labels)
 
-        ax[0][0].plot([asy_45_single[delta_zero_index]]*2,
-                      [self.arctan_del_lim[0], self.arctan_deltas[delta_zero_index]],
-                      aux_line_asy_45_style, color=aux_line_color)
-        ax[0][0].plot([asy_45_single[asy_45_min_index]]*2,
-                      [self.arctan_del_lim[0], self.arctan_deltas[asy_45_min_index]],
-                      aux_line_asy_45_style, color=aux_line_color)
-        ax[0][0].plot([asy_45_single[asy_45_max_index]]*2,
-                      [self.arctan_del_lim[0], self.arctan_deltas[asy_45_max_index]],
-                      aux_line_asy_45_style, color=aux_line_color)
+        if auxiliary_lines_and_markers:
+            ax[0][0].plot([asy_45_single[delta_zero_index]]*2,
+                        [self.arctan_del_lim[0], self.arctan_deltas[delta_zero_index]],
+                        aux_line_asy_45_style, color=aux_line_color)
+            ax[0][0].plot([asy_45_single[asy_45_min_index]]*2,
+                        [self.arctan_del_lim[0], self.arctan_deltas[asy_45_min_index]],
+                        aux_line_asy_45_style, color=aux_line_color)
+            ax[0][0].plot([asy_45_single[asy_45_max_index]]*2,
+                        [self.arctan_del_lim[0], self.arctan_deltas[asy_45_max_index]],
+                        aux_line_asy_45_style, color=aux_line_color)
 
         ax[0][0].plot(asy_45_single, self.arctan_deltas, self.asy_45_single_style, color=self.asy_2d_color)
-        ax[0][0].plot(asy_45_single[delta_zero_index], [0.], delta_zero_marker,
-                      markersize=markersize, color='black')
-        ax[0][0].plot(asy_45_single[0], self.arctan_deltas[0], delta_infinity_marker,
-                      markersize=markersize, color='black')
-        ax[0][0].plot(asy_45_single[-1], self.arctan_deltas[-1], delta_infinity_marker,
-                      markersize=markersize, color='black')
-        ax[0][0].plot(asy_45_single[asy_45_min_index], self.arctan_deltas[asy_45_min_index],
-                      marker=asy_45_min_marker, markersize=markersize_asy_45, color='black')
-        ax[0][0].plot(asy_45_single[asy_45_max_index], self.arctan_deltas[asy_45_max_index],
-                      marker=asy_45_max_marker, markersize=markersize_asy_45, color='black')
+
+        if auxiliary_lines_and_markers:
+            ax[0][0].plot(asy_45_single[delta_zero_index], [0.], delta_zero_marker,
+                        markersize=markersize, color='black')
+            ax[0][0].plot(asy_45_single[0], self.arctan_deltas[0], delta_infinity_marker,
+                        markersize=markersize, color='black')
+            ax[0][0].plot(asy_45_single[-1], self.arctan_deltas[-1], delta_infinity_marker,
+                        markersize=markersize, color='black')
+            ax[0][0].plot(asy_45_single[asy_45_min_index], self.arctan_deltas[asy_45_min_index],
+                        marker=asy_45_min_marker, markersize=markersize_asy_45, color='black')
+            ax[0][0].plot(asy_45_single[asy_45_max_index], self.arctan_deltas[asy_45_max_index],
+                        marker=asy_45_max_marker, markersize=markersize_asy_45, color='black')
 
         if self.asy_45_exp is not None:
             ax[0][0].fill_betweenx(self.arctan_del_lim, [self.asy_45_exp[0]-self.asy_45_exp[1]]*2, [self.asy_45_exp[0]+self.asy_45_exp[2]], color=exp_band_color, alpha=exp_band_alpha)
@@ -314,36 +317,39 @@ class AsymmetryPlotter:
             ax[1][0].set_yticks(self.asy_ticks)
             ax[1][0].set_yticklabels(self.asy_tick_labels)
 
-        ax[1][0].plot([asy_45_single[delta_zero_index], self.asy_45_lim[1]],
-                      [asy_90_single[delta_zero_index]]*2, aux_line_asy_90_style, color=aux_line_color)
-        ax[1][0].plot([asy_45_single[asy_90_max_index], self.asy_45_lim[1]],
-                      [asy_90_single[asy_90_max_index]]*2, aux_line_asy_90_style, color=aux_line_color)
-        ax[1][0].plot([asy_45_single[asy_90_min_index], self.asy_45_lim[1]],
-                      [asy_90_single[asy_90_min_index]]*2, aux_line_asy_90_style, color=aux_line_color)
+        if auxiliary_lines_and_markers:
+            ax[1][0].plot([asy_45_single[delta_zero_index], self.asy_45_lim[1]],
+                        [asy_90_single[delta_zero_index]]*2, aux_line_asy_90_style, color=aux_line_color)
+            ax[1][0].plot([asy_45_single[asy_90_max_index], self.asy_45_lim[1]],
+                        [asy_90_single[asy_90_max_index]]*2, aux_line_asy_90_style, color=aux_line_color)
+            ax[1][0].plot([asy_45_single[asy_90_min_index], self.asy_45_lim[1]],
+                        [asy_90_single[asy_90_min_index]]*2, aux_line_asy_90_style, color=aux_line_color)
 
-        ax[1][0].plot([asy_45_single[delta_zero_index]]*2,
-                      [asy_90_single[delta_zero_index], self.asy_90_lim[1]],
-                      aux_line_asy_45_style, color=aux_line_color)
-        ax[1][0].plot([asy_45_single[asy_45_min_index]]*2,
-                      [asy_90_single[asy_45_min_index], self.asy_90_lim[1]],
-                      aux_line_asy_45_style, color=aux_line_color)
-        ax[1][0].plot([asy_45_single[asy_45_max_index]]*2,
-                      [asy_90_single[asy_45_max_index], self.asy_90_lim[1]],
-                      aux_line_asy_45_style, color=aux_line_color)
+            ax[1][0].plot([asy_45_single[delta_zero_index]]*2,
+                        [asy_90_single[delta_zero_index], self.asy_90_lim[1]],
+                        aux_line_asy_45_style, color=aux_line_color)
+            ax[1][0].plot([asy_45_single[asy_45_min_index]]*2,
+                        [asy_90_single[asy_45_min_index], self.asy_90_lim[1]],
+                        aux_line_asy_45_style, color=aux_line_color)
+            ax[1][0].plot([asy_45_single[asy_45_max_index]]*2,
+                        [asy_90_single[asy_45_max_index], self.asy_90_lim[1]],
+                        aux_line_asy_45_style, color=aux_line_color)
 
         ax[1][0].plot(asy_45_single, asy_90_single, self.asy_asy_single_style, color=self.asy_2d_color)
-        ax[1][0].plot(asy_45_single[delta_zero_index], asy_90_single[delta_zero_index], delta_zero_marker,
-                      markersize=markersize, color='black')
-        ax[1][0].plot(asy_45_single[0], asy_90_single[0], delta_infinity_marker,
-                      markersize=markersize, color='black')
-        ax[1][0].plot(asy_45_single[asy_45_min_index], asy_90_single[asy_45_min_index],
-                      marker=asy_45_min_marker, markersize=markersize_asy_45, color='black')
-        ax[1][0].plot(asy_45_single[asy_45_max_index], asy_90_single[asy_45_max_index],
-                      marker=asy_45_max_marker, markersize=markersize_asy_45, color='black')
-        ax[1][0].plot(asy_45_single[asy_90_min_index], asy_90_single[asy_90_min_index],
-                      marker=asy_90_min_marker, markersize=markersize_asy_90, color='black')
-        ax[1][0].plot(asy_45_single[asy_90_max_index], asy_90_single[asy_90_max_index],
-                      marker=asy_90_max_marker, markersize=markersize_asy_90, color='black')
+
+        if auxiliary_lines_and_markers:
+            ax[1][0].plot(asy_45_single[delta_zero_index], asy_90_single[delta_zero_index], delta_zero_marker,
+                        markersize=markersize, color='black')
+            ax[1][0].plot(asy_45_single[0], asy_90_single[0], delta_infinity_marker,
+                        markersize=markersize, color='black')
+            ax[1][0].plot(asy_45_single[asy_45_min_index], asy_90_single[asy_45_min_index],
+                        marker=asy_45_min_marker, markersize=markersize_asy_45, color='black')
+            ax[1][0].plot(asy_45_single[asy_45_max_index], asy_90_single[asy_45_max_index],
+                        marker=asy_45_max_marker, markersize=markersize_asy_45, color='black')
+            ax[1][0].plot(asy_45_single[asy_90_min_index], asy_90_single[asy_90_min_index],
+                        marker=asy_90_min_marker, markersize=markersize_asy_90, color='black')
+            ax[1][0].plot(asy_45_single[asy_90_max_index], asy_90_single[asy_90_max_index],
+                        marker=asy_90_max_marker, markersize=markersize_asy_90, color='black')
 
         if self.asy_45_exp is not None:
             ax[1][0].fill_betweenx(self.asy_90_lim, [self.asy_45_exp[0]-self.asy_45_exp[1]]*2, [self.asy_45_exp[0]+self.asy_45_exp[2]], color=exp_band_color, alpha=exp_band_alpha)
@@ -361,26 +367,29 @@ class AsymmetryPlotter:
         ax[1][1].set_yticks([])
         ax[1][1].set_ylim(asy_90_single_lim)
 
-        ax[1][1].plot([self.arctan_del_lim[0], 0.], [asy_90_single[delta_zero_index]]*2,
-                      aux_line_asy_90_style, color=aux_line_color)
-        ax[1][1].plot([self.arctan_del_lim[0], self.arctan_deltas[asy_90_min_index]],
-                      [asy_90_single[asy_90_min_index]]*2,
-                      aux_line_asy_90_style, color=aux_line_color)
-        ax[1][1].plot([self.arctan_del_lim[0], self.arctan_deltas[asy_90_max_index]],
-                      [asy_90_single[asy_90_max_index]]*2,
-                      aux_line_asy_90_style, color=aux_line_color)
+        if auxiliary_lines_and_markers:
+            ax[1][1].plot([self.arctan_del_lim[0], 0.], [asy_90_single[delta_zero_index]]*2,
+                        aux_line_asy_90_style, color=aux_line_color)
+            ax[1][1].plot([self.arctan_del_lim[0], self.arctan_deltas[asy_90_min_index]],
+                        [asy_90_single[asy_90_min_index]]*2,
+                        aux_line_asy_90_style, color=aux_line_color)
+            ax[1][1].plot([self.arctan_del_lim[0], self.arctan_deltas[asy_90_max_index]],
+                        [asy_90_single[asy_90_max_index]]*2,
+                        aux_line_asy_90_style, color=aux_line_color)
 
         ax[1][1].plot(self.arctan_deltas, asy_90_single, self.asy_90_single_style, color=self.asy_2d_color)
-        ax[1][1].plot(self.arctan_deltas[0], asy_90_single[0], delta_infinity_marker,
-                      markersize=markersize, color='black')
-        ax[1][1].plot(self.arctan_deltas[-1], asy_90_single[-1], delta_infinity_marker,
-                      markersize=markersize, color='black')
-        ax[1][1].plot([0.], asy_90_single[delta_zero_index], delta_zero_marker,
-                      markersize=markersize, color='black')
-        ax[1][1].plot(self.arctan_deltas[asy_90_min_index], asy_90_single[asy_90_min_index],
-                      marker=asy_90_min_marker, markersize=markersize_asy_90, color='black')
-        ax[1][1].plot(self.arctan_deltas[asy_90_max_index], asy_90_single[asy_90_max_index],
-                      marker=asy_90_max_marker, markersize=markersize_asy_90, color='black')
+
+        if auxiliary_lines_and_markers:
+            ax[1][1].plot(self.arctan_deltas[0], asy_90_single[0], delta_infinity_marker,
+                        markersize=markersize, color='black')
+            ax[1][1].plot(self.arctan_deltas[-1], asy_90_single[-1], delta_infinity_marker,
+                        markersize=markersize, color='black')
+            ax[1][1].plot([0.], asy_90_single[delta_zero_index], delta_zero_marker,
+                        markersize=markersize, color='black')
+            ax[1][1].plot(self.arctan_deltas[asy_90_min_index], asy_90_single[asy_90_min_index],
+                        marker=asy_90_min_marker, markersize=markersize_asy_90, color='black')
+            ax[1][1].plot(self.arctan_deltas[asy_90_max_index], asy_90_single[asy_90_max_index],
+                        marker=asy_90_max_marker, markersize=markersize_asy_90, color='black')
 
         if self.asy_90_exp is not None:
             ax[1][1].fill_between(self.arctan_del_lim, [self.asy_90_exp[0]-self.asy_90_exp[1]]*2, [self.asy_90_exp[0]+self.asy_90_exp[2]], color=exp_band_color, alpha=exp_band_alpha)
@@ -739,7 +748,7 @@ class AsymmetryPlotter:
             ax8.set_ylim(-1., 1.)
             lsplt = LevelSchemePlotter(ax8, self.ang_cor.initial_state, self.ang_cor.cascade_steps,
                                     delta_labels, show_polarization=self.show_polarization,
-                                    returns_to_initial_state=returns_to_initial_state)
+                                    returns_to_initial_state=returns_to_initial_state, fontsize=15, state_line_width=3, arrow_width=3)
             lsplt.plot()
 
             ax10 = plt.subplot(gs[9:])

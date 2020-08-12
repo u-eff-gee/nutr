@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class LevelSchemePlotter:
-    def __init__(self, axis, initial_state, cascade_steps, delta_labels, returns_to_initial_state=False, show_polarization=None):
+    def __init__(self, axis, initial_state, cascade_steps, delta_labels, returns_to_initial_state=False, show_polarization=None, fontsize=12, state_line_width=2, arrow_width=2):
         self.ax = axis
         self.min_x, self.max_x = axis.get_xlim()
         self.range_x = self.max_x - self.min_x
@@ -38,9 +38,10 @@ class LevelSchemePlotter:
 
         ## Parameters for the plot
         # Fonts
-        self.fontsize = 12
+        self.fontsize = fontsize
 
         # State lines
+        self.state_line_width=state_line_width
         self.state_x = 0.4*self.range_x + self.min_x
         self.state_width = 0.4*self.range_x
         self.intermediate_state_x = 0.55*self.range_x + self.min_x
@@ -54,10 +55,13 @@ class LevelSchemePlotter:
         self.state_label_right_x = 0.9*self.range_x + self.min_x
 
         # Transition arrows
+        self.arrow_width = arrow_width
         self.excitation_arrow_x = 0.5*self.range_x + self.min_x
         self.decay_arrow_x = 0.7*self.range_x + self.min_x
         self.arrow_head_length = 0.04*self.range_y
-        self.arrow_head_width = 0.04*self.range_x
+        self.arrow_head_width = 0.03*self.arrow_width
+        self.excitation_arrow_color = 'blue'
+        self.decay_arrow_color = 'red'
 
         # Transition labels
         self.excitation_label_left_x = 0.2*self.range_x + self.min_x
@@ -67,23 +71,27 @@ class LevelSchemePlotter:
         self.delta_label_left_x = 0.4*self.range_x + self.min_x
         self.delta_label_right_x = 0.74*self.range_x + self.min_x
 
+        # Order of drawing
+        self.zorder_states = 0
+        self.zorder_arrows = 1
+
     def plot(self):
         # Initial and excited state
         self.ax.plot([self.state_x, self.state_x + self.state_width],
-                     [self.initial_state_y]*2, color='black')
+                     [self.initial_state_y]*2, color='black', linewidth=self.state_line_width, zorder=self.zorder_states)
         self.ax.text(self.state_label_left_x, self.initial_state_y, self.ini_sta.tex(),
                      verticalalignment='center', fontsize=self.fontsize)
         self.ax.plot([self.state_x, self.state_x + self.state_width],
-                     [self.excited_state_y]*2, color='black')
+                     [self.excited_state_y]*2, color='black', linewidth=self.state_line_width, zorder=self.zorder_states)
         self.ax.text(self.state_label_left_x, self.excited_state_y, self.cas_ste[0][1].tex(),
                      verticalalignment='center', fontsize=self.fontsize)
 
         # Excitation
-        self.ax.arrow(self.excitation_arrow_x, self.initial_state_y, 0., 
-                      self.excited_state_y-self.initial_state_y-self.arrow_head_length, width=0.01,
+        self.ax.plot([self.excitation_arrow_x]*2, [self.initial_state_y, self.excited_state_y - self.arrow_head_length], '-', linewidth=self.arrow_width, color=self.excitation_arrow_color, zorder=self.zorder_arrows)
+        self.ax.arrow(self.excitation_arrow_x, self.excited_state_y-self.arrow_head_length, 0., 1.e-5*self.range_y,
                       head_length=self.arrow_head_length,
                       head_width=self.arrow_head_width,
-                      facecolor='blue', edgecolor='blue')
+                      facecolor=self.excitation_arrow_color, edgecolor=self.excitation_arrow_color, zorder=self.zorder_arrows)
         self.ax.text(self.excitation_label_left_x,
                      0.5*(self.excited_state_y-self.initial_state_y)+self.initial_state_y,
                      self.cas_ste[0][0].tex(always_show_secondary=False, show_polarization=self.show_polarization[0]),
@@ -106,19 +114,19 @@ class LevelSchemePlotter:
         # States in cascade
         for i in range(n_decay_steps if not self.returns_to_initial_state else n_decay_steps-1):
             self.ax.plot([self.intermediate_state_x, self.intermediate_state_x + self.intermediate_state_width],
-                         [cascade_states_y[i]]*2, color='black')            
+                         [cascade_states_y[i]]*2, color='black', linewidth=self.state_line_width, zorder=self.zorder_states)            
             self.ax.text(self.state_label_right_x,
                          cascade_states_y[i], self.cas_ste[i+1][1].tex(),
                          verticalalignment='center', fontsize=self.fontsize)
             
         # First transition in cascade
         self.ax.plot([self.decay_arrow_x]*2, [self.excited_state_y, cascade_states_y[0] + self.arrow_head_length],
-                  '--' if n_decay_steps > 1 else '-', color='red')
+                  '--' if n_decay_steps > 1 else '-', linewidth=self.arrow_width, color=self.decay_arrow_color, zorder=self.zorder_arrows)
         self.ax.arrow(self.decay_arrow_x, cascade_states_y[0]+self.arrow_head_length,
                       0., -1.e-5*self.range_y, 
                       head_length=self.arrow_head_length,
                       head_width=self.arrow_head_width,
-                      color='red')
+                      color=self.decay_arrow_color, zorder=self.zorder_arrows)
         self.ax.text(self.decay_label_right_x,
                      0.5*(self.excited_state_y-cascade_states_y[0]) + cascade_states_y[0],
                      self.cas_ste[1][0].tex(show_polarization=self.show_polarization[1]),
@@ -131,12 +139,12 @@ class LevelSchemePlotter:
         # Transitions in cascade
         for i in range(1, n_decay_steps):
             self.ax.plot([self.decay_arrow_x]*2, [cascade_states_y[i-1], cascade_states_y[i] + self.arrow_head_length],
-                         '--' if i < n_decay_steps - 1 else '-', color='red')
+                         '--' if i < n_decay_steps - 1 else '-', linewidth=self.arrow_width, color=self.decay_arrow_color, zorder=self.zorder_arrows)
             self.ax.arrow(self.decay_arrow_x, cascade_states_y[i]+self.arrow_head_length,
                       0., -1.e-5*self.range_y,
                       head_length=self.arrow_head_length,
                       head_width=self.arrow_head_width,
-                      color='red')
+                      color=self.decay_arrow_color, zorder=self.zorder_arrows)
             self.ax.text(self.decay_label_right_x,
                          0.5*(cascade_states_y[i-1]-cascade_states_y[i]) + cascade_states_y[i],
                          self.cas_ste[i][0].tex(show_polarization=self.show_polarization[i]),
