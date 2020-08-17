@@ -17,6 +17,18 @@
 
 include_directories(${PROJECT_SOURCE_DIR}/include/physics)
 
+if(DEFINED ENV{G4LENDDATA})
+    set(USE_LENDGAMMANUCLEAR "true" CACHE STRING "Use LENDGammaNuclear option of G4EmExtraPhysics.")
+    set(HADRON_ELASTIC "G4HadronElasticPhysicsLEND" CACHE STRING "Use G4HadronElasticPhysicsLEND.")
+    set(HADRON_INELASTIC "G4HadronPhysicsShieldingLEND" CACHE STRING "Use G4HadronPhysicsShieldingLEND")
+else()
+    message(STATUS "Warning: Low-energy nuclear data (LEND) not found, using fallback physics models.")
+    set(USE_LENDGAMMANUCLEAR "false" CACHE STRING "Do not use LENDGammaNuclear option of G4EmExtraPhysics.")
+    set(HADRON_ELASTIC "G4HadronElasticPhysicsHP" CACHE STRING "Use G4HadronElasticPhysicsHP.")
+    set(HADRON_INELASTIC "G4HadronPhysicsShielding" CACHE STRING "Use G4HadronPhysicsShielding")
+endif()
+configure_file(${PROJECT_SOURCE_DIR}/src/physics/Physics.cc.in ${PROJECT_SOURCE_DIR}/src/physics/Physics.cc)
+
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 

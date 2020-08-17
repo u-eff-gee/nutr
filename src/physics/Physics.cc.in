@@ -17,10 +17,28 @@
 	Copyright (C) 2020 Udo Friman-Gayer
 */
 
+#include "G4DecayPhysics.hh"
+#include "G4EmExtraPhysics.hh"
 #include "G4EmLivermorePolarizedPhysics.hh"
+#include "G4RadioactiveDecayPhysics.hh"
+#include "@HADRON_ELASTIC@.hh"
+#include "@HADRON_INELASTIC@.hh"
 
 #include "Physics.hh"
 
 Physics::Physics(){
+
 	RegisterPhysics(new G4EmLivermorePolarizedPhysics());
+    
+    G4EmExtraPhysics* emExtraPhysics = new G4EmExtraPhysics();
+    emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR@);
+    RegisterPhysics(new G4EmExtraPhysics());
+
+    RegisterPhysics(new G4DecayPhysics());
+    RegisterPhysics(new G4RadioactiveDecayPhysics());
+
+    RegisterPhysics(new @HADRON_ELASTIC@());
+
+    RegisterPhysics(new @HADRON_INELASTIC@());
+
 }
