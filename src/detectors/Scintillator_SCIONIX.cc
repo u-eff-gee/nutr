@@ -115,9 +115,9 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
     /*********** Crystal ***********/
 
     G4Tubs *crystal_solid = new G4Tubs(detector_name + "_crystal_sold", 0., crystal_radius, 0.5*crystal_length, 0., twopi);
-    crystal_logical = new G4LogicalVolume(crystal_solid, crystal_material, detector_name);
-    crystal_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
-    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + 0.5*crystal_length)*e_r, crystal_logical, detector_name + "_crystal", world_Logical, 0, 0, false);
+    sensitive_logical_volumes.push_back(new G4LogicalVolume(crystal_solid, crystal_material, detector_name));
+    sensitive_logical_volumes[0]->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
+    new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + 0.5*crystal_length)*e_r, sensitive_logical_volumes[0], detector_name + "_crystal", world_Logical, 0, 0, false);
 
     /*********** PMT ***********/
     // PMT
@@ -173,7 +173,3 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
     signal_connector_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
     new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length + 0.5*signal_connector_length)*e_r + 0.5/sqrt(2.)*connector_base_outer_radius*e_theta - 0.5/sqrt(2.)*connector_base_outer_radius*e_phi, signal_connector_logical, detector_name + "_signal_connector", world_Logical, 0, 0, false);  
 };
-
-vector<G4LogicalVolume*> Scintillator_SCIONIX::get_sensitive_logical_volumes(){
-    return vector<G4LogicalVolume*>{crystal_logical};
-}

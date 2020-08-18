@@ -117,7 +117,10 @@ class Detector{
 		 */
 		void Add_Wrap(G4String wrap_material, G4double wrap_thickness);
 
-		virtual vector<G4LogicalVolume*> get_sensitive_logical_volumes() = 0;
+		/**
+		 * \brief Return detector's sensitive logical volumes.
+		 */
+		vector<G4LogicalVolume*> get_sensitive_logical_volumes(){ return sensitive_logical_volumes; };
 	
 	protected:
 		G4LogicalVolume *world_Logical; /**< Logical volume in which the detector will be placed. */
@@ -185,5 +188,6 @@ class Detector{
 		 */
 		void rotate(const double theta, const double phi, const double alpha);
 
+		vector<G4LogicalVolume*> sensitive_logical_volumes; /**< List of sensitive logical volumes of this detector. */
 		G4RotationMatrix *rotation_matrix; /**< Rotation matrix for transformation into desired coordinate system.*/
 };

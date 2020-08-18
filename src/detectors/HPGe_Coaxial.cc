@@ -182,12 +182,12 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 	    new G4Polycone("crystal_solid", 0. * deg, 360. * deg,
 	                   nsteps_optimized, zPlane, rInner, rOuter);
 
-	crystal_logical = new G4LogicalVolume(
-	    crystal_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name, 0, 0, 0);
+	sensitive_logical_volumes.push_back(new G4LogicalVolume(
+	    crystal_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name, 0, 0, 0));
 
-	crystal_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
+	sensitive_logical_volumes[0]->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
 
-	new G4PVPlacement(0, G4ThreeVector(0., 0., -end_cap_side_length*0.5 + properties.end_cap_to_crystal_gap_front + properties.mount_cup_thickness), crystal_logical, detector_name + "_crystal", end_cap_vacuum_logical, 0, 0, false);
+	new G4PVPlacement(0, G4ThreeVector(0., 0., -end_cap_side_length*0.5 + properties.end_cap_to_crystal_gap_front + properties.mount_cup_thickness), sensitive_logical_volumes[0], detector_name + "_crystal", end_cap_vacuum_logical, 0, 0, false);
 
 	if(use_dewar){
 		/************* Connection dewar-detector *************/
@@ -294,8 +294,4 @@ void HPGe_Coaxial::Construct(G4ThreeVector global_coordinates, G4double theta, G
 			wrap_radius = wrap_radius + wrap_thicknesses[i];
 		}
 	}
-}
-
-vector<G4LogicalVolume*> HPGe_Coaxial::get_sensitive_logical_volumes(){
-    return vector<G4LogicalVolume*>{crystal_logical};
 }
