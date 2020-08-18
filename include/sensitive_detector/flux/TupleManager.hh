@@ -28,5 +28,5 @@ public:
 
     void CreateNtupleColumns(G4VAnalysisManager* analysisManager) override;
 
-    void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, G4VHit* hit) override;
+    void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, vector<G4VHit*> hits) override;
 };

@@ -30,13 +30,38 @@ EventAction::EventAction(AnalysisManager* ana_man)
 
 void EventAction::EndOfEventAction(const G4Event* event)
 {
-	G4int eventID = event->GetEventID();
-
     G4VHitsCollection* hc = nullptr;
-    for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
-        hc = event->GetHCofThisEvent()->GetHC(n_hc);
+    vector<G4VHit*> hits{new DetectorHit()};
+    int current_deid{0}, eventID{0}, max_deid{0};
+    double sum_edep = 0.;
 
-        for(size_t i = 0; i < hc->GetSize(); ++i)
-            analysis_manager->FillNtuple(eventID, {(DetectorHit*) hc->GetHit(i)});
+    for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
+
+        hc = event->GetHCofThisEvent()->GetHC(n_hc);
+    	eventID = event->GetEventID();
+
+        if(hc->GetSize() > 0){
+            current_deid = ((DetectorHit*) hc->GetHit(0))->GetDetectorID();
+
+            // Fill the list of hits up to the current detector ID, if it is larger than the 
+            // current maximum.
+            if(current_deid > max_deid){
+                for(int i = 0; i < current_deid - max_deid; ++i){
+                    hits.push_back(new DetectorHit());
+                }
+                max_deid = current_deid;
+            }
+
+            double edep = 0.;
+            for(size_t i = 0; i < hc->GetSize(); ++i)
+                edep += ((DetectorHit*) hc->GetHit(i))->GetEdep();
+
+            sum_edep += edep;
+            ((DetectorHit*) hits[current_deid])->SetEdep(edep);
+        }
+    }
+
+    if(sum_edep > 0.){
+        analysis_manager->FillNtuple(eventID, hits);
     }
 }

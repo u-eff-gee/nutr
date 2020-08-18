@@ -16,35 +16,20 @@
 
     Copyright (C) 2020 Udo Friman-Gayer
 */
+#pragma once
 
 #include "DetectorHit.hh"
+#include "NSensitiveDetector.hh"
 
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
-#include "G4Circle.hh"
-#include "G4Colour.hh"
-#include "G4VisAttributes.hh"
-
-#include <iomanip>
-
-G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
-
-DetectorHit::DetectorHit()
- : NDetectorHit(),
-   fEdep(0.)
-{}
-
-DetectorHit::DetectorHit(const DetectorHit& right)
-  : NDetectorHit()
+class SensitiveDetector : public NSensitiveDetector
 {
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
-}
+public:
+    SensitiveDetector(const G4String& name,
+                const G4String& hitsCollectionName):NSensitiveDetector(name, hitsCollectionName), fDetectorHitsCollection(nullptr){};
 
-const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
-{
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
+    void Initialize(G4HCofThisEvent* hce) override final;
+    G4bool ProcessHits(G4Step* step, G4TouchableHistory* history) override final;
 
-  return *this;
-}
+protected:
+    G4THitsCollection<DetectorHit>* fDetectorHitsCollection;
+};

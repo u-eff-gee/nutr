@@ -24,9 +24,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 using std::string;
 using std::to_string;
+using std::vector;
 
 #include "g4@OUTPUT_FORMAT@.hh"
 #include "G4VHit.hh"
@@ -40,8 +42,8 @@ public:
 
     void Book();
     virtual void CreateNtupleColumns(G4VAnalysisManager* analysisManager) = 0;
-    virtual void FillNtuple(G4int eventID, G4VHit* hit);
-    virtual void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, G4VHit* hit) = 0;
+    virtual void FillNtuple(G4int eventID, vector<G4VHit*> hits);
+    virtual void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, vector<G4VHit*> hits) = 0;
     void Save();
 
 protected:

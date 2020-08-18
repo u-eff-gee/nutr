@@ -17,34 +17,18 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "DetectorHit.hh"
+#pragma once
 
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
-#include "G4Circle.hh"
-#include "G4Colour.hh"
-#include "G4VisAttributes.hh"
+#include "globals.hh"
 
-#include <iomanip>
+#include "AnalysisManager.hh"
+#include "NEventAction.hh"
 
-G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
-
-DetectorHit::DetectorHit()
- : NDetectorHit(),
-   fEdep(0.)
-{}
-
-DetectorHit::DetectorHit(const DetectorHit& right)
-  : NDetectorHit()
+class EventAction : public NEventAction
 {
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
-}
+public:
+    EventAction(AnalysisManager* ana_man);
 
-const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
-{
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
+    void EndOfEventAction(const G4Event* ) override final;
 
-  return *this;
-}
+};

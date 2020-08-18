@@ -40,6 +40,7 @@ public:
     void ConstructSDandField() override final;
 
     void RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes);
+    size_t GetNumberOfSensitiveDetectors() const { return sensitive_logical_volumes.size(); };
     vector<shared_ptr<SourceVolume>> GetSourceVolumes(){ return source_volumes; }
 
 protected:

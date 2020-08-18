@@ -17,22 +17,35 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
+#include "G4RunManager.hh"
+
+#include "DetectorConstruction.hh"
 #include "DetectorHit.hh"
 #include "TupleManager.hh"
 
 void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
 {
 
+    n_sensitive_detectors = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetNumberOfSensitiveDetectors();
+
     analysisManager->CreateNtuple("edep", "Energy Deposition");
-    analysisManager->CreateNtupleIColumn("deid");
-    analysisManager->CreateNtupleDColumn("edep");
+    for(size_t i = 0; i < n_sensitive_detectors; ++i){
+        analysisManager->CreateNtupleDColumn("det" + to_string(i));
+    }
 
 }
 
 void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<G4VHit*> hits)
 {
 
-    analysisManager->FillNtupleIColumn(0, 0, ((DetectorHit*) hits[0])->GetDetectorID());
-    analysisManager->FillNtupleDColumn(0, 1, ((DetectorHit*) hits[0])->GetEdep());
-
+    for(size_t i = 0; i < hits.size(); ++i){
+        analysisManager->FillNtupleDColumn(0, i, ((DetectorHit*) hits[i])->GetEdep());
+    }
+    // The number of entries in std::vector hits will only be as large as highest ID of all 
+    // detectors that were hit.
+    // There may be detectors with an even higher ID which were not hit.
+    // Fill all higher IDs than hits.size()-1 with zeros.
+    for(size_t i = hits.size(); i < n_sensitive_detectors; ++i){
+        analysisManager->FillNtupleDColumn(0, i, 0.);
+    }
 }

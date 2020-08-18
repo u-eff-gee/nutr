@@ -17,34 +17,15 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "DetectorHit.hh"
+#pragma once
 
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
-#include "G4Circle.hh"
-#include "G4Colour.hh"
-#include "G4VisAttributes.hh"
+#include "NRunAction.hh"
+#include "globals.hh"
 
-#include <iomanip>
+#include "TupleManager.hh"
 
-G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
-
-DetectorHit::DetectorHit()
- : NDetectorHit(),
-   fEdep(0.)
-{}
-
-DetectorHit::DetectorHit(const DetectorHit& right)
-  : NDetectorHit()
+class RunAction : public NRunAction
 {
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
-}
-
-const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
-{
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
-
-  return *this;
-}
+public:
+    RunAction(TupleManager* tup_man):NRunAction(tup_man){};
+};

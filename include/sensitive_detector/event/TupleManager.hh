@@ -17,34 +17,19 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "DetectorHit.hh"
+#pragma once
 
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
-#include "G4Circle.hh"
-#include "G4Colour.hh"
-#include "G4VisAttributes.hh"
+#include "AnalysisManager.hh"
 
-#include <iomanip>
-
-G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
-
-DetectorHit::DetectorHit()
- : NDetectorHit(),
-   fEdep(0.)
-{}
-
-DetectorHit::DetectorHit(const DetectorHit& right)
-  : NDetectorHit()
+class TupleManager : public AnalysisManager
 {
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
-}
+public:
+    TupleManager(const string out_file_name): AnalysisManager(out_file_name), n_sensitive_detectors(0){};
 
-const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
-{
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
+    void CreateNtupleColumns(G4VAnalysisManager* analysisManager) override;
 
-  return *this;
-}
+    void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, vector<G4VHit*> hits) override;
+
+private:
+    size_t n_sensitive_detectors;
+};

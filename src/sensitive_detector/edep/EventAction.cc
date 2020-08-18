@@ -32,10 +32,12 @@ void EventAction::EndOfEventAction(const G4Event* event)
 {
     G4VHitsCollection* hc = nullptr;
     DetectorHit* cumulative_hit = nullptr;
+    int eventID{0};
+
     for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
-	    
+
         hc = event->GetHCofThisEvent()->GetHC(n_hc);
-    	G4int eventID = event->GetEventID();
+    	eventID = event->GetEventID();
 
         if(hc->GetSize() > 0){
             double edep = 0.;
@@ -45,7 +47,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
             cumulative_hit = new DetectorHit();
             cumulative_hit->SetDetectorID(((DetectorHit*) hc->GetHit(0))->GetDetectorID());
             cumulative_hit->SetEdep(edep);
-            analysis_manager->FillNtuple(eventID, cumulative_hit);
+            analysis_manager->FillNtuple(eventID, {cumulative_hit});
         }
     }
 }

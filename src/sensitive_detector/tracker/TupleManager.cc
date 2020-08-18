@@ -33,14 +33,14 @@ void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
     analysisManager->CreateNtupleDColumn("posz");
 }
 
-void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, G4VHit* hit)
+void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, vector<G4VHit*> hits)
 {
     analysisManager->FillNtupleIColumn(0, 0, eventID);
-    analysisManager->FillNtupleIColumn(0, 1, ((DetectorHit*) hit)->GetTrackID());
-    analysisManager->FillNtupleIColumn(0, 2, ((DetectorHit*) hit)->GetParticleID());
-    analysisManager->FillNtupleIColumn(0, 3, ((DetectorHit*) hit)->GetDetectorID());
-    analysisManager->FillNtupleDColumn(0, 4, ((DetectorHit*) hit)->GetEdep());
-    analysisManager->FillNtupleDColumn(0, 5, ((DetectorHit*) hit)->GetPos().x());
-    analysisManager->FillNtupleDColumn(0, 6, ((DetectorHit*) hit)->GetPos().y());
-    analysisManager->FillNtupleDColumn(0, 7, ((DetectorHit*) hit)->GetPos().z());
+    analysisManager->FillNtupleIColumn(0, 1, ((DetectorHit*) hits[0])->GetTrackID());
+    analysisManager->FillNtupleIColumn(0, 2, ((DetectorHit*) hits[0])->GetParticleID());
+    analysisManager->FillNtupleIColumn(0, 3, ((DetectorHit*) hits[0])->GetDetectorID());
+    analysisManager->FillNtupleDColumn(0, 4, ((DetectorHit*) hits[0])->GetEdep());
+    analysisManager->FillNtupleDColumn(0, 5, ((DetectorHit*) hits[0])->GetPos().x());
+    analysisManager->FillNtupleDColumn(0, 6, ((DetectorHit*) hits[0])->GetPos().y());
+    analysisManager->FillNtupleDColumn(0, 7, ((DetectorHit*) hits[0])->GetPos().z());
 }

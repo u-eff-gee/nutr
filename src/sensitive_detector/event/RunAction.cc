@@ -17,34 +17,4 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
-#include "DetectorHit.hh"
-
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
-#include "G4Circle.hh"
-#include "G4Colour.hh"
-#include "G4VisAttributes.hh"
-
-#include <iomanip>
-
-G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
-
-DetectorHit::DetectorHit()
- : NDetectorHit(),
-   fEdep(0.)
-{}
-
-DetectorHit::DetectorHit(const DetectorHit& right)
-  : NDetectorHit()
-{
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
-}
-
-const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
-{
-  fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
-
-  return *this;
-}
+#include "RunAction.hh"

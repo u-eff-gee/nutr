@@ -19,45 +19,42 @@
 
 #pragma once
 
-#include "G4VHit.hh"
 #include "G4THitsCollection.hh"
 #include "G4Allocator.hh"
 #include "G4ThreeVector.hh"
 #include "tls.hh"
 
-class NDetectorHit : public G4VHit
-{
-public:
-    NDetectorHit();
-    NDetectorHit(const NDetectorHit&);
+#include "NDetectorHit.hh"
 
-    const NDetectorHit& operator=(const NDetectorHit&);
-    G4bool operator==(const NDetectorHit&) const;
+class DetectorHit : public NDetectorHit
+{
+  public:
+    DetectorHit();
+    DetectorHit(const DetectorHit&);
+
+    const DetectorHit& operator=(const DetectorHit&);
 
     inline void* operator new(size_t);
     inline void  operator delete(void*);
 
-    void Draw(){};
+    void SetEdep (const G4double de) { fEdep = de; };
 
-    void SetDetectorID (const G4int detectorID) { fDetectorID = detectorID; };
+    G4double GetEdep() const { return fEdep; };
 
-    int GetDetectorID() const { return fDetectorID; };
-
-protected:
-      int fDetectorID;
-
+  private:
+      G4double fEdep;
 };
 
-extern G4ThreadLocal G4Allocator<NDetectorHit>* NDetectorHitAllocator;
+extern G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator;
 
-inline void* NDetectorHit::operator new(size_t)
+inline void* DetectorHit::operator new(size_t)
 {
-    if(!NDetectorHitAllocator)
-        NDetectorHitAllocator = new G4Allocator<NDetectorHit>;
-    return (void *) NDetectorHitAllocator->MallocSingle();
+    if(!DetectorHitAllocator)
+        DetectorHitAllocator = new G4Allocator<DetectorHit>;
+    return (void *) DetectorHitAllocator->MallocSingle();
 }
 
-inline void NDetectorHit::operator delete(void *hit)
+inline void DetectorHit::operator delete(void *hit)
 {
-  NDetectorHitAllocator->FreeSingle((NDetectorHit*) hit);
+    DetectorHitAllocator->FreeSingle((DetectorHit*) hit);
 }

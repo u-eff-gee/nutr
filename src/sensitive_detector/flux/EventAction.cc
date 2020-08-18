@@ -41,14 +41,14 @@ void EventAction::EndOfEventAction(const G4Event* event)
 
         if(hc->GetSize() > 0){
             hit = (DetectorHit*) hc->GetHit(0);
-            analysis_manager->FillNtuple(eventID, hit);
+            analysis_manager->FillNtuple(eventID, {hit});
             particleID = hit->GetParticleID();
             trackID = hit->GetTrackID();
 
             for(size_t i = 1; i < hc->GetSize(); ++i){
                 hit = (DetectorHit*) hc->GetHit(i);
                 if(hit->GetParticleID() != particleID || hit->GetTrackID() != trackID){
-                    analysis_manager->FillNtuple(eventID, hit);
+                    analysis_manager->FillNtuple(eventID, {hit});
                     particleID = hit->GetParticleID();
                     trackID = hit->GetTrackID();
                 }

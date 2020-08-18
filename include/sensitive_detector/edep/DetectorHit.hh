@@ -38,14 +38,11 @@ class DetectorHit : public NDetectorHit
     inline void  operator delete(void*);
 
     void SetEdep     (const G4double de) { fEdep = de; };
-    void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
 
     G4double GetEdep() const { return fEdep; };
-    G4ThreeVector GetPos() const { return fPos; };
 
   private:
       G4double fEdep;
-      G4ThreeVector fPos;
 };
 
 extern G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator;
