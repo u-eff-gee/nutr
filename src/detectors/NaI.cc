@@ -122,9 +122,6 @@ void NaI::Construct(G4ThreeVector global_coordinates, G4double theta, G4double p
 	transform(naiplugcanrz.begin(), naiplugcanrz.end(), naiplugcanrz.begin(), [&NaIPlugMotherHLength](G4double z){ return 2.*NaIPlugMotherHLength-z; });
 	vector<G4double> naiplugcanrinner{naiplugInnerRad1,naiplugInnerRad1,naiplugInnerRad2,naiplugInnerRad3,naiplugInnerRad4,naiplugInnerRad5,naiplugInnerRad6,naiplugInnerRad7,naiplugInnerRad8,naiplugInnerRad9,naiplugInnerRad10,naiplugInnerRad10};
 	vector<G4double> naiplugcanrouter{naiplugOuterRad1,naiplugOuterRad1,naiplugOuterRad2,naiplugOuterRad3,naiplugOuterRad4,naiplugOuterRad5,naiplugOuterRad6,naiplugOuterRad7,naiplugOuterRad8,naiplugOuterRad9,naiplugOuterRad10,naiplugOuterRad10};
-	for(size_t i = 0; i < naiplugcanrz.size(); ++i){
-		G4cout << naiplugcanrz[i] << ", " << naiplugcanrinner[i] << ", " << naiplugcanrouter[i] << G4endl;
-	}
 
 	G4Polycone *NaIPlugCan_solid
 		= new G4Polycone("NaI Plug 1 Can",0,twopi,Nnaiplugz,naiplugcanrz.data(),naiplugcanrinner.data(),naiplugcanrouter.data());

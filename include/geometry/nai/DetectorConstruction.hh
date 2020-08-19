@@ -30,7 +30,7 @@
  * of the authors of the aforementioned publications.
  * From this code, only the essential parts (two NaI(Tl) detectors, sample, sample holder, divider 
  * wall) have been imported.
- * Some comments were removed, and some code was adapted to conform with nutr.
+ * Many comments were removed, and some code was adapted to conform with nutr.
  * Except for the world volume, all dimensions in the Construct() method are exactly the same as in
  * J. Dermigny's code.
  * 
