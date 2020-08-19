@@ -18,18 +18,8 @@
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
-include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
-
-add_library(detector Detector.cc)
-target_compile_options(detector PUBLIC -Wall -Wextra)
-
-add_library(filterCase Filter_Case.cc)
-
-add_library(hpgeCoaxial HPGe_Coaxial.cc)
-target_link_libraries(hpgeCoaxial detector filterCase)
-
-add_library(nai NaI.cc)
-target_link_libraries(nai detector)
-
-add_library(scintillatorSCIONIX Scintillator_SCIONIX.cc)
-target_link_libraries(scintillatorSCIONIX detector)
+add_library(detectorConstruction DetectorConstruction.cc)
+set_property(TARGET detectorConstruction PROPERTY CXX_STANDARD 14)
+target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/nai ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
+target_link_libraries(detectorConstruction nDetectorConstruction nai SensitiveDetector)
+target_compile_options(detectorConstruction PUBLIC -Wall -Wextra)

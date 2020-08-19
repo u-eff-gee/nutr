@@ -79,6 +79,7 @@ Copyright (C) 2020 Udo Friman-Gayer (ufg@email.unc.edu)
 The author would like to thank C. Iliadis for enlightening discussions about the angular correlation formalism and for help with debugging the associated modules.
 The author would also like to thank O. Papst for helpful discussions about the angular correlation formalism and advertise OP's angular correlation code [angcorrwat](https://github.com/op3/angcorrwat).
 `angcorrwat` is complementary to the present code in the sense that it uses the python package [sympy](https://www.sympy.org/) to obtain symbolic expressions for the angular correlations.
+The author would like to thank J. Dermigny for providing a Geant4 implementation of their γγ-coincidence spectrometer.
 
 ## 5. References
 

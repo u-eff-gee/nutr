@@ -24,7 +24,7 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 class OptimizePolycone {
 
   public:
-	OptimizePolycone(){};
+	OptimizePolycone() = default;
 
 	G4int Optimize(double *zPlane, double *rInner, double *rOuter,
 	               double *zPlaneOpt, double *rInnerOpt, double *rOuterOpt,
