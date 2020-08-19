@@ -162,7 +162,7 @@ void NaI::Construct(G4ThreeVector global_coordinates, G4double theta, G4double p
 		= new G4Tubs("NaI Plug 1", 0.*mm, naiplugRad-0.25, naiplugHLen-0.25, 0,twopi);
 
 	// Crystal material
-	G4Material* NaITl = new G4Material("NaI(Tl)", 3.67*g/cm3,2);
+	G4Material* NaITl = new G4Material("NaI(Tl)_"+detector_name, 3.67*g/cm3,2);
 	NaITl->AddMaterial(nist->FindOrBuildMaterial("G4_SODIUM_IODIDE"), 99.*perCent);
 	NaITl->AddElement(nist->FindOrBuildElement("Tl"), 1.*perCent);
 
