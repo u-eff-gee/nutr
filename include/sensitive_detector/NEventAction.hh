@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "G4Event.hh"
 #include "G4UserEventAction.hh"
 #include "globals.hh"
 
@@ -29,9 +30,10 @@ class NEventAction : public G4UserEventAction
 public:
     NEventAction(AnalysisManager* ana_man);
 
-    virtual void BeginOfEventAction(const G4Event* ){};
+    void BeginOfEventAction(const G4Event* event) override final;
     virtual void EndOfEventAction(const G4Event* ) = 0;
 
 protected:
     AnalysisManager* analysis_manager;
+    const int update_frequency;
 };

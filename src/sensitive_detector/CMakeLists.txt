@@ -27,11 +27,13 @@ target_compile_options(analysisManager PUBLIC -Wall -Wextra)
 add_library(nDetectorHit NDetectorHit.cc)
 target_compile_options(nDetectorHit PUBLIC -Wall -Wextra)
 
-add_library(nEventAction NEventAction.cc)
-target_compile_options(nEventAction PUBLIC -Wall -Wextra)
-
 add_library(nRunAction NRunAction.cc)
 target_compile_options(nRunAction PUBLIC -Wall -Wextra)
+
+configure_file(${PROJECT_SOURCE_DIR}/src/sensitive_detector/NEventAction.cc.in ${PROJECT_SOURCE_DIR}/src/sensitive_detector/NEventAction.cc)
+add_library(nEventAction NEventAction.cc)
+target_link_libraries(nEventAction nRunAction)
+target_compile_options(nEventAction PUBLIC -Wall -Wextra)
 
 add_library(nSensitiveDetector NSensitiveDetector.cc)
 target_compile_options(nSensitiveDetector PUBLIC -Wall -Wextra)

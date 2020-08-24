@@ -60,6 +60,8 @@ endif()
 
 set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector (default: `event`).")
 
+set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
+
 add_subdirectory(src/angular_correlation)
 add_subdirectory(src/detectors)
 add_subdirectory(src/fundamentals)

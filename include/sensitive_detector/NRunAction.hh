@@ -19,6 +19,12 @@
 
 #pragma once
 
+#include <chrono>
+
+using std::chrono::system_clock;
+using std::chrono::system_clock;
+using std::chrono::time_point;
+
 #include "G4UserRunAction.hh"
 #include "globals.hh"
 
@@ -32,6 +38,9 @@ public:
     void BeginOfRunAction(const G4Run* run) override;
     void EndOfRunAction(const G4Run* run) override;
 
+    time_point<system_clock> get_start_time(){ return start_time; };
+
 private:
     AnalysisManager* analysis_manager;
+    const time_point<system_clock> start_time;
 };

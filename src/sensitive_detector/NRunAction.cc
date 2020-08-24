@@ -17,17 +17,29 @@
     Copyright (C) 2020 Udo Friman-Gayer
 */
 
+#include <ctime>
+
+using std::localtime;
+using std::time;
+
+#include <iomanip>
+
+using std::put_time;
+
 #include "NRunAction.hh"
 
 #include "G4Run.hh"
 #include "G4RunManager.hh"
+#include "G4Threading.hh"
 
 NRunAction::NRunAction(AnalysisManager* ana_man)
- : G4UserRunAction(), analysis_manager(ana_man)
+ : G4UserRunAction(), analysis_manager(ana_man), start_time(system_clock::now())
 {}
 
 void NRunAction::BeginOfRunAction(const G4Run*)
-{ 
+{
+    const time_t start_time_t = system_clock::to_time_t(start_time);
+    G4cout << "Run started on " << put_time(localtime(&start_time_t), "%F %T (thread ID ") << G4Threading::G4GetThreadId() << ")" << G4endl;
 	analysis_manager->Book();
 }
 
