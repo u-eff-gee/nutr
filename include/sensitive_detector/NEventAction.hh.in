@@ -19,8 +19,6 @@
 
 #pragma once
 
-#define NEVENTACTION_UPDATE_FREQUENCY @UPDATE_FREQUENCY@
-
 #include "G4Event.hh"
 #include "G4UserEventAction.hh"
 #include "globals.hh"
@@ -30,7 +28,8 @@
 class NEventAction : public G4UserEventAction
 {
 public:
-    NEventAction(AnalysisManager* ana_man);
+    NEventAction(AnalysisManager* ana_man): G4UserEventAction(), analysis_manager(ana_man), update_frequency(@UPDATE_FREQUENCY@)
+{};
 
     void BeginOfEventAction(const G4Event* event) override final;
     virtual void EndOfEventAction(const G4Event* ) = 0;

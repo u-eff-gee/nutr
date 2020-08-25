@@ -39,10 +39,6 @@ using std::setw;
 #include "NEventAction.hh"
 #include "NRunAction.hh"
 
-NEventAction::NEventAction(AnalysisManager* ana_man)
-: G4UserEventAction(), analysis_manager(ana_man), update_frequency(NEVENTACTION_UPDATE_FREQUENCY)
-{}
-
 void NEventAction::BeginOfEventAction(const G4Event* event){
 
     const int eventID = event->GetEventID();
