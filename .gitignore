@@ -4,3 +4,4 @@ __pycache__
 # CMake - configured files
 include/sensitive_detector/AnalysisManager.hh
 src/physics/Physics.cc
+src/sensitive_detector/NEventAction.cc

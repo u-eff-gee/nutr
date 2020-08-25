@@ -17,6 +17,13 @@ AnalysisManager::AnalysisManager(const string out_file_name): fFactoryOn(false){
 void AnalysisManager::Book(){
 
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    // The command below merges the output created by different threads into a single file.
+    // This does not work for some file formats.
+    // Geant4 will print a warning during execution and refuse to merge the files.
+    // In principle, one could use SetNtupleMerging only if OUTPUT_FORMAT="root".
+    // However, it was chosen to keep the warning message here so that a user who has been working
+    // with OUTPUT_FORMAT="root" and switches to OUTPUT_FORMAT="csv" will not wonder why the files
+    // are not merged any more.
     analysisManager->SetNtupleMerging(true);
     analysisManager->OpenFile(output_file_name);
     CreateNtupleColumns(analysisManager);
