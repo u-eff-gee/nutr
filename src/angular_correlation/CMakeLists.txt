@@ -125,18 +125,14 @@ add_executable(test_angular_correlation_io test_angular_correlation_io.cc)
 target_link_libraries(test_angular_correlation_io angular_correlation)
 add_test(test_angular_correlation_io test_angular_correlation_io)
 
-# Integration of ROOT libraries using information from the manual:
-# "Integrate ROOT into my project with CMake"
-# https://root.cern.ch/how/integrate-root-my-project-cmake (04/09/2020)
-list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 find_package(ROOT COMPONENTS RGL)
 if(ROOT_FOUND)
     add_executable(test_plots_tgl test_plots_tgl.cc)
-    target_link_libraries(test_plots_tgl w_pol_dir ${ROOT_LIBRARIES})
+    target_link_libraries(test_plots_tgl w_pol_dir ROOT::Core ROOT::RGL)
     add_test(test_plots_tgl test_plots_tgl)
 
     add_executable(test_plots_tpolymarker3d test_plots_tpolymarker3d.cc)
-    target_link_libraries(test_plots_tpolymarker3d w_pol_dir spherePointSampler ${ROOT_LIBRARIES})
+    target_link_libraries(test_plots_tpolymarker3d w_pol_dir spherePointSampler ROOT::Core ROOT::RGL)
     add_test(test_plots_tpolymarker3d test_plots_tpolymarker3d)    
 endif()
 
