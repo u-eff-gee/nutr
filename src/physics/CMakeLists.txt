@@ -27,10 +27,10 @@ else()
     set(HADRON_ELASTIC "G4HadronElasticPhysicsHP" CACHE STRING "Use G4HadronElasticPhysicsHP.")
     set(HADRON_INELASTIC "G4HadronPhysicsShielding" CACHE STRING "Use G4HadronPhysicsShielding")
 endif()
-configure_file(${PROJECT_SOURCE_DIR}/src/physics/Physics.cc.in ${PROJECT_SOURCE_DIR}/src/physics/Physics.cc)
+configure_file(${PROJECT_SOURCE_DIR}/src/physics/Physics.cc.in ${PROJECT_BINARY_DIR}/src/physics/Physics.cc)
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
-add_library(physics Physics.cc)
+add_library(physics ${PROJECT_BINARY_DIR}/src/physics/Physics.cc)
 target_compile_options(physics PUBLIC -Wall -Wextra)

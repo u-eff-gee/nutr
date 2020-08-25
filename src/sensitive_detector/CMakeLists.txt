@@ -16,11 +16,12 @@
 #    Copyright (C) 2020 Udo Friman-Gayer
 
 include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector)
+include_directories(${PROJECT_BINARY_DIR}/include/sensitive_detector)
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
 
-configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh.in ${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh)
+configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh.in ${PROJECT_BINARY_DIR}/include/sensitive_detector/AnalysisManager.hh)
 add_library(analysisManager AnalysisManager.cc)
 target_compile_options(analysisManager PUBLIC -Wall -Wextra)
 
@@ -30,7 +31,7 @@ target_compile_options(nDetectorHit PUBLIC -Wall -Wextra)
 add_library(nRunAction NRunAction.cc)
 target_compile_options(nRunAction PUBLIC -Wall -Wextra)
 
-configure_file(${PROJECT_SOURCE_DIR}/src/sensitive_detector/NEventAction.cc.in ${PROJECT_SOURCE_DIR}/src/sensitive_detector/NEventAction.cc)
+configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/NEventAction.hh.in ${PROJECT_BINARY_DIR}/include/sensitive_detector/NEventAction.hh)
 add_library(nEventAction NEventAction.cc)
 target_link_libraries(nEventAction nRunAction)
 target_compile_options(nEventAction PUBLIC -Wall -Wextra)

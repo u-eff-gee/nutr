@@ -19,6 +19,8 @@
 
 #pragma once
 
+#define NEVENTACTION_UPDATE_FREQUENCY @UPDATE_FREQUENCY@
+
 #include "G4Event.hh"
 #include "G4UserEventAction.hh"
 #include "globals.hh"
