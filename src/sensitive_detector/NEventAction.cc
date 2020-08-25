@@ -40,7 +40,7 @@ using std::setw;
 #include "NRunAction.hh"
 
 NEventAction::NEventAction(AnalysisManager* ana_man)
-: G4UserEventAction(), analysis_manager(ana_man), update_frequency(@UPDATE_FREQUENCY@)
+: G4UserEventAction(), analysis_manager(ana_man), update_frequency(NEVENTACTION_UPDATE_FREQUENCY)
 {}
 
 void NEventAction::BeginOfEventAction(const G4Event* event){
