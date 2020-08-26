@@ -55,7 +55,7 @@ set(GEOMETRY_DIR "hpge" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/
 
 set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/primary_generator that contains the desired primary generator.")
 if(${PRIMARY_GENERATOR_DIR} STREQUAL "angcorr")
-    set(ANGCORR_PYTHON_DIR "${PROJECT_SOURCE_DIR}/src/angular_correlation/python")
+    set(ANGCORR_PYTHON_DIR "${PROJECT_BINARY_DIR}/src/angular_correlation/python")
 endif()
 
 set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector (default: `event`).")

@@ -29,29 +29,134 @@ from angular_correlation import angular_correlation
 from level_scheme_plotter import LevelSchemePlotter
 
 def values_in_range(array, mean, sigma_low, sigma_up):
+    """Find values in an array that agree with an asymmetric confidence interval
+
+Given a 'measurement' with a mean value 'mean' and an asymmetric probability distribution, whose 
+confidence interval is characterized by a lower and an upper 'standard deviation' 'sigma_low' and 
+'sigma_up', this function returns a boolean array indicating which elements of an array 'array' 
+fulfil the inequalities:
+
+array[i] >= mean - sigma_low
+array[i] <= mean + sigma_up
+
+Here, 'array[i]' is an arbitrary element of the array.
+
+Parameters
+----------
+array: array
+    Array of values
+mean: float
+    Mean value of the measurement
+sigma_low, sigma_up: float
+    Lower and upper standard deviation of the measurement
+
+Returns
+-------
+array of bool:
+    An array whose i-th entry indicates whether the i-th element of 'array' is contained in the
+confidence interval.
+    """
     return (array >= mean-sigma_low)*(array <= mean+sigma_up)
 
 def find_true_intervals(array):
+    """Find nonzero intervals in an array
+
+Given an array that contains zeros and other numbers, for example
+
+array = [0, 1, 1, 1, 0, 0, 1, 0, 0, 1],
+         0  1  2  3  4  5  6  7  8  9
+
+(the numbers below the array definition indicate the indices) this function returns the indices 
+where contiguous sequences of nonzero entries begin and end.
+
+For the array given above, it would return
+
+[[1, 4], [6, 7], [9, 10]], 
+
+i.e.
+
+array[1:4]  == [1, 1, 1]
+array[6:7]  == [1]
+array[9:10] == [1].
+
+Parameters
+----------
+array: array
+    Array of numbers
+
+Returns
+-------
+(n,2) array:
+    Pairs of indices indicating the beginnings and endings of contiguous sequences of nonzero 
+entries in the input array.
+    """
     true_intervals = []
 
-    last_entry = False
-    interval_start = 0
+    last_entry = False # Remembers whether the last entry was True or False.
+    interval_start = 0 # Remembers where the contiguous interval of nonzero numbers started.
     if array[0] > 0.:
-        last_entry = True
+        last_entry = True # Initialize last_entry for first element
 
     for i, ele in enumerate(array):
-        if ele != last_entry:
+        if ele != last_entry: # Compare the current element to the last one. If they are not the 
+                                # same, ...
             if ele:
+                # ... and the element is true, then a new contiguous interval starts.
                 interval_start = i
                 last_entry = True
             else:
+                # ... and the element is false, then the end of a contiguous interval was found.
+                # Add this interval to the output list.
                 true_intervals.append([interval_start, i])
                 last_entry = False
 
-    if last_entry:
-        true_intervals.append([interval_start, len(array)-1])
+    if last_entry: # Special case: nonzero interval continues until the end of the array.
+        true_intervals.append([interval_start, len(array)])
 
     return true_intervals
+
+def find_interval_overlaps(intervals1, intervals2):
+    """Given two lists of index ranges, find their union
+
+For example, given two lists
+
+intervals1 = [[1, 3], [5, 9], [10, 12]]
+intervals2 = [[0, 2], [6, 7]]
+
+this function would return
+
+[[1, 2], [6, 7]]
+
+since the index ranges 1:2 and 6:7 are included in both lists.
+    
+Parameters
+----------
+intervals1, intervals2: (n,2) arrays
+    Lists of pairs of indices indicating ranges in an array.
+
+Returns
+-------
+(n,2) array:
+    Pairs of indices that represent the union of intervals1 and intervals2
+    """
+
+    overlaps = []
+
+    for i1 in intervals1:
+        for i2 in intervals2:
+            if i1[0] >= i2[0] and i1[0] <= i2[1]:
+                if i1[1] <= i2[1]:
+                    overlaps.append(i1)
+                else:
+                    overlaps.append([i1[0], i2[1]])
+            
+            elif i1[1] >= i2[0] and i1[1] <= i2[1]:
+                overlaps.append([i2[0], i1[1]])
+
+            elif i1[0] <= i2[0] and i1[1] >= i2[1]:
+                overlaps.append(i2)
+
+    return overlaps
 
 class AngularCorrelation:
     def __init__(self, ini_sta, cas_ste, delta_dict):
@@ -210,6 +315,11 @@ class AsymmetryPlotter:
                 values_in_range(asy_90_single, self.asy_90_exp[0], self.asy_90_exp[1], self.asy_90_exp[2])
             )
 
+        if self.asy_45_exp is not None and self.asy_90_exp is not None:
+            asy_45_90_delta_ranges_single = find_interval_overlaps(
+                asy_45_delta_ranges_single, asy_90_delta_ranges_single
+            )
+
         aux_line_asy_45_style = '--'
         aux_line_asy_90_style = '--'
         aux_line_color = 'black'
@@ -228,7 +338,8 @@ class AsymmetryPlotter:
 
         exp_arctan_delta = -0.5*np.pi
         exp_band_alpha = 0.5
-        exp_band_color = 'chocolate'
+        exp_band_color = 'gray'
+        exp_final_band_color = 'chocolate'
         exp_capsize = 4
         exp_color = 'black'
 
@@ -281,7 +392,11 @@ class AsymmetryPlotter:
             ax[0][0].errorbar([self.asy_45_exp[0]], [exp_arctan_delta], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]], fmt='o', color=exp_color, capsize=exp_capsize)
 
             for r in asy_45_delta_ranges_single:
-                ax[0][0].fill_between(asy_45_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]]]*2, color=exp_band_color, alpha=exp_band_alpha)
+                ax[0][0].fill_between(asy_45_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]-1]]*2, color=exp_band_color, alpha=exp_band_alpha)
+
+            if self.asy_90_exp is not None:
+                for r in asy_45_90_delta_ranges_single:
+                    ax[0][0].fill_between(asy_45_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]-1]]*2, color=exp_final_band_color, alpha=exp_band_alpha)
 
         ax00x = ax[0][0].twiny()
         ax00x.tick_params(labelsize=fontsize_ticks)
@@ -396,7 +511,11 @@ class AsymmetryPlotter:
             ax[1][1].errorbar([exp_arctan_delta], [self.asy_90_exp[0]], yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', color=exp_color, capsize=exp_capsize)
 
             for r in asy_90_delta_ranges_single:
-                ax[1][1].fill_betweenx(asy_90_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]]]*2, color=exp_band_color, alpha=exp_band_alpha)
+                ax[1][1].fill_betweenx(asy_90_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]-1]]*2, color=exp_band_color, alpha=exp_band_alpha)
+
+            if self.asy_45_exp is not None:
+                for r in asy_45_90_delta_ranges_single:
+                    ax[1][1].fill_betweenx(asy_90_single_lim, [self.arctan_deltas[r[0]]]*2, [self.arctan_deltas[r[1]-1]]*2, color=exp_final_band_color, alpha=exp_band_alpha)
 
         ax11x = ax[1][1].twinx()
         ax11x.tick_params(labelsize=fontsize_ticks)
