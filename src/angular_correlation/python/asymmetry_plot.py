@@ -310,15 +310,34 @@ class AsymmetryPlotter:
             asy_45_delta_ranges_single = find_true_intervals(
                 values_in_range(asy_45_single, self.asy_45_exp[0], self.asy_45_exp[1], self.asy_45_exp[2])
             )
+            print('A(θ=45°) = {:+.2e} - {:.2e} + {:.2e}'.format(self.asy_45_exp[0], self.asy_45_exp[1], self.asy_45_exp[2]))
+            for i, r in enumerate(asy_45_delta_ranges_single):
+                print('\tδ_{:d} ∈ [{:+.2e}, {:+.2e}] (arctan(δ_{:d}) ∈ [{:+.2e}, {:+.2e}])'.format(
+                    i+1, np.tan(self.arctan_deltas[r[0]]), np.tan(self.arctan_deltas[r[1]-1]), 
+                    i+1, self.arctan_deltas[r[0]], self.arctan_deltas[r[1]-1]
+                ))
+
         if self.asy_90_exp is not None:
             asy_90_delta_ranges_single = find_true_intervals(
                 values_in_range(asy_90_single, self.asy_90_exp[0], self.asy_90_exp[1], self.asy_90_exp[2])
             )
+            print('A(θ=90°) = {:+.2e} - {:.2e} + {:.2e}'.format(self.asy_90_exp[0], self.asy_90_exp[1], self.asy_90_exp[2]))
+            for i, r in enumerate(asy_90_delta_ranges_single):
+                print('\tδ_{:d} ∈ [{:+.2e}, {:+.2e}] (arctan(δ_{:d}) ∈ [{:+.2e}, {:+.2e}])'.format(
+                    i+1, np.tan(self.arctan_deltas[r[0]]), np.tan(self.arctan_deltas[r[1]-1]), 
+                    i+1, self.arctan_deltas[r[0]], self.arctan_deltas[r[1]-1]
+                ))
 
         if self.asy_45_exp is not None and self.asy_90_exp is not None:
             asy_45_90_delta_ranges_single = find_interval_overlaps(
                 asy_45_delta_ranges_single, asy_90_delta_ranges_single
             )
+            print('Combined result')
+            for i, r in enumerate(asy_45_90_delta_ranges_single):
+                print('\tδ_{:d} ∈ [{:+.2e}, {:+.2e}] (arctan(δ_{:d}) ∈ [{:+.2e}, {:+.2e}])'.format(
+                    i+1, np.tan(self.arctan_deltas[r[0]]), np.tan(self.arctan_deltas[r[1]-1]), 
+                    i+1, self.arctan_deltas[r[0]], self.arctan_deltas[r[1]-1]
+                ))
 
         aux_line_asy_45_style = '--'
         aux_line_asy_90_style = '--'
@@ -417,7 +436,7 @@ class AsymmetryPlotter:
         ax[0][1].set_ylim(-1., 1.)
         lsplt = LevelSchemePlotter(ax[0][1], self.ang_cor.initial_state, self.ang_cor.cascade_steps,
                                    delta_labels_level_scheme, show_polarization=self.show_polarization,
-                                   returns_to_initial_state=returns_to_initial_state)
+                                   returns_to_initial_state=returns_to_initial_state, offset=(0.1, 0.1))
         lsplt.plot()
 
         ax[1][0].tick_params(labelsize=fontsize_ticks)
