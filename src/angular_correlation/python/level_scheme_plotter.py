@@ -133,7 +133,7 @@ class LevelSchemePlotter:
                       color=self.decay_arrow_color, zorder=self.zorder_arrows)
         self.ax.text(self.decay_label_right_x,
                      0.5*(self.excited_state_y-cascade_states_y[0]) + cascade_states_y[0],
-                     self.cas_ste[1][0].tex(show_polarization=self.show_polarization[1]),
+                     self.cas_ste[1][0].tex(always_show_secondary=False, show_polarization=self.show_polarization[1]),
                      verticalalignment='center', 
                      fontsize=self.fontsize_single_multipole if self.cas_ste[1][0].delta==0. else self.fontsize_two_multipoles)
         self.ax.text(self.delta_label_right_x,
@@ -152,6 +152,10 @@ class LevelSchemePlotter:
                       color=self.decay_arrow_color, zorder=self.zorder_arrows)
             self.ax.text(self.decay_label_right_x,
                          0.5*(cascade_states_y[i-1]-cascade_states_y[i]) + cascade_states_y[i],
-                         self.cas_ste[i][0].tex(show_polarization=self.show_polarization[i]),
+                         self.cas_ste[i+1][0].tex(always_show_secondary=False, show_polarization=self.show_polarization[i+1]),
                          verticalalignment='center', 
-                         fontsize=self.fontsize_single_multipole if self.cas_ste[i][0].delta==0. else self.fontsize_two_multipoles)
+                         fontsize=self.fontsize_single_multipole if self.cas_ste[i+1][0].delta==0. else self.fontsize_two_multipoles)
+            self.ax.text(self.delta_label_right_x,
+                        0.5*(self.excited_state_y-cascade_states_y[i-1]) + cascade_states_y[i],
+                        self.del_lab[i+1],
+                        verticalalignment='center', fontsize=self.fontsize, rotation=self.transition_label_rotation)

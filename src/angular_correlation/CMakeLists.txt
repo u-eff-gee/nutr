@@ -206,4 +206,6 @@ configure_file(python/test_plot_18_2.5p_4.5p_2.5.py python/test_plot_18_2.5p_4.5
 configure_file(python/test_plot_18_2.5p_4.5p_2.5_asy.py python/test_plot_18_2.5p_4.5p_2.5_asy.py)
 
 configure_file(python/test_plot_19_0_1_1_0.py python/test_plot_19_0_1_1_0.py)
+configure_file(python/test_plot_19_0_1_1_0_asy.py python/test_plot_19_0_1_1_0_asy.py)
 configure_file(python/test_plot_20_0_2_2_0.py python/test_plot_20_0_2_2_0.py)
+configure_file(python/test_plot_20_0_2_2_0_asy.py python/test_plot_20_0_2_2_0_asy.py)
