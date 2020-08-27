@@ -37,13 +37,21 @@ ang_cor = AngularCorrelation(
 
 arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=101)
 
-asy_plo = AsymmetryPlotter(ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True,
-asy_45_exp=[0.1, 0.05, 0.05], asy_90_exp=[0.3, 0.05, 0.05], show_polarization=[True, False])
+asy_plo = AsymmetryPlotter(ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True, show_polarization=[True, False])
 
 output_file_single_2d = Path('@PROJECT_BINARY_DIR@') / 'test_plot_13_1.5p_2.5p_1.5_asy_2d.pdf'
-asy_plo.plot_single_2d(r'$\delta_1$', [r'$\delta_1$', r'$\delta_1$'], True, output_file_single_2d)
+asy_plo.plot_single_2d(r'$\delta_1$', [r'$\delta_1$', r'$\delta_1$'], True, output_file_single_2d, transition_label_rotation=0)
+
+asy_plo = AsymmetryPlotter(ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True,
+    asy_45_exp=[0.1, 0.05, 0.05],
+    asy_90_exp=[0.3, 0.05, 0.05], 
+    show_polarization=[True, False]
+)
+
+output_file_single_2d_exp = Path('@PROJECT_BINARY_DIR@') / 'test_plot_13_1.5p_2.5p_1.5_asy_2d_exp.pdf'
+asy_plo.plot_single_2d(r'$\delta_1$', [r'$\delta_1$', r'$\delta_1$'], True, output_file_single_2d_exp, transition_label_rotation=0)
 
 output_file_single_3d = Path('@PROJECT_BINARY_DIR@') / 'test_plot_13_1.5p_2.5p_1.5_asy_3d.pdf'
 asy_plo.plot_single_3d(r'$\delta_1$', output_file_single_3d)
 
-print('Created output files\n\'{}\' \nand \'{}\'.\nExecution took {:4.2f} seconds.'.format(output_file_single_2d, output_file_single_3d, time() - t_start))
+print('Created output files\n\'{}\', \n\'{}\', \nand \'{}\'.\nExecution took {:4.2f} seconds.'.format(output_file_single_2d, output_file_single_2d_exp, output_file_single_3d, time() - t_start))

@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class LevelSchemePlotter:
-    def __init__(self, axis, initial_state, cascade_steps, delta_labels, returns_to_initial_state=False, show_polarization=None, fontsize=12, state_line_width=2, arrow_width=2, offset=(0, 0)):
+    def __init__(self, axis, initial_state, cascade_steps, delta_labels, returns_to_initial_state=False, show_polarization=None, fontsize=12, state_line_width=2, arrow_width=2, offset=(0, 0), transition_label_rotation=90):
         self.ax = axis
         self.min_x, self.max_x = axis.get_xlim()
         self.range_x = self.max_x - self.min_x
@@ -39,7 +39,8 @@ class LevelSchemePlotter:
         ## Parameters for the plot
         # Fonts
         self.fontsize = fontsize
-        self.fontsize_multipoles = 1.2*fontsize
+        self.fontsize_single_multipole = 0.9*fontsize
+        self.fontsize_two_multipoles = 1.2*fontsize
 
         # State lines
         self.state_line_width=state_line_width
@@ -67,6 +68,7 @@ class LevelSchemePlotter:
         # Transition labels
         self.excitation_label_left_x = 0.18*self.range_x + self.min_x + offset[0]*self.range_x
         self.decay_label_right_x = 0.85*self.range_x + self.min_x + offset[0]*self.range_x
+        self.transition_label_rotation = transition_label_rotation
 
         # Multipole mixing ratio (delta) labels
         self.delta_label_left_x = 0.4*self.range_x + self.min_x + offset[0]*self.range_x
@@ -96,11 +98,12 @@ class LevelSchemePlotter:
         self.ax.text(self.excitation_label_left_x,
                      0.5*(self.excited_state_y-self.initial_state_y)+self.initial_state_y,
                      self.cas_ste[0][0].tex(always_show_secondary=False, show_polarization=self.show_polarization[0]),
-                     verticalalignment='center', fontsize=self.fontsize_multipoles)
+                     verticalalignment='center', 
+                     fontsize=self.fontsize_single_multipole if self.cas_ste[0][0].delta==0. else self.fontsize_two_multipoles)
         self.ax.text(self.delta_label_left_x,
                      0.5*(self.excited_state_y-self.initial_state_y)+self.initial_state_y,
                      self.del_lab[0],
-                     verticalalignment='center', fontsize=self.fontsize)
+                     verticalalignment='center', fontsize=self.fontsize, rotation=self.transition_label_rotation)
 
         # Calculate position of states in decay cascade
         n_decay_steps = len(self.cas_ste)-1
@@ -131,11 +134,12 @@ class LevelSchemePlotter:
         self.ax.text(self.decay_label_right_x,
                      0.5*(self.excited_state_y-cascade_states_y[0]) + cascade_states_y[0],
                      self.cas_ste[1][0].tex(show_polarization=self.show_polarization[1]),
-                     verticalalignment='center', fontsize=self.fontsize_multipoles)
+                     verticalalignment='center', 
+                     fontsize=self.fontsize_single_multipole if self.cas_ste[1][0].delta==0. else self.fontsize_two_multipoles)
         self.ax.text(self.delta_label_right_x,
                      0.5*(self.excited_state_y-cascade_states_y[0]) + cascade_states_y[0],
                      self.del_lab[1],
-                     verticalalignment='center', fontsize=self.fontsize)
+                     verticalalignment='center', fontsize=self.fontsize, rotation=self.transition_label_rotation)
 
         # Transitions in cascade
         for i in range(1, n_decay_steps):
@@ -149,4 +153,5 @@ class LevelSchemePlotter:
             self.ax.text(self.decay_label_right_x,
                          0.5*(cascade_states_y[i-1]-cascade_states_y[i]) + cascade_states_y[i],
                          self.cas_ste[i][0].tex(show_polarization=self.show_polarization[i]),
-                         verticalalignment='center', fontsize=self.fontsize_multipoles)
+                         verticalalignment='center', 
+                         fontsize=self.fontsize_single_multipole if self.cas_ste[i][0].delta==0. else self.fontsize_two_multipoles)

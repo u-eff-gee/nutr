@@ -116,7 +116,7 @@ entries in the input array.
     return true_intervals
 
 def find_interval_overlaps(intervals1, intervals2):
-    """Given two lists of index ranges, find their union
+    """Given two lists of index ranges, find their intersection
 
 For example, given two lists
 
@@ -137,7 +137,7 @@ intervals1, intervals2: (n,2) arrays
 Returns
 -------
 (n,2) array:
-    Pairs of indices that represent the union of intervals1 and intervals2
+    Pairs of indices that represent the intersection of intervals1 and intervals2
     """
 
     overlaps = []
@@ -282,7 +282,7 @@ class AsymmetryPlotter:
         self.arctan_del_tick_labels = [r'$-\pi/2$', r'$-\pi/4$', 
                            '$0$', r'$\pi/4$', r'$\pi/2$']
 
-    def plot_single_2d(self, delta_label, delta_labels_level_scheme, returns_to_initial_state=True, output_file=None, auxiliary_lines_and_markers=False):
+    def plot_single_2d(self, delta_label, delta_labels_level_scheme, returns_to_initial_state=True, output_file=None, auxiliary_lines_and_markers=False, transition_label_rotation=90):
 
         if not isinstance(self.asy_45[0], (int, float)):
             warnings.warn('Line plot requested when two multipole mixing ratios were varied. Assuming delta_1 = delta_2.')
@@ -333,11 +333,14 @@ class AsymmetryPlotter:
                 asy_45_delta_ranges_single, asy_90_delta_ranges_single
             )
             print('Combined result')
-            for i, r in enumerate(asy_45_90_delta_ranges_single):
-                print('\tδ_{:d} ∈ [{:+.2e}, {:+.2e}] (arctan(δ_{:d}) ∈ [{:+.2e}, {:+.2e}])'.format(
-                    i+1, np.tan(self.arctan_deltas[r[0]]), np.tan(self.arctan_deltas[r[1]-1]), 
-                    i+1, self.arctan_deltas[r[0]], self.arctan_deltas[r[1]-1]
-                ))
+            if not len(asy_45_90_delta_ranges_single):
+                print('\tNo value of δ is in agreement with the experimental limits.')
+            else:
+                for i, r in enumerate(asy_45_90_delta_ranges_single):
+                    print('\tδ_{:d} ∈ [{:+.2e}, {:+.2e}] (arctan(δ_{:d}) ∈ [{:+.2e}, {:+.2e}])'.format(
+                        i+1, np.tan(self.arctan_deltas[r[0]]), np.tan(self.arctan_deltas[r[1]-1]), 
+                        i+1, self.arctan_deltas[r[0]], self.arctan_deltas[r[1]-1]
+                    ))
 
         aux_line_asy_45_style = '--'
         aux_line_asy_90_style = '--'
@@ -436,7 +439,8 @@ class AsymmetryPlotter:
         ax[0][1].set_ylim(-1., 1.)
         lsplt = LevelSchemePlotter(ax[0][1], self.ang_cor.initial_state, self.ang_cor.cascade_steps,
                                    delta_labels_level_scheme, show_polarization=self.show_polarization,
-                                   returns_to_initial_state=returns_to_initial_state, offset=(0.1, 0.1))
+                                   returns_to_initial_state=returns_to_initial_state, offset=(0.1, 0.1),
+                                   transition_label_rotation=transition_label_rotation)
         lsplt.plot()
 
         ax[1][0].tick_params(labelsize=fontsize_ticks)
