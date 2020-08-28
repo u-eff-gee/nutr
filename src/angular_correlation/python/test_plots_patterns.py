@@ -16,14 +16,14 @@
 # Copyright (C) 2020 Udo Friman-Gayer
 
 import os
-os.chdir('@ANGCORR_PYTHON_DIR@')
+from pathlib import Path
+from time import time
+
 from angular_correlation_plot import AngularCorrelationPlot, AngularCorrelationPlotGrid
 import state as st
 import transition as tr
-from time import time
 
-from pathlib import Path
-
+os.chdir('@ANGCORR_PYTHON_DIR@')
 file_name_prefix = 'test_plot_'
 file_name_suffix = '.pdf'
 
@@ -806,10 +806,10 @@ ang_corr_grids = [
 
 output_file_name = ''
 
-start = time()
+t_start = time()
 
 for ang_corr_grid in ang_corr_grids:
-    print('{:6.1f} seconds'.format(time()-start), end=' : ')
+    print('{:6.1f} seconds'.format(time()-t_start), end=' : ')
     output_file_name = Path('@PROJECT_BINARY_DIR@') / (file_name_prefix + ang_corr_grid[0] + file_name_suffix)
     if output_file_name.exists():
         print('File \'{}\' already exists. Remove it to create a new version.'.format(output_file_name))
@@ -817,4 +817,4 @@ for ang_corr_grid in ang_corr_grids:
         print('Creating \'{}\' ...'.format(output_file_name))
         ang_corr_grid[1].plot(output_file_name)
 
-print('Execution took {:6.1f} seconds.'.format(time()-start))
+print('Execution took {:6.1f} seconds.'.format(time()-t_start))

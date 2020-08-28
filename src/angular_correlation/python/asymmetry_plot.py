@@ -558,6 +558,8 @@ class AsymmetryPlotter:
         if output_file:
             plt.savefig(output_file)
 
+        plt.close()
+
     def plot_single_3d(self, delta_label, output_file=None):
 
         if not isinstance(self.asy_45[0], (int, float)):
@@ -706,6 +708,8 @@ class AsymmetryPlotter:
         
         if output_file:
             plt.savefig(output_file)
+
+        plt.close()
 
     def plot_double_contour_inverse(self, delta_labels, output_file=None, returns_to_initial_state=True):
 
@@ -949,3 +953,5 @@ class AsymmetryPlotter:
 
         if output_file:
             plt.savefig(output_file)
+
+        plt.close()
