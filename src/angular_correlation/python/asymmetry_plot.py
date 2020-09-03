@@ -22,6 +22,8 @@ os.chdir('@ANGCORR_PYTHON_DIR@')
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from matplotlib.colors import ListedColormap
+from matplotlib.patches import Rectangle
 from mpl_toolkits.mplot3d import axes3d
 import numpy as np
 
@@ -716,17 +718,38 @@ class AsymmetryPlotter:
         if isinstance(self.asy_45[0], (int, float)):
             raise ValueError('Inverse contour plot requested when only one multipole mixing ratio was varied. This is not possible.')
 
+        color_none = 'white'
+        color_val_none = 0.
+        color_asy_45 = 'grey'
+        color_val_delta1 = 0.33
+        color_asy_90 = 'orange'
+        color_val_delta2 = 0.66
+        color_both = 'black'
+        color_val_both = 1.
+
+        cmap = ListedColormap([color_none, color_asy_45, color_asy_90, color_both])
+
         exp_capsize = 4
         exp_capthick = 2
         exp_color = 'black'
         exp_elinewidth = 2
 
-        fontsize_ticks = 9
+        fontsize_axis_label = 13
+        fontsize_legend = 11
+        fontsize_text = 15
+        fontsize_ticks = 12
 
+        label_delta = r'$\delta$'
         label_delta_min = r'$\delta_{min}$'
         label_delta_max = r'$\delta_{max}$'
         label_delta_diff = label_delta_max + ' - ' + label_delta_min
 
+        text_x = self.asy_45_lim[0] + 0.1*(self.asy_45_lim[1] - self.asy_45_lim[0])
+        text_y = self.asy_90_lim[1] - 0.1*(self.asy_90_lim[1] - self.asy_90_lim[0])
+
+        n_contour_levels = 9
+
+        label_arctan_delta = r'$\mathrm{arctan}(\delta)$'
         label_arctan_delta_min = r'$\mathrm{arctan}(\delta_{min})$'
         label_arctan_delta_max = r'$\mathrm{arctan}(\delta_{max})$'
         label_arctan_delta_diff = label_arctan_delta_max + ' - ' + label_arctan_delta_min
@@ -747,8 +770,13 @@ class AsymmetryPlotter:
         hist_max_2 = np.ones((n_bins, n_bins))*-np.pi
         hist_counts_2 = np.zeros((n_bins, n_bins))
 
-        hist_deltas = np.zeros((len(self.arctan_deltas), len(self.arctan_deltas)))
-        bins_delta1_grid, bins_delta2_grid = np.meshgrid(self.arctan_deltas, self.arctan_deltas)
+        hist_deltas = np.ones((len(self.arctan_deltas), len(self.arctan_deltas)))*color_val_none
+        bins_arctan_delta_1_grid, bins_arctan_delta_2_grid = np.meshgrid(self.arctan_deltas, self.arctan_deltas)
+
+        arctan_delta_1_min_exp = 0.5*np.pi
+        arctan_delta_1_max_exp = -0.5*np.pi
+        arctan_delta_2_min_exp = 0.5*np.pi
+        arctan_delta_2_max_exp = -0.5*np.pi
 
         for i in range(len(self.arctan_deltas)):
             for j in range(len(self.arctan_deltas)):
@@ -756,14 +784,26 @@ class AsymmetryPlotter:
                 asy_90_value = self.asy_90[i][j]
 
                 if self.asy_45_exp is not None and self.asy_90_exp is not None:
+                    if self.asy_45_exp[0] - self.asy_45_exp[1] <= asy_45_value and self.asy_45_exp[0] + self.asy_45_exp[2] >= asy_45_value:
+                        hist_deltas[i][j] = color_val_delta1
+                    if self.asy_90_exp[0] - self.asy_90_exp[1] <= asy_90_value and self.asy_90_exp[0] + self.asy_90_exp[2] >= asy_90_value:
+                        hist_deltas[i][j] = color_val_delta2
                     if self.asy_45_exp[0] - self.asy_45_exp[1] <= asy_45_value and self.asy_45_exp[0] + self.asy_45_exp[2] >= asy_45_value and self.asy_90_exp[0] - self.asy_90_exp[1] <= asy_90_value and self.asy_90_exp[0] + self.asy_90_exp[2] >= asy_90_value:
-                        hist_deltas[i][j] = 1
+                        hist_deltas[i][j] = color_val_both
+                        if bins_arctan_delta_1_grid[i][j] < arctan_delta_1_min_exp:
+                            arctan_delta_1_min_exp = bins_arctan_delta_1_grid[i][j]
+                        elif bins_arctan_delta_1_grid[i][j] > arctan_delta_1_max_exp:
+                            arctan_delta_1_max_exp = bins_arctan_delta_1_grid[i][j]
+                        if bins_arctan_delta_2_grid[i][j] < arctan_delta_2_min_exp:
+                            arctan_delta_2_min_exp = bins_arctan_delta_2_grid[i][j]
+                        elif bins_arctan_delta_2_grid[i][j] > arctan_delta_2_max_exp:
+                            arctan_delta_2_max_exp = bins_arctan_delta_2_grid[i][j]
 
                 asy_45_bin = np.argmin(np.abs(bins_asy_45-asy_45_value))
                 asy_90_bin = np.argmin(np.abs(bins_asy_90-asy_90_value))
 
                 arctan_delta_1 = arctan_deltas_1[i][j]
-                
+
                 if arctan_delta_1 < hist_min_1[asy_90_bin][asy_45_bin]:
                     hist_min_1[asy_90_bin][asy_45_bin] = arctan_delta_1
                 if arctan_delta_1 > hist_max_1[asy_90_bin][asy_45_bin]:
@@ -778,6 +818,9 @@ class AsymmetryPlotter:
                     hist_max_2[asy_90_bin][asy_45_bin] = arctan_delta_2
                 hist_counts_2[asy_90_bin][asy_45_bin] += 1
 
+        print('arctan(δ_1) ∈ [{:+.2e} π, {:+.2e} π] (δ_1 ∈ [{:+.2e}, {:+.2e}])'.format(arctan_delta_1_min_exp/np.pi, arctan_delta_1_max_exp/np.pi, np.tan(arctan_delta_1_min_exp), np.tan(arctan_delta_1_max_exp)))
+        print('arctan(δ_2) ∈ [{:+.2e} π, {:+.2e} π] (δ_1 ∈ [{:+.2e}, {:+.2e}])'.format(arctan_delta_2_min_exp/np.pi, arctan_delta_2_max_exp/np.pi, np.tan(arctan_delta_2_min_exp), np.tan(arctan_delta_2_max_exp)))
+
         bins_asy_45_grid, bins_asy_90_grid = np.meshgrid(bins_asy_45, bins_asy_90)
 
         hist_min_1[hist_counts_1 < 1] = np.nan
@@ -786,167 +829,192 @@ class AsymmetryPlotter:
         hist_max_2[hist_counts_2 < 1] = np.nan
 
         fig = plt.figure(figsize=(10, 12))
-        gs = gridspec.GridSpec(3, 4, width_ratios=(1, 0.1, 1., 0.1))
+        gs = gridspec.GridSpec(3, 3, width_ratios=(1., 1., 0.1))
 
-        ax0 = plt.subplot(gs[0])
-        ax0.set_title(r'First column: $\delta_1$')
-        ax0.tick_params(labelsize=fontsize_ticks)
-        ax0.set_xticklabels([])
-        ax0.set_ylabel(r'$A(\theta = 90^\circ)$')
-        ax0.grid()
+        ax_del1_max = plt.subplot(gs[0])
+        ax_del1_max.set_xlim(self.asy_45_lim)
+        ax_del1_max.tick_params(labelsize=fontsize_ticks)
+        ax_del1_max.set_xticklabels([])
+        ax_del1_max.set_ylabel(r'$A(\theta = 90^\circ)$', fontsize=fontsize_axis_label)
+        ax_del1_max.set_ylim(self.asy_90_lim)
         if None not in (self.asy_45_exp, self.asy_90_exp):
-            ax0.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            ax_del1_max.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
             yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
 
-        cs0 = ax0.contourf(
+        cs0 = ax_del1_max.contourf(
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_max_1,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, n_contour_levels),
             cmap='coolwarm'
         )
-        ax1 = plt.subplot(gs[1])
-        cb0 = fig.colorbar(cs0, ax1)
-        cb0.set_label(label_delta_max)
-        cb0.ax.tick_params(labelsize=fontsize_ticks)
-        cb0.set_ticks(self.del_ticks)
-        cb0.ax.set_yticklabels(self.del_tick_labels)
 
-        ax2 = plt.subplot(gs[2])
-        ax2.set_title(r'Second column: $\delta_2$')
-        ax2.tick_params(labelsize=fontsize_ticks)
-        ax2.set_xticklabels([])
-        ax2.set_yticklabels([])
+        ax_del1_max_x2 = ax_del1_max.twinx()
+        ax_del1_max_x2.tick_params(labelsize=fontsize_ticks)
+        ax_del1_max_x2.set_ylim(self.asy_90_lim)
+        ax_del1_max_x2.set_yticklabels([])
+        ax_del1_max_y2 = ax_del1_max.twiny()
+        ax_del1_max_y2.tick_params(labelsize=fontsize_ticks)
+        ax_del1_max_y2.set_xlim(self.asy_45_lim)
+        ax_del1_max_y2.set_xticklabels([])
+
+        ax_del1_max.text(text_x, text_y, r'$\delta_{1, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
+
+        ax_del = plt.subplot(gs[2])
+        cb_del = fig.colorbar(cs0, ax_del)
+        cb_del.set_label(label_delta, fontsize=fontsize_axis_label)
+        cb_del.ax.tick_params(labelsize=fontsize_ticks)
+        cb_del.set_ticks(self.del_ticks)
+        cb_del.ax.set_yticklabels(self.del_tick_labels)
+
+        ax_del2_max = plt.subplot(gs[1])
+        ax_del2_max.set_xlim(self.asy_45_lim)
+        ax_del2_max.tick_params(labelsize=fontsize_ticks)
+        ax_del2_max.set_xticklabels([])
+        ax_del2_max.set_ylim(self.asy_90_lim)
+        ax_del2_max.set_yticklabels([])
         if None not in (self.asy_45_exp, self.asy_90_exp):
-            ax2.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            ax_del2_max.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
             yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
-        ax2.grid()
-        cs2 = ax2.contourf(
+        cs2 = ax_del2_max.contourf(
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_max_2,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, n_contour_levels),
             cmap='coolwarm'
         )
-        ax3 = plt.subplot(gs[3])
-        cb2 = fig.colorbar(cs2, ax3)
-        cb2.set_label(label_arctan_delta_max)
-        cb2.ax.tick_params(labelsize=fontsize_ticks)
-        cb2.set_ticks(self.arctan_del_ticks)
-        cb2.ax.set_yticklabels(self.arctan_del_tick_labels)
 
-        ax4 = plt.subplot(gs[4])
-        ax4.tick_params(labelsize=fontsize_ticks)
+        ax_del2_max_x2 = ax_del2_max.twinx()
+        ax_del2_max_x2.tick_params(labelsize=fontsize_ticks)
+        ax_del2_max_x2.set_ylim(self.asy_90_lim)
+        ax_del2_max_x2.set_yticklabels([])
+        ax_del2_max_y2 = ax_del2_max.twiny()
+        ax_del2_max_y2.tick_params(labelsize=fontsize_ticks)
+        ax_del2_max_y2.set_xlim(self.asy_45_lim)
+        ax_del2_max_y2.set_xticklabels([])
+
+        ax_del2_max.text(text_x, text_y, r'$\delta_{2, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
+
+        ax_arctan_del = plt.subplot(gs[5])
+        cb_arctan_del = fig.colorbar(cs2, ax_arctan_del)
+        cb_arctan_del.set_label(label_arctan_delta, fontsize=fontsize_axis_label)
+        cb_arctan_del.ax.tick_params(labelsize=fontsize_ticks)
+        cb_arctan_del.set_ticks(self.arctan_del_ticks)
+        cb_arctan_del.ax.set_yticklabels(self.arctan_del_tick_labels)
+
+        ax_del1_min = plt.subplot(gs[3])
+        ax_del1_min.set_xlim(self.asy_45_lim)
+        ax_del1_min.set_ylim(self.asy_90_lim)
+        ax_del1_min.tick_params(labelsize=fontsize_ticks)
         if self.asy_45_exp is not None and self.asy_90_exp is not None:
-            ax4.set_xlabel(r'$A(\theta = 45^\circ)$')
+            ax_del1_min.set_xlabel(r'$A(\theta = 45^\circ)$', fontsize=fontsize_axis_label)
         else:
-            ax4.set_xticklabels([])
-        ax4.set_ylabel(r'$A(\theta = 90^\circ)$')
+            ax_del1_min.set_xticklabels([])
+        ax_del1_min.set_ylabel(r'$A(\theta = 90^\circ)$', fontsize=fontsize_axis_label)
         if None not in (self.asy_45_exp, self.asy_90_exp):
-            ax4.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            ax_del1_min.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
             yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
-        ax4.grid()
-        cs4 = ax4.contourf(
+
+        cs4 = ax_del1_min.contourf(
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_min_1,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, n_contour_levels),
             cmap='coolwarm'
         )
 
-        ax5 = plt.subplot(gs[5])
-        cb4 = fig.colorbar(cs4, ax5)
-        cb4.set_label(label_delta_min)
-        cb4.ax.tick_params(labelsize=fontsize_ticks)
-        cb4.set_ticks(self.del_ticks)
-        cb4.ax.set_yticklabels(self.del_tick_labels)
+        ax_del1_min_x2 = ax_del1_min.twinx()
+        ax_del1_min_x2.tick_params(labelsize=fontsize_ticks)
+        ax_del1_min_x2.set_ylim(self.asy_90_lim)
+        ax_del1_min_x2.set_yticklabels([])
+        ax_del1_min_y2 = ax_del1_min.twiny()
+        ax_del1_min_y2.tick_params(labelsize=fontsize_ticks)
+        ax_del1_min_y2.set_xlim(self.asy_45_lim)
+        ax_del1_min_y2.set_xticklabels([])
 
-        ax6 = plt.subplot(gs[6])
-        ax6.tick_params(labelsize=fontsize_ticks)
+        ax_del1_min.text(text_x, text_y, r'$\delta_{1, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
+
+        ax_del2_min = plt.subplot(gs[4])
+        ax_del2_min.set_xlim(self.asy_45_lim)
+        ax_del2_min.set_ylim(self.asy_90_lim)
+        ax_del2_min.tick_params(labelsize=fontsize_ticks)
         if self.asy_45_exp is not None and self.asy_90_exp is not None:
-            ax6.set_xlabel(r'$A(\theta = 45^\circ)$')
+            ax_del2_min.set_xlabel(r'$A(\theta = 45^\circ)$', fontsize=fontsize_axis_label)
         else:
-            ax6.set_xticklabels([])
+            ax_del2_min.set_xticklabels([])
 
-        ax6.set_yticklabels([])
+        ax_del2_min.set_yticklabels([])
         if None not in (self.asy_45_exp, self.asy_90_exp):
-            ax6.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
+            ax_del2_min.errorbar([self.asy_45_exp[0]], [self.asy_90_exp[0]], xerr=[[self.asy_45_exp[1]], [self.asy_45_exp[2]]],
             yerr=[[self.asy_90_exp[1]], [self.asy_90_exp[2]]], fmt='o', elinewidth=exp_elinewidth, color=exp_color, capsize=exp_capsize, capthick=exp_capthick)
-        ax6.grid()
-        cs6 = ax6.contourf(
+
+        cs6 = ax_del2_min.contourf(
             bins_asy_45_grid,
             bins_asy_90_grid,
             hist_min_2,
-            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, 9),
+            levels=np.linspace(-0.5*np.pi, 0.5*np.pi, n_contour_levels),
             cmap='coolwarm'
         )
-        ax7 = plt.subplot(gs[7])
-        cb6 = fig.colorbar(cs6, ax7)
-        cb6.set_label(label_arctan_delta_min)
-        cb6.ax.tick_params(labelsize=fontsize_ticks)
-        cb6.set_ticks(self.arctan_del_ticks)
-        cb6.ax.set_yticklabels(self.arctan_del_tick_labels)
+
+        ax_del2_min_x2 = ax_del2_min.twinx()
+        ax_del2_min_x2.tick_params(labelsize=fontsize_ticks)
+        ax_del2_min_x2.set_ylim(self.asy_90_lim)
+        ax_del2_min_x2.set_yticklabels([])
+        ax_del2_min_y2 = ax_del2_min.twiny()
+        ax_del2_min_y2.tick_params(labelsize=fontsize_ticks)
+        ax_del2_min_y2.set_xlim(self.asy_45_lim)
+        ax_del2_min_y2.set_xticklabels([])
+
+        ax_del2_min.text(text_x, text_y, r'$\delta_{2, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
 
         if self.asy_45_exp is not None and self.asy_90_exp is not None:
-            ax8 = plt.subplot(gs[8])
-            ax8.axis('off')
-            ax8.set_xlim(-1., 1.)
-            ax8.set_ylim(-1., 1.)
-            lsplt = LevelSchemePlotter(ax8, self.ang_cor.initial_state, self.ang_cor.cascade_steps,
+            ax_lvl = plt.subplot(gs[6])
+            ax_lvl.axis('off')
+            ax_lvl.set_xlim(-1., 1.)
+            ax_lvl.set_ylim(-1., 1.)
+            lsplt = LevelSchemePlotter(ax_lvl, self.ang_cor.initial_state, self.ang_cor.cascade_steps,
                                     delta_labels, show_polarization=self.show_polarization,
-                                    returns_to_initial_state=returns_to_initial_state, fontsize=15, state_line_width=3, arrow_width=3)
+                                    returns_to_initial_state=returns_to_initial_state, fontsize=16,
+                                    offset=(-0.1, 0.), state_line_width=3, arrow_width=3)
             lsplt.plot()
 
-            ax10 = plt.subplot(gs[9:])
-            ax10.set_xlabel(r'$\mathrm{arctan}(\delta_1)$')
-            ax10.set_xlim(self.arctan_del_lim)
-            ax10.set_xticks(self.arctan_del_ticks)
-            ax10.set_xticklabels(self.arctan_del_tick_labels)
-            ax10.set_ylim(self.arctan_del_lim)
-            ax10.set_yticks([])
-            ax10.contourf(bins_delta1_grid, bins_delta2_grid, hist_deltas, cmap='binary', levels=3)
-            ax10_2 = ax10.twinx()
-            ax10_2.set_ylabel(r'$\mathrm{arctan}(\delta_2)$')
-            ax10_2.set_ylim(self.arctan_del_lim)
-            ax10_2.set_yticks(self.arctan_del_ticks)
-            ax10_2.set_yticklabels(self.arctan_del_tick_labels)
-
-        else:
-            ax8 = plt.subplot(gs[8])
-            ax8.tick_params(labelsize=fontsize_ticks)
-            ax8.set_xlabel(r'$A(\theta = 45^\circ)$')
-            ax8.grid()
-            ax8.set_ylabel(r'$A(\theta = 90^\circ)$')
-            cs8 = ax8.contourf(
-                bins_asy_45_grid,
-                bins_asy_90_grid,
-                hist_max_1 - hist_min_1, 
-                cmap='inferno', levels=np.linspace(0., np.pi, 9)
+            ax_delta = plt.subplot(gs[7])
+            ax_delta.set_xlabel(r'$\mathrm{arctan}(\delta_1)$', fontsize=fontsize_axis_label)
+            ax_delta.tick_params(labelsize=fontsize_ticks)
+            ax_delta.set_xlim(self.arctan_deltas[0], self.arctan_deltas[-1])
+            ax_delta.set_xticks(self.arctan_del_ticks)
+            ax_delta.set_xticklabels(self.arctan_del_tick_labels)
+            ax_delta.set_ylim(self.arctan_deltas[0], self.arctan_deltas[-1])
+            ax_delta.set_yticks(self.arctan_del_ticks)
+            ax_delta.set_yticklabels([])
+            ax_delta.imshow(
+                hist_deltas, interpolation='none', cmap=cmap, origin='lower', extent=[self.arctan_deltas[0], self.arctan_deltas[-1], self.arctan_deltas[0], self.arctan_deltas[-1]], 
+                aspect='auto'
             )
-            ax9 = plt.subplot(gs[9])
-            cb9 = fig.colorbar(cs8, ax9)
-            cb9.set_label(label_arctan_delta_diff)
-            cb9.ax.tick_params(labelsize=fontsize_ticks)
-            cb9.set_ticks(arctan_delta_ticks_diff)
-            cb9.ax.set_yticklabels(arctan_delta_labels_diff)
-
-            ax10 = plt.subplot(gs[10])
-            ax10.tick_params(labelsize=fontsize_ticks)
-            ax10.set_xlabel(r'$A(\theta = 45^\circ)$')
-            ax10.set_yticklabels([])
-            ax10.grid()
-            cs10 = ax10.contourf(
-                bins_asy_45_grid,
-                bins_asy_90_grid,
-                hist_max_2 - hist_min_2,
-                cmap='inferno', levels=np.linspace(0., np.pi, 9)
+            ax_delta.legend(
+                (
+                    Rectangle((0., 0.), 1., 1., color=color_asy_45),
+                    Rectangle((0., 0.), 1., 1., color=color_asy_90),
+                    Rectangle((0., 0.), 1., 1., color=color_both),
+                ), (
+                    r'$A(45^\circ)$',
+                    r'$A(90^\circ)$',
+                    r'$A(45^\circ) \cap A(90^\circ)$',
+                ),
+                loc='lower left',
+                fontsize=fontsize_legend
             )
-            ax11 = plt.subplot(gs[11])
-            cb10 = fig.colorbar(cs10, ax11)
-            cb10.set_label(label_arctan_delta_diff)
-            cb10.ax.tick_params(labelsize=fontsize_ticks)
-            cb10.set_ticks(arctan_delta_ticks_diff)
-            cb10.ax.set_yticklabels(arctan_delta_labels_diff)
+
+            ax_delta_x2 = ax_delta.twinx()
+            ax_delta_x2.tick_params(labelsize=fontsize_ticks)
+            ax_delta_x2.set_ylabel(r'$\mathrm{arctan}(\delta_2)$', fontsize=fontsize_axis_label)
+            ax_delta_x2.set_yticks(self.arctan_del_ticks)
+            ax_delta_x2.set_yticklabels(self.arctan_del_tick_labels)
+            ax_delta_y2 = ax_delta.twiny()
+            ax_delta_y2.tick_params(labelsize=fontsize_ticks)
+            ax_delta_y2.set_xlim(self.arctan_deltas[0], self.arctan_deltas[-1])
+            ax_delta_y2.set_xticks(self.arctan_del_ticks)
+            ax_delta_y2.set_xticklabels([])
 
         fig.align_labels()
         plt.tight_layout()
