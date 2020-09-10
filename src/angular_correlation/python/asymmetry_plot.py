@@ -25,6 +25,7 @@ from matplotlib import gridspec
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Rectangle
 from mpl_toolkits.mplot3d import axes3d
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import numpy as np
 
 from angular_correlation import angular_correlation
@@ -718,6 +719,15 @@ class AsymmetryPlotter:
         if isinstance(self.asy_45[0], (int, float)):
             raise ValueError('Inverse contour plot requested when only one multipole mixing ratio was varied. This is not possible.')
 
+        asy_45_asy_90_plot_width = 0.42
+        asy_45_asy_90_plot_height = 0.33
+        asy_45_asy_90_max_plot_y = 0.67
+        asy_45_asy_90_min_plot_y = 0.36
+        asy_45_asy_90_delta_1_plot_x = 0.
+        asy_45_asy_90_delta_2_plot_x = 0.37
+        asy_45_asy_90_plot_width_in_bbox = '80%'
+        asy_45_asy_90_plot_height_in_bbox = '85%'
+
         color_none = 'white'
         color_val_none = 0.
         color_asy_45 = 'limegreen'
@@ -727,7 +737,21 @@ class AsymmetryPlotter:
         color_both = 'black'
         color_val_both = 1.
 
+        color_bar_x = 0.88
+        color_bar_y = 0.4
+        color_bar_width = 0.05
+        color_bar_height = 0.45
+        color_bar_width_in_bbox = '80%'
+        color_bar_height_in_bbox = '80%'
+
         cmap = ListedColormap([color_none, color_asy_45, color_asy_90, color_both])
+
+        exclusion_plot_x = 0.39
+        exclusion_plot_y = 0.
+        exclusion_plot_width = 0.42
+        exclusion_plot_height = 0.33
+        exclusion_plot_width_in_bbox = '80%'
+        exclusion_plot_height_in_bbox = '85%'
 
         exp_capsize = 4
         exp_capthick = 2
@@ -743,6 +767,13 @@ class AsymmetryPlotter:
         label_delta_min = r'$\delta_{min}$'
         label_delta_max = r'$\delta_{max}$'
         label_delta_diff = label_delta_max + ' - ' + label_delta_min
+
+        level_scheme_x = 0.05
+        level_scheme_y = 0.03
+        level_scheme_width = 0.42
+        level_scheme_height = 0.33
+        level_scheme_width_in_bbox = '100%'
+        level_scheme_height_in_bbox = '100%'
 
         min_max_line_width = 2
         min_max_line_style = ':'
@@ -831,10 +862,15 @@ class AsymmetryPlotter:
         hist_min_2[hist_counts_2 < 1] = np.nan
         hist_max_2[hist_counts_2 < 1] = np.nan
 
-        fig = plt.figure(figsize=(10, 11))
-        gs = gridspec.GridSpec(3, 3, width_ratios=(1., 1., 0.1))
+        fig, ax = plt.subplots(1, 1, figsize=(10, 11))
+        ax.axis('off')
 
-        ax_del1_max = plt.subplot(gs[0])
+        ax_del1_max = inset_axes(ax, width=asy_45_asy_90_plot_width_in_bbox, height=asy_45_asy_90_plot_height_in_bbox, bbox_to_anchor=
+        [
+            asy_45_asy_90_delta_1_plot_x, asy_45_asy_90_max_plot_y,
+            asy_45_asy_90_plot_width,
+            asy_45_asy_90_plot_height
+        ], bbox_transform=ax.transAxes)
         ax_del1_max.set_xlim(self.asy_45_lim)
         ax_del1_max.tick_params(labelsize=fontsize_ticks)
         ax_del1_max.set_xticklabels([])
@@ -863,14 +899,25 @@ class AsymmetryPlotter:
 
         ax_del1_max.text(text_x, text_y, r'$\delta_{1, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
 
-        ax_del = plt.subplot(gs[2])
+        ax_del = inset_axes(ax, width=color_bar_width_in_bbox, height=color_bar_height_in_bbox, bbox_to_anchor=
+        [
+            color_bar_x, 
+            color_bar_y,
+            color_bar_width,
+            color_bar_height
+        ], bbox_transform=ax.transAxes)
         cb_del = fig.colorbar(cs0, ax_del)
         cb_del.set_label(label_delta, fontsize=fontsize_axis_label)
         cb_del.ax.tick_params(labelsize=fontsize_ticks)
         cb_del.set_ticks(self.del_ticks)
         cb_del.ax.set_yticklabels(self.del_tick_labels)
 
-        ax_del2_max = plt.subplot(gs[1])
+        ax_del2_max = inset_axes(ax, width=asy_45_asy_90_plot_width_in_bbox, height=asy_45_asy_90_plot_height_in_bbox, bbox_to_anchor=
+        [
+            asy_45_asy_90_delta_2_plot_x, asy_45_asy_90_max_plot_y,
+            asy_45_asy_90_plot_width,
+            asy_45_asy_90_plot_height
+        ], bbox_transform=ax.transAxes)
         ax_del2_max.set_xlim(self.asy_45_lim)
         ax_del2_max.tick_params(labelsize=fontsize_ticks)
         ax_del2_max.set_xticklabels([])
@@ -898,14 +945,25 @@ class AsymmetryPlotter:
 
         ax_del2_max.text(text_x, text_y, r'$\delta_{2, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
 
-        ax_arctan_del = plt.subplot(gs[5])
-        cb_arctan_del = fig.colorbar(cs2, ax_arctan_del)
+        ax_arctan_del = inset_axes(ax, width=color_bar_width_in_bbox, height=color_bar_height_in_bbox, bbox_to_anchor=
+        [
+            color_bar_x, 
+            color_bar_y,
+            color_bar_width,
+            color_bar_height
+        ], bbox_transform=ax.transAxes)
+        cb_arctan_del = fig.colorbar(cs2, ax_arctan_del, ticklocation='left')
         cb_arctan_del.set_label(label_arctan_delta, fontsize=fontsize_axis_label)
         cb_arctan_del.ax.tick_params(labelsize=fontsize_ticks)
         cb_arctan_del.set_ticks(self.arctan_del_ticks)
         cb_arctan_del.ax.set_yticklabels(self.arctan_del_tick_labels)
 
-        ax_del1_min = plt.subplot(gs[3])
+        ax_del1_min = inset_axes(ax, width=asy_45_asy_90_plot_width_in_bbox, height=asy_45_asy_90_plot_height_in_bbox, bbox_to_anchor=
+        [
+            asy_45_asy_90_delta_1_plot_x, asy_45_asy_90_min_plot_y,
+            asy_45_asy_90_plot_width,
+            asy_45_asy_90_plot_height
+        ], bbox_transform=ax.transAxes)
         ax_del1_min.set_xlim(self.asy_45_lim)
         ax_del1_min.set_ylim(self.asy_90_lim)
         ax_del1_min.tick_params(labelsize=fontsize_ticks)
@@ -937,7 +995,12 @@ class AsymmetryPlotter:
 
         ax_del1_min.text(text_x, text_y, r'$\delta_{1, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
 
-        ax_del2_min = plt.subplot(gs[4])
+        ax_del2_min = inset_axes(ax, width=asy_45_asy_90_plot_width_in_bbox, height=asy_45_asy_90_plot_height_in_bbox, bbox_to_anchor=
+        [
+            asy_45_asy_90_delta_2_plot_x, asy_45_asy_90_min_plot_y,
+            asy_45_asy_90_plot_width,
+            asy_45_asy_90_plot_height
+        ], bbox_transform=ax.transAxes)
         ax_del2_min.set_xlim(self.asy_45_lim)
         ax_del2_min.set_ylim(self.asy_90_lim)
         ax_del2_min.tick_params(labelsize=fontsize_ticks)
@@ -971,7 +1034,12 @@ class AsymmetryPlotter:
         ax_del2_min.text(text_x, text_y, r'$\delta_{2, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
 
         if self.asy_45_exp is not None and self.asy_90_exp is not None:
-            ax_lvl = plt.subplot(gs[6])
+            ax_lvl = inset_axes(ax, width=level_scheme_width_in_bbox, height=level_scheme_height_in_bbox, bbox_to_anchor=
+            [
+                level_scheme_x, level_scheme_y,
+                level_scheme_width,
+                level_scheme_height
+            ], bbox_transform=ax.transAxes)            
             ax_lvl.axis('off')
             ax_lvl.set_xlim(-1., 1.)
             ax_lvl.set_ylim(-1., 1.)
@@ -981,7 +1049,12 @@ class AsymmetryPlotter:
                                     offset=(-0.1, 0.), state_line_width=3, arrow_width=3, transition_label_rotation=0, em_variable_symbol='', parity_variable_symbol='')
             lsplt.plot()
 
-            ax_delta = plt.subplot(gs[7])
+            ax_delta = inset_axes(ax, width=exclusion_plot_width_in_bbox, height=exclusion_plot_height_in_bbox, bbox_to_anchor=
+            [
+                exclusion_plot_x, exclusion_plot_y,
+                exclusion_plot_width,
+                exclusion_plot_height
+            ], bbox_transform=ax.transAxes) 
             ax_delta.set_xlabel(r'$\mathrm{arctan}(\delta_1)$', fontsize=fontsize_axis_label)
             ax_delta.tick_params(labelsize=fontsize_ticks)
             ax_delta.set_xlim(self.arctan_deltas[0], self.arctan_deltas[-1])
@@ -1025,7 +1098,6 @@ class AsymmetryPlotter:
             ax_delta_y2.set_xticks(self.arctan_del_ticks)
             ax_delta_y2.set_xticklabels([])
 
-        fig.align_labels()
         plt.tight_layout()
 
         if output_file:

@@ -35,7 +35,7 @@ ang_cor = AngularCorrelation(
     ['delta_1', 'delta_2']
 )
 
-arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=51)
+arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=301)
 
 asy_plo = AsymmetryPlotter(ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True,
 asy_45_exp=[-0.4, 0.1, 0.1],
