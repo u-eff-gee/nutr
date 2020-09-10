@@ -151,4 +151,4 @@ string
     TeX code
         """
 
-        return ('$' if dollar else '') + spin_tex_rep(self.two_J) + '^{' + parity_str_rep(self.parity, parity_variable_symbol=r'\pm') + '}' + ('$' if dollar else '')
+        return ('$' if dollar else '') + spin_tex_rep(self.two_J) + '^{' + parity_str_rep(self.parity, parity_variable_symbol=parity_variable_symbol) + '}' + ('$' if dollar else '')

@@ -35,10 +35,10 @@ ang_cor = AngularCorrelation(
     ['delta_1', 'delta_2']
 )
 
-arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=301)
+arctan_deltas, asy_45, asy_90 = ang_cor.asymmetry_grid(n_delta_steps=51)
 
 asy_plo = AsymmetryPlotter(ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True,
-asy_45_exp=[-0.4, 0.1, 0.11],
+asy_45_exp=[-0.4, 0.1, 0.1],
 asy_90_exp=[-0.5, 0.1, 0.1],
 show_polarization=[True, False])
 output_file_single_2d = Path('@PROJECT_BINARY_DIR@') / 'test_plot_04_mixing_inelastic_asy_2d.pdf'

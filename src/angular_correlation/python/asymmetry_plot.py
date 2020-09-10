@@ -442,7 +442,7 @@ class AsymmetryPlotter:
         lsplt = LevelSchemePlotter(ax[0][1], self.ang_cor.initial_state, self.ang_cor.cascade_steps,
                                    delta_labels_level_scheme, show_polarization=self.show_polarization,
                                    returns_to_initial_state=returns_to_initial_state, offset=(0.1, 0.1),
-                                   transition_label_rotation=transition_label_rotation)
+                                   transition_label_rotation=transition_label_rotation, em_variable_symbol='', parity_variable_symbol='')
         lsplt.plot()
 
         ax[1][0].tick_params(labelsize=fontsize_ticks)
@@ -720,7 +720,7 @@ class AsymmetryPlotter:
 
         color_none = 'white'
         color_val_none = 0.
-        color_asy_45 = 'grey'
+        color_asy_45 = 'limegreen'
         color_val_delta1 = 0.33
         color_asy_90 = 'orange'
         color_val_delta2 = 0.66
@@ -743,6 +743,9 @@ class AsymmetryPlotter:
         label_delta_min = r'$\delta_{min}$'
         label_delta_max = r'$\delta_{max}$'
         label_delta_diff = label_delta_max + ' - ' + label_delta_min
+
+        min_max_line_width = 2
+        min_max_line_style = ':'
 
         text_x = self.asy_45_lim[0] + 0.1*(self.asy_45_lim[1] - self.asy_45_lim[0])
         text_y = self.asy_90_lim[1] - 0.1*(self.asy_90_lim[1] - self.asy_90_lim[0])
@@ -828,7 +831,7 @@ class AsymmetryPlotter:
         hist_min_2[hist_counts_2 < 1] = np.nan
         hist_max_2[hist_counts_2 < 1] = np.nan
 
-        fig = plt.figure(figsize=(10, 12))
+        fig = plt.figure(figsize=(10, 11))
         gs = gridspec.GridSpec(3, 3, width_ratios=(1., 1., 0.1))
 
         ax_del1_max = plt.subplot(gs[0])
@@ -975,7 +978,7 @@ class AsymmetryPlotter:
             lsplt = LevelSchemePlotter(ax_lvl, self.ang_cor.initial_state, self.ang_cor.cascade_steps,
                                     delta_labels, show_polarization=self.show_polarization,
                                     returns_to_initial_state=returns_to_initial_state, fontsize=16,
-                                    offset=(-0.1, 0.), state_line_width=3, arrow_width=3)
+                                    offset=(-0.1, 0.), state_line_width=3, arrow_width=3, transition_label_rotation=0, em_variable_symbol='', parity_variable_symbol='')
             lsplt.plot()
 
             ax_delta = plt.subplot(gs[7])
@@ -999,10 +1002,16 @@ class AsymmetryPlotter:
                 ), (
                     r'$A(45^\circ)$',
                     r'$A(90^\circ)$',
-                    r'$A(45^\circ) \cap A(90^\circ)$',
+                    r'$A(45^\circ) \wedge A(90^\circ)$',
                 ),
                 loc='lower left',
                 fontsize=fontsize_legend
+            )
+
+            ax_delta.plot(
+                [arctan_delta_1_min_exp, arctan_delta_1_min_exp, arctan_delta_1_max_exp, arctan_delta_1_max_exp, arctan_delta_1_min_exp],
+                [arctan_delta_2_min_exp, arctan_delta_2_max_exp, arctan_delta_2_max_exp, arctan_delta_2_min_exp, arctan_delta_2_min_exp],
+                min_max_line_style, lw=min_max_line_width, color='black'
             )
 
             ax_delta_x2 = ax_delta.twinx()
