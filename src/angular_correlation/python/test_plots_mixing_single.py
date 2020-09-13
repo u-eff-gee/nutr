@@ -23,7 +23,8 @@ from asymmetry_plot import AngularCorrelation, AsymmetryPlotter
 import state as st
 import transition as tr
 
-_overwrite_existing = True
+_overwrite_existing = False
+_use_custom_names = True
 
 os.chdir('@ANGCORR_PYTHON_DIR@')
 file_name_prefix = 'test_plot_'
@@ -58,7 +59,8 @@ ang_cors = [
             ],
             [0., 'delta_1']
         ),
-        False, [-0.5, 0.1, 0.1], [-0.8, 0.2, 0.2], 
+        False, [-0.5, 0.1, 0.1], [-0.8, 0.2, 0.2],
+        ['ana_011.pdf', '', '']
     ],
     [
         '03_mixing_elastic', AngularCorrelation(
@@ -70,6 +72,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [0.1, 0.1, 0.1], [0.3, 0.1, 0.1],         
+        ['ana_051505.pdf', '', '']
     ],
     [
         '05_0p_1p_2_asy', AngularCorrelation(
@@ -81,6 +84,7 @@ ang_cors = [
             [0., 'delta_1']
         ),
         False, [0.2, 0.1, 0.1], [0.6, 0.1, 0.1],         
+        ['ana_012.pdf', '', '']
     ],
     [
         '06_0p_1p_3_asy', AngularCorrelation(
@@ -92,6 +96,7 @@ ang_cors = [
             [0., 'delta_1']
         ),
         False, [0.2, 0.1, 0.1], [0.6, 0.1, 0.1],         
+        ['ana_013.pdf', '', '']
     ],
     [
         '07_0p_2p_1_asy', AngularCorrelation(
@@ -103,6 +108,7 @@ ang_cors = [
             [0., 'delta_1']
         ),
         False, [0.2, 0.1, 0.1], [0.2, 0.1, 0.1],         
+        ['ana_021.pdf', '', '']
     ],
     [
         '08_0p_2p_2_asy', AngularCorrelation(
@@ -114,6 +120,7 @@ ang_cors = [
             [0., 'delta_1']
         ),
         False, [0.1, 0.1, 0.1], [0.2, 0.1, 0.1],         
+        ['ana_022.pdf', '', '']
     ],
     [
         '09_0p_2p_3_asy', AngularCorrelation(
@@ -125,6 +132,7 @@ ang_cors = [
             [0., 'delta_1']
         ),
         False, [0.1, 0.1, 0.1], [0.2, 0.1, 0.1],         
+        ['ana_023.pdf', '', '']
     ],
     [
         '10_0p_2p_4_asy', AngularCorrelation(
@@ -136,6 +144,7 @@ ang_cors = [
             [0., 'delta_1']
         ),
         False, [0.1, 0.1, 0.1], [0.2, 0.1, 0.1],         
+        ['ana_024.pdf', '', '']
     ],
     [
         '11_0.5p_2.5p_0.5p_asy', AngularCorrelation(
@@ -147,6 +156,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [0.3, 0.1, 0.1], [0.3, 0.1, 0.1],         
+        ['ana_052505.pdf', '', '']
     ],
     [
         '12_1.5p_1.5p_1.5p_asy', AngularCorrelation(
@@ -158,6 +168,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [-0.1, 0.05, 0.05], [-0.2, 0.05, 0.05],         
+        ['ana_151515.pdf', '', '']
     ],
     [
         '13_1.5p_2.5p_1.5_asy', AngularCorrelation(
@@ -169,6 +180,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [0.1, 0.05, 0.05], [0.3, 0.05, 0.05],         
+        ['', 'ana_152515.pdf', '']
     ],
     [
         '14_1.5p_3.5p_1.5_asy', AngularCorrelation(
@@ -180,6 +192,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [0., 0.05, 0.05], [0.3, 0.05, 0.05],         
+        ['ana_153515.pdf', '', '']
     ],
     [
         '15_2.5p_1.5p_2.5_asy', AngularCorrelation(
@@ -191,6 +204,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [0., 0.05, 0.05], [0., 0.05, 0.05],         
+        ['ana_251525.pdf', '', '']
     ],
     [
         '16_2.5p_2.5p_2.5_asy', AngularCorrelation(
@@ -202,6 +216,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [-0.1, 0.05, 0.05], [0., 0.05, 0.05],         
+        ['ana_252525.pdf', '', '']
     ],
     [
         '17_2.5p_3.5p_2.5_asy', AngularCorrelation(
@@ -213,6 +228,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [0., 0.1, 0.1], [0., 0.1, 0.1],         
+        ['ana_253525.pdf', '', '']
     ],
     [
         '18_2.5p_4.5p_2.5_asy', AngularCorrelation(
@@ -224,6 +240,7 @@ ang_cors = [
             ['delta_1', 'delta_1']
         ),
         True, [0.3, 0.1, 0.1], [0.2, 0.1, 0.1],         
+        ['ana_254525.pdf', '', '']
     ],
     [
         '19_0_1_1_0_asy', AngularCorrelation(
@@ -236,6 +253,7 @@ ang_cors = [
             [0., 'delta_1', 0.]
         ),
         True, [0., 0.05, 0.05], [0., 0.05, 0.05],         
+        ['ana_0110.pdf', '', '']
     ],
     [
         '20_0_2_2_0_asy', AngularCorrelation(
@@ -248,6 +266,7 @@ ang_cors = [
             [0., 'delta_1', 0.]
         ),
         True, [0.2, 0.05, 0.05], [-0.1, 0.05, 0.05],         
+        ['ana_0220.pdf', '', '']
     ],
 ]
 
@@ -262,7 +281,10 @@ for ang_cor in ang_cors:
     variable_delta_label, delta_labels = create_delta_labels(ang_cor[1])
 
     print('{:6.1f} seconds'.format(time()-t_start), end=' : ')
-    output_file_name_2d = Path('@PROJECT_BINARY_DIR@') / (file_name_prefix + ang_cor[0] + file_name_2d_suffix)
+    if _use_custom_names and len(ang_cor) > 5 and ang_cor[5][0] != '':
+        output_file_name_2d = Path('@PROJECT_BINARY_DIR@') / ang_cor[5][0]
+    else:
+        output_file_name_2d = Path('@PROJECT_BINARY_DIR@') / (file_name_prefix + ang_cor[0] + file_name_2d_suffix)
 
     if output_file_name_2d.exists() and not _overwrite_existing:
         print('File \'{}\' already exists. Remove it to create a new version.'.format(output_file_name_2d))
@@ -279,7 +301,10 @@ for ang_cor in ang_cors:
 
         asy_plo.plot_single_2d(variable_delta_label, delta_labels, returns_to_initial_state=ang_cor[2], output_file=output_file_name_2d, transition_label_rotation=0)
 
-    output_file_name_2d_exp = Path('@PROJECT_BINARY_DIR@') / (file_name_prefix + ang_cor[0] + file_name_2d_exp_suffix)
+    if _use_custom_names and len(ang_cor) > 5 and ang_cor[5][1] != '':
+        output_file_name_2d_exp = Path('@PROJECT_BINARY_DIR@') / ang_cor[5][1]
+    else:
+        output_file_name_2d_exp = Path('@PROJECT_BINARY_DIR@') / (file_name_prefix + ang_cor[0] + file_name_2d_exp_suffix)
 
     print('{:6.1f} seconds'.format(time()-t_start), end=' : ')
     if output_file_name_2d_exp.exists() and not _overwrite_existing:
@@ -299,8 +324,10 @@ for ang_cor in ang_cors:
 
         asy_plo.plot_single_2d(variable_delta_label, delta_labels, returns_to_initial_state=ang_cor[2], output_file=output_file_name_2d_exp, transition_label_rotation=0)
 
-    output_file_name_3d = Path('@PROJECT_BINARY_DIR@') / (file_name_prefix + ang_cor[0] + file_name_3d_suffix)
-
+    if _use_custom_names and len(ang_cor) > 5 and ang_cor[5][2] != '':
+        output_file_name_3d = Path('@PROJECT_BINARY_DIR@') / ang_cor[5][2]
+    else:
+        output_file_name_3d = Path('@PROJECT_BINARY_DIR@') / (file_name_prefix + ang_cor[0] + file_name_3d_suffix)
     print('{:6.1f} seconds'.format(time()-t_start), end=' : ')
     if output_file_name_3d.exists() and not _overwrite_existing:
         print('File \'{}\' already exists. Remove it to create a new version.'.format(output_file_name_3d))
