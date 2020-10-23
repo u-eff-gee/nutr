@@ -30,6 +30,7 @@ target_link_libraries(SensitiveDetector nSensitiveDetector DetectorHit)
 target_compile_options(SensitiveDetector PUBLIC -Wall -Wextra)
 
 add_library(tupleManager TupleManager.cc)
+target_include_directories(tupleManager PUBLIC ${PROJECT_BINARY_DIR}/include/sensitive_detector)
 target_link_libraries(tupleManager analysisManager DetectorHit)
 target_compile_options(tupleManager PUBLIC -Wall -Wextra)
 

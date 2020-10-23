@@ -31,7 +31,7 @@ target_compile_options(SensitiveDetector PUBLIC -Wall -Wextra)
 
 add_library(tupleManager TupleManager.cc)
 target_include_directories(tupleManager PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/${GEOMETRY_DIR})
-target_include_directories(DetectorHit PUBLIC ${PROJECT_BINARY_DIR}/include/sensitive_detector)
+target_include_directories(tupleManager PUBLIC ${PROJECT_BINARY_DIR}/include/sensitive_detector)
 target_link_libraries(tupleManager analysisManager DetectorHit)
 target_compile_options(tupleManager PUBLIC -Wall -Wextra)
 
