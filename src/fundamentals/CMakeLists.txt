@@ -19,6 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals)
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
+include(${Geant4_USE_FILE})
 
 add_library(actionInitialization ActionInitialization.cc)
 target_include_directories(actionInitialization PUBLIC ${PROJECT_SOURCE_DIR}/include/primary_generator/${PRIMARY_GENERATOR_DIR} ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})

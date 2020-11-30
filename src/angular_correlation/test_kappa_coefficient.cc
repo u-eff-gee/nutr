@@ -65,7 +65,7 @@ int main(){
 		test_numerical_equality<double>(kappa_coef_num, k.value, epsilon);
 	}
 
-	bool error_thrown{false};
+	[[maybe_unused]] bool error_thrown{false};
 	try{
 		kappa_coef(0, 2, 2);
 	} catch(const std::invalid_argument e){

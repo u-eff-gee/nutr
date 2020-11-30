@@ -17,6 +17,7 @@
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
+include(${Geant4_USE_FILE})
 
 add_library(detectorConstruction DetectorConstruction.cc)
 set_property(TARGET detectorConstruction PROPERTY CXX_STANDARD 14)

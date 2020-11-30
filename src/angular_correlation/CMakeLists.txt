@@ -20,6 +20,7 @@ include_directories(${GSL_INCLUDE_DIRS})
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
+include(${Geant4_USE_FILE})
 
 include_directories(${PROJECT_SOURCE_DIR}/include/angular_correlation/)
 
@@ -36,11 +37,11 @@ target_compile_options(w_gamma_gamma PUBLIC -Wall -Wextra)
 
 add_library(w_dir_dir W_dir_dir.cc)
 target_link_libraries(w_dir_dir avCoefficient uvCoefficient)
-target_compile_options(w_dir_dir PUBLIC -Wall -Wextra)
+target_compile_options(w_dir_dir PUBLIC -Wall -Wextra -fPIC)
 
 add_library(kappa_coefficient KappaCoefficient.cc)
 target_link_libraries(kappa_coefficient ${GSL_LIBRARIES})
-target_compile_options(kappa_coefficient PUBLIC -Wall -Wextra)
+target_compile_options(kappa_coefficient PUBLIC -Wall -Wextra -fPIC)
 
 add_library(alphavCoefficient AlphavCoefficient.cc)
 target_link_libraries(alphavCoefficient fCoefficient kappa_coefficient)

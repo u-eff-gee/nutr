@@ -19,6 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/primary_generator/angcorr)
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
+include(${Geant4_USE_FILE})
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
 target_include_directories(primaryGeneratorAction PUBLIC ${PROJECT_SOURCE_DIR}/include/angular_correlation ${PROJECT_SOURCE_DIR}/include/geometry/ ${PROJECT_SOURCE_DIR}/include/geometry/${GEOMETRY_DIR})

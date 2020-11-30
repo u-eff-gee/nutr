@@ -12,7 +12,7 @@ AnalysisManager::AnalysisManager(const string out_file_name): fFactoryOn(false){
         output_file_name = out_file_name;
     }
     
-};
+}
 
 void AnalysisManager::Book(){
 

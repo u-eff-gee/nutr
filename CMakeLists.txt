@@ -32,7 +32,7 @@
 # files, but also a more transparent overview of all dependencies.
 # In addition, compiling dependencies as separate libraries facilitates unit testing.
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.7.2)
 project(nutr VERSION 0.1.0)
 
 option(WITH_GEANT4_UIVIS "Build nutr with Geant4 UI and Vis drivers" ON)
@@ -41,6 +41,7 @@ if(WITH_GEANT4_UIVIS)
 else()
   find_package(Geant4 REQUIRED)
 endif()
+include(${Geant4_USE_FILE})
 
 option(BUILD_DOCUMENTATION "Build doxygen documentation for some classes of nutr" OFF)
 if(BUILD_DOCUMENTATION)
