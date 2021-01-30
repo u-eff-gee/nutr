@@ -26,6 +26,9 @@ target_compile_options(detector PUBLIC -Wall -Wextra)
 
 add_library(filterCase Filter_Case.cc)
 
+add_library(hpgeClover HPGe_Clover.cc)
+target_link_libraries(hpgeClover detector)
+
 add_library(hpgeCoaxial HPGe_Coaxial.cc)
 target_link_libraries(hpgeCoaxial detector filterCase)
 

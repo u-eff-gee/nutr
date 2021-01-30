@@ -120,7 +120,7 @@ class Detector{
 		 * \brief Return detector's sensitive logical volumes.
 		 */
 		vector<G4LogicalVolume*> get_sensitive_logical_volumes(){ return sensitive_logical_volumes; };
-	
+
 	protected:
 		G4LogicalVolume *world_Logical; /**< Logical volume in which the detector will be placed. */
 		const G4String detector_name; /**< Name of the detector. This name will be used as a prefix for all parts of the geometry. */
