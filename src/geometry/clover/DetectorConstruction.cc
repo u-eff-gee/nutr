@@ -30,10 +30,12 @@ using std::make_unique;
 
 #include "DetectorConstruction.hh"
 
-#include "Scintillator_SCIONIX.hh"
+#include "HPGe_Clover.hh"
+#include "HPGe_Collection.hh"
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
+
 	G4NistManager *nist_manager = G4NistManager::Instance();
 
 	world_solid = make_unique<G4Box>("world_solid", 2.*m, 2.*m, 2.*m);
@@ -41,13 +43,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
 	world_phys = make_unique<G4PVPlacement>(new G4RotationMatrix(), G4ThreeVector(), world_logical.get(), "world", nullptr, false, 0);
 
-	Scintillator_SCIONIX cebr1(world_logical.get(), "cebr1");
-	cebr1.Construct(G4ThreeVector(), 0., 0., 8.*25.4*mm);
-    RegisterSensitiveLogicalVolumes(cebr1.get_sensitive_logical_volumes());
-
-	Scintillator_SCIONIX cebr2(world_logical.get(), "cebr2");
-	cebr2.Construct(G4ThreeVector(), 180.*deg, 0.*deg, 8.*25.4*mm);
-    RegisterSensitiveLogicalVolumes(cebr2.get_sensitive_logical_volumes());
+	HPGe_Clover clover(world_logical.get(), "clover", HPGe_Clover_Collection::HPGe_Clover_Yale);
+    clover.useDewar();
+	clover.Construct(G4ThreeVector(), 0., 0., 8.*25.4*mm);
+    RegisterSensitiveLogicalVolumes(clover.get_sensitive_logical_volumes());
 
 	return world_phys.get();
 }
