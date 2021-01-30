@@ -33,7 +33,7 @@ using std::vector;
 
 class HPGe_Coaxial : public Detector{
 	public:
-		HPGe_Coaxial(G4LogicalVolume *World_Logical, G4String name, HPGe_Coaxial_Properties prop) : Detector (World_Logical, name), properties(prop), use_filter_case(false), use_filter_case_ring(false), use_dewar(false){};
+		HPGe_Coaxial(G4LogicalVolume *World_Logical, const G4String name, const HPGe_Coaxial_Properties prop) : Detector (World_Logical, name), properties(prop), use_filter_case(false), use_filter_case_ring(false), use_dewar(false){};
 
 		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi,
 			       G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override;

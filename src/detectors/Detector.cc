@@ -19,7 +19,7 @@
 
 #include "Detector.hh"
 
-Detector::Detector(G4LogicalVolume *World_Logical, G4String name):
+Detector::Detector(G4LogicalVolume *World_Logical, const G4String name):
 	world_Logical(World_Logical),
 	detector_name(name),
 	rotation_matrix(nullptr)

@@ -66,7 +66,7 @@ class Detector{
          * \param world_logical Initializer for world_logical.
          * \param name Initializer for detector_name.
 		 */
-		Detector(G4LogicalVolume *World_Logical, G4String name);
+		Detector(G4LogicalVolume *World_Logical, const G4String name);
 
 		/**
 		 * \brief Construct the detector in a Geant4 geometry
@@ -123,7 +123,7 @@ class Detector{
 	
 	protected:
 		G4LogicalVolume *world_Logical; /**< Logical volume in which the detector will be placed. */
-		G4String detector_name; /**< Name of the detector. This name will be used as a prefix for all parts of the geometry. */
+		const G4String detector_name; /**< Name of the detector. This name will be used as a prefix for all parts of the geometry. */
 
 		vector<G4String> filter_materials; /**< List of filter materials given as G4Material names. */
 		vector<G4double> filter_thicknesses; /**< List of filter thicknesses. */

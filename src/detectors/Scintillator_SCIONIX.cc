@@ -172,4 +172,4 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
     G4LogicalVolume *signal_connector_logical = new G4LogicalVolume(signal_connector_solid, nist->FindOrBuildMaterial(connector_material), detector_name + "_signal_connector_logical");
     signal_connector_logical->SetVisAttributes(new G4VisAttributes(G4Color::Grey()));
     new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_and_pmt_length + connector_base_length + 0.5*signal_connector_length)*e_r + 0.5/sqrt(2.)*connector_base_outer_radius*e_theta - 0.5/sqrt(2.)*connector_base_outer_radius*e_phi, signal_connector_logical, detector_name + "_signal_connector", world_Logical, 0, 0, false);  
-};
+}
