@@ -19,14 +19,6 @@
 
 #include "DetectorHit.hh"
 
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
-#include "G4Circle.hh"
-#include "G4Colour.hh"
-#include "G4VisAttributes.hh"
-
-#include <iomanip>
-
 G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
 
 DetectorHit::DetectorHit()

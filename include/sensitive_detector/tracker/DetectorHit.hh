@@ -40,18 +40,24 @@ class DetectorHit : public NDetectorHit
     void SetTrackID  (const G4int track) { fTrackID = track; };
     void SetParticleID (const G4int pid) {fParticleID = pid; };
     void SetEdep     (const G4double de) { fEdep = de; };
+    void SetEnergy   (const G4double ene) { fEkin = ene; };
     void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
+    void SetMom      (const G4ThreeVector pxyz) {fMom = pxyz; };
 
     G4int GetTrackID() const { return fTrackID; };
     G4int GetParticleID() const { return fParticleID; };
     G4double GetEdep() const { return fEdep; };
+    G4double GetEkin() const { return fEkin; };
     G4ThreeVector GetPos() const { return fPos; };
+    G4ThreeVector GetMom() const { return fMom; };
 
   private:
       G4int         fTrackID;
       G4int 		    fParticleID;
       G4double      fEdep;
+      G4double      fEkin;
       G4ThreeVector fPos;
+      G4ThreeVector fMom;
 };
 
 extern G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator;

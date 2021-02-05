@@ -19,14 +19,6 @@
 
 #include "DetectorHit.hh"
 
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
-#include "G4Circle.hh"
-#include "G4Colour.hh"
-#include "G4VisAttributes.hh"
-
-#include <iomanip>
-
 G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
 
 DetectorHit::DetectorHit()
@@ -34,7 +26,9 @@ DetectorHit::DetectorHit()
    fTrackID(-1),
    fParticleID(0),
    fEdep(0.),
-   fPos(G4ThreeVector())
+   fEkin(0.),
+   fPos(G4ThreeVector()),
+   fMom(G4ThreeVector())
 {}
 
 DetectorHit::DetectorHit(const DetectorHit& right)
@@ -44,7 +38,9 @@ DetectorHit::DetectorHit(const DetectorHit& right)
   fParticleID = right.fParticleID;
   fDetectorID = right.fDetectorID;
   fEdep      = right.fEdep;
+  fEkin    = right.fEkin;
   fPos       = right.fPos;
+  fMom       = right.fMom;
 }
 
 const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
@@ -52,8 +48,10 @@ const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
   fTrackID   = right.fTrackID;
   fParticleID = right.fParticleID;
   fDetectorID = right.fDetectorID;
+  fEkin    = right.fEkin;
   fEdep      = right.fEdep;
   fPos       = right.fPos;
+  fMom       = right.fMom;
 
   return *this;
 }

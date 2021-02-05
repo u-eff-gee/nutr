@@ -35,16 +35,19 @@ void SensitiveDetector::Initialize(G4HCofThisEvent* hce)
 G4bool SensitiveDetector::ProcessHits(G4Step* aStep,
                                      G4TouchableHistory*)
 {
-  G4double edep = aStep->GetTotalEnergyDeposit();
-  if (edep==0.) return false;
+  // Hits with no energy deposition are recorded as well.
+  // This makes it possible to read out the point where a particle entered a detector volume, 
+  // because movement ('transportation') counts as a 'hit' with an energy deposition of 0.
 
   DetectorHit* newDetectorHit = new DetectorHit();
 
   newDetectorHit->SetTrackID(aStep->GetTrack()->GetTrackID());
   newDetectorHit->SetParticleID(aStep->GetTrack()->GetDynamicParticle()->GetPDGcode());
   newDetectorHit->SetDetectorID(fDetectorID);
-  newDetectorHit->SetEdep(edep);
-  newDetectorHit->SetPos(aStep->GetPostStepPoint()->GetPosition());
+  newDetectorHit->SetEdep(aStep->GetTotalEnergyDeposit());
+  newDetectorHit->SetEnergy(aStep->GetPreStepPoint()->GetKineticEnergy());
+  newDetectorHit->SetPos(aStep->GetPreStepPoint()->GetPosition());
+  newDetectorHit->SetMom(aStep->GetPreStepPoint()->GetMomentum());
 
   fDetectorHitsCollection->insert( newDetectorHit );
 
