@@ -80,7 +80,7 @@ void HPGe_Clover::Construct(G4ThreeVector global_coordinates, G4double theta, G4
 	G4SubtractionSolid *crystal_step4_solid = new G4SubtractionSolid(detector_name + "_crystal_step4_solid", crystal_step3_solid, subtraction_solid, 0, G4ThreeVector(0., properties.crystal_radius + 23.*mm, 0.));
 
 	sensitive_logical_volumes.push_back(new G4LogicalVolume(crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name + "_1"));
-	sensitive_logical_volumes[0]->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
+	sensitive_logical_volumes[0]->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
 	new G4PVPlacement(0, G4ThreeVector(22.*mm + 0.5*properties.crystal_gap, 22.*mm + 0.5*properties.crystal_gap, -0.5*properties.vacuum_length + 0.5*properties.crystal_length + properties.end_cap_to_crystal_gap_front), sensitive_logical_volumes[0], detector_name + "_crystal_1", vacuum_logical, 0, 0, false);
 
 	G4RotationMatrix *rotate2 = new G4RotationMatrix();
@@ -92,13 +92,13 @@ void HPGe_Clover::Construct(G4ThreeVector global_coordinates, G4double theta, G4
 	G4RotationMatrix *rotate3 = new G4RotationMatrix();
 	rotate3->rotateZ(-270.*deg);
 	sensitive_logical_volumes.push_back(new G4LogicalVolume(crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name + "_3"));
-	sensitive_logical_volumes[2]->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
+	sensitive_logical_volumes[2]->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
 	new G4PVPlacement(rotate3, G4ThreeVector(22.*mm + 0.5*properties.crystal_gap, -22.*mm - 0.5*properties.crystal_gap, -0.5*properties.vacuum_length + 0.5*properties.crystal_length + properties.end_cap_to_crystal_gap_front), sensitive_logical_volumes[2], detector_name + "_crystal_3", vacuum_logical, 0, 0, false);
 
 	G4RotationMatrix *rotate4 = new G4RotationMatrix();
 	rotate4->rotateZ(-180.*deg);
 	sensitive_logical_volumes.push_back(new G4LogicalVolume(crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name + "_4"));
-	sensitive_logical_volumes[3]->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
+	sensitive_logical_volumes[3]->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
 	new G4PVPlacement(rotate4, G4ThreeVector(-22.*mm - 0.5*properties.crystal_gap, -22.*mm - 0.5*properties.crystal_gap, -0.5*properties.vacuum_length + 0.5*properties.crystal_length + properties.end_cap_to_crystal_gap_front), sensitive_logical_volumes[3], detector_name + "_crystal_4", vacuum_logical, 0, 0, false);
 
 	/******** Back end cap *********/

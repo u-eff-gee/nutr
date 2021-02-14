@@ -17,9 +17,21 @@
 	Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
+#include <array>
+
+using std::array;
+
 #include <memory>
 
 using std::make_unique;
+
+#include <string>
+
+using std::string;
+
+#include <vector>
+
+using std::vector;
 
 #include "G4Box.hh"
 #include "G4LogicalVolume.hh"
@@ -33,31 +45,67 @@ using std::make_unique;
 
 #include "HPGe_Clover.hh"
 #include "HPGe_Collection.hh"
+#include "Scintillator_SCIONIX.hh"
+
+const double distance = 8.*25.4*mm;
+
+struct DetectorPosition{
+    const string id;
+    const double theta;
+    const double phi;
+    const double distance;
+    const double intrinsic_rotation_angle;
+};
+
+array<DetectorPosition, 8> clover_position{
+    DetectorPosition{"clover_1",         0.5 *pi, 0.            , distance, 0.5*pi},
+    DetectorPosition{"clover_3",         0.5 *pi, 0.5        *pi, distance, 0.5*pi},
+    DetectorPosition{"clover_5",         0.5 *pi,             pi, distance, 0.5*pi},
+    DetectorPosition{"clover_7",         0.5 *pi, 1.5        *pi, distance, 0.5*pi},
+    DetectorPosition{"clover_B1",        0.75*pi, 0.            , distance, 0.5*pi},
+    DetectorPosition{"clover_B4", 125.25/180.*pi, 125.25/180.*pi, distance, 0.    },
+    DetectorPosition{"clover_B5",        0.75*pi,             pi, distance, 1.5*pi},
+    DetectorPosition{"clover_B6", 125.25/180.*pi, 234.75/180.*pi, distance, 0.5*pi},
+};
+
+array<DetectorPosition, 12> cebr_position{
+    DetectorPosition{"cebr_B",           0.5 *pi, 27.5  /180.*pi, distance, 0.    },
+    DetectorPosition{"cebr_C",           0.5 *pi, 62.5  /180.*pi, distance, 0.    },
+    DetectorPosition{"cebr_E",           0.5 *pi, 117.5 /180.*pi, distance, 0.    },
+    DetectorPosition{"cebr_F",           0.5 *pi, 152.5 /180.*pi, distance, 0.    },
+    DetectorPosition{"cebr_I",           0.5 *pi,        1.25*pi, distance, 0.    },
+    DetectorPosition{"cebr_M",           0.5 *pi,        1.75*pi, distance, 0.    },
+    DetectorPosition{"cebr_BB",          0.75*pi, (0.5-2./7.)*pi, distance, 0.    },
+    DetectorPosition{"cebr_BC",          0.75*pi, (0.5-1./7.)*pi, distance, 0.    },
+    DetectorPosition{"cebr_BD",          0.75*pi, 0.5        *pi, distance, 0.    },
+    DetectorPosition{"cebr_BK",          0.75*pi, 1.5        *pi, distance, 0.    },
+    DetectorPosition{"cebr_BL",          0.75*pi, (1.5+1./7.)*pi, distance, 0.    },
+    DetectorPosition{"cebr_BM",          0.75*pi, (1.5+2./7.)*pi, distance, 0.    },
+};
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
 
 	G4NistManager *nist_manager = G4NistManager::Instance();
 
-    const double distance = 7.*25.4*mm;
-
 	world_solid = make_unique<G4Box>("world_solid", 2.*m, 2.*m, 2.*m);
 	world_logical = make_unique<G4LogicalVolume>(world_solid.get(), nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical");
 	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
 	world_phys = make_unique<G4PVPlacement>(new G4RotationMatrix(), G4ThreeVector(), world_logical.get(), "world", nullptr, false, 0);
 
-	HPGe_Clover clover(world_logical.get(), "clover", HPGe_Clover_Collection::HPGe_Clover_Yale);
-    clover.useDewar();
-	clover.Construct(G4ThreeVector(), 0.5*pi, 0., distance);
-    RegisterSensitiveLogicalVolumes(clover.get_sensitive_logical_volumes());
+    vector<HPGe_Clover> clovers;
+    for(auto det_pos: clover_position){
+        clovers.push_back(HPGe_Clover(world_logical.get(), det_pos.id, HPGe_Clover_Collection::HPGe_Clover_Yale));
+        clovers[clovers.size()-1].useDewar();
+        clovers[clovers.size()-1].Construct(G4ThreeVector(), det_pos.theta, det_pos.phi, det_pos.distance, det_pos.intrinsic_rotation_angle);
+        RegisterSensitiveLogicalVolumes(clovers[clovers.size()-1].get_sensitive_logical_volumes());
+    }
 
-	HPGe_Clover clover2(world_logical.get(), "clover2", HPGe_Clover_Collection::HPGe_Clover_Yale);
-    clover2.useDewar();
-	clover2.Construct(G4ThreeVector(), 0.5*pi, 0.5*pi, distance);
-
-	HPGe_Clover clover3(world_logical.get(), "clover3", HPGe_Clover_Collection::HPGe_Clover_Yale);
-    clover3.useDewar();
-	clover3.Construct(G4ThreeVector(), 116./180.*pi, 0.25*pi, distance, 0.2*pi);
+    vector<Scintillator_SCIONIX> cebrs;
+    for(auto det_pos: cebr_position){
+        cebrs.push_back(Scintillator_SCIONIX(world_logical.get(), det_pos.id));
+        cebrs[cebrs.size()-1].Construct(G4ThreeVector(), det_pos.theta, det_pos.phi, det_pos.distance, det_pos.intrinsic_rotation_angle);
+    }
 
 	return world_phys.get();
 }
