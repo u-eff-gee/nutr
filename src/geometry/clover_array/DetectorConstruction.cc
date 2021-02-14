@@ -105,6 +105,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     for(auto det_pos: cebr_position){
         cebrs.push_back(Scintillator_SCIONIX(world_logical.get(), det_pos.id));
         cebrs[cebrs.size()-1].Construct(G4ThreeVector(), det_pos.theta, det_pos.phi, det_pos.distance, det_pos.intrinsic_rotation_angle);
+        RegisterSensitiveLogicalVolumes(cebrs[cebrs.size()-1].get_sensitive_logical_volumes());
     }
 
 	return world_phys.get();

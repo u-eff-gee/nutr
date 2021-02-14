@@ -25,4 +25,4 @@ source_physical(physical),
 relative_intensity(rel_int),
 random_seed(seed){
     random_engine = mt19937(seed);
-};
+}

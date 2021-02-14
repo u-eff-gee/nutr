@@ -25,7 +25,7 @@ using std::dynamic_pointer_cast;
 
 #include "SourceVolumeTubs.hh"
 
-SourceVolumeTubs::SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const double rel_int, const int seed):SourceVolume(tubs, physical, rel_int, seed){};
+SourceVolumeTubs::SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const double rel_int, const int seed):SourceVolume(tubs, physical, rel_int, seed){}
 
 G4ThreeVector SourceVolumeTubs::operator()(){
 
