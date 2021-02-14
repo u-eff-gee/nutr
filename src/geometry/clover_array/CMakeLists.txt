@@ -20,6 +20,6 @@ link_libraries(${Geant4_LIBRARIES})
 include(${Geant4_USE_FILE})
 
 add_library(detectorConstruction DetectorConstruction.cc)
-target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
+target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 target_link_libraries(detectorConstruction nDetectorConstruction hpgeClover SensitiveDetector)
 target_compile_options(detectorConstruction PUBLIC -Wall -Wextra)
