@@ -25,6 +25,7 @@
 #include "@HADRON_INELASTIC@.hh"
 
 #include "Physics.hh"
+#include "PhysicsConfig.hh"
 
 Physics::Physics(){
 
@@ -37,8 +38,10 @@ Physics::Physics(){
     RegisterPhysics(new G4DecayPhysics());
     RegisterPhysics(new G4RadioactiveDecayPhysics());
 
+#ifdef USE_HADRON_PHYSICS
     RegisterPhysics(new @HADRON_ELASTIC@());
 
     RegisterPhysics(new @HADRON_INELASTIC@());
+#endif
 
 }

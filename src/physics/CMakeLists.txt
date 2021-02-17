@@ -15,7 +15,7 @@
 #
 #    Copyright (C) 2020, 2021 Udo Friman-Gayer
 
-include_directories(${PROJECT_SOURCE_DIR}/include/physics)
+include_directories(${PROJECT_SOURCE_DIR}/include/physics ${PROJECT_BINARY_DIR}/include/physics)
 
 if(DEFINED ENV{G4LENDDATA})
     set(USE_LENDGAMMANUCLEAR "true" CACHE STRING "Use LENDGammaNuclear option of G4EmExtraPhysics.")
@@ -28,6 +28,9 @@ else()
     set(HADRON_INELASTIC "G4HadronPhysicsShielding" CACHE STRING "Use G4HadronPhysicsShielding")
 endif()
 configure_file(${PROJECT_SOURCE_DIR}/src/physics/Physics.cc.in ${PROJECT_BINARY_DIR}/src/physics/Physics.cc)
+
+option(USE_HADRON_PHYSICS "Include hadron physics lists (default: ON). Excluding hadron physics can speed up the startup of the simulation. This is useful, for example, when you only want to visualize the geometry. It might speed up the actual simulation as well, but sometimes hadron interactions cannot be neglected." ON)
+configure_file(${PROJECT_SOURCE_DIR}/include/physics/PhysicsConfig.hh.in ${PROJECT_BINARY_DIR}/include/physics/PhysicsConfig.hh)
 
 find_package(Geant4 REQUIRED)
 link_libraries(${Geant4_LIBRARIES})
