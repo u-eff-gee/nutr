@@ -58,29 +58,45 @@ struct DetectorPosition{
 };
 
 array<DetectorPosition, 8> clover_position{
-    DetectorPosition{"clover_1",         0.5 *pi, 0.            , distance, 0.5*pi},
-    DetectorPosition{"clover_3",         0.5 *pi, 0.5        *pi, distance, 0.5*pi},
-    DetectorPosition{"clover_5",         0.5 *pi,             pi, distance, 0.5*pi},
-    DetectorPosition{"clover_7",         0.5 *pi, 1.5        *pi, distance, 0.5*pi},
-    DetectorPosition{"clover_B1",        0.75*pi, 0.            , distance, 0.5*pi},
-    DetectorPosition{"clover_B4", 125.25/180.*pi, 125.25/180.*pi, distance, 0.    },
-    DetectorPosition{"clover_B5",        0.75*pi,             pi, distance, 1.5*pi},
-    DetectorPosition{"clover_B6", 125.25/180.*pi, 234.75/180.*pi, distance, 0.5*pi},
+    DetectorPosition{"clover_1",         0.5 *pi, 0.     , distance, 0.5*pi},
+    // DetectorPosition{"clover_2",         0.5 *pi, 0.25*pi, distance, 0.},
+    DetectorPosition{"clover_3",         0.5 *pi, 0.5 *pi, distance, 1.5*pi},
+    // DetectorPosition{"clover_4",         0.5 *pi, 0.75*pi, distance, 0.},
+    DetectorPosition{"clover_5",         0.5 *pi,      pi, distance, 0.5*pi},
+    // DetectorPosition{"clover_6",         0.5 *pi, 1.25*pi, distance, 0.},
+    DetectorPosition{"clover_7",         0.5 *pi, 1.5 *pi, distance, 0.5*pi},
+    // DetectorPosition{"clover_8",         0.5 *pi, 1.75*pi, distance, 0.},
+    DetectorPosition{"clover_B1",        0.75*pi, 0.     , distance, 0.5*pi},
+    // DetectorPosition{"clover_B2", 125.26/180.*pi, 0.25*pi, distance, 0.5*pi},
+    DetectorPosition{"clover_B4", 125.26/180.*pi, 0.75*pi, distance, 0.    },
+    DetectorPosition{"clover_B5",        0.75*pi,      pi, distance, 1.5*pi},
+    DetectorPosition{"clover_B6", 125.26/180.*pi, 1.25*pi, distance, 0.5*pi},
+    // DetectorPosition{"clover_B8", 125.26/180.*pi, 1.75*pi, distance, 0.},
 };
 
 array<DetectorPosition, 12> cebr_position{
     DetectorPosition{"cebr_B",           0.5 *pi, 27.5  /180.*pi, distance, 0.    },
-    DetectorPosition{"cebr_C",           0.5 *pi, 62.5  /180.*pi, distance, 0.    },
-    DetectorPosition{"cebr_E",           0.5 *pi, 117.5 /180.*pi, distance, 0.    },
-    DetectorPosition{"cebr_F",           0.5 *pi, 152.5 /180.*pi, distance, 0.    },
-    DetectorPosition{"cebr_I",           0.5 *pi,        1.25*pi, distance, 0.    },
-    DetectorPosition{"cebr_M",           0.5 *pi,        1.75*pi, distance, 0.    },
+    // DetectorPosition{"cebr_C",           0.5 *pi, 0.25       *pi, distance, 0.    },
+    DetectorPosition{"cebr_D",           0.5 *pi, 62.5  /180.*pi, distance, 0.    },
+    DetectorPosition{"cebr_F",           0.5 *pi, 117.5 /180.*pi, distance, 0.    },
+    // DetectorPosition{"cebr_G",           0.5 *pi, 0.75       *pi, distance, 0.    },
+    DetectorPosition{"cebr_H",           0.5 *pi, 152.5 /180.*pi, distance, 0.    },
+    DetectorPosition{"cebr_K",           0.5 *pi,        1.25*pi, distance, 0.    },
+    DetectorPosition{"cebr_O",           0.5 *pi,        1.75*pi, distance, 0.    },
+    // DetectorPosition{"cebr_BA",          0.75*pi, (0.5-3./7.)*pi, distance, 0.    },
     DetectorPosition{"cebr_BB",          0.75*pi, (0.5-2./7.)*pi, distance, 0.    },
     DetectorPosition{"cebr_BC",          0.75*pi, (0.5-1./7.)*pi, distance, 0.    },
     DetectorPosition{"cebr_BD",          0.75*pi, 0.5        *pi, distance, 0.    },
+    // DetectorPosition{"cebr_BE",          0.75*pi, (0.5+1./7.)*pi, distance, 0.    },
+    // DetectorPosition{"cebr_BF",          0.75*pi, (0.5+2./7.)*pi, distance, 0.    },
+    // DetectorPosition{"cebr_BG",          0.75*pi, (0.5+3./7.)*pi, distance, 0.    },
+    // DetectorPosition{"cebr_BH",          0.75*pi, (0.5+4./7.)*pi, distance, 0.    },
+    // DetectorPosition{"cebr_BI",          0.75*pi, (0.5+5./7.)*pi, distance, 0.    },
+    // DetectorPosition{"cebr_BJ",          0.75*pi, (0.5+6./7.)*pi, distance, 0.    },
     DetectorPosition{"cebr_BK",          0.75*pi, 1.5        *pi, distance, 0.    },
     DetectorPosition{"cebr_BL",          0.75*pi, (1.5+1./7.)*pi, distance, 0.    },
     DetectorPosition{"cebr_BM",          0.75*pi, (1.5+2./7.)*pi, distance, 0.    },
+    // DetectorPosition{"cebr_BN",          0.75*pi, (1.5+3./7.)*pi, distance, 0.    },
 };
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
@@ -96,7 +112,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     vector<HPGe_Clover> clovers;
     for(auto det_pos: clover_position){
         clovers.push_back(HPGe_Clover(world_logical.get(), det_pos.id, HPGe_Clover_Collection::HPGe_Clover_Yale));
-        clovers[clovers.size()-1].useDewar();
         clovers[clovers.size()-1].Construct(G4ThreeVector(), det_pos.theta, det_pos.phi, det_pos.distance, det_pos.intrinsic_rotation_angle);
         RegisterSensitiveLogicalVolumes(clovers[clovers.size()-1].get_sensitive_logical_volumes());
     }
