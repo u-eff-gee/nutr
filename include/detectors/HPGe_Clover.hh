@@ -29,7 +29,7 @@
 
 class HPGe_Clover : public Detector{
 	public:
-		HPGe_Clover(G4LogicalVolume *World_Logical, const G4String name, const HPGe_Clover_Properties prop) : Detector (World_Logical, name), properties(prop), use_dewar(false){};
+		HPGe_Clover(G4LogicalVolume *World_Logical, const G4String name, const HPGe_Clover_Properties prop, const bool dewar = true) : Detector (World_Logical, name), properties(prop), use_dewar(dewar){};
 		~HPGe_Clover(){};
 
 		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override;

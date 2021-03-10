@@ -40,7 +40,7 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
     
     // Crystal
     // The crystal dimensions are given as '51 mm x 51 mm', but this is probably the rounded value 
-    // of 1.5 x 1 inch.
+    // of 2 x 2 inch.
     // Take the exact value here.
     const G4double crystal_length = 50.8*mm;
     const G4double crystal_radius = 0.5*50.8*mm;
