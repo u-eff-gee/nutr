@@ -35,11 +35,11 @@ void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
 
 }
 
-void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<G4VHit*> hits)
+void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<shared_ptr<G4VHit>> hits)
 {
 
     for(size_t i = 0; i < hits.size(); ++i){
-        analysisManager->FillNtupleDColumn(0, i, ((DetectorHit*) hits[i])->GetEdep());
+        analysisManager->FillNtupleDColumn(0, i, dynamic_pointer_cast<DetectorHit>(hits[i])->GetEdep());
     }
     // The number of entries in std::vector hits will only be as large as highest ID of all 
     // detectors that were hit.

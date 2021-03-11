@@ -28,7 +28,7 @@ public:
 
     void CreateNtupleColumns(G4VAnalysisManager* analysisManager) override;
 
-    void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, vector<G4VHit*> hits) override;
+    void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, vector<shared_ptr<G4VHit>> hits) override;
 
 private:
     size_t n_sensitive_detectors;

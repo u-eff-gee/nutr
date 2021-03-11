@@ -17,6 +17,12 @@
     Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
+#include <memory>
+
+using std::dynamic_pointer_cast;
+using std::make_shared;
+using std::shared_ptr;
+
 #include "G4Event.hh"
 #include "G4EventManager.hh"
 #include "G4ios.hh"
@@ -31,7 +37,7 @@ EventAction::EventAction(AnalysisManager* ana_man)
 void EventAction::EndOfEventAction(const G4Event* event)
 {
     G4VHitsCollection* hc = nullptr;
-    vector<G4VHit*> hits{new DetectorHit()};
+    vector<shared_ptr<G4VHit>> hits{make_shared<DetectorHit>()};
     int current_deid{0}, eventID{0}, max_deid{0};
     double sum_edep = 0.;
 
@@ -47,7 +53,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
             // current maximum.
             if(current_deid > max_deid){
                 for(int i = 0; i < current_deid - max_deid; ++i){
-                    hits.push_back(new DetectorHit());
+                    hits.push_back(make_shared<DetectorHit>());
                 }
                 max_deid = current_deid;
             }
@@ -57,7 +63,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
                 edep += ((DetectorHit*) hc->GetHit(i))->GetEdep();
 
             sum_edep += edep;
-            ((DetectorHit*) hits[current_deid])->SetEdep(edep);
+            dynamic_pointer_cast<DetectorHit>(hits[current_deid])->SetEdep(edep);
         }
     }
 

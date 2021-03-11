@@ -37,7 +37,7 @@ using std::string;
 
 #include "Physics.hh"
 
-int main(int argc,char** argv)
+int main(int argc, char** argv)
 {
     G4UIExecutive* ui = nullptr;
     if ( argc == 1 ) {

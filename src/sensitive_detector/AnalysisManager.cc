@@ -33,7 +33,7 @@ void AnalysisManager::Book(){
 
 }
 
-void AnalysisManager::FillNtuple(G4int eventID, vector<G4VHit*> hits){
+void AnalysisManager::FillNtuple(G4int eventID, vector<shared_ptr<G4VHit>> hits){
 
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     FillNtupleColumns(analysisManager, eventID, hits);
