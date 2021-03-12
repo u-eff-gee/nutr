@@ -44,6 +44,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step* aStep,
   newDetectorHit->SetTrackID(aStep->GetTrack()->GetTrackID());
   newDetectorHit->SetParticleID(aStep->GetTrack()->GetDynamicParticle()->GetPDGcode());
   newDetectorHit->SetDetectorID(fDetectorID);
+  newDetectorHit->SetGlobalTime(aStep->GetPreStepPoint()->GetGlobalTime());
   newDetectorHit->SetEdep(aStep->GetTotalEnergyDeposit());
   newDetectorHit->SetEnergy(aStep->GetPreStepPoint()->GetKineticEnergy());
   newDetectorHit->SetPos(aStep->GetPreStepPoint()->GetPosition());

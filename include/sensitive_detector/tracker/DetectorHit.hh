@@ -38,15 +38,17 @@ class DetectorHit : public NDetectorHit
     inline void* operator new(size_t);
     inline void  operator delete(void*);
 
-    void SetTrackID  (const G4int track) { fTrackID = track; };
-    void SetParticleID (const G4int pid) {fParticleID = pid; };
-    void SetEdep     (const G4double de) { fEdep = de; };
-    void SetEnergy   (const G4double ene) { fEkin = ene; };
-    void SetPos      (const G4ThreeVector xyz) { fPos = xyz; };
-    void SetMom      (const G4ThreeVector pxyz) {fMom = pxyz; };
+    void SetTrackID   (const G4int track) { fTrackID = track; };
+    void SetParticleID(const G4int pid) {fParticleID = pid; };
+    void SetEdep      (const G4double de) { fEdep = de; };
+    void SetGlobalTime(const G4double time) { fGlobalTime = time; };
+    void SetEnergy    (const G4double ene) { fEkin = ene; };
+    void SetPos       (const G4ThreeVector xyz) { fPos = xyz; };
+    void SetMom       (const G4ThreeVector pxyz) {fMom = pxyz; };
 
     G4int GetTrackID() const { return fTrackID; };
     G4int GetParticleID() const { return fParticleID; };
+    G4double GetGlobalTime() const { return fGlobalTime; };
     G4double GetEdep() const { return fEdep; };
     G4double GetEkin() const { return fEkin; };
     G4ThreeVector GetPos() const { return fPos; };
@@ -55,6 +57,7 @@ class DetectorHit : public NDetectorHit
   private:
       G4int         fTrackID;
       G4int 		    fParticleID;
+      G4double      fGlobalTime;
       G4double      fEdep;
       G4double      fEkin;
       G4ThreeVector fPos;

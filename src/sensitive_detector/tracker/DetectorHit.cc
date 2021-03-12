@@ -25,6 +25,7 @@ DetectorHit::DetectorHit()
  : NDetectorHit(),
     fTrackID(-1),
     fParticleID(0),
+    fGlobalTime(0.),
     fEdep(0.),
     fEkin(0.),
     fPos(G4ThreeVector()),
@@ -37,6 +38,7 @@ DetectorHit::DetectorHit(const DetectorHit& right)
     fTrackID    = right.fTrackID;
     fParticleID = right.fParticleID;
     fDetectorID = right.fDetectorID;
+    fGlobalTime = right.fGlobalTime;
     fEdep       = right.fEdep;
     fEkin       = right.fEkin;
     fPos        = right.fPos;
@@ -49,6 +51,7 @@ DetectorHit::DetectorHit(DetectorHit* right)
     fTrackID    = right->fTrackID;
     fParticleID = right->fParticleID;
     fDetectorID = right->fDetectorID;
+    fGlobalTime = right->fGlobalTime;
     fEdep       = right->fEdep;
     fEkin       = right->fEkin;
     fPos        = right->fPos;
@@ -60,6 +63,7 @@ const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
     fTrackID    = right.fTrackID;
     fParticleID = right.fParticleID;
     fDetectorID = right.fDetectorID;
+    fGlobalTime = right.fGlobalTime;
     fEkin       = right.fEkin;
     fEdep       = right.fEdep;
     fPos        = right.fPos;
