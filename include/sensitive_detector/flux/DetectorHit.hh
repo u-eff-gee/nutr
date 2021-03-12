@@ -31,6 +31,7 @@ class DetectorHit : public NDetectorHit
   public:
     DetectorHit();
     DetectorHit(const DetectorHit&);
+    DetectorHit(DetectorHit*);
 
     const DetectorHit& operator=(const DetectorHit&);
 

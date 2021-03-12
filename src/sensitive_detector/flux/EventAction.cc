@@ -17,6 +17,10 @@
     Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
+#include <memory>
+
+using std::make_shared;
+
 #include "G4Event.hh"
 #include "G4EventManager.hh"
 #include "G4ios.hh"
@@ -34,19 +38,19 @@ void EventAction::EndOfEventAction(const G4Event* event)
 
     G4VHitsCollection* hc = nullptr;
     G4int particleID{0}, trackID{0};
-    DetectorHit* hit = nullptr;
+    shared_ptr<DetectorHit> hit;
 
     for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
         hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
         if(hc->GetSize() > 0){
-            hit = (DetectorHit*) hc->GetHit(0);
+            hit = make_shared<DetectorHit>((DetectorHit*) hc->GetHit(0));
             analysis_manager->FillNtuple(eventID, {hit});
             particleID = hit->GetParticleID();
             trackID = hit->GetTrackID();
 
             for(size_t i = 1; i < hc->GetSize(); ++i){
-                hit = (DetectorHit*) hc->GetHit(i);
+                hit = make_shared<DetectorHit>((DetectorHit*) hc->GetHit(i));
                 if(hit->GetParticleID() != particleID || hit->GetTrackID() != trackID){
                     analysis_manager->FillNtuple(eventID, {hit});
                     particleID = hit->GetParticleID();

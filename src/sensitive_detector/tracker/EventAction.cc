@@ -17,6 +17,10 @@
     Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
+#include <memory>
+
+using std::make_shared;
+
 #include "G4Event.hh"
 #include "G4EventManager.hh"
 #include "G4ios.hh"
@@ -37,6 +41,6 @@ void EventAction::EndOfEventAction(const G4Event* event)
         hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
         for(size_t i = 0; i < hc->GetSize(); ++i)
-            analysis_manager->FillNtuple(eventID, {(DetectorHit*) hc->GetHit(i)});
+            analysis_manager->FillNtuple(eventID, {make_shared<DetectorHit>((DetectorHit*) hc->GetHit(i))});
     }
 }

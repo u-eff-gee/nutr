@@ -17,6 +17,11 @@
     Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
+#include <memory>
+
+using std::make_shared;
+using std::shared_ptr;
+
 #include "G4Event.hh"
 #include "G4EventManager.hh"
 #include "G4ios.hh"
@@ -31,7 +36,7 @@ EventAction::EventAction(AnalysisManager* ana_man)
 void EventAction::EndOfEventAction(const G4Event* event)
 {
     G4VHitsCollection* hc = nullptr;
-    DetectorHit* cumulative_hit = nullptr;
+    shared_ptr<DetectorHit> cumulative_hit;
     int eventID{0};
 
     for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
@@ -44,7 +49,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
             for(size_t i = 0; i < hc->GetSize(); ++i)
                 edep += ((DetectorHit*) hc->GetHit(i))->GetEdep();
 
-            cumulative_hit = new DetectorHit();
+            cumulative_hit = make_shared<DetectorHit>();
             cumulative_hit->SetDetectorID(((DetectorHit*) hc->GetHit(0))->GetDetectorID());
             cumulative_hit->SetEdep(edep);
             analysis_manager->FillNtuple(eventID, {cumulative_hit});

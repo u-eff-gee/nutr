@@ -29,10 +29,10 @@ void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
 
 }
 
-void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<G4VHit*> hits)
+void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<shared_ptr<G4VHit>> hits)
 {
 
-    analysisManager->FillNtupleIColumn(0, 0, ((DetectorHit*) hits[0])->GetDetectorID());
-    analysisManager->FillNtupleDColumn(0, 1, ((DetectorHit*) hits[0])->GetEdep());
+    analysisManager->FillNtupleIColumn(0, 0, dynamic_pointer_cast<DetectorHit>(hits[0])->GetDetectorID());
+    analysisManager->FillNtupleDColumn(0, 1, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEdep());
 
 }
