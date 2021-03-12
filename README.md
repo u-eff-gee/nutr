@@ -53,7 +53,7 @@ Besides the usual Geant4 build variables, `nutr` provides the following options:
 * `OUTPUT_FORMAT`: Determine the format of the output. Possible choices: `root` (default), `csv`, and `xml`.
 * `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator (default: `general_particle_source`).
 * `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector (default: `event`).
-* `USE_HADRON_PHYSICS`: Include hadron physics lists (default: ON). Excluding hadron physics can speed up the startup of the simulation. This is useful, for example, when you only want to visualize the geometry. It might speed up the actual simulation as well, but sometimes hadron interactions cannot be neglected.
+* `USE_HADRON_PHYSICS`: Include hadron physics lists (default: ON). Excluding hadron physics can speed up the startup of the simulation. This is useful, for example, when a user only wants to visualize the geometry. It might speed up the actual simulation as well, but, of course, sometimes hadron interactions cannot be neglected.
 * `WITH_GEANT4_UIVIS`: Build `nutr` with Geant4 UI and Vis drivers (default: ON).
 
 ## 3. License
@@ -73,7 +73,7 @@ along with this program.  If not, see [https://www.gnu.org/licenses/](https://ww
 
 This product includes software developed by Members of the Geant4 Collaboration [http://cern.ch/geant4](http://cern.ch/geant4).
 
-Copyright (C) 2020, 2021, 2021 Udo Friman-Gayer (ufg@email.unc.edu)
+Copyright (C) 2020, 2021 Udo Friman-Gayer (ufg@email.unc.edu)
 
 ## 4. Acknowledgements
 
