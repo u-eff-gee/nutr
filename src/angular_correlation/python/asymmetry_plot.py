@@ -217,8 +217,8 @@ class AngularCorrelation:
         w_90_0  = angular_correlation(0.50*np.pi, 0.       , self.initial_state, self.cascade_steps)
         w_90_90 = angular_correlation(0.50*np.pi, 0.5*np.pi, self.initial_state, self.cascade_steps)
         
-        return ((w_45_0 - w_45_90)/(w_45_0 + w_45_90),
-                (w_90_0 - w_90_90)/(w_90_0 + w_90_90))
+        return ((w_45_90 - w_45_0)/(w_45_90 + w_45_0),
+                (w_90_90 - w_90_0)/(w_90_90 + w_90_0))
 
 class AsymmetryPlotter:
     def __init__(self, ang_cor, arctan_deltas, asy_45, asy_90, scale_asymmetries=True, asy_45_exp=None, asy_90_exp=None, show_polarization=None):
@@ -778,7 +778,7 @@ class AsymmetryPlotter:
         min_max_line_width = 2
         min_max_line_style = ':'
 
-        text_x = self.asy_45_lim[0] + 0.1*(self.asy_45_lim[1] - self.asy_45_lim[0])
+        text_x = self.asy_45_lim[0] + 0.05*(self.asy_45_lim[1] - self.asy_45_lim[0])
         text_y = self.asy_90_lim[1] - 0.1*(self.asy_90_lim[1] - self.asy_90_lim[0])
 
         n_contour_levels = 9
@@ -897,7 +897,7 @@ class AsymmetryPlotter:
         ax_del1_max_y2.set_xlim(self.asy_45_lim)
         ax_del1_max_y2.set_xticklabels([])
 
-        ax_del1_max.text(text_x, text_y, r'$\delta_{1, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
+        ax_del1_max.text(text_x, text_y, r'(a) $\delta_{1, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
 
         ax_del = inset_axes(ax, width=color_bar_width_in_bbox, height=color_bar_height_in_bbox, bbox_to_anchor=
         [
@@ -943,7 +943,7 @@ class AsymmetryPlotter:
         ax_del2_max_y2.set_xlim(self.asy_45_lim)
         ax_del2_max_y2.set_xticklabels([])
 
-        ax_del2_max.text(text_x, text_y, r'$\delta_{2, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
+        ax_del2_max.text(text_x, text_y, r'(b) $\delta_{2, \mathrm{max}}$', fontsize=fontsize_text, verticalalignment='center')
 
         ax_arctan_del = inset_axes(ax, width=color_bar_width_in_bbox, height=color_bar_height_in_bbox, bbox_to_anchor=
         [
@@ -993,7 +993,7 @@ class AsymmetryPlotter:
         ax_del1_min_y2.set_xlim(self.asy_45_lim)
         ax_del1_min_y2.set_xticklabels([])
 
-        ax_del1_min.text(text_x, text_y, r'$\delta_{1, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
+        ax_del1_min.text(text_x, text_y, r'(c) $\delta_{1, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
 
         ax_del2_min = inset_axes(ax, width=asy_45_asy_90_plot_width_in_bbox, height=asy_45_asy_90_plot_height_in_bbox, bbox_to_anchor=
         [
@@ -1031,7 +1031,7 @@ class AsymmetryPlotter:
         ax_del2_min_y2.set_xlim(self.asy_45_lim)
         ax_del2_min_y2.set_xticklabels([])
 
-        ax_del2_min.text(text_x, text_y, r'$\delta_{2, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
+        ax_del2_min.text(text_x, text_y, r'(d) $\delta_{2, \mathrm{min}}$', fontsize=fontsize_text, verticalalignment='center')
 
         if self.asy_45_exp is not None and self.asy_90_exp is not None:
             ax_lvl = inset_axes(ax, width=level_scheme_width_in_bbox, height=level_scheme_height_in_bbox, bbox_to_anchor=
@@ -1048,6 +1048,7 @@ class AsymmetryPlotter:
                                     returns_to_initial_state=returns_to_initial_state, fontsize=16,
                                     offset=(-0.1, 0.), state_line_width=3, arrow_width=3, transition_label_rotation=0, em_variable_symbol='', parity_variable_symbol='')
             lsplt.plot()
+            ax_lvl.text(0., 0.85, "(e)", fontsize=fontsize_text, transform=ax_lvl.transAxes)
 
             ax_delta = inset_axes(ax, width=exclusion_plot_width_in_bbox, height=exclusion_plot_height_in_bbox, bbox_to_anchor=
             [
@@ -1080,6 +1081,7 @@ class AsymmetryPlotter:
                 loc='lower left',
                 fontsize=fontsize_legend
             )
+            ax_delta.text(0.05, 0.9, "(f)", fontsize=fontsize_text, transform=ax_delta.transAxes)
 
             ax_delta.plot(
                 [arctan_delta_1_min_exp, arctan_delta_1_min_exp, arctan_delta_1_max_exp, arctan_delta_1_max_exp, arctan_delta_1_min_exp],
