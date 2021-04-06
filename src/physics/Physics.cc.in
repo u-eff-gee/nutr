@@ -21,6 +21,7 @@
 #include "G4EmExtraPhysics.hh"
 #include "G4EmLivermorePolarizedPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
+#include "G4SystemOfUnits.hh"
 #include "@HADRON_ELASTIC@.hh"
 #include "@HADRON_INELASTIC@.hh"
 
@@ -29,8 +30,8 @@
 
 Physics::Physics(){
 
-	RegisterPhysics(new G4EmLivermorePolarizedPhysics());
-    
+    RegisterPhysics(new G4EmLivermorePolarizedPhysics());
+
     G4EmExtraPhysics* emExtraPhysics = new G4EmExtraPhysics();
     emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR@);
     RegisterPhysics(new G4EmExtraPhysics());
@@ -44,4 +45,8 @@ Physics::Physics(){
     RegisterPhysics(new @HADRON_INELASTIC@());
 #endif
 
+}
+
+void Physics::SetCuts(){
+    G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(10*keV, 1*GeV);
 }
