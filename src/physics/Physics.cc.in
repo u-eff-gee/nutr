@@ -48,5 +48,5 @@ Physics::Physics(){
 }
 
 void Physics::SetCuts(){
-    G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(10*keV, 1*GeV);
+    G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(@PRODUCTION_CUT_LOW_KEV@*keV, 1.*GeV);
 }

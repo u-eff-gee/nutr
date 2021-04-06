@@ -17,6 +17,10 @@
     Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
+#include <memory>
+
+using std::dynamic_pointer_cast;
+
 #include "G4RunManager.hh"
 
 #include "DetectorConstruction.hh"

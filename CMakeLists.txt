@@ -33,7 +33,7 @@
 # In addition, compiling dependencies as separate libraries facilitates unit testing.
 
 cmake_minimum_required(VERSION 3.7.2)
-project(nutr VERSION 0.1.1)
+project(nutr VERSION 0.2.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -61,6 +61,8 @@ set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in ${PROJECT_SOUR
 if(${PRIMARY_GENERATOR_DIR} STREQUAL "angcorr")
     set(ANGCORR_PYTHON_DIR "${PROJECT_BINARY_DIR}/src/angular_correlation/python")
 endif()
+
+set(PRODUCTION_CUT_LOW_KEV "0.99" CACHE STRING "Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: '0.99', i.e. use default production cut of G4EmLivermorePolarizedPhysics). A straightforward way to view the current production cuts is the '/run/particle/dumpCutValues' macro command.")
 
 set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector (default: 'event').")
 

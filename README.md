@@ -1,6 +1,6 @@
 # **nutr**: new utr
 
-This is a [Geant4](https://geant4.cern.ch) [1] simulation of experiments in the Upstream Target Room (UTR) at the [High Intensity γ-ray Source (HIγS)]() [2] of the Triangle Universities Nuclear Laboratory.
+A [Geant4](https://geant4.cern.ch) [1] simulation of experiments in the Upstream Target Room (UTR) at the [High Intensity γ-ray Source (HIγS)]() [2] of the Triangle Universities Nuclear Laboratory.
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ Some code has been adapted from a previous simulation of the UTR ([utr](https://
 ### 2.1 Prerequisites
 
 * [Geant4 10.6 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`. If the low-energy nuclear data (LEND) for Geant4 have been downloaded and the `G4LENDDATA` environment variable has been set, then `nutr` can automatically use them.
-* A compiler that supports the [C++20](https://en.cppreference.com/w/cpp/20) standard.
+* A compiler that supports the [C++20](https://en.cppreference.com/w/cpp/20) standard (`nutr` uses 'designated initializers' to initialize detector properties in a transparent way, and that is a C++20 feature. See `${NUTR_SOURCE_DIR}/include/detectors/HPGe_Collection.hh`, for example).
 * [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is optional, but since the output is written in the ROOT format by default, it is highly recommended.
 * [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional) 
@@ -52,6 +52,7 @@ Besides the usual Geant4 build variables, `nutr` provides the following options:
 * `GEOMETRY_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/geometry` that contains the desired geometry.
 * `OUTPUT_FORMAT`: Determine the format of the output. Possible choices: `root` (default), `csv`, and `xml`.
 * `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator (default: `general_particle_source`).
+* `PRODUCTION_CUT_LOW_KEV`: Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: "0.99", i.e. use default production cut of `G4EmLivermorePolarizedPhysics`). A straightforward way to view the current production cuts is the `/run/particle/dumpCutValues` macro command.
 * `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector (default: `event`).
 * `USE_HADRON_PHYSICS`: Include hadron physics lists (default: ON). Excluding hadron physics can speed up the startup of the simulation. This is useful, for example, when a user only wants to visualize the geometry. It might speed up the actual simulation as well, but, of course, sometimes hadron interactions cannot be neglected.
 * `WITH_GEANT4_UIVIS`: Build `nutr` with Geant4 UI and Vis drivers (default: ON).
@@ -77,9 +78,6 @@ Copyright (C) 2020, 2021 Udo Friman-Gayer (ufg@email.unc.edu)
 
 ## 4. Acknowledgements
 
-The author would like to thank C. Iliadis for enlightening discussions about the angular correlation formalism and for help with debugging the associated modules.
-The author would also like to thank O. Papst for helpful discussions about the angular correlation formalism and advertise OP's angular correlation code [angcorrwat](https://github.com/op3/angcorrwat).
-`angcorrwat` is complementary to the present code in the sense that it uses the python package [sympy](https://www.sympy.org/) to obtain symbolic expressions for the angular correlations.
 The author would like to thank J. Dermigny for providing a Geant4 implementation of their γγ-coincidence spectrometer.
 
 ## 5. References
