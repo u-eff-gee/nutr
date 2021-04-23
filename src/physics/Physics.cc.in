@@ -34,7 +34,7 @@ Physics::Physics(){
 
     G4EmExtraPhysics* emExtraPhysics = new G4EmExtraPhysics();
     emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR@);
-    RegisterPhysics(new G4EmExtraPhysics());
+    RegisterPhysics(emExtraPhysics);
 
     RegisterPhysics(new G4DecayPhysics());
     RegisterPhysics(new G4RadioactiveDecayPhysics());
