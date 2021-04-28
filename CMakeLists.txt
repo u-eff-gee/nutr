@@ -33,7 +33,7 @@
 # In addition, compiling dependencies as separate libraries facilitates unit testing.
 
 cmake_minimum_required(VERSION 3.7.2)
-project(nutr VERSION 0.2.0)
+project(nutr VERSION 0.2.1)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -72,6 +72,7 @@ add_subdirectory(src/angular_correlation)
 add_subdirectory(src/detectors)
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)
+add_subdirectory(src/geometry/materials)
 add_subdirectory(src/geometry/${GEOMETRY_DIR})
 add_subdirectory(src/physics)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/${PRIMARY_GENERATOR_DIR})

@@ -36,4 +36,5 @@ add_library(nai NaI.cc)
 target_link_libraries(nai detector)
 
 add_library(scintillatorSCIONIX Scintillator_SCIONIX.cc)
-target_link_libraries(scintillatorSCIONIX detector)
+#target_include_directories(scintillatorSCIONIX PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)
+target_link_libraries(scintillatorSCIONIX cebr3 detector)

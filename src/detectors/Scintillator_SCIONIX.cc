@@ -25,7 +25,10 @@
 #include "G4Tubs.hh"
 #include "G4VisAttributes.hh"
 
+#include "CeBr3.hh"
 #include "Scintillator_SCIONIX.hh"
+
+CeBr3 cebr3;
 
 void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) {
 
@@ -73,12 +76,7 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
     const G4String pmt_material = "G4_Al"; // Assumption
     const G4String pmt_case_material = "G4_Al"; // Assumption (it is called 'magnetic shield' in the drawing)
     const G4String connector_material = "G4_Al"; // Assume that the connectors on top are made of the same material
-
-    // Crystal
-    // CeBr3, density from Wikipedia \cite CeriumBromideWikipedia2020
-    G4Material* crystal_material = new G4Material("CeBr3", 5.1*g/cm3, 2);
-    crystal_material->AddElement(nist->FindOrBuildElement("Ce"), 1);
-    crystal_material->AddElement(nist->FindOrBuildElement("Br"), 3);
+    const G4String crystal_material = "CeBr3";
 
     /*********** Orientation in space ***********/
 
@@ -115,7 +113,7 @@ void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double 
     /*********** Crystal ***********/
 
     G4Tubs *crystal_solid = new G4Tubs(detector_name + "_crystal_sold", 0., crystal_radius, 0.5*crystal_length, 0., twopi);
-    sensitive_logical_volumes.push_back(new G4LogicalVolume(crystal_solid, crystal_material, detector_name));
+    sensitive_logical_volumes.push_back(new G4LogicalVolume(crystal_solid, G4Material::GetMaterial(crystal_material), detector_name));
     sensitive_logical_volumes[0]->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
     new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center + front_entrance_window_thickness + crystal_to_entrance_window + 0.5*crystal_length)*e_r, sensitive_logical_volumes[0], detector_name + "_crystal", world_Logical, 0, 0, false);
 
