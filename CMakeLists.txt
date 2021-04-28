@@ -33,7 +33,7 @@
 # In addition, compiling dependencies as separate libraries facilitates unit testing.
 
 cmake_minimum_required(VERSION 3.7.2)
-project(nutr VERSION 0.2.1)
+project(nutr VERSION 0.3.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -58,9 +58,6 @@ set(OUTPUT_FORMAT "root" CACHE STRING "Determine the format of the output. Possi
 set(GEOMETRY_DIR "clover_array" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry (default: 'clover_array').")
 
 set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/primary_generator that contains the desired primary generator (default: 'gps', i.e. G4GeneralParticleSource).")
-if(${PRIMARY_GENERATOR_DIR} STREQUAL "angcorr")
-    set(ANGCORR_PYTHON_DIR "${PROJECT_BINARY_DIR}/src/angular_correlation/python")
-endif()
 
 set(PRODUCTION_CUT_LOW_KEV "0.99" CACHE STRING "Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: '0.99', i.e. use default production cut of G4EmLivermorePolarizedPhysics). A straightforward way to view the current production cuts is the '/run/particle/dumpCutValues' macro command.")
 
@@ -68,7 +65,6 @@ set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in ${PROJECT_S
 
 set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
 
-add_subdirectory(src/angular_correlation)
 add_subdirectory(src/detectors)
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)
