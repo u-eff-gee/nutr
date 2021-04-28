@@ -24,19 +24,19 @@ include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
 add_library(detector Detector.cc)
 target_compile_options(detector PUBLIC -Wall -Wextra)
 
-add_library(filterCase Filter_Case.cc)
+add_library(filterCase EXCLUDE_FROM_ALL Filter_Case.cc)
 
-add_library(hpgeClover HPGe_Clover.cc)
+add_library(hpgeClover EXCLUDE_FROM_ALL HPGe_Clover.cc)
 target_link_libraries(hpgeClover detector)
 
-add_library(hpgeCoaxial HPGe_Coaxial.cc)
+add_library(hpgeCoaxial EXCLUDE_FROM_ALL HPGe_Coaxial.cc)
 target_link_libraries(hpgeCoaxial detector filterCase)
 
-add_library(nai NaI.cc)
+add_library(nai EXCLUDE_FROM_ALL NaI.cc)
 target_link_libraries(nai detector)
 
-add_library(cebr3_15x15 CeBr3_15x15.cc)
+add_library(cebr3_15x15 EXCLUDE_FROM_ALL CeBr3_15x15.cc)
 target_link_libraries(cebr3_15x15 cebr3 detector)
 
-add_library(labr3ce_3x3 LaBr3Ce_3x3.cc)
+add_library(labr3ce_3x3 EXCLUDE_FROM_ALL LaBr3Ce_3x3.cc)
 target_link_libraries(labr3ce_3x3 labr3ce detector)
