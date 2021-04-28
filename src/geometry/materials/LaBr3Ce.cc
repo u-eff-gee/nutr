@@ -17,18 +17,19 @@
 	Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
-#pragma once
+#include <memory>
 
-#include "G4Material.hh"
+using std::make_shared;
 
-#include "Material.hh"
+#include "LaBr3Ce.hh"
 
-/**
- * \brief Cerium bromide scintillator material.
- * 
- * Uses the standard properties from Wikipedia \cite CeriumBromideWikipedia2020.
- */
-class CeBr3 : public Material{
-public:
-    CeBr3();
-};
+#include "G4NistManager.hh"
+#include "G4SystemOfUnits.hh"
+
+LaBr3Ce::LaBr3Ce(){
+    material = make_shared<G4Material>("LaBr3Ce", 5.08*g/cm3, 3);
+	G4NistManager *nist = G4NistManager::Instance();
+    material->AddElement(nist->FindOrBuildElement("La"), 95);
+    material->AddElement(nist->FindOrBuildElement("Br"), 300);
+    material->AddElement(nist->FindOrBuildElement("Ce"), 5);
+}

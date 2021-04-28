@@ -35,6 +35,8 @@ target_link_libraries(hpgeCoaxial detector filterCase)
 add_library(nai NaI.cc)
 target_link_libraries(nai detector)
 
-add_library(scintillatorSCIONIX CeBr3_15x15.cc)
-#target_include_directories(scintillatorSCIONIX PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)
-target_link_libraries(scintillatorSCIONIX cebr3 detector)
+add_library(cebr3_15x15 CeBr3_15x15.cc)
+target_link_libraries(cebr3_15x15 cebr3 detector)
+
+add_library(labr3ce_3x3 LaBr3Ce_3x3.cc)
+target_link_libraries(labr3ce_3x3 labr3ce detector)

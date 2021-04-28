@@ -24,11 +24,17 @@
 #include "Material.hh"
 
 /**
- * \brief Cerium bromide scintillator material.
+ * \brief Cerium-doped lanthanum bromide material.
  * 
- * Uses the standard properties from Wikipedia \cite CeriumBromideWikipedia2020.
+ * The composition used here corresponds to the "BrilLanCe 380" trademark material 
+ * \cite BrilLanCe380SaintGobain2021 \cite BrilLanCe380gammadata2021.
+ * In Ref. \cite BrilLanCe380SaintGobain, the percentage of Ce is given as 5%.
+ * It was assumed that this is the percentage of lanthanum atoms that have been replaced by cerium.
+ * In Ref. \cite BrilLanCe380gammadata2021, the density of the material is given as 5.08 g/cm3.
+ * From this information and the known chemical formula, the relative contents of the constituents 
+ * were deduced (see the implementation of the constructor).
  */
-class CeBr3 : public Material{
+class LaBr3Ce : public Material{
 public:
-    CeBr3();
+    LaBr3Ce();
 };
