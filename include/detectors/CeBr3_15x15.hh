@@ -22,10 +22,12 @@
 #include "Detector.hh"
 
 /**
- * \brief Class for a SCIONIX 1.5 in x 1.5 in scintillation detector of with PMT and connectors
+ * \brief Class for a 1.5 in x 1.5 in CeBr3 scintillation detector with PMT and connectors
  * 
  * This class implements a simplified standard configuration of 1.5 in x 1.5 in scintillation 
  * detectors as manufactured by the company SCIONIX \cite SCIONIX2020.
+ * The sensitive crystals are made of the low-background (as compared to lanthanum-based 
+ * scintillators) cerium-bromide (CeBr3) material.
  * If not indicated otherwise, dimensions were read off from the technical drawings on the SCIONIX 
  *  webpage for scintillation crystals with a photomultiplier tube (PMT) and a preamplifier.
  * 
@@ -37,12 +39,14 @@
  * It is mounted inside a PMT case which acts as a magnetic shield.
  * - The connector part, which contains the connector.
  * 
- * On the outside of the case, two connectors for high voltage supply and signal readout are 
+ * The geometry is simplified in the sense that the front part of the detector, should resemble 
+ * the real detector closely, while the back part consists of empty cases.
+ * On the outside of the PMT case, two connectors for high voltage supply and signal readout are 
  * attached, which are implemented in a simplified way as well.
  */
-class Scintillator_SCIONIX : public Detector{
+class CeBr3_15x15 : public Detector{
     public:
-        Scintillator_SCIONIX(G4LogicalVolume *World_Logical, G4String name) : Detector (World_Logical, name){};
+        CeBr3_15x15(G4LogicalVolume *World_Logical, G4String name) : Detector (World_Logical, name){};
 
 		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override final;
         

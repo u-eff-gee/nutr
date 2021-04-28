@@ -45,7 +45,7 @@ using std::vector;
 
 #include "HPGe_Clover.hh"
 #include "HPGe_Collection.hh"
-#include "Scintillator_SCIONIX.hh"
+#include "CeBr3_15x15.hh"
 
 const double distance = 8.*25.4*mm;
 
@@ -116,9 +116,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         RegisterSensitiveLogicalVolumes(clovers[clovers.size()-1].get_sensitive_logical_volumes());
     }
 
-    vector<Scintillator_SCIONIX> cebrs;
+    vector<CeBr3_15x15> cebrs;
     for(auto det_pos: cebr_position){
-        cebrs.push_back(Scintillator_SCIONIX(world_logical.get(), det_pos.id));
+        cebrs.push_back(CeBr3_15x15(world_logical.get(), det_pos.id));
         cebrs[cebrs.size()-1].Construct(G4ThreeVector(), det_pos.theta, det_pos.phi, det_pos.distance, det_pos.intrinsic_rotation_angle);
         RegisterSensitiveLogicalVolumes(cebrs[cebrs.size()-1].get_sensitive_logical_volumes());
     }

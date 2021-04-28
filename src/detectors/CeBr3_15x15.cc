@@ -26,11 +26,11 @@
 #include "G4VisAttributes.hh"
 
 #include "CeBr3.hh"
-#include "Scintillator_SCIONIX.hh"
+#include "CeBr3_15x15.hh"
 
 CeBr3 cebr3;
 
-void Scintillator_SCIONIX::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) {
+void CeBr3_15x15::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) {
 
     /*********** Dimensions ***********/
     // Front
