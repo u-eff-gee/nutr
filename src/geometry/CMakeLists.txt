@@ -22,13 +22,10 @@ include(${Geant4_USE_FILE})
 add_library(nDetectorConstruction NDetectorConstruction.cc)
 target_include_directories(nDetectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 target_link_libraries(nDetectorConstruction SensitiveDetector)
-target_compile_options(nDetectorConstruction PUBLIC -Wall -Wextra)
 
 add_library(sourceVolume EXCLUDE_FROM_ALL SourceVolume.cc)
 target_include_directories(sourceVolume PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
-target_compile_options(sourceVolume PUBLIC -Wall -Wextra)
 
 add_library(sourceVolumeTubs EXCLUDE_FROM_ALL SourceVolumeTubs.cc)
 target_include_directories(sourceVolumeTubs PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
 target_link_libraries(sourceVolumeTubs sourceVolume)
-target_compile_options(sourceVolumeTubs PUBLIC -Wall -Wextra)

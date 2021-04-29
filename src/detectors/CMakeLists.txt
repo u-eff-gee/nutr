@@ -22,7 +22,6 @@ include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
 
 add_library(detector Detector.cc)
-target_compile_options(detector PUBLIC -Wall -Wextra)
 
 add_library(filterCase EXCLUDE_FROM_ALL Filter_Case.cc)
 

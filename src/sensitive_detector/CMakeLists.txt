@@ -24,18 +24,13 @@ include(${Geant4_USE_FILE})
 
 configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/AnalysisManager.hh.in ${PROJECT_BINARY_DIR}/include/sensitive_detector/AnalysisManager.hh)
 add_library(analysisManager AnalysisManager.cc)
-target_compile_options(analysisManager PUBLIC -Wall -Wextra)
 
 add_library(nDetectorHit NDetectorHit.cc)
-target_compile_options(nDetectorHit PUBLIC -Wall -Wextra)
 
 add_library(nRunAction NRunAction.cc)
-target_compile_options(nRunAction PUBLIC -Wall -Wextra)
 
 configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/NEventAction.hh.in ${PROJECT_BINARY_DIR}/include/sensitive_detector/NEventAction.hh)
 add_library(nEventAction NEventAction.cc)
 target_link_libraries(nEventAction nRunAction)
-target_compile_options(nEventAction PUBLIC -Wall -Wextra)
 
 add_library(nSensitiveDetector NSensitiveDetector.cc)
-target_compile_options(nSensitiveDetector PUBLIC -Wall -Wextra)

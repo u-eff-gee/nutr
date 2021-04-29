@@ -24,23 +24,18 @@ include(${Geant4_USE_FILE})
 add_library(DetectorHit DetectorHit.cc)
 target_include_directories(DetectorHit PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector)
 target_link_libraries(DetectorHit nDetectorHit)
-target_compile_options(DetectorHit PUBLIC -Wall -Wextra)
 
 add_library(SensitiveDetector SensitiveDetector.cc)
 target_link_libraries(SensitiveDetector nSensitiveDetector DetectorHit)
-target_compile_options(SensitiveDetector PUBLIC -Wall -Wextra)
 
 add_library(tupleManager TupleManager.cc)
 target_include_directories(tupleManager PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/${GEOMETRY_DIR})
 target_include_directories(tupleManager PUBLIC ${PROJECT_BINARY_DIR}/include/sensitive_detector)
 target_link_libraries(tupleManager analysisManager DetectorHit)
-target_compile_options(tupleManager PUBLIC -Wall -Wextra)
 
 add_library(eventAction EventAction.cc)
 target_include_directories(eventAction PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector)
 target_link_libraries(eventAction nEventAction tupleManager)
-target_compile_options(eventAction PUBLIC -Wall -Wextra)
 
 add_library(runAction RunAction.cc)
 target_link_libraries(runAction nRunAction tupleManager)
-target_compile_options(runAction PUBLIC -Wall -Wextra)

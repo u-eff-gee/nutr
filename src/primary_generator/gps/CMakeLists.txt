@@ -22,4 +22,3 @@ include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include/primary_generator/gps)
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
-target_compile_options(primaryGeneratorAction PUBLIC -Wall -Wextra)

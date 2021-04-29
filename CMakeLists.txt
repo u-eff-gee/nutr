@@ -65,6 +65,8 @@ set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in ${PROJECT_S
 
 set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
 
+add_compile_options(-Wall -Wextra -Wpedantic)
+
 add_subdirectory(src/detectors)
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)
@@ -78,7 +80,6 @@ add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 add_executable(nutr src/fundamentals/nutr.cc)
 target_include_directories(nutr PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
 target_link_libraries(nutr actionInitialization detectorConstruction physics ${Geant4_LIBRARIES})
-target_compile_options(nutr PUBLIC -Wall -Wextra)
 
 set(MACROS_ESSENTIAL init_vis.mac vis.mac)
 foreach(macro ${MACROS_ESSENTIAL})

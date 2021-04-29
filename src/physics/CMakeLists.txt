@@ -37,4 +37,3 @@ link_libraries(${Geant4_LIBRARIES})
 include(${Geant4_USE_FILE})
 
 add_library(physics ${PROJECT_BINARY_DIR}/src/physics/Physics.cc)
-target_compile_options(physics PUBLIC -Wall -Wextra)
