@@ -23,6 +23,7 @@ A [Geant4](https://geant4.cern.ch) [1] simulation of experiments in the Upstream
 The main program, user actions, and visualization macros of `nutr` are based on example B2a of Geant4 (`$G4_INSTALL_DIR/share/Geant4-10.6.1/examples/basic/B2/B2a`).
 An analysis manager was added, which is based on the examples AnaEx* of Geant4 (`$G4_INSTALL_DIR/share/Geant4-10.6.1/examples/extended/analysis/AnaEx*`).
 Some code has been adapted from a previous simulation of the UTR ([utr](https://github.com/uga-uga/utr) [3]).
+`nutr` can employ the [alpaca](https://github.com/uga-uga/alpaca) library to generate gamma-ray cascades with realistic direction-direction and polarization-direction correlations.
 
 ## 2. Build
 
@@ -30,10 +31,9 @@ Some code has been adapted from a previous simulation of the UTR ([utr](https://
 
 * [Geant4 10.6 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`. If the low-energy nuclear data (LEND) for Geant4 have been downloaded and the `G4LENDDATA` environment variable has been set, then `nutr` can automatically use them.
 * A compiler that supports the [C++20](https://en.cppreference.com/w/cpp/20) standard (`nutr` uses 'designated initializers' to initialize detector properties in a transparent way, and that is a C++20 feature. See `${NUTR_SOURCE_DIR}/include/detectors/HPGe_Collection.hh`, for example).
-* [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/)
 * [ROOT 6](https://root.cern.ch/) is optional, but since the output is written in the ROOT format by default, it is highly recommended.
-* [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional) 
-* [python3](https://www.python.org/) to import the angular correlation function wrappers in python code, and the [matplotlib](https://matplotlib.org/) and [numpy](https://numpy.org/) packages to be able to reproduce the test plots (optional).
+* [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional)
+* [alpaca](https://github.com/uga-uga/alpaca) to use the `angcorr` primary generator (optional). The `alpaca` library must have been installed (`cmake --install .`) for `nutr` to be able to find it.
 
 In the following, the directory where the top-level `CMakeLists.txt` is located in a downloaded version of `nutr` is denoted as `NUTR_SOURCE_DIR`.
 In a build directory `NUTR_BUILD_DIR`, execute:
@@ -49,11 +49,12 @@ After the first build step, several `CMake` build variables will be available fo
 Besides the usual Geant4 build variables, `nutr` provides the following options:
 
 * `BUILD_DOCUMENTATION`: Create the code documentation using Doxygen (default: OFF).
-* `GEOMETRY_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/geometry` that contains the desired geometry.
+* `GEOMETRY_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/geometry` that contains the desired geometry (default: `clover_array`).
 * `OUTPUT_FORMAT`: Determine the format of the output. Possible choices: `root` (default), `csv`, and `xml`.
-* `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator (default: `general_particle_source`).
+* `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator Possible choices: `gps` (default), `angcorr`.
 * `PRODUCTION_CUT_LOW_KEV`: Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: "0.99", i.e. use default production cut of `G4EmLivermorePolarizedPhysics`). A straightforward way to view the current production cuts is the `/run/particle/dumpCutValues` macro command.
-* `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector (default: `event`).
+* `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector. Possible choices: `edep`, `event` (default), `flux`, `tracker`.
+* `UPDATE_FREQUENCY`: Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).
 * `USE_HADRON_PHYSICS`: Include hadron physics lists (default: ON). Excluding hadron physics can speed up the startup of the simulation. This is useful, for example, when a user only wants to visualize the geometry. It might speed up the actual simulation as well, but, of course, sometimes hadron interactions cannot be neglected.
 * `WITH_GEANT4_UIVIS`: Build `nutr` with Geant4 UI and Vis drivers (default: ON).
 

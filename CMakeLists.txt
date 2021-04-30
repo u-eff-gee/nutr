@@ -57,11 +57,11 @@ set(OUTPUT_FORMAT "root" CACHE STRING "Determine the format of the output. Possi
 
 set(GEOMETRY_DIR "clover_array" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry (default: 'clover_array').")
 
-set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/primary_generator that contains the desired primary generator (default: 'gps', i.e. G4GeneralParticleSource).")
+set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator` that contains the desired primary generator Possible choices: 'gps' (default), 'angcorr'.")
 
 set(PRODUCTION_CUT_LOW_KEV "0.99" CACHE STRING "Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: '0.99', i.e. use default production cut of G4EmLivermorePolarizedPhysics). A straightforward way to view the current production cuts is the '/run/particle/dumpCutValues' macro command.")
 
-set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/sensitive_detector that contains the desired sensitive detector (default: 'event').")
+set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/sensitive_detector` that contains the desired sensitive detector. Possible choices: `edep`, `event` (default), `flux`, `tracker`.")
 
 set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
 
