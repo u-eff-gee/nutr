@@ -44,9 +44,10 @@ using std::vector;
 #include "DetectorConstruction.hh"
 
 #include "BeamPipe.hh"
+#include "CeBr3_15x15.hh"
 #include "HPGe_Clover.hh"
 #include "HPGe_Collection.hh"
-#include "CeBr3_15x15.hh"
+#include "LeadShieldingUTR.hh"
 
 const double distance = 8.*25.4*mm;
 
@@ -112,6 +113,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     BeamPipe beam_pipe(world_logical.get());
     beam_pipe.Construct({});
+
+    LeadShieldingUTR lead_shielding_UTR(world_logical.get());
+    lead_shielding_UTR.Construct({});
 
     vector<HPGe_Clover> clovers;
     for(auto det_pos: clover_position){

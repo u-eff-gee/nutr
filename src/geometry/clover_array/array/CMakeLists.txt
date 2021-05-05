@@ -17,3 +17,6 @@
 
 add_library(beamPipe BeamPipe.cc)
 target_include_directories(beamPipe PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
+
+add_library(leadShieldingUTR LeadShieldingUTR.cc)
+target_include_directories(leadShieldingUTR PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)

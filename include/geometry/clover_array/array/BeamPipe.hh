@@ -20,6 +20,7 @@
 #pragma once
 
 #include "G4LogicalVolume.hh"
+#include "G4SystemOfUnits.hh"
 #include "G4VPhysicalVolume.hh"
 
 /**
@@ -49,6 +50,7 @@ public:
         use_downstream_pipe(use_down_pipe),
         use_target_ring(use_ring){};
     void Construct(const G4ThreeVector global_coordinates);
+    static constexpr double beam_pipe_outer_radius = 25.4*mm;
 
 protected:
     G4LogicalVolume *world_logical;

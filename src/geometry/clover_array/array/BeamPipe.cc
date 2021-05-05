@@ -31,7 +31,6 @@ void BeamPipe::Construct(const G4ThreeVector global_coordinates){
     const double inch = 25.4*mm;
 
     const double beam_pipe_length = 2.*m; // Estimated
-    const double beam_pipe_outer_radius = 1.*inch;
     const double beam_pipe_inner_radius = 0.875*inch;
 
     const double insert_pipe_lid_thickness = 2.*mm; // Estimated
