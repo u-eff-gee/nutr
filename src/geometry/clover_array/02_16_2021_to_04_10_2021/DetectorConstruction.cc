@@ -45,6 +45,7 @@ using std::vector;
 
 #include "BeamPipe.hh"
 #include "CeBr3_15x15.hh"
+#include "CollimatorRoom.hh"
 #include "HPGe_Clover.hh"
 #include "HPGe_Collection.hh"
 #include "LeadShieldingUTR.hh"
@@ -106,10 +107,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	G4NistManager *nist_manager = G4NistManager::Instance();
 
-	world_solid = make_unique<G4Box>("world_solid", 2.*m, 2.*m, 2.*m);
+	world_solid = make_unique<G4Box>("world_solid", 2.*m, 2.*m, 3.5*m);
 	world_logical = make_unique<G4LogicalVolume>(world_solid.get(), nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical");
 	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
 	world_phys = make_unique<G4PVPlacement>(new G4RotationMatrix(), G4ThreeVector(), world_logical.get(), "world", nullptr, false, 0);
+
+    CollimatorRoom collimator_room(world_logical.get());
+    collimator_room.Construct({});
 
     BeamPipe beam_pipe(world_logical.get());
     beam_pipe.Construct({});

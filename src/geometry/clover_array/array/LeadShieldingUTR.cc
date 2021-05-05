@@ -32,7 +32,7 @@
 void LeadShieldingUTR::Construct(const G4ThreeVector global_coordinates){
     const double inch = 25.4*mm;
 
-    const double gap_size = 1.*mm; // Gap between the inside of the holes in the lead wall and the beam pipe, estimated
+    const double gap_size = 1.*mm; // Gap between the inside of the holes in the lead walls and the beam pipe, estimated
     
     const double downstream_wall_to_target = 46.5*inch;
     const double downstream_wall_thickness = 8.*inch;

@@ -15,8 +15,11 @@
 #
 #    Copyright (C) 2020, 2021 Udo Friman-Gayer
 
-add_library(beamPipe BeamPipe.cc)
+add_library(beamPipe EXCLUDE_FROM_ALL BeamPipe.cc)
 target_include_directories(beamPipe PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
 
-add_library(leadShieldingUTR LeadShieldingUTR.cc)
+add_library(collimatorRoom EXCLUDE_FROM_ALL CollimatorRoom.cc)
+target_include_directories(collimatorRoom PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
+
+add_library(leadShieldingUTR EXCLUDE_FROM_ALL LeadShieldingUTR.cc)
 target_include_directories(leadShieldingUTR PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
