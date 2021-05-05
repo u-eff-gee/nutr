@@ -55,7 +55,7 @@ endif(BUILD_DOCUMENTATION)
 
 set(OUTPUT_FORMAT "root" CACHE STRING "Determine the format of the output. Possible choices: 'root' (default), 'csv', and 'xml'.")
 
-set(GEOMETRY_DIR "clover_array" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry (default: 'clover_array').")
+set(GEOMETRY_DIR "clover_array/02_16_2021_to_04_10_2021" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry (default: 'clover_array/02_16_2021_to_04_10_2021').")
 
 set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator` that contains the desired primary generator Possible choices: 'gps' (default), 'angcorr'.")
 
@@ -71,6 +71,9 @@ add_subdirectory(src/detectors)
 add_subdirectory(src/fundamentals)
 add_subdirectory(src/geometry)
 add_subdirectory(src/geometry/materials)
+if(<variable|${GEOMETRY_DIR}> MATCHES "clover_array")
+	add_subdirectory(src/geometry/clover_array/array)
+endif()
 add_subdirectory(src/geometry/${GEOMETRY_DIR})
 add_subdirectory(src/physics)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/${PRIMARY_GENERATOR_DIR})
