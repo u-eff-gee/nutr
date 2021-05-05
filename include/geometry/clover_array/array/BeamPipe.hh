@@ -39,18 +39,21 @@ public:
     BeamPipe(
         G4LogicalVolume* world_log,
         const double air_rel_dens=0.04,
-        const bool use_up_lid=true,
-        const bool use_down_pipe=true
+        const bool use_up_cap=true,
+        const bool use_down_pipe=true,
+        const bool use_ring=true
         ):
         world_logical(world_log),
         air_relative_density(air_rel_dens),
-        use_upstream_lid(use_up_lid),
-        use_downstream_pipe(use_down_pipe){};
+        use_upstream_cap(use_up_cap),
+        use_downstream_pipe(use_down_pipe),
+        use_target_ring(use_ring){};
     void Construct(const G4ThreeVector global_coordinates);
 
 protected:
     G4LogicalVolume *world_logical;
     const double air_relative_density;
-    const bool use_upstream_lid;
+    const bool use_upstream_cap;
     const bool use_downstream_pipe;
+    const bool use_target_ring;
 };
