@@ -46,8 +46,10 @@ using std::vector;
 #include "BeamPipe.hh"
 #include "CeBr3_15x15.hh"
 #include "CollimatorRoom.hh"
+#include "ComptonMonitor.hh"
 #include "HPGe_Clover.hh"
 #include "HPGe_Collection.hh"
+#include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR.hh"
 
 const double distance = 8.*25.4*mm;
@@ -134,6 +136,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         cebrs[cebrs.size()-1].Construct(G4ThreeVector(), det_pos.theta, det_pos.phi, det_pos.distance, det_pos.intrinsic_rotation_angle);
         RegisterSensitiveLogicalVolumes(cebrs[cebrs.size()-1].get_sensitive_logical_volumes());
     }
+
+    ComptonMonitor compton_monitor(world_logical.get());
+    compton_monitor.Construct({});
+    LaBr3Ce_3x3 compton_monitor_detector(world_logical.get(), "Z");
+    compton_monitor_detector.Construct({0., 0., ComptonMonitor::scattering_target_to_target}, ComptonMonitor::detector_angle, 0., ComptonMonitor::scattering_target_to_detector);
 
 	return world_phys.get();
 }

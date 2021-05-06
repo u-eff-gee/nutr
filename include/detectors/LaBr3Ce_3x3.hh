@@ -34,14 +34,11 @@
  * webpage for scintillation crystals with a photomultiplier tube (PMT) and a preamplifier.
  * 	
  * Only the outer dimensions of the housing, but no details about the inside, are known. This 
- * is why all the back parts are simply constructed as hollow aluminium. The housing is 
- * only implemented for aesthetic reasons and can be switched off via the 'use_housing' flag.
-
+ * is why all the back parts are simply constructed as hollow aluminium.
  */
 class LaBr3Ce_3x3 : public Detector{
-    public:
-        LaBr3Ce_3x3(G4LogicalVolume *World_Logical, G4String name) : Detector (World_Logical, name){};
+public:
+    LaBr3Ce_3x3(G4LogicalVolume *World_Logical, G4String name) : Detector (World_Logical, name){};
 
-		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override final;
-        
+    void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override final;
 };
