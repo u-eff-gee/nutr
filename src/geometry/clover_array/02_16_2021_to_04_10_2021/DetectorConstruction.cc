@@ -46,7 +46,7 @@ using std::vector;
 #include "BeamPipe.hh"
 #include "CeBr3_15x15.hh"
 #include "CollimatorRoom.hh"
-#include "ComptonMonitor.hh"
+#include "ComptonMonitor_02_16_2021_to_04_18_2021.hh"
 #include "HPGe_Clover.hh"
 #include "HPGe_Collection.hh"
 #include "LaBr3Ce_3x3.hh"
@@ -140,6 +140,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     ComptonMonitor compton_monitor(world_logical.get());
     compton_monitor.Construct({});
     LaBr3Ce_3x3 compton_monitor_detector(world_logical.get(), "Z");
+    RegisterSensitiveLogicalVolumes(compton_monitor_detector.get_sensitive_logical_volumes());
     compton_monitor_detector.Construct({0., 0., ComptonMonitor::scattering_target_to_target}, ComptonMonitor::detector_angle, 0., ComptonMonitor::scattering_target_to_detector);
 
 	return world_phys.get();
