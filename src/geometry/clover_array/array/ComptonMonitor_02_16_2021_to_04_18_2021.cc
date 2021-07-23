@@ -25,14 +25,11 @@
 #include "G4VisAttributes.hh"
 
 #include "ComptonMonitor_02_16_2021_to_04_18_2021.hh"
+#include "ComptonMonitorTarget.hh"
 
 void ComptonMonitor::Construct(const G4ThreeVector global_coordinates){
 
     const double inch = 25.4*mm;
-
-    const double scattering_target_height = 100.*mm; // Estimated
-    const double scattering_target_width = 60.*mm; // Estimated
-    const double scattering_target_thickness = 0.988*mm;
 
     const double lead_shielding_side_length = 8.*inch;
     const double lead_shielding_side_thickness = 4.*inch;
@@ -46,10 +43,8 @@ void ComptonMonitor::Construct(const G4ThreeVector global_coordinates){
 
     // Scattering target
 
-    G4Box* scattering_target_solid = new G4Box("scattering_target_solid", 0.5*scattering_target_width, 0.5*scattering_target_height, 0.5*scattering_target_thickness);
-    G4LogicalVolume* scattering_target_logical = new G4LogicalVolume(scattering_target_solid, nist->FindOrBuildMaterial("G4_Cu"), "scattering_target_logical");
-    scattering_target_logical->SetVisAttributes(G4Color(1., 165./255., 0));
-    new G4PVPlacement(0, global_coordinates + G4ThreeVector(0., 0., scattering_target_to_target), scattering_target_logical, "scattering_target", world_logical, false, 0, false);
+    ComptonMonitorTarget compton_monitor_target(world_logical);
+    compton_monitor_target.Construct(global_coordinates + G4ThreeVector(0., 0., scattering_target_to_target));
 
     // Detector shielding
 
@@ -62,16 +57,16 @@ void ComptonMonitor::Construct(const G4ThreeVector global_coordinates){
     lead_shielding_side_logical->SetVisAttributes(G4Color::Green());
     G4RotationMatrix* rotate_left_shielding = new G4RotationMatrix();
     rotate_left_shielding->rotateY(-detector_angle - shielding_rotation_angle);
-    new G4PVPlacement(rotate_left_shielding, shielding_rotation_center + G4ThreeVector(shielding_to_rotation_center*sin(shielding_rotation_angle+detector_angle), shielding_side_y, shielding_to_rotation_center*cos(shielding_rotation_angle+detector_angle)), lead_shielding_side_logical, "lead_shielding_left", world_logical, false, 0, false);
+    new G4PVPlacement(rotate_left_shielding, global_coordinates + shielding_rotation_center + G4ThreeVector(shielding_to_rotation_center*sin(shielding_rotation_angle+detector_angle), shielding_side_y, shielding_to_rotation_center*cos(shielding_rotation_angle+detector_angle)), lead_shielding_side_logical, "lead_shielding_left", world_logical, false, 0, false);
 
     G4RotationMatrix* rotate_right_shielding = new G4RotationMatrix();
     rotate_right_shielding->rotateY(-detector_angle + shielding_rotation_angle);
-    new G4PVPlacement(rotate_right_shielding, shielding_rotation_center + G4ThreeVector(shielding_to_rotation_center*sin(-shielding_rotation_angle+detector_angle), shielding_side_y, shielding_to_rotation_center*cos(-shielding_rotation_angle+detector_angle)), lead_shielding_side_logical, "lead_shielding_right", world_logical, false, 0, false);
+    new G4PVPlacement(rotate_right_shielding, global_coordinates + shielding_rotation_center + G4ThreeVector(shielding_to_rotation_center*sin(-shielding_rotation_angle+detector_angle), shielding_side_y, shielding_to_rotation_center*cos(-shielding_rotation_angle+detector_angle)), lead_shielding_side_logical, "lead_shielding_right", world_logical, false, 0, false);
 
     G4Box* lead_shielding_top_solid = new G4Box("lead_shielding_top_solid", 0.5*lead_shielding_top_width, 0.5*lead_shielding_top_height, 0.5*lead_shielding_top_thickness);
     G4LogicalVolume* lead_shielding_top_logical = new G4LogicalVolume(lead_shielding_top_solid, nist->FindOrBuildMaterial("G4_Pb"), "lead_shielding_top_logical");
     lead_shielding_top_logical->SetVisAttributes(G4Color::Green());
     G4RotationMatrix* rotate_top_shielding = new G4RotationMatrix();
     rotate_top_shielding->rotateY(-detector_angle);
-    new G4PVPlacement(rotate_top_shielding, shielding_rotation_center + G4ThreeVector(0.9*shielding_to_rotation_center*sin(detector_angle), shielding_side_y + 0.5*lead_shielding_side_height + 0.5*lead_shielding_top_height, 0.9*shielding_to_rotation_center*cos(detector_angle)), lead_shielding_top_logical, "lead_shielding_top", world_logical, false, 0, false);
+    new G4PVPlacement(rotate_top_shielding, global_coordinates + shielding_rotation_center + G4ThreeVector(0.9*shielding_to_rotation_center*sin(detector_angle), shielding_side_y + 0.5*lead_shielding_side_height + 0.5*lead_shielding_top_height, 0.9*shielding_to_rotation_center*cos(detector_angle)), lead_shielding_top_logical, "lead_shielding_top", world_logical, false, 0, false);
 }
