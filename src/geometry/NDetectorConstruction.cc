@@ -17,19 +17,26 @@
     Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
+#include <stdexcept>
+
+using std::runtime_error;
+
 #include "G4SDManager.hh"
 
 #include "NDetectorConstruction.hh"
 #include "SensitiveDetector.hh"
 
 void NDetectorConstruction::RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes){
+    if(!logical_volumes.size()){
+        throw runtime_error("NDetectorConstruction::RegisterSensitiveLogicalVolumes() called with an empty list.");
+    }
     for(auto log_vol: logical_volumes){
         sensitive_logical_volumes.push_back(log_vol);
     }
 }
 
 void NDetectorConstruction::ConstructSDandField(){
-    
+
     SensitiveDetector* sen_det = nullptr;
 
     for(size_t i = 0; i < sensitive_logical_volumes.size(); ++i){
