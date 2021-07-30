@@ -23,6 +23,7 @@ using std::array;
 
 #include <memory>
 
+using std::make_shared;
 using std::make_unique;
 
 #include <string>
@@ -39,6 +40,7 @@ using std::vector;
 #include "G4PVPlacement.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4Tubs.hh"
 #include "G4VisAttributes.hh"
 
 #include "DetectorConstruction.hh"
@@ -51,6 +53,7 @@ using std::vector;
 #include "HPGe_Collection.hh"
 #include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR.hh"
+#include "SourceVolumeTubs.hh"
 
 const double distance = 8.*25.4*mm;
 
@@ -142,6 +145,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     LaBr3Ce_3x3 compton_monitor_detector(world_logical.get(), "Z");
     compton_monitor_detector.Construct({0., 0., ComptonMonitor::scattering_target_to_target}, ComptonMonitor::detector_angle, 0., ComptonMonitor::scattering_target_to_detector);
     RegisterSensitiveLogicalVolumes(compton_monitor_detector.get_sensitive_logical_volumes());
+
+    G4Tubs* target_solid = new G4Tubs("target_solid", 0., 10.*mm, 1.*mm, 0., twopi);
+    G4LogicalVolume* target_logical = new G4LogicalVolume(target_solid, nist_manager->FindOrBuildMaterial("G4_Ni"), "target_logical");
+    target_logical->SetVisAttributes(G4Color::Green());
+    G4VPhysicalVolume* target = new G4PVPlacement(new G4RotationMatrix(), G4ThreeVector(0., 0., 12.*25.4*mm), target_logical, "world", world_logical.get(), false, 0);
+    source_volumes.push_back(make_shared<SourceVolumeTubs>(target_solid, target, 1., 0));
 
 	return world_phys.get();
 }

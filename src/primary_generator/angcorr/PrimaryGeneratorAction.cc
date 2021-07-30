@@ -17,22 +17,43 @@
     Copyright (C) 2020, 2021 Udo Friman-Gayer
 */
 
-#include <utility>
+#include <array>
 
-using std::pair;
+using std::array;
+
+#include <memory>
+
+using std::make_unique;
+
+#include <vector>
+
+using std::vector;
 
 #include "G4Event.hh"
 #include "G4ParticleTable.hh"
 #include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "AngularCorrelation.hh"
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
-#include "W_pol_dir.hh"
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
- : G4VUserPrimaryGeneratorAction(), particle_gun(new G4ParticleGun(1))
+ : G4VUserPrimaryGeneratorAction(),
+cas_rej_sam(nullptr)
 {
+    vector<AngularCorrelation> cascade{
+        AngularCorrelation(
+            State(0, positive),
+            {
+                {Transition(magnetic, 2, electric, 4, 0.), State(2, positive)},
+                {Transition(em_unknown, 2, em_unknown, 4, 0.), State(0, parity_unknown)}
+            }
+        ),
+    };
+    cas_rej_sam = unique_ptr<CascadeRejectionSampler>(new CascadeRejectionSampler(cascade, 0, {0., 0., 0.}, true));
+
+    particle_gun = make_unique<G4ParticleGun>(1);
     particle_gun->SetParticleDefinition(G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
     particle_gun->SetParticleEnergy(1.*MeV);
 
@@ -42,17 +63,6 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
     if(source_volumes.size() > 0){
         random_engine = mt19937(source_volumes[0]->get_seed());
     }
-
-    sph_rej_sam = std::make_unique<AngCorrRejectionSampler>(
-        new W_pol_dir(
-            State(0, positive),
-            {
-                {Transition(magnetic, 2, electric, 4, 0.), State(2, positive)},
-                {Transition(em_unknown, 2, em_unknown, 4, 0.), State(0, parity_unknown)}
-            }
-        ), 0
-    );
-
 }
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
@@ -65,18 +75,22 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
             break;
         }
     }
-    pair<double, double> theta_phi = sph_rej_sam->operator()();
-    double sine_theta = sin(theta_phi.first);
+    vector<array<double, 2>> transitions_theta_phi = cas_rej_sam->operator()();
 
-    particle_gun->SetParticleMomentumDirection(
-        G4ThreeVector(
-            sine_theta*cos(theta_phi.second),
-            sine_theta*sin(theta_phi.second),
-            cos(theta_phi.first)
-        )
-    );
+    double sine_theta;
+    for(size_t n_transition = 0; n_transition < transitions_theta_phi.size(); ++n_transition){
+        sine_theta = sin(transitions_theta_phi[n_transition][0]);
 
-    particle_gun->GeneratePrimaryVertex(event);
+        particle_gun->SetParticleMomentumDirection(
+            G4ThreeVector(
+                sine_theta*cos(transitions_theta_phi[n_transition][1]),
+                sine_theta*sin(transitions_theta_phi[n_transition][1]),
+                cos(transitions_theta_phi[n_transition][0])
+            )
+        );
+
+        particle_gun->GeneratePrimaryVertex(event);
+    }
 }
 
 void PrimaryGeneratorAction::normalize_intensities(){

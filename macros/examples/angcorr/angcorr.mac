@@ -1,0 +1,6 @@
+# The angular-correlation primary generator's thread safety has not been demonstrated.
+# Users are advised to run with a single thread only.
+/run/numberOfThreads 1
+/run/initialize
+
+/run/beamOn

@@ -31,8 +31,7 @@ using std::unique_ptr;
 #include "G4ParticleGun.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
-#include "AngCorrRejectionSampler.hh"
-#include "SphereRejectionSampler.hh"
+#include "CascadeRejectionSampler.hh"
 #include "SourceVolume.hh"
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
@@ -46,7 +45,7 @@ private:
     void normalize_intensities();
 
     unique_ptr<G4ParticleGun> particle_gun;
-	unique_ptr<AngCorrRejectionSampler> sph_rej_sam;
+	unique_ptr<CascadeRejectionSampler> cas_rej_sam;
 
     vector<shared_ptr<SourceVolume>> source_volumes;
     vector<double> relative_intensities_normalized;

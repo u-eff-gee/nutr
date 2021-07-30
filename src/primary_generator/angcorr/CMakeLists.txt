@@ -25,4 +25,4 @@ find_package(alpaca REQUIRED)
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
 target_include_directories(primaryGeneratorAction PUBLIC ${PROJECT_SOURCE_DIR}/include/angular_correlation ${PROJECT_SOURCE_DIR}/include/geometry/ ${PROJECT_SOURCE_DIR}/include/geometry/${GEOMETRY_DIR})
-target_link_libraries(primaryGeneratorAction angcorrRejectionSampler sphereRejectionSampler w_pol_dir)
+target_link_libraries(primaryGeneratorAction angular_correlation cascadeRejectionSampler)
