@@ -150,7 +150,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4LogicalVolume* target_logical = new G4LogicalVolume(target_solid, nist_manager->FindOrBuildMaterial("G4_Ni"), "target_logical");
     target_logical->SetVisAttributes(G4Color::Green());
     G4VPhysicalVolume* target = new G4PVPlacement(new G4RotationMatrix(), G4ThreeVector(0., 0., 12.*25.4*mm), target_logical, "world", world_logical.get(), false, 0);
-    source_volumes.push_back(make_shared<SourceVolumeTubs>(target_solid, target, 1., 0));
+    source_volumes.push_back(make_shared<SourceVolumeTubs>(target_solid, target, 1.));
 
 	return world_phys.get();
 }

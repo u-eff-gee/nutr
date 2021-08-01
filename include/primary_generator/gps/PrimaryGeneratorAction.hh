@@ -29,7 +29,7 @@
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
-    PrimaryGeneratorAction();
+    PrimaryGeneratorAction([[maybe_unused]] const long seed);
    ~PrimaryGeneratorAction();
 
     void GeneratePrimaries(G4Event*) override final;

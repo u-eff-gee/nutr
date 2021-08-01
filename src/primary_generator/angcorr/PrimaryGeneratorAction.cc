@@ -38,9 +38,9 @@ using std::vector;
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
 
-PrimaryGeneratorAction::PrimaryGeneratorAction()
+PrimaryGeneratorAction::PrimaryGeneratorAction(const long seed)
  : G4VUserPrimaryGeneratorAction(),
-cas_rej_sam(nullptr)
+cas_rej_sam(nullptr), random_number_seed(seed)
 {
     vector<AngularCorrelation> cascade{
         AngularCorrelation(
@@ -51,7 +51,7 @@ cas_rej_sam(nullptr)
             }
         ),
     };
-    cas_rej_sam = unique_ptr<CascadeRejectionSampler>(new CascadeRejectionSampler(cascade, 0, {0., 0., 0.}, true));
+    cas_rej_sam = unique_ptr<CascadeRejectionSampler>(new CascadeRejectionSampler(cascade, random_number_seed, {0., 0., 0.}, false));
 
     particle_gun = make_unique<G4ParticleGun>(1);
     particle_gun->SetParticleDefinition(G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
@@ -61,7 +61,10 @@ cas_rej_sam(nullptr)
     normalize_intensities();
 
     if(source_volumes.size() > 0){
-        random_engine = mt19937(source_volumes[0]->get_seed());
+        random_engine = mt19937(random_number_seed);
+        for(size_t i = 0; i < source_volumes.size(); ++i){
+            source_volumes[i]->initialize(random_number_seed);
+        }
     }
 }
 

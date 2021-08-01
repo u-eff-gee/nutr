@@ -39,6 +39,8 @@ int main(int argc, char** argv)
     if ( argc == 1 ) {
         ui = new G4UIExecutive(argc, argv);
     }
+    const long seed = argc == 3 ? atoi(argv[2]) : 1;
+    G4Random::setTheSeed(seed);
 
     auto* runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::Default);
 
@@ -49,10 +51,10 @@ int main(int argc, char** argv)
     runManager->SetUserInitialization(physicsList);
 
     string output_file_name = "";
-    if(argc == 3){
-        output_file_name = argv[2];
+    if(argc == 4){
+        output_file_name = argv[3];
     }
-    runManager->SetUserInitialization(new ActionInitialization(output_file_name));
+    runManager->SetUserInitialization(new ActionInitialization(output_file_name, seed));
 
     G4VisManager* visManager = new G4VisExecutive();
     visManager->Initialize();

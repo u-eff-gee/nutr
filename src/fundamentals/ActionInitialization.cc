@@ -23,8 +23,8 @@
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
 
-ActionInitialization::ActionInitialization(const string out_file_name)
- : G4VUserActionInitialization(), output_file_name(out_file_name)
+ActionInitialization::ActionInitialization(const string out_file_name, const long seed)
+ : G4VUserActionInitialization(), random_number_seed(seed), output_file_name(out_file_name)
 {}
 
 ActionInitialization::~ActionInitialization()
@@ -41,7 +41,7 @@ void ActionInitialization::Build() const
 {
 	TupleManager *tuple = new TupleManager(output_file_name);
 
-	SetUserAction(new PrimaryGeneratorAction);
+	SetUserAction(new PrimaryGeneratorAction(random_number_seed));
 	SetUserAction(new RunAction(tuple));
 	SetUserAction(new EventAction(tuple));
 }

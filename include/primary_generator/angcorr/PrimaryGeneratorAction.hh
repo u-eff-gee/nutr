@@ -37,7 +37,7 @@ using std::unique_ptr;
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
-    PrimaryGeneratorAction();
+    PrimaryGeneratorAction(const long seed);
 
     void GeneratePrimaries(G4Event*) override final;
 
@@ -52,4 +52,6 @@ private:
 
     mt19937 random_engine; /**< Deterministic random number engine. */
     uniform_real_distribution<double> uniform_random; /**< Uniform distribution from which all random numbers are derived here. */
+
+    const long random_number_seed;
 };

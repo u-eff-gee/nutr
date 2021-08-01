@@ -22,7 +22,7 @@
 #include "G4Event.hh"
 #include "G4GeneralParticleSource.hh"
 
-PrimaryGeneratorAction::PrimaryGeneratorAction()
+PrimaryGeneratorAction::PrimaryGeneratorAction([[maybe_unused]] const long seed)
  : G4VUserPrimaryGeneratorAction(),
 	 fParticleGun(nullptr)
 {

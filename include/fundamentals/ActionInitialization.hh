@@ -30,12 +30,13 @@ class B4DetectorConstruction;
 class ActionInitialization : public G4VUserActionInitialization
 {
 public:
-    ActionInitialization(const string out_file_name);
+    ActionInitialization(const string out_file_name, const long seed);
     virtual ~ActionInitialization();
 
     virtual void BuildForMaster() const;
     virtual void Build() const;
 
 private:
+    const long random_number_seed;
     const string output_file_name;
 };
