@@ -1,6 +1,7 @@
 build
 __pycache__
 *.json
+*.root
 
 # CMake - configured files
 include/sensitive_detector/NEventAction.hh
