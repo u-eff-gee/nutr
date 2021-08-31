@@ -54,6 +54,9 @@
 # Specify view angle:
 /vis/viewer/set/viewpointThetaPhi 90. 180.
 #
+# Point at target position
+/vis/viewer/set/targetPoint 0. 0. 0. cm
+#
 # Specify zoom value:
 /vis/viewer/zoom 1.4
 #
