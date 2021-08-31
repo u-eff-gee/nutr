@@ -71,6 +71,96 @@ namespace HPGe_Coaxial_Collection{
 		.dewar_wall_thickness = 5.*mm, // Estimated
 		.dewar_material = "G4_Al", // Estimated
 	};
+
+
+    // 100% (103.5% according to data sheet) coaxial HPGe 
+    // with ORTEC serial number 42-TP41203A
+    // Property of R.V.F. Janssens group, Argonne National Lab
+	HPGe_Coaxial_Properties HPGe_ANL_41203{
+		.detector_radius = 0.5*89.9*mm, // Data sheet
+		.detector_length = 98.3*mm, // Data sheet
+		.detector_face_radius = 2.*mm, // Estimated
+		.hole_radius = 0.5*10.*mm, // Estimated from 60% ORTEC models
+		.hole_depth = 0.8*98.3*mm, // 0.8*detector_length (Estimated)
+		.hole_face_radius = 0.5*10.*mm, // hole_radius (Estimated)
+		.mount_cup_length = 
+			8.*inch // end_cap_length
+			- 3.5*mm // end_cap_window_thickness
+			- 6.5*mm, // end_cap_to_crystal_gap_front
+		.mount_cup_thickness = 0.8*mm, // Estimated
+		.mount_cup_base_thickness = 0.8*mm, // mount_cup_thickness
+		.mount_cup_material = "G4_Al", // Estimated
+		.end_cap_to_crystal_gap_front = 6.5*mm, // Data sheet
+		.end_cap_to_crystal_gap_side = 
+            0.5*4.25*inch // end_cap_outer_radius
+		    - 3.5*mm // end_cap_thickness
+			- 0.8*mm // mount_cup_thickness
+		    - 0.5*89.9*mm, // detector_radius
+		.end_cap_thickness = 3.5*mm, // 'Absorbing layer' in data sheet
+		.end_cap_length = 8.*inch, // Data sheet
+		.end_cap_outer_radius = 0.5*4.25*inch, // Data sheet
+		.end_cap_window_thickness = 3.5*mm, // 'Absorbing layer' in data sheet
+		.end_cap_material = "G4_Al", // Data sheet
+		.end_cap_window_material = "G4_Al", // Data sheet
+		.cold_finger_radius = 0.5*4.*mm, // Estimated from 60% ORTEC models
+		.cold_finger_penetration_depth =
+            0.8*98.3*mm // hole_depth
+            - 5.*mm, // Estimated
+		.cold_finger_material = "G4_Cu", // Estimated
+		.connection_length = 4.5*inch, // Data sheet
+		.connection_radius = 0.5*4.5*inch, // Data sheet
+		.dewar_offset = 0.*inch,
+		.connection_material = "G4_Al", // Estimated
+		.dewar_length = 16.5*inch, // Data sheet
+		.dewar_outer_radius = 0.5*9.*inch, // Data sheet
+		.dewar_wall_thickness = 5.*mm, // Estimated
+		.dewar_material = "G4_Al", // Estimated
+    };
+
+    // 100% coaxial HPGe 
+    // with ORTEC serial number 43-TP31670A
+    // Property of R.V.F. Janssens group, Argonne National Lab
+    HPGe_Coaxial_Properties HPGe_ANL_31670{
+		.detector_radius = 0.5*88.6*mm, // Data sheet
+		.detector_length = 84.1*mm, // Data sheet
+		.detector_face_radius = 2.*mm, // Estimated
+		.hole_radius = 0.5*10.*mm, // Estimated from 60% ORTEC models
+		.hole_depth = 0.8*98.3*mm, // 0.8*detector_length (Estimated)
+		.hole_face_radius = 0.5*10.*mm, // hole_radius (Estimated)
+		.mount_cup_length = 
+			8.*inch // end_cap_length
+			- 3.5*mm // end_cap_window_thickness
+			- 6.5*mm, // end_cap_to_crystal_gap_front
+		.mount_cup_thickness = 0.8*mm, // Estimated
+		.mount_cup_base_thickness = 0.8*mm, // mount_cup_thickness
+		.mount_cup_material = "G4_Al", // Estimated
+		.end_cap_to_crystal_gap_front = 6.5*mm, // Data sheet
+		.end_cap_to_crystal_gap_side = 
+            0.5*4.25*inch // end_cap_outer_radius
+		    - 3.5*mm // end_cap_thickness
+			- 0.8*mm // mount_cup_thickness
+		    - 0.5*89.9*mm, // detector_radius
+		.end_cap_thickness = 3.5*mm, // 'Absorbing layer' in data sheet
+		.end_cap_length = 8.*inch, // Data sheet
+		.end_cap_outer_radius = 0.5*4.25*inch, // Data sheet
+		.end_cap_window_thickness = 3.5*mm, // 'Absorbing layer' in data sheet
+		.end_cap_material = "G4_Al", // Data sheet
+		.end_cap_window_material = "G4_Al", // Data sheet
+		.cold_finger_radius = 0.5*4.*mm, // Estimated from 60% ORTEC models
+		.cold_finger_penetration_depth =
+            0.8*98.3*mm // hole_depth
+            - 5.*mm, // Estimated
+		.cold_finger_material = "G4_Cu", // Estimated
+		.connection_length = 4.5*inch, // Data sheet
+		.connection_radius = 0.5*4.5*inch, // Data sheet
+		.dewar_offset = 0.*inch,
+		.connection_material = "G4_Al", // Estimated
+		.dewar_length = 16.5*inch, // Data sheet
+		.dewar_outer_radius = 0.5*9.*inch, // Data sheet
+		.dewar_wall_thickness = 5.*mm, // Estimated
+		.dewar_material = "G4_Al", // Estimated
+    };
+
 }
 
 namespace HPGe_Clover_Collection{
