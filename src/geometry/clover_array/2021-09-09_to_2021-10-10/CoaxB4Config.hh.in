@@ -1,0 +1,14 @@
+/*
+ *
+ * CoaxB4Config.h is created automatically by cmake.
+ * To change settings of CoaxB4Config.h, edit
+ * the CoaxB4Config.h.in file in the include
+ * directory and execute cmake again.
+ * Note that this notice is copied from 
+ * CoaxB4Config.h.in to CoaxB4Config.h.
+ *
+ */
+
+#pragma once
+
+#cmakedefine COAXIAL_B4 HPGe_Coaxial_Collection::@COAXIAL_B4@
