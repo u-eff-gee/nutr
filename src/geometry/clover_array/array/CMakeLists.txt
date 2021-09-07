@@ -24,6 +24,9 @@ target_include_directories(collimatorRoom PUBLIC ${PROJECT_SOURCE_DIR}/include/g
 add_library(comptonMonitorTarget EXCLUDE_FROM_ALL ComptonMonitorTarget.cc)
 target_include_directories(comptonMonitorTarget PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
 
+add_library(target96Mo EXCLUDE_FROM_ALL Target96Mo.cc)
+target_include_directories(target96Mo PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
+
 add_library(comptonMonitor_02_16_2021_to_04_18_2021 EXCLUDE_FROM_ALL ComptonMonitor_02_16_2021_to_04_18_2021.cc)
 target_include_directories(comptonMonitor_02_16_2021_to_04_18_2021 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
 target_link_libraries(comptonMonitor_02_16_2021_to_04_18_2021 comptonMonitorTarget)
