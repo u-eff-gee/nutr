@@ -1,4 +1,4 @@
-build
+build*
 __pycache__
 *.json
 *.root
@@ -6,3 +6,10 @@ __pycache__
 # CMake - configured files
 include/sensitive_detector/NEventAction.hh
 src/physics/Physics.cc
+
+# CMake artifacts
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+Makefile
+build.ninja
