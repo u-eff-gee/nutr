@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-	Copyright (C) 2020, 2021 Udo Friman-Gayer
+	Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #include "Detector.hh"

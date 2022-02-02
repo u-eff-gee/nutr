@@ -13,7 +13,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 #
-#    Copyright (C) 2020, 2021 Udo Friman-Gayer
+#    Copyright (C) 2020-2022 Udo Friman-Gayer
 
 # Based on the official CMake tutorial on:
 #
@@ -52,8 +52,6 @@ if(BUILD_DOCUMENTATION)
 	configure_file(${PROJECT_SOURCE_DIR}/Doxyfile.in Doxyfile)
 	add_custom_target(doc_doxygen ALL COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
 endif(BUILD_DOCUMENTATION)
-
-set(OUTPUT_FORMAT "root" CACHE STRING "Determine the format of the output. Possible choices: 'root' (default), 'csv', and 'xml'.")
 
 set(GEOMETRY_DIR "clover_array/02_16_2021_to_04_10_2021" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry (default: 'clover_array/02_16_2021_to_04_10_2021').")
 

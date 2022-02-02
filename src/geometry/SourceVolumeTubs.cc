@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-    Copyright (C) 2020, 2021 Udo Friman-Gayer
+    Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #include <memory>
@@ -37,7 +37,7 @@ G4ThreeVector SourceVolumeTubs::operator()(){
 
     double random_r = source_tubs->GetOuterRadius()
     *sqrt(min_r+(1.-min_r)*uniform_random(random_engine));
-    double random_phi = source_tubs->GetSPhi()+uniform_random(random_engine)*source_tubs->GetDPhi();
+    double random_phi = source_tubs->GetStartPhiAngle()+uniform_random(random_engine)*source_tubs->GetDeltaPhiAngle();
     double random_z = (2.*uniform_random(random_engine)-1.)*source_tubs->GetZHalfLength();
 
     return G4ThreeVector(

@@ -50,7 +50,6 @@ Besides the usual Geant4 build variables, `nutr` provides the following options:
 
 * `BUILD_DOCUMENTATION`: Create the code documentation using Doxygen (default: OFF).
 * `GEOMETRY_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/geometry` that contains the desired geometry (default: `clover_array`).
-* `OUTPUT_FORMAT`: Determine the format of the output. Possible choices: `root` (default), `csv`, and `xml`.
 * `PRIMARY_GENERATOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/fundamentals/primary_generator` that contains the desired primary generator Possible choices: `gps` (default), `angcorr`.
 * `PRODUCTION_CUT_LOW_KEV`: Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: "0.99", i.e. use default production cut of `G4EmLivermorePolarizedPhysics`). A straightforward way to view the current production cuts is the `/run/particle/dumpCutValues` macro command.
 * `SENSITIVE_DETECTOR_DIR`: Select directory in `$NUTR_SOURCE_DIR/src/sensitive_detector` that contains the desired sensitive detector. Possible choices: `edep`, `event` (default), `flux`, `tracker`.
@@ -75,7 +74,7 @@ along with this program.  If not, see [https://www.gnu.org/licenses/](https://ww
 
 This product includes software developed by Members of the Geant4 Collaboration [http://cern.ch/geant4](http://cern.ch/geant4).
 
-Copyright (C) 2020, 2021 Udo Friman-Gayer (ufg@email.unc.edu)
+Copyright (C) 2020-2022 Udo Friman-Gayer (udo.friman-gayer@duke.edu)
 
 ## 4. Acknowledgements
 

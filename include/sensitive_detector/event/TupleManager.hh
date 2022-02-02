@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-    Copyright (C) 2020, 2021 Udo Friman-Gayer
+    Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #pragma once
@@ -26,9 +26,9 @@ class TupleManager : public AnalysisManager
 public:
     TupleManager(const string out_file_name): AnalysisManager(out_file_name), n_sensitive_detectors(0){};
 
-    void CreateNtupleColumns(G4VAnalysisManager* analysisManager) override;
+    void CreateNtupleColumns(G4AnalysisManager* analysisManager) override;
 
-    void FillNtupleColumns(G4VAnalysisManager* analysisManager, G4int eventID, vector<shared_ptr<G4VHit>> hits) override;
+    void FillNtupleColumns(G4AnalysisManager* analysisManager, G4int eventID, vector<shared_ptr<G4VHit>> hits) override;
 
 private:
     size_t n_sensitive_detectors;

@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-    Copyright (C) 2020, 2021 Udo Friman-Gayer
+    Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #include <memory>
@@ -27,7 +27,7 @@ using std::dynamic_pointer_cast;
 #include "DetectorHit.hh"
 #include "TupleManager.hh"
 
-void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
+void TupleManager::CreateNtupleColumns(G4AnalysisManager* analysisManager)
 {
 
     n_sensitive_detectors = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetNumberOfSensitiveDetectors();
@@ -39,7 +39,7 @@ void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
 
 }
 
-void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<shared_ptr<G4VHit>> hits)
+void TupleManager::FillNtupleColumns(G4AnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<shared_ptr<G4VHit>> hits)
 {
 
     for(size_t i = 0; i < hits.size(); ++i){
