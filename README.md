@@ -29,7 +29,7 @@ Some code has been adapted from a previous simulation of the UTR ([utr](https://
 
 ### 2.1 Prerequisites
 
-* [Geant4 10.6 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`. If the low-energy nuclear data (LEND) for Geant4 have been downloaded and the `G4LENDDATA` environment variable has been set, then `nutr` can automatically use them.
+* [Geant4 11.0 and its prerequisites](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html). It is assumed that Geant4 is installed in `G4_INSTALL_DIR`. If the low-energy nuclear data (LEND) for Geant4 have been downloaded and the `G4LENDDATA` environment variable has been set, then `nutr` can automatically use them.
 * A compiler that supports the [C++20](https://en.cppreference.com/w/cpp/20) standard (`nutr` uses 'designated initializers' to initialize detector properties in a transparent way, and that is a C++20 feature. See `${NUTR_SOURCE_DIR}/include/detectors/HPGe_Collection.hh`, for example).
 * [ROOT 6](https://root.cern.ch/) is optional, but since the output is written in the ROOT format by default, it is highly recommended.
 * [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional)
