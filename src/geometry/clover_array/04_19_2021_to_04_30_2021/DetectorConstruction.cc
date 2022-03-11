@@ -44,7 +44,7 @@ using std::vector;
 #include "DetectorConstruction.hh"
 
 #include "BeamPipe.hh"
-#include "CeBr3_15x15.hh"
+#include "CeBr3_2x2.hh"
 #include "CollimatorRoom.hh"
 #include "ComptonMonitor_04_19_2021_to_04_30_2021.hh"
 #include "HPGe_Clover.hh"
@@ -130,9 +130,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         RegisterSensitiveLogicalVolumes(clovers[clovers.size()-1].get_sensitive_logical_volumes());
     }
 
-    vector<CeBr3_15x15> cebrs;
+    vector<CeBr3_2x2> cebrs;
     for(auto det_pos: cebr_position){
-        cebrs.push_back(CeBr3_15x15(world_logical.get(), det_pos.id));
+        cebrs.push_back(CeBr3_2x2(world_logical.get(), det_pos.id));
         cebrs[cebrs.size()-1].Construct(G4ThreeVector(), det_pos.theta, det_pos.phi, det_pos.distance, det_pos.intrinsic_rotation_angle);
         RegisterSensitiveLogicalVolumes(cebrs[cebrs.size()-1].get_sensitive_logical_volumes());
     }

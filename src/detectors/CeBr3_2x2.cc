@@ -26,11 +26,11 @@
 #include "G4VisAttributes.hh"
 
 #include "CeBr3.hh"
-#include "CeBr3_15x15.hh"
+#include "CeBr3_2x2.hh"
 
 CeBr3 cebr3;
 
-void CeBr3_15x15::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) {
+void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle) {
 
     /*********** Dimensions ***********/
     // Front

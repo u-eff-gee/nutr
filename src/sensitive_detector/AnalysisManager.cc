@@ -7,7 +7,7 @@ using std::time;
 AnalysisManager::AnalysisManager(const string out_file_name): fFactoryOn(false){
     
     if(out_file_name == ""){
-        output_file_name = to_string(time(nullptr));
+        output_file_name = to_string(time(nullptr)) + ".root";
     } else {
         output_file_name = out_file_name;
     }

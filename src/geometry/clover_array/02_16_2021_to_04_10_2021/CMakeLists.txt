@@ -17,7 +17,7 @@
 
 add_library(detectorConstruction DetectorConstruction.cc)
 target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/02_16_2021_to_04_10_2021 ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
-target_link_libraries(detectorConstruction beamPipe collimatorRoom comptonMonitor_02_16_2021_to_04_18_2021 nDetectorConstruction hpgeClover labr3ce_3x3 leadShieldingUTR SensitiveDetector cebr3_15x15 sourceVolumeTubs)
+target_link_libraries(detectorConstruction beamPipe collimatorRoom comptonMonitor_02_16_2021_to_04_18_2021 nDetectorConstruction hpgeClover labr3ce_3x3 leadShieldingUTR SensitiveDetector cebr3_2x2 sourceVolumeTubs)
 
 configure_file(Makefile ${PROJECT_BINARY_DIR}/analysis/Makefile)
 configure_file(fill_histograms.cpp ${PROJECT_BINARY_DIR}/analysis/fill_histograms.cpp)

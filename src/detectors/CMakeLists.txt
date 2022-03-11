@@ -34,8 +34,8 @@ target_link_libraries(hpgeCoaxial detector filterCase)
 add_library(nai EXCLUDE_FROM_ALL NaI.cc)
 target_link_libraries(nai detector)
 
-add_library(cebr3_15x15 EXCLUDE_FROM_ALL CeBr3_15x15.cc)
-target_link_libraries(cebr3_15x15 cebr3 detector)
+add_library(cebr3_2x2 EXCLUDE_FROM_ALL CeBr3_2x2.cc)
+target_link_libraries(cebr3_2x2 cebr3 detector)
 
 add_library(labr3ce_3x3 EXCLUDE_FROM_ALL LaBr3Ce_3x3.cc)
 target_link_libraries(labr3ce_3x3 labr3ce detector)

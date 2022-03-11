@@ -30,7 +30,7 @@ using std::make_unique;
 
 #include "DetectorConstruction.hh"
 
-#include "CeBr3_15x15.hh"
+#include "CeBr3_2x2.hh"
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
@@ -41,11 +41,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
 	world_phys = make_unique<G4PVPlacement>(new G4RotationMatrix(), G4ThreeVector(), world_logical.get(), "world", nullptr, false, 0);
 
-	CeBr3_15x15 cebr1(world_logical.get(), "cebr1");
+	CeBr3_2x2 cebr1(world_logical.get(), "cebr1");
 	cebr1.Construct(G4ThreeVector(), 0., 0., 8.*25.4*mm);
     RegisterSensitiveLogicalVolumes(cebr1.get_sensitive_logical_volumes());
 
-	CeBr3_15x15 cebr2(world_logical.get(), "cebr2");
+	CeBr3_2x2 cebr2(world_logical.get(), "cebr2");
 	cebr2.Construct(G4ThreeVector(), 180.*deg, 0.*deg, 8.*25.4*mm);
     RegisterSensitiveLogicalVolumes(cebr2.get_sensitive_logical_volumes());
 

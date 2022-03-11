@@ -44,9 +44,9 @@
  * On the outside of the PMT case, two connectors for high voltage supply and signal readout are 
  * attached, which are implemented in a simplified way as well.
  */
-class CeBr3_15x15 : public Detector{
+class CeBr3_2x2 : public Detector{
     public:
-        CeBr3_15x15(G4LogicalVolume *World_Logical, G4String name) : Detector (World_Logical, name){};
+        CeBr3_2x2(G4LogicalVolume *World_Logical, G4String name) : Detector (World_Logical, name){};
 
 		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override final;
         
