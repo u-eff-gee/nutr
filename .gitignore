@@ -5,5 +5,4 @@ __pycache__
 
 # CMake - configured files
 include/sensitive_detector/NEventAction.hh
-include/sensitive_detector/AnalysisManager.hh
 src/physics/Physics.cc

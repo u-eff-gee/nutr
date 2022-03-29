@@ -52,7 +52,6 @@ void AnalysisManager::Save(){
 
     G4cout << "Created output file '" << analysisManager->GetFileName() << "'." << G4endl;
 
-    delete G4AnalysisManager::Instance();
     fFactoryOn = false;
 
 }
