@@ -17,10 +17,6 @@
 	Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
-#include <array>
-
-using std::array;
-
 #include <memory>
 
 using std::make_unique;
@@ -62,7 +58,7 @@ struct DetectorPosition{
     const double intrinsic_rotation_angle;
 };
 
-array<DetectorPosition, 8> clover_position{
+const vector<DetectorPosition> clover_position{
     DetectorPosition{"clover_1",         0.5 *pi, 0.     , distance, 0.5*pi},
     // DetectorPosition{"clover_2",         0.5 *pi, 0.25*pi, distance, 0.},
     DetectorPosition{"clover_3",         0.5 *pi, 0.5 *pi, distance, 1.5*pi},
@@ -79,7 +75,7 @@ array<DetectorPosition, 8> clover_position{
     // DetectorPosition{"clover_B8", 125.26/180.*pi, 1.75*pi, distance, 0.},
 };
 
-array<DetectorPosition, 12> cebr_position{
+const vector<DetectorPosition> cebr_position{
     DetectorPosition{"cebr_B",           0.5 *pi, 27.5  /180.*pi, distance, 0.    },
     // DetectorPosition{"cebr_C",           0.5 *pi, 0.25       *pi, distance, 0.    },
     DetectorPosition{"cebr_D",           0.5 *pi, 62.5  /180.*pi, distance, 0.    },
