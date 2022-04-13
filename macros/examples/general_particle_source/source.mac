@@ -18,12 +18,5 @@
 /gps/pos/type Point
 /gps/pos/centre 0. 0. 0. mm
 /gps/ang/type iso
-# Source with spatial extent
-# The dimensions of the cylindric source fit the sample size in the 'nai' geometry.
-#/gps/pos/type Volume
-#/gps/pos/shape Cylinder
-#/gps/pos/centre 0. 0. 0. cm
-#/gps/pos/radius 1.75 cm
-#/gps/pos/halfz 1.25 cm
 
 /run/beamOn 
