@@ -23,11 +23,16 @@ add_library(collimatorRoom EXCLUDE_FROM_ALL CollimatorRoom.cc)
 
 add_library(comptonMonitorTarget EXCLUDE_FROM_ALL ComptonMonitorTarget.cc)
 
+add_library(target96Mo EXCLUDE_FROM_ALL Target96Mo.cc)
+
 add_library(comptonMonitor_02_16_2021_to_04_18_2021 EXCLUDE_FROM_ALL ComptonMonitor_02_16_2021_to_04_18_2021.cc)
 target_link_libraries(comptonMonitor_02_16_2021_to_04_18_2021 comptonMonitorTarget)
 
 add_library(comptonMonitor_04_19_2021_to_04_30_2021 EXCLUDE_FROM_ALL ComptonMonitor_04_19_2021_to_04_30_2021.cc)
 target_link_libraries(comptonMonitor_04_19_2021_to_04_30_2021 comptonMonitorTarget)
+
+add_library(comptonMonitor_2021-09-09_to_2021-10-10 EXCLUDE_FROM_ALL ComptonMonitor_2021-09-09_to_2021-10-10.cc)
+target_link_libraries(comptonMonitor_2021-09-09_to_2021-10-10 comptonMonitorTarget)
 
 add_library(leadShieldingUTR EXCLUDE_FROM_ALL LeadShieldingUTR.cc)
 

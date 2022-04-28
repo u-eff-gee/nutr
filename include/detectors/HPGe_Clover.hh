@@ -27,16 +27,17 @@
 #include "Detector.hh"
 #include "HPGe_Clover_Properties.hh"
 
-class HPGe_Clover : public Detector{
-	public:
-		HPGe_Clover(G4LogicalVolume *World_Logical, const G4String name, const HPGe_Clover_Properties prop, const bool dewar = true) : Detector (World_Logical, name), properties(prop), use_dewar(dewar){};
-		~HPGe_Clover(){};
+class HPGe_Clover : public Detector
+{
+public:
+    HPGe_Clover(G4LogicalVolume* World_Logical, const G4String name, const HPGe_Clover_Properties prop, const bool dewar = true)
+    : Detector(World_Logical, name), properties(prop), use_dewar(dewar) {};
+    ~HPGe_Clover() {};
 
-		void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override;
-		void useDewar(){use_dewar = true;};
-
-	private:
-		const HPGe_Clover_Properties properties;
-		bool use_dewar;
-		G4VSolid* rounded_box(const G4String name, const G4double side_length, const G4double length, const G4double rounding_radius, const G4int n_points_per_corner) const;
+    void Construct(G4ThreeVector global_coordinates, G4double theta, G4double phi, G4double dist_from_center, G4double intrinsic_rotation_angle = 0.) override;
+    void useDewar() { use_dewar = true; };
+private:
+    static G4VSolid* rounded_box(const G4String name, const G4double side_length, const G4double length, const G4double rounding_radius, const G4int n_points_per_corner);
+    const HPGe_Clover_Properties properties;
+    bool use_dewar;
 };
