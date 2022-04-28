@@ -28,8 +28,8 @@
  * 
  * A vacuum pump can be attached to the beam pipe to evacuate the beam line.
  * If the pump is running at maximum power, a value of 28.5(3) inches Hg  was read off on
- * the vacuum gauge, which corresponds to about -96.2(10) hPa or about 4 % of standard air
- * density/pressure.
+ * the vacuum gauge, which corresponds to about -965(10) hPa or about 
+ * (1013-965)/1013 = 4.7 % of standard air density/pressure.
  * 
  * On the upstream end, the pipe is sealed by a cap.
  * On the downstream end, a pipe with a smaller diameter and an end cap that seals the 
@@ -39,7 +39,7 @@ class BeamPipe{
 public:
     BeamPipe(
         G4LogicalVolume* world_log,
-        const double air_rel_dens=0.04,
+        const double air_rel_dens=0.047,
         const bool use_up_cap=true,
         const bool use_down_pipe=true,
         const bool use_ring=true
