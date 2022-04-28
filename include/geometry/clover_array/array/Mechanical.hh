@@ -22,14 +22,11 @@
 #include "G4LogicalVolume.hh"
 
 /**
- * \brief Lead shielding in the UTR in the spring 2021 experiments.
- * 
- * The shielding consists of two brick walls and some lead sheets wrapped around the beam pipe, 
- * which are implemented in a simplistic way here.
+ * \brief Mechanical holding structure of the Clover Array
  */
-class LeadShieldingUTR{
+class Mechanical{
 public:
-    LeadShieldingUTR(G4LogicalVolume* world_log):world_logical(world_log){};
+    Mechanical(G4LogicalVolume* world_log):world_logical(world_log){};
     void Construct(const G4ThreeVector global_coordinates);
 
 protected:
