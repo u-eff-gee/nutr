@@ -21,6 +21,7 @@
 #include "G4Colour.hh"
 #include "G4Isotope.hh"
 #include "G4NistManager.hh"
+#include "G4PhysicalConstants.hh"
 #include "G4PVPlacement.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4SystemOfUnits.hh"
@@ -28,8 +29,6 @@
 #include "G4VisAttributes.hh"
 
 #include "Target96Mo.hh"
-
-using std::numbers::pi;
 
 void Target96Mo::Construct(const G4ThreeVector global_coordinates)
 {

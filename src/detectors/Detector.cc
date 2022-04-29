@@ -34,9 +34,9 @@ Detector::Detector(G4LogicalVolume *World_Logical, const G4String name)
   rotation_matrix(nullptr)
 {}
 
-void Detector::Add_Filter(G4String filter_material, G4double filter_thickness, G4double filter_radius)
+void Detector::Add_Filter(string filter_material, double filter_thickness, double filter_radius)
 {
-    filters.emplace_back(filter_material, filter_thickness, filter_radius);
+    filters.emplace_back(Filter{filter_material, filter_thickness, filter_radius});
 }
 
 void Detector::Add_Filter(Filter filter)

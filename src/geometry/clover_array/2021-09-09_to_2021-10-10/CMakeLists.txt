@@ -48,5 +48,5 @@ target_link_libraries(detectorConstruction
     labr3ce_3x3
     leadShieldingUTR
     SensitiveDetector
-    cebr3_15x15
+    cebr3_2x2
 )

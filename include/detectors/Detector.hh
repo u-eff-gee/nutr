@@ -31,9 +31,9 @@ using std::string;
  * \brief Container for filter properties
  */
 struct Filter {
-    G4String material; /**< Filter materials given as G4Material names. */
+    string material; /**< Filter materials given as G4Material names. */
     double thickness; /**< Filter thickness. */
-    double radius = 0.; /**< Filter radius. If zero, some default might be used. */
+    double radius; /**< Filter radius. If zero, some default might be used. */
 };
 
 /**
@@ -112,7 +112,7 @@ public:
      * \param filter_radius Radius of the filter. Depending on the detector type, this may have
      * a different interpretation.
      */
-    void Add_Filter(G4String filter_material, G4double filter_thickness, G4double filter_radius = 0.);
+    void Add_Filter(string filter_material, G4double filter_thickness, G4double filter_radius = 0.);
     
     /**
      * \brief Add a filter layer

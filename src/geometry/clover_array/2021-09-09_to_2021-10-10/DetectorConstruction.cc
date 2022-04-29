@@ -32,7 +32,7 @@
 #include "DetectorConstruction.hh"
 
 #include "BeamPipe.hh"
-#include "CeBr3_15x15.hh"
+#include "CeBr3_2x2.hh"
 #include "CollimatorRoom.hh"
 #include "ComptonMonitor_2021-09-09_to_2021-10-10.hh"
 #include "HPGe_Clover.hh"
@@ -130,7 +130,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         coaxial_B4_position, COAXIAL_B4, false, false, true);
 
     for(auto& det_pos: cebr_position) {
-        construct_detector<CeBr3_15x15>(det_pos);
+        construct_detector<CeBr3_2x2>(det_pos);
     }
 
     for(auto& det_pos: labr_position) {

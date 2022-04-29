@@ -49,7 +49,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
 
   // Crystal
   // The crystal dimensions are given as '51 mm x 51 mm', but this is probably
-  // the rounded value of 2 x 2 inch. Take the exact value here.
+  // the rounded value of 2 inch x 2 inch. Take the exact value here.
   const G4double crystal_length = 50.8 * mm;
   const G4double crystal_radius = 0.5 * 50.8 * mm;
   const G4double crystal_to_entrance_window =
