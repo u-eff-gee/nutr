@@ -31,11 +31,11 @@ using std::vector;
  * \brief Container for filter properties
  */
 struct Filter {
-  Filter(const string material, const double thickness, const double radius)
-      : material(material), thickness(thickness), radius(radius),
+  Filter(const string _material, const double _thickness, const double _radius)
+      : material(_material), thickness(_thickness), radius(_radius),
         use_default_radius(false) {}
-  Filter(const string material, const double thickness)
-      : material(material), thickness(thickness), radius(0.),
+  Filter(const string _material, const double _thickness)
+      : material(_material), thickness(_thickness), radius(0.),
         use_default_radius(true) {}
 
   string material;  /**< Filter materials given as G4Material names. */
@@ -102,10 +102,10 @@ public:
    * the detector. \param intrinsic_rotation_angle \f$\alpha\f$, intrinsic
    * rotation angle of the detector around its main axis (default: 0).
    */
-  Detector(const G4String name, const G4double theta, const G4double phi,
-           const G4double dist_from_center, const vector<Filter> filters = {},
-           const vector<Wrap> wraps = {},
-           G4double intrinsic_rotation_angle = 0.);
+  Detector(const G4String _name, const G4double _theta, const G4double _phi,
+           const G4double _dist_from_center, const vector<Filter> _filters = {},
+           const vector<Wrap> _wraps = {},
+           G4double _intrinsic_rotation_angle = 0.);
 
   /**
    * \brief Construct the detector in a Geant4 geometry

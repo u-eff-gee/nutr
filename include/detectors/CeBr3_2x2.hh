@@ -50,12 +50,13 @@
  */
 class CeBr3_2x2 : public Detector {
 public:
-  CeBr3_2x2(const G4String name, const G4double theta, const G4double phi,
-            const G4double dist_from_center, const vector<Filter> filters = {},
-            const vector<Filter> wraps = {},
-            G4double intrinsic_rotation_angle = 0.)
-      : Detector(name, theta, phi, dist_from_center, filters, wraps,
-                 intrinsic_rotation_angle){};
+  CeBr3_2x2(const G4String _name, const G4double _theta, const G4double _phi,
+            const G4double _dist_from_center,
+            const vector<Filter> _filters = {},
+            const vector<Filter> _wraps = {},
+            G4double _intrinsic_rotation_angle = 0.)
+      : Detector(_name, _theta, _phi, _dist_from_center, _filters, _wraps,
+                 _intrinsic_rotation_angle){};
 
   void Construct(G4LogicalVolume *world_logical,
                  G4ThreeVector global_coordinates) override final;
