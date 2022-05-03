@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-	Copyright (C) 2020-2022 Udo Friman-Gayer
+        Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #include <memory>
@@ -26,10 +26,10 @@ using std::make_shared;
 #include "G4NistManager.hh"
 #include "G4SystemOfUnits.hh"
 
-LaBr3Ce::LaBr3Ce(){
-    material = make_shared<G4Material>("LaBr3Ce", 5.08*g/cm3, 3);
-	G4NistManager *nist = G4NistManager::Instance();
-    material->AddElement(nist->FindOrBuildElement("La"), 95);
-    material->AddElement(nist->FindOrBuildElement("Br"), 300);
-    material->AddElement(nist->FindOrBuildElement("Ce"), 5);
+LaBr3Ce::LaBr3Ce() {
+  material = make_shared<G4Material>("LaBr3Ce", 5.08 * g / cm3, 3);
+  G4NistManager *nist = G4NistManager::Instance();
+  material->AddElement(nist->FindOrBuildElement("La"), 95);
+  material->AddElement(nist->FindOrBuildElement("Br"), 300);
+  material->AddElement(nist->FindOrBuildElement("Ce"), 5);
 }

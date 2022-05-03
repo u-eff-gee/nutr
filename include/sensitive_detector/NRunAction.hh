@@ -22,7 +22,6 @@
 #include <chrono>
 
 using std::chrono::system_clock;
-using std::chrono::system_clock;
 using std::chrono::time_point;
 
 #include "G4UserRunAction.hh"
@@ -30,17 +29,16 @@ using std::chrono::time_point;
 
 #include "AnalysisManager.hh"
 
-class NRunAction : public G4UserRunAction
-{
+class NRunAction : public G4UserRunAction {
 public:
-    NRunAction(AnalysisManager* ana_man);
+  NRunAction(AnalysisManager *ana_man);
 
-    void BeginOfRunAction(const G4Run* run) override;
-    void EndOfRunAction(const G4Run* run) override;
+  void BeginOfRunAction(const G4Run *run) override;
+  void EndOfRunAction(const G4Run *run) override;
 
-    time_point<system_clock> get_start_time(){ return start_time; };
+  time_point<system_clock> get_start_time() { return start_time; };
 
 private:
-    AnalysisManager* analysis_manager;
-    const time_point<system_clock> start_time;
+  AnalysisManager *analysis_manager;
+  const time_point<system_clock> start_time;
 };

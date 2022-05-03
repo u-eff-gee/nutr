@@ -25,19 +25,18 @@
 
 #include "NDetectorHit.hh"
 
-class NSensitiveDetector : public G4VSensitiveDetector
-{
+class NSensitiveDetector : public G4VSensitiveDetector {
 public:
-    NSensitiveDetector(const G4String& name, const G4String& hitsCollectionName);
-  
-    virtual void Initialize(G4HCofThisEvent* hitCollection) = 0;
-    virtual G4bool ProcessHits(G4Step* step, G4TouchableHistory* history) = 0;
-    virtual void EndOfEvent(G4HCofThisEvent* hitCollection);
+  NSensitiveDetector(const G4String &name, const G4String &hitsCollectionName);
 
-    unsigned int GetDetectorID() const { return fDetectorID; };
+  virtual void Initialize(G4HCofThisEvent *hitCollection) = 0;
+  virtual G4bool ProcessHits(G4Step *step, G4TouchableHistory *history) = 0;
+  virtual void EndOfEvent(G4HCofThisEvent *hitCollection);
 
-    void SetDetectorID(const unsigned int id){ fDetectorID = id; };
+  unsigned int GetDetectorID() const { return fDetectorID; };
+
+  void SetDetectorID(const unsigned int id) { fDetectorID = id; };
 
 protected:
-    unsigned int fDetectorID;
+  unsigned int fDetectorID;
 };

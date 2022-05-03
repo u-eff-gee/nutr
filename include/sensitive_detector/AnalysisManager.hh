@@ -38,19 +38,20 @@ using std::vector;
 #include "G4VHit.hh"
 #include "globals.hh"
 
-class AnalysisManager
-{
+class AnalysisManager {
 public:
-    AnalysisManager(const string out_file_name);
-   ~AnalysisManager();
+  AnalysisManager(const string out_file_name);
+  ~AnalysisManager();
 
-    void Book();
-    virtual void CreateNtupleColumns(G4AnalysisManager* analysisManager) = 0;
-    virtual void FillNtuple(G4int eventID, vector<shared_ptr<G4VHit>> hits);
-    virtual void FillNtupleColumns(G4AnalysisManager* analysisManager, G4int eventID, vector<shared_ptr<G4VHit>> hits) = 0;
-    void Save();
+  void Book();
+  virtual void CreateNtupleColumns(G4AnalysisManager *analysisManager) = 0;
+  virtual void FillNtuple(G4int eventID, vector<shared_ptr<G4VHit>> hits);
+  virtual void FillNtupleColumns(G4AnalysisManager *analysisManager,
+                                 G4int eventID,
+                                 vector<shared_ptr<G4VHit>> hits) = 0;
+  void Save();
 
 protected:
-    string output_file_name;
-    G4bool fFactoryOn;
+  string output_file_name;
+  G4bool fFactoryOn;
 };

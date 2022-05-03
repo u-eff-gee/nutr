@@ -34,24 +34,25 @@ using std::unique_ptr;
 #include "CascadeRejectionSampler.hh"
 #include "SourceVolume.hh"
 
-class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
-{
+class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 public:
-    PrimaryGeneratorAction(const long seed);
+  PrimaryGeneratorAction(const long seed);
 
-    void GeneratePrimaries(G4Event*) override final;
+  void GeneratePrimaries(G4Event *) override final;
 
 private:
-    void normalize_intensities();
+  void normalize_intensities();
 
-    unique_ptr<G4ParticleGun> particle_gun;
-	unique_ptr<CascadeRejectionSampler> cas_rej_sam;
+  unique_ptr<G4ParticleGun> particle_gun;
+  unique_ptr<CascadeRejectionSampler> cas_rej_sam;
 
-    vector<shared_ptr<SourceVolume>> source_volumes;
-    vector<double> relative_intensities_normalized;
+  vector<shared_ptr<SourceVolume>> source_volumes;
+  vector<double> relative_intensities_normalized;
 
-    mt19937 random_engine; /**< Deterministic random number engine. */
-    uniform_real_distribution<double> uniform_random; /**< Uniform distribution from which all random numbers are derived here. */
+  mt19937 random_engine; /**< Deterministic random number engine. */
+  uniform_real_distribution<double>
+      uniform_random; /**< Uniform distribution from which all random numbers
+                         are derived here. */
 
-    const long random_number_seed;
+  const long random_number_seed;
 };

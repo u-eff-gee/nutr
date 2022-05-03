@@ -27,17 +27,16 @@
  */
 class Target96Mo {
 public:
-    Target96Mo(G4LogicalVolume* world_log)
-        : world_logical(world_log) {};
-    void Construct(const G4ThreeVector global_coordinates);
+  Target96Mo(G4LogicalVolume *world_log) : world_logical(world_log){};
+  void Construct(const G4ThreeVector global_coordinates);
 
-    static constexpr double diameter_96mo = 2. * cm;
-    static constexpr double side_pe = 2.8 * cm;
-    static constexpr double thickness_tot = 0.111 * cm;
-    static constexpr double mass_96mo = 1949.0 * mg;
-    static constexpr double mass_pe = 50.8 * mg;
-    static constexpr double density_pe = 0.940 * mg / (mm * mm * mm);
+  static constexpr double diameter_96mo = 2. * cm;
+  static constexpr double side_pe = 2.8 * cm;
+  static constexpr double thickness_tot = 0.111 * cm;
+  static constexpr double mass_96mo = 1949.0 * mg;
+  static constexpr double mass_pe = 50.8 * mg;
+  static constexpr double density_pe = 0.940 * mg / (mm * mm * mm);
 
 protected:
-    G4LogicalVolume* world_logical;
+  G4LogicalVolume *world_logical;
 };

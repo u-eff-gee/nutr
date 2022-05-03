@@ -26,14 +26,13 @@
 #include "G4GeneralParticleSource.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
-class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
-{
+class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 public:
-    PrimaryGeneratorAction([[maybe_unused]] const long seed);
-   ~PrimaryGeneratorAction();
+  PrimaryGeneratorAction([[maybe_unused]] const long seed);
+  ~PrimaryGeneratorAction();
 
-    void GeneratePrimaries(G4Event*) override final;
+  void GeneratePrimaries(G4Event *) override final;
 
 private:
-    G4GeneralParticleSource* fParticleGun;
+  G4GeneralParticleSource *fParticleGun;
 };

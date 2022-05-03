@@ -27,47 +27,45 @@ using std::shared_ptr;
 #include "G4EventManager.hh"
 #include "G4ios.hh"
 
-#include "EventAction.hh"
 #include "DetectorHit.hh"
+#include "EventAction.hh"
 
-EventAction::EventAction(AnalysisManager* ana_man)
-: NEventAction(ana_man)
-{}
+EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
-void EventAction::EndOfEventAction(const G4Event* event)
-{
-    G4VHitsCollection* hc = nullptr;
-    vector<shared_ptr<G4VHit>> hits{make_shared<DetectorHit>()};
-    int current_deid{0}, eventID{0}, max_deid{0};
-    double sum_edep = 0.;
+void EventAction::EndOfEventAction(const G4Event *event) {
+  G4VHitsCollection *hc = nullptr;
+  vector<shared_ptr<G4VHit>> hits{make_shared<DetectorHit>()};
+  int current_deid{0}, eventID{0}, max_deid{0};
+  double sum_edep = 0.;
 
-    for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
+  for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
+       ++n_hc) {
 
-        hc = event->GetHCofThisEvent()->GetHC(n_hc);
-    	eventID = event->GetEventID();
+    hc = event->GetHCofThisEvent()->GetHC(n_hc);
+    eventID = event->GetEventID();
 
-        if(hc->GetSize() > 0){
-            current_deid = ((DetectorHit*) hc->GetHit(0))->GetDetectorID();
+    if (hc->GetSize() > 0) {
+      current_deid = ((DetectorHit *)hc->GetHit(0))->GetDetectorID();
 
-            // Fill the list of hits up to the current detector ID, if it is larger than the 
-            // current maximum.
-            if(current_deid > max_deid){
-                for(int i = 0; i < current_deid - max_deid; ++i){
-                    hits.push_back(make_shared<DetectorHit>());
-                }
-                max_deid = current_deid;
-            }
-
-            double edep = 0.;
-            for(size_t i = 0; i < hc->GetSize(); ++i)
-                edep += ((DetectorHit*) hc->GetHit(i))->GetEdep();
-
-            sum_edep += edep;
-            dynamic_pointer_cast<DetectorHit>(hits[current_deid])->SetEdep(edep);
+      // Fill the list of hits up to the current detector ID, if it is larger
+      // than the current maximum.
+      if (current_deid > max_deid) {
+        for (int i = 0; i < current_deid - max_deid; ++i) {
+          hits.push_back(make_shared<DetectorHit>());
         }
-    }
+        max_deid = current_deid;
+      }
 
-    if(sum_edep > 0.){
-        analysis_manager->FillNtuple(eventID, hits);
+      double edep = 0.;
+      for (size_t i = 0; i < hc->GetSize(); ++i)
+        edep += ((DetectorHit *)hc->GetHit(i))->GetEdep();
+
+      sum_edep += edep;
+      dynamic_pointer_cast<DetectorHit>(hits[current_deid])->SetEdep(edep);
     }
+  }
+
+  if (sum_edep > 0.) {
+    analysis_manager->FillNtuple(eventID, hits);
+  }
 }

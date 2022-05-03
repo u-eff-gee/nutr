@@ -19,28 +19,22 @@
 
 #include "NDetectorHit.hh"
 
-#include "G4UnitsTable.hh"
-#include "G4VVisManager.hh"
 #include "G4Circle.hh"
 #include "G4Colour.hh"
+#include "G4UnitsTable.hh"
+#include "G4VVisManager.hh"
 #include "G4VisAttributes.hh"
 
 #include <iomanip>
 
-G4ThreadLocal G4Allocator<NDetectorHit>* NDetectorHitAllocator=0;
+G4ThreadLocal G4Allocator<NDetectorHit> *NDetectorHitAllocator = 0;
 
-NDetectorHit::NDetectorHit()
-: G4VHit(),
-	fDetectorID(0)
-{}
+NDetectorHit::NDetectorHit() : G4VHit(), fDetectorID(0) {}
 
-NDetectorHit::NDetectorHit(const NDetectorHit& right)
-  : G4VHit()
-{
+NDetectorHit::NDetectorHit(const NDetectorHit &right) : G4VHit() {
   fDetectorID = right.fDetectorID;
 }
 
-G4bool NDetectorHit::operator==(const NDetectorHit& right) const
-{
-	return ( this == &right ) ? true : false;
+G4bool NDetectorHit::operator==(const NDetectorHit &right) const {
+  return (this == &right) ? true : false;
 }

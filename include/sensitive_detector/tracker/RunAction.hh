@@ -24,8 +24,7 @@
 
 #include "TupleManager.hh"
 
-class RunAction : public NRunAction
-{
+class RunAction : public NRunAction {
 public:
-    RunAction(TupleManager* tup_man):NRunAction(tup_man){};
+  RunAction(TupleManager *tup_man) : NRunAction(tup_man){};
 };

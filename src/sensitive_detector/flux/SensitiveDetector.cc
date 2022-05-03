@@ -21,31 +21,28 @@
 
 #include "SensitiveDetector.hh"
 
-void SensitiveDetector::Initialize(G4HCofThisEvent* hce)
-{
+void SensitiveDetector::Initialize(G4HCofThisEvent *hce) {
 
-  fDetectorHitsCollection
-    = new G4THitsCollection<DetectorHit>(SensitiveDetectorName, collectionName[0]);
+  fDetectorHitsCollection = new G4THitsCollection<DetectorHit>(
+      SensitiveDetectorName, collectionName[0]);
 
-  G4int hcID 
-    = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
-  hce->AddHitsCollection( hcID, fDetectorHitsCollection );
+  G4int hcID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
+  hce->AddHitsCollection(hcID, fDetectorHitsCollection);
 }
 
-G4bool SensitiveDetector::ProcessHits(G4Step* aStep,
-                                     G4TouchableHistory*)
-{
-  DetectorHit* newDetectorHit = new DetectorHit();
+G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *) {
+  DetectorHit *newDetectorHit = new DetectorHit();
 
   newDetectorHit->SetDetectorID(fDetectorID);
-  newDetectorHit->SetParticleID(aStep->GetTrack()->GetDynamicParticle()->GetPDGcode());
+  newDetectorHit->SetParticleID(
+      aStep->GetTrack()->GetDynamicParticle()->GetPDGcode());
   newDetectorHit->SetParentID(aStep->GetTrack()->GetParentID());
   newDetectorHit->SetTrackID(aStep->GetTrack()->GetTrackID());
   newDetectorHit->SetEkin(aStep->GetTrack()->GetKineticEnergy());
   newDetectorHit->SetPos(aStep->GetPostStepPoint()->GetPosition());
   newDetectorHit->SetMom(aStep->GetTrack()->GetMomentum());
 
-  fDetectorHitsCollection->insert( newDetectorHit );
+  fDetectorHitsCollection->insert(newDetectorHit);
 
   return true;
 }

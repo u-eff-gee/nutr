@@ -29,28 +29,24 @@ using std::string;
 
 /**
  * \brief Collimator room upstream of the UTR.
- * 
- * The collimator room contains a collimator block of variable size and material, and two lead 
- * walls.
- * The dimensions were mostly taken from the previous utr simulation.
+ *
+ * The collimator room contains a collimator block of variable size and
+ * material, and two lead walls. The dimensions were mostly taken from the
+ * previous utr simulation.
  */
-class CollimatorRoom{
+class CollimatorRoom {
 public:
-    CollimatorRoom(
-        G4LogicalVolume* world_log,
-        const double col_rad=0.75*25.4*mm,
-        const double col_len=300.*mm,
-        const string col_mat="G4_Pb"
-        ):
-        world_logical(world_log),
-        collimator_radius(col_rad),
-        collimator_length(col_len),
-        collimator_material(col_mat){};
-    void Construct(const G4ThreeVector global_coordinates);
+  CollimatorRoom(G4LogicalVolume *world_log,
+                 const double col_rad = 0.75 * 25.4 * mm,
+                 const double col_len = 300. * mm,
+                 const string col_mat = "G4_Pb")
+      : world_logical(world_log), collimator_radius(col_rad),
+        collimator_length(col_len), collimator_material(col_mat){};
+  void Construct(const G4ThreeVector global_coordinates);
 
 protected:
-    G4LogicalVolume *world_logical;
-    const double collimator_radius;
-    const double collimator_length;
-    const string collimator_material;
+  G4LogicalVolume *world_logical;
+  const double collimator_radius;
+  const double collimator_length;
+  const string collimator_material;
 };

@@ -25,29 +25,31 @@
 using std::unique_ptr;
 using std::vector;
 
-#include "G4VSolid.hh"
 #include "G4LogicalVolume.hh"
+#include "G4VSolid.hh"
 #include "G4VUserDetectorConstruction.hh"
 
 class G4VPhysicalVolume;
 
 #include "SourceVolume.hh"
 
-class NDetectorConstruction : public G4VUserDetectorConstruction
-{
+class NDetectorConstruction : public G4VUserDetectorConstruction {
 public:
-    virtual G4VPhysicalVolume* Construct() override = 0;
-    void ConstructSDandField() override final;
+  virtual G4VPhysicalVolume *Construct() override = 0;
+  void ConstructSDandField() override final;
 
-    void RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume*> logical_volumes);
-    size_t GetNumberOfSensitiveDetectors() const { return sensitive_logical_volumes.size(); };
-    vector<shared_ptr<SourceVolume>> GetSourceVolumes(){ return source_volumes; }
+  void
+  RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume *> logical_volumes);
+  size_t GetNumberOfSensitiveDetectors() const {
+    return sensitive_logical_volumes.size();
+  };
+  vector<shared_ptr<SourceVolume>> GetSourceVolumes() { return source_volumes; }
 
 protected:
-    G4VSolid* world_solid;
-    G4LogicalVolume* world_logical;
-    G4VPhysicalVolume* world_phys;
+  G4VSolid *world_solid;
+  G4LogicalVolume *world_logical;
+  G4VPhysicalVolume *world_phys;
 
-    vector<G4LogicalVolume*> sensitive_logical_volumes;
-    vector<shared_ptr<SourceVolume>> source_volumes;
+  vector<G4LogicalVolume *> sensitive_logical_volumes;
+  vector<shared_ptr<SourceVolume>> source_volumes;
 };

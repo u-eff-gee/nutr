@@ -30,7 +30,8 @@
 
 CeBr3 cebr3;
 
-void CeBr3_2x2::Construct(G4LogicalVolume* world_logical, G4ThreeVector global_coordinates) {
+void CeBr3_2x2::Construct(G4LogicalVolume *world_logical,
+                          G4ThreeVector global_coordinates) {
 
   /*********** Dimensions ***********/
   // Front
@@ -353,8 +354,8 @@ void CeBr3_2x2::Construct(G4LogicalVolume* world_logical, G4ThreeVector global_c
   /************** Filters *************/
   rotate(theta, phi, intrinsic_rotation_angle);
 
-  [[maybe_unused]] auto filter_position_z = Construct_Filters(world_logical, 
-      global_coordinates, dist_from_center, theta, phi, 0.,
+  [[maybe_unused]] auto filter_position_z = Construct_Filters(
+      world_logical, global_coordinates, dist_from_center, theta, phi, 0.,
       [](std::string name, double radius, double thickness) {
         return new G4Tubs(name, 0., radius, thickness * 0.5, 0., twopi);
       });

@@ -27,29 +27,31 @@ using std::dynamic_pointer_cast;
 #include "DetectorHit.hh"
 #include "TupleManager.hh"
 
-void TupleManager::CreateNtupleColumns(G4AnalysisManager* analysisManager)
-{
+void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
 
-    n_sensitive_detectors = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetNumberOfSensitiveDetectors();
+  n_sensitive_detectors = ((DetectorConstruction *)G4RunManager::GetRunManager()
+                               ->GetUserDetectorConstruction())
+                              ->GetNumberOfSensitiveDetectors();
 
-    analysisManager->CreateNtuple("edep", "Energy Deposition");
-    for(size_t i = 0; i < n_sensitive_detectors; ++i){
-        analysisManager->CreateNtupleDColumn("det" + to_string(i));
-    }
-
+  analysisManager->CreateNtuple("edep", "Energy Deposition");
+  for (size_t i = 0; i < n_sensitive_detectors; ++i) {
+    analysisManager->CreateNtupleDColumn("det" + to_string(i));
+  }
 }
 
-void TupleManager::FillNtupleColumns(G4AnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<shared_ptr<G4VHit>> hits)
-{
+void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
+                                     [[maybe_unused]] G4int eventID,
+                                     vector<shared_ptr<G4VHit>> hits) {
 
-    for(size_t i = 0; i < hits.size(); ++i){
-        analysisManager->FillNtupleDColumn(0, i, dynamic_pointer_cast<DetectorHit>(hits[i])->GetEdep());
-    }
-    // The number of entries in std::vector hits will only be as large as highest ID of all 
-    // detectors that were hit.
-    // There may be detectors with an even higher ID which were not hit.
-    // Fill all higher IDs than hits.size()-1 with zeros.
-    for(size_t i = hits.size(); i < n_sensitive_detectors; ++i){
-        analysisManager->FillNtupleDColumn(0, i, 0.);
-    }
+  for (size_t i = 0; i < hits.size(); ++i) {
+    analysisManager->FillNtupleDColumn(
+        0, i, dynamic_pointer_cast<DetectorHit>(hits[i])->GetEdep());
+  }
+  // The number of entries in std::vector hits will only be as large as highest
+  // ID of all detectors that were hit. There may be detectors with an even
+  // higher ID which were not hit. Fill all higher IDs than hits.size()-1 with
+  // zeros.
+  for (size_t i = hits.size(); i < n_sensitive_detectors; ++i) {
+    analysisManager->FillNtupleDColumn(0, i, 0.);
+  }
 }

@@ -14,39 +14,39 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-	Copyright (C) 2020-2022 Udo Friman-Gayer
+        Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
+#include "@HADRON_ELASTIC@.hh"
+#include "@HADRON_INELASTIC@.hh"
 #include "G4DecayPhysics.hh"
 #include "G4EmExtraPhysics.hh"
 #include "G4EmLivermorePolarizedPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
 #include "G4SystemOfUnits.hh"
-#include "@HADRON_ELASTIC@.hh"
-#include "@HADRON_INELASTIC@.hh"
 
 #include "Physics.hh"
 #include "PhysicsConfig.hh"
 
-Physics::Physics(){
+Physics::Physics() {
 
-    RegisterPhysics(new G4EmLivermorePolarizedPhysics());
+  RegisterPhysics(new G4EmLivermorePolarizedPhysics());
 
-    G4EmExtraPhysics* emExtraPhysics = new G4EmExtraPhysics();
-    emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR@);
-    RegisterPhysics(emExtraPhysics);
+  G4EmExtraPhysics *emExtraPhysics = new G4EmExtraPhysics();
+  emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR @);
+  RegisterPhysics(emExtraPhysics);
 
-    RegisterPhysics(new G4DecayPhysics());
-    RegisterPhysics(new G4RadioactiveDecayPhysics());
+  RegisterPhysics(new G4DecayPhysics());
+  RegisterPhysics(new G4RadioactiveDecayPhysics());
 
 #ifdef USE_HADRON_PHYSICS
-    RegisterPhysics(new @HADRON_ELASTIC@());
+  RegisterPhysics(new @HADRON_ELASTIC @());
 
-    RegisterPhysics(new @HADRON_INELASTIC@());
+  RegisterPhysics(new @HADRON_INELASTIC @());
 #endif
-
 }
 
-void Physics::SetCuts(){
-    G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(@PRODUCTION_CUT_LOW_KEV@*keV, 1.*GeV);
+void Physics::SetCuts() {
+  G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(
+      @PRODUCTION_CUT_LOW_KEV @ * keV, 1. * GeV);
 }

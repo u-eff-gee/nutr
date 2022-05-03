@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-	Copyright (C) 2020-2022 Udo Friman-Gayer
+        Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #include <memory>
@@ -32,22 +32,25 @@ using std::make_unique;
 
 #include "CeBr3_2x2.hh"
 
-G4VPhysicalVolume* DetectorConstruction::Construct()
-{
-	G4NistManager *nist_manager = G4NistManager::Instance();
+G4VPhysicalVolume *DetectorConstruction::Construct() {
+  G4NistManager *nist_manager = G4NistManager::Instance();
 
-	world_solid = make_unique<G4Box>("world_solid", 2.*m, 2.*m, 2.*m);
-	world_logical = make_unique<G4LogicalVolume>(world_solid.get(), nist_manager->FindOrBuildMaterial("G4_AIR"), "world_logical");
-	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
-	world_phys = make_unique<G4PVPlacement>(new G4RotationMatrix(), G4ThreeVector(), world_logical.get(), "world", nullptr, false, 0);
+  world_solid = make_unique<G4Box>("world_solid", 2. * m, 2. * m, 2. * m);
+  world_logical = make_unique<G4LogicalVolume>(
+      world_solid.get(), nist_manager->FindOrBuildMaterial("G4_AIR"),
+      "world_logical");
+  world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
+  world_phys = make_unique<G4PVPlacement>(new G4RotationMatrix(),
+                                          G4ThreeVector(), world_logical.get(),
+                                          "world", nullptr, false, 0);
 
-	CeBr3_2x2 cebr1(world_logical.get(), "cebr1");
-	cebr1.Construct(G4ThreeVector(), 0., 0., 8.*25.4*mm);
-    RegisterSensitiveLogicalVolumes(cebr1.get_sensitive_logical_volumes());
+  CeBr3_2x2 cebr1(world_logical.get(), "cebr1");
+  cebr1.Construct(G4ThreeVector(), 0., 0., 8. * 25.4 * mm);
+  RegisterSensitiveLogicalVolumes(cebr1.get_sensitive_logical_volumes());
 
-	CeBr3_2x2 cebr2(world_logical.get(), "cebr2");
-	cebr2.Construct(G4ThreeVector(), 180.*deg, 0.*deg, 8.*25.4*mm);
-    RegisterSensitiveLogicalVolumes(cebr2.get_sensitive_logical_volumes());
+  CeBr3_2x2 cebr2(world_logical.get(), "cebr2");
+  cebr2.Construct(G4ThreeVector(), 180. * deg, 0. * deg, 8. * 25.4 * mm);
+  RegisterSensitiveLogicalVolumes(cebr2.get_sensitive_logical_volumes());
 
-	return world_phys.get();
+  return world_phys.get();
 }

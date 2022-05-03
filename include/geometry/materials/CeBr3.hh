@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-	Copyright (C) 2020-2022 Udo Friman-Gayer
+        Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #pragma once
@@ -25,10 +25,10 @@
 
 /**
  * \brief Cerium bromide scintillator material.
- * 
+ *
  * Uses the standard properties from Wikipedia \cite CeriumBromideWikipedia2020.
  */
-class CeBr3 : public Material{
+class CeBr3 : public Material {
 public:
-    CeBr3();
+  CeBr3();
 };

@@ -18,18 +18,17 @@
 */
 
 #include "G4HCofThisEvent.hh"
+#include "G4SDManager.hh"
 #include "G4Step.hh"
 #include "G4ThreeVector.hh"
-#include "G4SDManager.hh"
 #include "G4ios.hh"
 
 #include "NSensitiveDetector.hh"
 
-NSensitiveDetector::NSensitiveDetector(const G4String& name,
-                         const G4String& DetectorHitsCollectionName)
- : G4VSensitiveDetector(name){
-    collectionName.insert(DetectorHitsCollectionName);
+NSensitiveDetector::NSensitiveDetector(
+    const G4String &name, const G4String &DetectorHitsCollectionName)
+    : G4VSensitiveDetector(name) {
+  collectionName.insert(DetectorHitsCollectionName);
 }
 
-void NSensitiveDetector::EndOfEvent(G4HCofThisEvent*)
-{}
+void NSensitiveDetector::EndOfEvent(G4HCofThisEvent *) {}

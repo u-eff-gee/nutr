@@ -27,7 +27,7 @@
  *
  * In the following, a right-handed cartesian coordinate system is used.
  * The direction of propagation of the beam defines the positive z axis, and the
- * positive y axis is assumed to point upwards. Usually, the HIγS beam is 
+ * positive y axis is assumed to point upwards. Usually, the HIγS beam is
  * inearly polarized along the x axis. The polar angle theta is defined with
  * respect to the z axis, i.e. theta = 0 deg is the direction of the beam, and
  * theta = 180 deg is pointing upstream. The positive x axis is defined by theta
@@ -43,9 +43,9 @@
  * For the backward-angle detectors B2, B4, B6, and B8 the following information
  * was given to UFG by Mark Emamian (quote from an email):
  *
- * "the angle between the clover detector’s central axis (or its base plate) and t
- * t e horizontal plate is 35.26 degree. And the angle between the detector’s c
- * ntral axis and the gamma beam is 54.74 degrees"
+ * "the angle between the clover detector’s central axis (or its base plate) and
+ * t t e horizontal plate is 35.26 degree. And the angle between the detector’s
+ * c ntral axis and the gamma beam is 54.74 degrees"
  *
  * In spherical coordinates, this means that the polar angle of the detectors is
  *
@@ -72,22 +72,21 @@
 
 #include <string>
 
-struct DetectorPosition
-{
-    const std::string id;
-    const double theta;
-    const double phi;
-    const double distance;
-    const double intrinsic_rotation_angle;
-    const double filter_pb = 0.;
-    const double filter_cu = 0.;
+struct DetectorPosition {
+  const std::string id;
+  const double theta;
+  const double phi;
+  const double distance;
+  const double intrinsic_rotation_angle;
+  const double filter_pb = 0.;
+  const double filter_cu = 0.;
 };
 
-class DetectorConstruction : public NDetectorConstruction
-{
+class DetectorConstruction : public NDetectorConstruction {
 public:
-    G4VPhysicalVolume *Construct() override final;
+  G4VPhysicalVolume *Construct() override final;
+
 private:
-    template <typename Detector, typename... Args>
-    void construct_detector(DetectorPosition det_pos, Args... args);
+  template <typename Detector, typename... Args>
+  void construct_detector(DetectorPosition det_pos, Args... args);
 };

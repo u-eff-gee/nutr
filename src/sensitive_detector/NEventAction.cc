@@ -39,16 +39,19 @@ using std::setw;
 #include "NEventAction.hh"
 #include "NRunAction.hh"
 
-void NEventAction::BeginOfEventAction(const G4Event* event){
+void NEventAction::BeginOfEventAction(const G4Event *event) {
 
-    const int eventID = event->GetEventID();
+  const int eventID = event->GetEventID();
 
-    if(eventID % update_frequency == 0){
-        NRunAction *run_action = (NRunAction*) G4RunManager::GetRunManager()->GetUserRunAction();
+  if (eventID % update_frequency == 0) {
+    NRunAction *run_action =
+        (NRunAction *)G4RunManager::GetRunManager()->GetUserRunAction();
 
-        const time_point<system_clock> current_time = system_clock::now();
-        const time_t current_time_t = system_clock::to_time_t(current_time);
-        duration<double> delta_t = current_time - run_action->get_start_time();
-        G4cout << put_time(localtime(&current_time_t), "%F %T") << " ( " << scientific << setprecision(8) << delta_t.count() << " s since start ) : Event #" << setw(10) << eventID << G4endl;
-    }
+    const time_point<system_clock> current_time = system_clock::now();
+    const time_t current_time_t = system_clock::to_time_t(current_time);
+    duration<double> delta_t = current_time - run_action->get_start_time();
+    G4cout << put_time(localtime(&current_time_t), "%F %T") << " ( "
+           << scientific << setprecision(8) << delta_t.count()
+           << " s since start ) : Event #" << setw(10) << eventID << G4endl;
+  }
 }

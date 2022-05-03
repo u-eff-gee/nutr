@@ -25,15 +25,15 @@
 /**
  * \brief Compton beam monitor used in the 62Ni/68Zn campaign.
  */
-class ComptonMonitor{
+class ComptonMonitor {
 public:
-    ComptonMonitor(G4LogicalVolume* world_log):world_logical(world_log){};
-    void Construct(const G4ThreeVector global_coordinates);
+  ComptonMonitor(G4LogicalVolume *world_log) : world_logical(world_log){};
+  void Construct(const G4ThreeVector global_coordinates);
 
-    static constexpr double scattering_target_to_target = 68.25*25.4*mm;
-    static constexpr double scattering_target_to_detector = 61.5*25.4*mm;
-    static constexpr double detector_angle = 40.*deg;
+  static constexpr double scattering_target_to_target = 68.25 * 25.4 * mm;
+  static constexpr double scattering_target_to_detector = 61.5 * 25.4 * mm;
+  static constexpr double detector_angle = 40. * deg;
 
 protected:
-    G4LogicalVolume *world_logical;
+  G4LogicalVolume *world_logical;
 };

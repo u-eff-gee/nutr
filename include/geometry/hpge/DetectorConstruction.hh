@@ -21,8 +21,7 @@
 
 #include "NDetectorConstruction.hh"
 
-class DetectorConstruction : public NDetectorConstruction
-{
+class DetectorConstruction : public NDetectorConstruction {
 public:
-    G4VPhysicalVolume* Construct() override final;
+  G4VPhysicalVolume *Construct() override final;
 };

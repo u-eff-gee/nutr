@@ -26,33 +26,32 @@ using std::shared_ptr;
 #include "G4EventManager.hh"
 #include "G4ios.hh"
 
-#include "EventAction.hh"
 #include "DetectorHit.hh"
+#include "EventAction.hh"
 
-EventAction::EventAction(AnalysisManager* ana_man)
-: NEventAction(ana_man)
-{}
+EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
-void EventAction::EndOfEventAction(const G4Event* event)
-{
-    G4VHitsCollection* hc = nullptr;
-    shared_ptr<DetectorHit> cumulative_hit;
-    int eventID{0};
+void EventAction::EndOfEventAction(const G4Event *event) {
+  G4VHitsCollection *hc = nullptr;
+  shared_ptr<DetectorHit> cumulative_hit;
+  int eventID{0};
 
-    for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
+  for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
+       ++n_hc) {
 
-        hc = event->GetHCofThisEvent()->GetHC(n_hc);
-    	eventID = event->GetEventID();
+    hc = event->GetHCofThisEvent()->GetHC(n_hc);
+    eventID = event->GetEventID();
 
-        if(hc->GetSize() > 0){
-            double edep = 0.;
-            for(size_t i = 0; i < hc->GetSize(); ++i)
-                edep += ((DetectorHit*) hc->GetHit(i))->GetEdep();
+    if (hc->GetSize() > 0) {
+      double edep = 0.;
+      for (size_t i = 0; i < hc->GetSize(); ++i)
+        edep += ((DetectorHit *)hc->GetHit(i))->GetEdep();
 
-            cumulative_hit = make_shared<DetectorHit>();
-            cumulative_hit->SetDetectorID(((DetectorHit*) hc->GetHit(0))->GetDetectorID());
-            cumulative_hit->SetEdep(edep);
-            analysis_manager->FillNtuple(eventID, {cumulative_hit});
-        }
+      cumulative_hit = make_shared<DetectorHit>();
+      cumulative_hit->SetDetectorID(
+          ((DetectorHit *)hc->GetHit(0))->GetDetectorID());
+      cumulative_hit->SetEdep(edep);
+      analysis_manager->FillNtuple(eventID, {cumulative_hit});
     }
+  }
 }

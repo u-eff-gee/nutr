@@ -17,22 +17,22 @@
     Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
-#include "DetectorHit.hh"
 #include "TupleManager.hh"
+#include "DetectorHit.hh"
 
-void TupleManager::CreateNtupleColumns(G4VAnalysisManager* analysisManager)
-{
+void TupleManager::CreateNtupleColumns(G4VAnalysisManager *analysisManager) {
 
-    analysisManager->CreateNtuple("edep", "Energy Deposition");
-    analysisManager->CreateNtupleIColumn("deid");
-    analysisManager->CreateNtupleDColumn("edep");
-
+  analysisManager->CreateNtuple("edep", "Energy Deposition");
+  analysisManager->CreateNtupleIColumn("deid");
+  analysisManager->CreateNtupleDColumn("edep");
 }
 
-void TupleManager::FillNtupleColumns(G4VAnalysisManager* analysisManager, [[maybe_unused]] G4int eventID, vector<shared_ptr<G4VHit>> hits)
-{
+void TupleManager::FillNtupleColumns(G4VAnalysisManager *analysisManager,
+                                     [[maybe_unused]] G4int eventID,
+                                     vector<shared_ptr<G4VHit>> hits) {
 
-    analysisManager->FillNtupleIColumn(0, 0, dynamic_pointer_cast<DetectorHit>(hits[0])->GetDetectorID());
-    analysisManager->FillNtupleDColumn(0, 1, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEdep());
-
+  analysisManager->FillNtupleIColumn(
+      0, 0, dynamic_pointer_cast<DetectorHit>(hits[0])->GetDetectorID());
+  analysisManager->FillNtupleDColumn(
+      0, 1, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEdep());
 }

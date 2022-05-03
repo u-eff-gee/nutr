@@ -19,61 +19,58 @@
 
 #pragma once
 
-#include "G4THitsCollection.hh"
 #include "G4Allocator.hh"
+#include "G4THitsCollection.hh"
 #include "G4ThreeVector.hh"
 #include "tls.hh"
 
 #include "NDetectorHit.hh"
 
-class DetectorHit : public NDetectorHit
-{
-  public:
-    DetectorHit();
-    DetectorHit(const DetectorHit&);
-    DetectorHit(DetectorHit*);
+class DetectorHit : public NDetectorHit {
+public:
+  DetectorHit();
+  DetectorHit(const DetectorHit &);
+  DetectorHit(DetectorHit *);
 
-    const DetectorHit& operator=(const DetectorHit&);
+  const DetectorHit &operator=(const DetectorHit &);
 
-    inline void* operator new(size_t);
-    inline void  operator delete(void*);
+  inline void *operator new(size_t);
+  inline void operator delete(void *);
 
-    void SetTrackID   (const G4int track) { fTrackID = track; };
-    void SetParticleID(const G4int pid) {fParticleID = pid; };
-    void SetEdep      (const G4double de) { fEdep = de; };
-    void SetGlobalTime(const G4double time) { fGlobalTime = time; };
-    void SetEnergy    (const G4double ene) { fEkin = ene; };
-    void SetPos       (const G4ThreeVector xyz) { fPos = xyz; };
-    void SetMom       (const G4ThreeVector pxyz) {fMom = pxyz; };
+  void SetTrackID(const G4int track) { fTrackID = track; };
+  void SetParticleID(const G4int pid) { fParticleID = pid; };
+  void SetEdep(const G4double de) { fEdep = de; };
+  void SetGlobalTime(const G4double time) { fGlobalTime = time; };
+  void SetEnergy(const G4double ene) { fEkin = ene; };
+  void SetPos(const G4ThreeVector xyz) { fPos = xyz; };
+  void SetMom(const G4ThreeVector pxyz) { fMom = pxyz; };
 
-    G4int GetTrackID() const { return fTrackID; };
-    G4int GetParticleID() const { return fParticleID; };
-    G4double GetGlobalTime() const { return fGlobalTime; };
-    G4double GetEdep() const { return fEdep; };
-    G4double GetEkin() const { return fEkin; };
-    G4ThreeVector GetPos() const { return fPos; };
-    G4ThreeVector GetMom() const { return fMom; };
+  G4int GetTrackID() const { return fTrackID; };
+  G4int GetParticleID() const { return fParticleID; };
+  G4double GetGlobalTime() const { return fGlobalTime; };
+  G4double GetEdep() const { return fEdep; };
+  G4double GetEkin() const { return fEkin; };
+  G4ThreeVector GetPos() const { return fPos; };
+  G4ThreeVector GetMom() const { return fMom; };
 
-  private:
-      G4int         fTrackID;
-      G4int 		    fParticleID;
-      G4double      fGlobalTime;
-      G4double      fEdep;
-      G4double      fEkin;
-      G4ThreeVector fPos;
-      G4ThreeVector fMom;
+private:
+  G4int fTrackID;
+  G4int fParticleID;
+  G4double fGlobalTime;
+  G4double fEdep;
+  G4double fEkin;
+  G4ThreeVector fPos;
+  G4ThreeVector fMom;
 };
 
-extern G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator;
+extern G4ThreadLocal G4Allocator<DetectorHit> *DetectorHitAllocator;
 
-inline void* DetectorHit::operator new(size_t)
-{
-  if(!DetectorHitAllocator)
-      DetectorHitAllocator = new G4Allocator<DetectorHit>;
-  return (void *) DetectorHitAllocator->MallocSingle();
+inline void *DetectorHit::operator new(size_t) {
+  if (!DetectorHitAllocator)
+    DetectorHitAllocator = new G4Allocator<DetectorHit>;
+  return (void *)DetectorHitAllocator->MallocSingle();
 }
 
-inline void DetectorHit::operator delete(void *hit)
-{
-  DetectorHitAllocator->FreeSingle((DetectorHit*) hit);
+inline void DetectorHit::operator delete(void *hit) {
+  DetectorHitAllocator->FreeSingle((DetectorHit *)hit);
 }

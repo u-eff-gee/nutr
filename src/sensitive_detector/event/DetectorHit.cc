@@ -19,24 +19,18 @@
 
 #include "DetectorHit.hh"
 
-G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
+G4ThreadLocal G4Allocator<DetectorHit> *DetectorHitAllocator = 0;
 
-DetectorHit::DetectorHit()
- : NDetectorHit(),
-   fEdep(0.)
-{}
+DetectorHit::DetectorHit() : NDetectorHit(), fEdep(0.) {}
 
-DetectorHit::DetectorHit(const DetectorHit& right)
-  : NDetectorHit()
-{
+DetectorHit::DetectorHit(const DetectorHit &right) : NDetectorHit() {
   fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
+  fEdep = right.fEdep;
 }
 
-const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
-{
+const DetectorHit &DetectorHit::operator=(const DetectorHit &right) {
   fDetectorID = right.fDetectorID;
-  fEdep      = right.fEdep;
+  fEdep = right.fEdep;
 
   return *this;
 }

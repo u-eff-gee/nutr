@@ -25,15 +25,15 @@
 /**
  * \brief Copper scattering target for the Compton beam monitor.
  */
-class ComptonMonitorTarget{
+class ComptonMonitorTarget {
 public:
-    ComptonMonitorTarget(G4LogicalVolume* world_log):world_logical(world_log){};
-    void Construct(const G4ThreeVector global_coordinates);
+  ComptonMonitorTarget(G4LogicalVolume *world_log) : world_logical(world_log){};
+  void Construct(const G4ThreeVector global_coordinates);
 
-    static constexpr double scattering_target_height = 100.*mm; // Estimated
-    static constexpr double scattering_target_width = 60.*mm; // Estimated
-    static constexpr double scattering_target_thickness = 0.988*mm;
+  static constexpr double scattering_target_height = 100. * mm; // Estimated
+  static constexpr double scattering_target_width = 60. * mm;   // Estimated
+  static constexpr double scattering_target_thickness = 0.988 * mm;
 
 protected:
-    G4LogicalVolume *world_logical;
+  G4LogicalVolume *world_logical;
 };

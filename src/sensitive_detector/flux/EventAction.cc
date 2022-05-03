@@ -25,38 +25,37 @@ using std::make_shared;
 #include "G4EventManager.hh"
 #include "G4ios.hh"
 
-#include "EventAction.hh"
 #include "DetectorHit.hh"
+#include "EventAction.hh"
 
-EventAction::EventAction(AnalysisManager* ana_man)
-: NEventAction(ana_man)
-{}
+EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
-void EventAction::EndOfEventAction(const G4Event* event)
-{
-	G4int eventID = event->GetEventID();
+void EventAction::EndOfEventAction(const G4Event *event) {
+  G4int eventID = event->GetEventID();
 
-    G4VHitsCollection* hc = nullptr;
-    G4int particleID{0}, trackID{0};
-    shared_ptr<DetectorHit> hit;
+  G4VHitsCollection *hc = nullptr;
+  G4int particleID{0}, trackID{0};
+  shared_ptr<DetectorHit> hit;
 
-    for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
-        hc = event->GetHCofThisEvent()->GetHC(n_hc);
+  for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
+       ++n_hc) {
+    hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
-        if(hc->GetSize() > 0){
-            hit = make_shared<DetectorHit>((DetectorHit*) hc->GetHit(0));
-            analysis_manager->FillNtuple(eventID, {hit});
-            particleID = hit->GetParticleID();
-            trackID = hit->GetTrackID();
+    if (hc->GetSize() > 0) {
+      hit = make_shared<DetectorHit>((DetectorHit *)hc->GetHit(0));
+      analysis_manager->FillNtuple(eventID, {hit});
+      particleID = hit->GetParticleID();
+      trackID = hit->GetTrackID();
 
-            for(size_t i = 1; i < hc->GetSize(); ++i){
-                hit = make_shared<DetectorHit>((DetectorHit*) hc->GetHit(i));
-                if(hit->GetParticleID() != particleID || hit->GetTrackID() != trackID){
-                    analysis_manager->FillNtuple(eventID, {hit});
-                    particleID = hit->GetParticleID();
-                    trackID = hit->GetTrackID();
-                }
-            }
+      for (size_t i = 1; i < hc->GetSize(); ++i) {
+        hit = make_shared<DetectorHit>((DetectorHit *)hc->GetHit(i));
+        if (hit->GetParticleID() != particleID ||
+            hit->GetTrackID() != trackID) {
+          analysis_manager->FillNtuple(eventID, {hit});
+          particleID = hit->GetParticleID();
+          trackID = hit->GetTrackID();
         }
+      }
     }
+  }
 }

@@ -19,29 +19,27 @@
 
 #include "ActionInitialization.hh"
 #include "EventAction.hh"
-#include "TupleManager.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
+#include "TupleManager.hh"
 
-ActionInitialization::ActionInitialization(const string out_file_name, const long seed)
- : G4VUserActionInitialization(), random_number_seed(seed), output_file_name(out_file_name)
-{}
+ActionInitialization::ActionInitialization(const string out_file_name,
+                                           const long seed)
+    : G4VUserActionInitialization(), random_number_seed(seed),
+      output_file_name(out_file_name) {}
 
-ActionInitialization::~ActionInitialization()
-{}
+ActionInitialization::~ActionInitialization() {}
 
-void ActionInitialization::BuildForMaster() const
-{
-	TupleManager *tuple = new TupleManager(output_file_name);
+void ActionInitialization::BuildForMaster() const {
+  TupleManager *tuple = new TupleManager(output_file_name);
 
-	SetUserAction(new RunAction(tuple));
+  SetUserAction(new RunAction(tuple));
 }
 
-void ActionInitialization::Build() const
-{
-	TupleManager *tuple = new TupleManager(output_file_name);
+void ActionInitialization::Build() const {
+  TupleManager *tuple = new TupleManager(output_file_name);
 
-	SetUserAction(new PrimaryGeneratorAction(random_number_seed));
-	SetUserAction(new RunAction(tuple));
-	SetUserAction(new EventAction(tuple));
+  SetUserAction(new PrimaryGeneratorAction(random_number_seed));
+  SetUserAction(new RunAction(tuple));
+  SetUserAction(new EventAction(tuple));
 }

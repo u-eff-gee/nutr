@@ -21,15 +21,15 @@
 #include "DetectorHit.hh"
 #include "NSensitiveDetector.hh"
 
-class SensitiveDetector : public NSensitiveDetector
-{
+class SensitiveDetector : public NSensitiveDetector {
 public:
-    SensitiveDetector(const G4String& name,
-                const G4String& hitsCollectionName):NSensitiveDetector(name, hitsCollectionName), fDetectorHitsCollection(nullptr){};
+  SensitiveDetector(const G4String &name, const G4String &hitsCollectionName)
+      : NSensitiveDetector(name, hitsCollectionName),
+        fDetectorHitsCollection(nullptr){};
 
-    void Initialize(G4HCofThisEvent* hce) override final;
-    G4bool ProcessHits(G4Step* step, G4TouchableHistory* history) override final;
+  void Initialize(G4HCofThisEvent *hce) override final;
+  G4bool ProcessHits(G4Step *step, G4TouchableHistory *history) override final;
 
 protected:
-    G4THitsCollection<DetectorHit>* fDetectorHitsCollection;
+  G4THitsCollection<DetectorHit> *fDetectorHitsCollection;
 };

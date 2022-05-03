@@ -25,13 +25,17 @@
 
 #include "ComptonMonitorTarget.hh"
 
-void ComptonMonitorTarget::Construct(const G4ThreeVector global_coordinates){
+void ComptonMonitorTarget::Construct(const G4ThreeVector global_coordinates) {
 
-    G4NistManager* nist = G4NistManager::Instance();
+  G4NistManager *nist = G4NistManager::Instance();
 
-    G4Box* scattering_target_solid = new G4Box("scattering_target_solid", 0.5*scattering_target_width, 0.5*scattering_target_height, 0.5*scattering_target_thickness);
-    G4LogicalVolume* scattering_target_logical = new G4LogicalVolume(scattering_target_solid, nist->FindOrBuildMaterial("G4_Cu"), "scattering_target_logical");
-    scattering_target_logical->SetVisAttributes(G4Color(1., 165./255., 0));
-    new G4PVPlacement(0, global_coordinates, scattering_target_logical, "scattering_target", world_logical, false, 0, false);
-
+  G4Box *scattering_target_solid = new G4Box(
+      "scattering_target_solid", 0.5 * scattering_target_width,
+      0.5 * scattering_target_height, 0.5 * scattering_target_thickness);
+  G4LogicalVolume *scattering_target_logical = new G4LogicalVolume(
+      scattering_target_solid, nist->FindOrBuildMaterial("G4_Cu"),
+      "scattering_target_logical");
+  scattering_target_logical->SetVisAttributes(G4Color(1., 165. / 255., 0));
+  new G4PVPlacement(0, global_coordinates, scattering_target_logical,
+                    "scattering_target", world_logical, false, 0, false);
 }

@@ -21,15 +21,16 @@
 
 #include "AnalysisManager.hh"
 
-class TupleManager : public AnalysisManager
-{
+class TupleManager : public AnalysisManager {
 public:
-    TupleManager(const string out_file_name): AnalysisManager(out_file_name), n_sensitive_detectors(0){};
+  TupleManager(const string out_file_name)
+      : AnalysisManager(out_file_name), n_sensitive_detectors(0){};
 
-    void CreateNtupleColumns(G4AnalysisManager* analysisManager) override;
+  void CreateNtupleColumns(G4AnalysisManager *analysisManager) override;
 
-    void FillNtupleColumns(G4AnalysisManager* analysisManager, G4int eventID, vector<shared_ptr<G4VHit>> hits) override;
+  void FillNtupleColumns(G4AnalysisManager *analysisManager, G4int eventID,
+                         vector<shared_ptr<G4VHit>> hits) override;
 
 private:
-    size_t n_sensitive_detectors;
+  size_t n_sensitive_detectors;
 };

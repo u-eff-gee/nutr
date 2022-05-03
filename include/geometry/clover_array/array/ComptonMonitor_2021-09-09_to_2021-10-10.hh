@@ -25,13 +25,13 @@
 /**
  * \brief Lead housing of Compton beam monitor
  */
-class ComptonMonitor{
+class ComptonMonitor {
 public:
-    ComptonMonitor(G4LogicalVolume* world_log):world_logical(world_log){};
-    void Construct(const G4ThreeVector global_coordinates);
+  ComptonMonitor(G4LogicalVolume *world_log) : world_logical(world_log){};
+  void Construct(const G4ThreeVector global_coordinates);
 
-    static constexpr double detector_angle = 40.*deg;
+  static constexpr double detector_angle = 40. * deg;
 
 protected:
-    G4LogicalVolume *world_logical;
+  G4LogicalVolume *world_logical;
 };

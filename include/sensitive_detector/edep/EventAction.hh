@@ -24,11 +24,9 @@
 #include "AnalysisManager.hh"
 #include "NEventAction.hh"
 
-class EventAction : public NEventAction
-{
+class EventAction : public NEventAction {
 public:
-    EventAction(AnalysisManager* ana_man);
+  EventAction(AnalysisManager *ana_man);
 
-    void EndOfEventAction(const G4Event* ) override final;
-
+  void EndOfEventAction(const G4Event *) override final;
 };

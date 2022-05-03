@@ -24,11 +24,11 @@
 /**
  * \brief Mechanical holding structure of the Clover Array
  */
-class Mechanical{
+class Mechanical {
 public:
-    Mechanical(G4LogicalVolume* world_log):world_logical(world_log){};
-    void Construct(const G4ThreeVector global_coordinates);
+  Mechanical(G4LogicalVolume *world_log) : world_logical(world_log){};
+  void Construct(const G4ThreeVector global_coordinates);
 
 protected:
-    G4LogicalVolume *world_logical;
+  G4LogicalVolume *world_logical;
 };

@@ -24,27 +24,30 @@
 #include <vector>
 
 using std::mt19937;
-using std::uniform_real_distribution;
 using std::shared_ptr;
+using std::uniform_real_distribution;
 using std::unique_ptr;
 
-#include "G4VSolid.hh"
 #include "G4VPhysicalVolume.hh"
+#include "G4VSolid.hh"
 
-class SourceVolume{
+class SourceVolume {
 public:
-    SourceVolume(G4VSolid *solid, G4VPhysicalVolume *physical, const double rel_int);
+  SourceVolume(G4VSolid *solid, G4VPhysicalVolume *physical,
+               const double rel_int);
 
-    virtual G4ThreeVector operator()() = 0;
-    double get_relative_intensity() const { return relative_intensity; }
-    void initialize(const int seed);
+  virtual G4ThreeVector operator()() = 0;
+  double get_relative_intensity() const { return relative_intensity; }
+  void initialize(const int seed);
 
 protected:
-    shared_ptr<G4VSolid> source_solid;
-    unique_ptr<G4VPhysicalVolume> source_physical;
+  shared_ptr<G4VSolid> source_solid;
+  unique_ptr<G4VPhysicalVolume> source_physical;
 
-    mt19937 random_engine; /**< Deterministic random number engine. */
-    uniform_real_distribution<double> uniform_random; /**< Uniform distribution from which all random numbers are sampled here. */
+  mt19937 random_engine; /**< Deterministic random number engine. */
+  uniform_real_distribution<double>
+      uniform_random; /**< Uniform distribution from which all random numbers
+                         are sampled here. */
 
-    const double relative_intensity;
+  const double relative_intensity;
 };

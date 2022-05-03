@@ -25,16 +25,16 @@
 
 #include "AnalysisManager.hh"
 
-class NEventAction : public G4UserEventAction
-{
+class NEventAction : public G4UserEventAction {
 public:
-    NEventAction(AnalysisManager* ana_man): G4UserEventAction(), analysis_manager(ana_man), update_frequency(@UPDATE_FREQUENCY@)
-{};
+  NEventAction(AnalysisManager *ana_man)
+      : G4UserEventAction(), analysis_manager(ana_man),
+        update_frequency(@UPDATE_FREQUENCY @){};
 
-    void BeginOfEventAction(const G4Event* event) override final;
-    virtual void EndOfEventAction(const G4Event* ) = 0;
+  void BeginOfEventAction(const G4Event *event) override final;
+  virtual void EndOfEventAction(const G4Event *) = 0;
 
 protected:
-    AnalysisManager* analysis_manager;
-    const int update_frequency;
+  AnalysisManager *analysis_manager;
+  const int update_frequency;
 };

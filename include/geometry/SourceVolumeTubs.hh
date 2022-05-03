@@ -23,10 +23,10 @@
 
 #include "SourceVolume.hh"
 
-class SourceVolumeTubs : public SourceVolume{
+class SourceVolumeTubs : public SourceVolume {
 public:
-    SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const double rel_int);
+  SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical,
+                   const double rel_int);
 
-    G4ThreeVector operator()() override final;
-
+  G4ThreeVector operator()() override final;
 };

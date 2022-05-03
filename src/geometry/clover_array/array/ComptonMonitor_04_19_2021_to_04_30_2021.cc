@@ -20,9 +20,10 @@
 #include "ComptonMonitor_04_19_2021_to_04_30_2021.hh"
 #include "ComptonMonitorTarget.hh"
 
-void ComptonMonitor::Construct(const G4ThreeVector global_coordinates){
+void ComptonMonitor::Construct(const G4ThreeVector global_coordinates) {
 
-    // Scattering target
-    ComptonMonitorTarget compton_monitor_target(world_logical);
-    compton_monitor_target.Construct(global_coordinates + G4ThreeVector(0., 0., scattering_target_to_target));
+  // Scattering target
+  ComptonMonitorTarget compton_monitor_target(world_logical);
+  compton_monitor_target.Construct(
+      global_coordinates + G4ThreeVector(0., 0., scattering_target_to_target));
 }

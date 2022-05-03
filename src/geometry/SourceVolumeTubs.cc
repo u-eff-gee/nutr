@@ -25,26 +25,28 @@ using std::dynamic_pointer_cast;
 
 #include "SourceVolumeTubs.hh"
 
-SourceVolumeTubs::SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical, const double rel_int):SourceVolume(tubs, physical, rel_int){}
+SourceVolumeTubs::SourceVolumeTubs(G4Tubs *tubs, G4VPhysicalVolume *physical,
+                                   const double rel_int)
+    : SourceVolume(tubs, physical, rel_int) {}
 
-G4ThreeVector SourceVolumeTubs::operator()(){
+G4ThreeVector SourceVolumeTubs::operator()() {
 
-    shared_ptr<G4Tubs> source_tubs = dynamic_pointer_cast<G4Tubs>(source_solid);
+  shared_ptr<G4Tubs> source_tubs = dynamic_pointer_cast<G4Tubs>(source_solid);
 
-    const double min_r = 
-    (source_tubs->GetInnerRadius()*source_tubs->GetInnerRadius())
-    /(source_tubs->GetOuterRadius()*source_tubs->GetOuterRadius());
+  const double min_r =
+      (source_tubs->GetInnerRadius() * source_tubs->GetInnerRadius()) /
+      (source_tubs->GetOuterRadius() * source_tubs->GetOuterRadius());
 
-    double random_r = source_tubs->GetOuterRadius()
-    *sqrt(min_r+(1.-min_r)*uniform_random(random_engine));
-    double random_phi = source_tubs->GetStartPhiAngle()+uniform_random(random_engine)*source_tubs->GetDeltaPhiAngle();
-    double random_z = (2.*uniform_random(random_engine)-1.)*source_tubs->GetZHalfLength();
+  double random_r = source_tubs->GetOuterRadius() *
+                    sqrt(min_r + (1. - min_r) * uniform_random(random_engine));
+  double random_phi =
+      source_tubs->GetStartPhiAngle() +
+      uniform_random(random_engine) * source_tubs->GetDeltaPhiAngle();
+  double random_z =
+      (2. * uniform_random(random_engine) - 1.) * source_tubs->GetZHalfLength();
 
-    return G4ThreeVector(
-        random_r*cos(random_phi),
-        random_r*sin(random_phi),
-        random_z
-    ).transform(*source_physical->GetRotation())
-    +source_physical->GetTranslation();
-
+  return G4ThreeVector(random_r * cos(random_phi), random_r * sin(random_phi),
+                       random_z)
+             .transform(*source_physical->GetRotation()) +
+         source_physical->GetTranslation();
 }

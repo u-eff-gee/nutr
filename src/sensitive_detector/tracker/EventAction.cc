@@ -25,22 +25,21 @@ using std::make_shared;
 #include "G4EventManager.hh"
 #include "G4ios.hh"
 
-#include "EventAction.hh"
 #include "DetectorHit.hh"
+#include "EventAction.hh"
 
-EventAction::EventAction(AnalysisManager* ana_man)
-: NEventAction(ana_man)
-{}
+EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
-void EventAction::EndOfEventAction(const G4Event* event)
-{
-	G4int eventID = event->GetEventID();
+void EventAction::EndOfEventAction(const G4Event *event) {
+  G4int eventID = event->GetEventID();
 
-    G4VHitsCollection* hc = nullptr;
-    for(int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections(); ++n_hc){
-        hc = event->GetHCofThisEvent()->GetHC(n_hc);
+  G4VHitsCollection *hc = nullptr;
+  for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
+       ++n_hc) {
+    hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
-        for(size_t i = 0; i < hc->GetSize(); ++i)
-            analysis_manager->FillNtuple(eventID, {make_shared<DetectorHit>((DetectorHit*) hc->GetHit(i))});
-    }
+    for (size_t i = 0; i < hc->GetSize(); ++i)
+      analysis_manager->FillNtuple(
+          eventID, {make_shared<DetectorHit>((DetectorHit *)hc->GetHit(i))});
+  }
 }

@@ -19,55 +19,43 @@
 
 #include "DetectorHit.hh"
 
-G4ThreadLocal G4Allocator<DetectorHit>* DetectorHitAllocator=0;
+G4ThreadLocal G4Allocator<DetectorHit> *DetectorHitAllocator = 0;
 
 DetectorHit::DetectorHit()
- : NDetectorHit(),
-    fTrackID(-1),
-    fParticleID(0),
-    fGlobalTime(0.),
-    fEdep(0.),
-    fEkin(0.),
-    fPos(G4ThreeVector()),
-    fMom(G4ThreeVector())
-{}
+    : NDetectorHit(), fTrackID(-1), fParticleID(0), fGlobalTime(0.), fEdep(0.),
+      fEkin(0.), fPos(G4ThreeVector()), fMom(G4ThreeVector()) {}
 
-DetectorHit::DetectorHit(const DetectorHit& right)
-  : NDetectorHit()
-{
-    fTrackID    = right.fTrackID;
-    fParticleID = right.fParticleID;
-    fDetectorID = right.fDetectorID;
-    fGlobalTime = right.fGlobalTime;
-    fEdep       = right.fEdep;
-    fEkin       = right.fEkin;
-    fPos        = right.fPos;
-    fMom        = right.fMom;
+DetectorHit::DetectorHit(const DetectorHit &right) : NDetectorHit() {
+  fTrackID = right.fTrackID;
+  fParticleID = right.fParticleID;
+  fDetectorID = right.fDetectorID;
+  fGlobalTime = right.fGlobalTime;
+  fEdep = right.fEdep;
+  fEkin = right.fEkin;
+  fPos = right.fPos;
+  fMom = right.fMom;
 }
 
-DetectorHit::DetectorHit(DetectorHit* right)
-  : NDetectorHit()
-{
-    fTrackID    = right->fTrackID;
-    fParticleID = right->fParticleID;
-    fDetectorID = right->fDetectorID;
-    fGlobalTime = right->fGlobalTime;
-    fEdep       = right->fEdep;
-    fEkin       = right->fEkin;
-    fPos        = right->fPos;
-    fMom        = right->fMom;
+DetectorHit::DetectorHit(DetectorHit *right) : NDetectorHit() {
+  fTrackID = right->fTrackID;
+  fParticleID = right->fParticleID;
+  fDetectorID = right->fDetectorID;
+  fGlobalTime = right->fGlobalTime;
+  fEdep = right->fEdep;
+  fEkin = right->fEkin;
+  fPos = right->fPos;
+  fMom = right->fMom;
 }
 
-const DetectorHit& DetectorHit::operator=(const DetectorHit& right)
-{
-    fTrackID    = right.fTrackID;
-    fParticleID = right.fParticleID;
-    fDetectorID = right.fDetectorID;
-    fGlobalTime = right.fGlobalTime;
-    fEkin       = right.fEkin;
-    fEdep       = right.fEdep;
-    fPos        = right.fPos;
-    fMom        = right.fMom;
+const DetectorHit &DetectorHit::operator=(const DetectorHit &right) {
+  fTrackID = right.fTrackID;
+  fParticleID = right.fParticleID;
+  fDetectorID = right.fDetectorID;
+  fGlobalTime = right.fGlobalTime;
+  fEkin = right.fEkin;
+  fEdep = right.fEdep;
+  fPos = right.fPos;
+  fMom = right.fMom;
 
-    return *this;
+  return *this;
 }

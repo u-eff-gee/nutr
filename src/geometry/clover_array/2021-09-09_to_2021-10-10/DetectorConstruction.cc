@@ -33,6 +33,7 @@
 
 #include "BeamPipe.hh"
 #include "CeBr3_2x2.hh"
+#include "CoaxB4Config.hh"
 #include "CollimatorRoom.hh"
 #include "ComptonMonitor_2021-09-09_to_2021-10-10.hh"
 #include "HPGe_Clover.hh"
@@ -41,7 +42,6 @@
 #include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR.hh"
 #include "Target96Mo.hh"
-#include "CoaxB4Config.hh"
 
 constexpr double inch = 25.4 * mm;
 
@@ -50,60 +50,84 @@ constexpr double pb_thin = 0.046 * inch;
 constexpr double pb_thinner = 0.038 * inch;
 constexpr double pb_thick = 0.10 * inch;
 
-vector<Detector*> detectors = {
-    new HPGe_Clover("clover_3", HPGe_Clover_Collection::HPGe_Clover_Yale, 90. * deg, 90. * deg, 6.68 * inch, {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 1.5 * pi),
-    new HPGe_Clover("clover_5", HPGe_Clover_Collection::HPGe_Clover_Yale, 90. * deg, 180. * deg, 5.88 * inch, {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.5 * pi),
-    new HPGe_Clover("clover_8", HPGe_Clover_Collection::HPGe_Clover_Yale, 90. * deg, 315. * deg, 6.38 * inch, {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.),
+vector<Detector *> detectors = {
+    new HPGe_Clover("clover_3", HPGe_Clover_Collection::HPGe_Clover_Yale,
+                    90. * deg, 90. * deg, 6.68 * inch,
+                    {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 1.5 * pi),
+    new HPGe_Clover("clover_5", HPGe_Clover_Collection::HPGe_Clover_Yale,
+                    90. * deg, 180. * deg, 5.88 * inch,
+                    {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.5 * pi),
+    new HPGe_Clover("clover_8", HPGe_Clover_Collection::HPGe_Clover_Yale,
+                    90. * deg, 315. * deg, 6.38 * inch,
+                    {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.),
 
-    new HPGe_Clover("clover_B1", HPGe_Clover_Collection::HPGe_Clover_Yale, 135. * deg, 90. * deg, 7.75 * inch, {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.5 * pi),
-    new HPGe_Clover("clover_B2", HPGe_Clover_Collection::HPGe_Clover_Yale, 125.26 * deg, 45. * deg, 7.75 * inch, {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.5 * pi),
-    new HPGe_Coaxial("coaxial_B4", COAXIAL_B4, 125.26 * deg, 135. * deg, 9.25 * inch, {{"G4_Pb", pb_thinner}, {"G4_Cu", cu_thin}}),
-    new HPGe_Clover("clover_B5", HPGe_Clover_Collection::HPGe_Clover_Yale, 135. * deg, 180. * deg, 8.00 * inch, {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 1.5 * pi),
+    new HPGe_Clover("clover_B1", HPGe_Clover_Collection::HPGe_Clover_Yale,
+                    135. * deg, 90. * deg, 7.75 * inch,
+                    {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.5 * pi),
+    new HPGe_Clover("clover_B2", HPGe_Clover_Collection::HPGe_Clover_Yale,
+                    125.26 * deg, 45. * deg, 7.75 * inch,
+                    {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 0.5 * pi),
+    new HPGe_Coaxial("coaxial_B4", COAXIAL_B4, 125.26 * deg, 135. * deg,
+                     9.25 * inch, {{"G4_Pb", pb_thinner}, {"G4_Cu", cu_thin}}),
+    new HPGe_Clover("clover_B5", HPGe_Clover_Collection::HPGe_Clover_Yale,
+                    135. * deg, 180. * deg, 8.00 * inch,
+                    {{"G4_Pb", pb_thin}, {"G4_Cu", cu_thin}}, {}, 1.5 * pi),
 
-    new CeBr3_2x2("cebr_B", 90. * deg, 27.5 * deg, 8.0 * inch, {{"G4_Cu", cu_thin}}),
-    new CeBr3_2x2("cebr_C", 90. * deg, 45.0 * deg, 8.0 * inch, {{"G4_Cu", cu_thin}}),
-    new CeBr3_2x2("cebr_D", 90. * deg, 45.0 * deg, 8.0 * inch, {{"G4_Cu", cu_thin}}),
-    new CeBr3_2x2("cebr_F", 90. * deg, 45.0 * deg, 8.0 * inch, {{"G4_Cu", cu_thin}}),
-    new CeBr3_2x2("cebr_G", 90. * deg, 45.0 * deg, 8.0 * inch, {{"G4_Cu", cu_thin}}),
-    new CeBr3_2x2("cebr_H", 90. * deg, 45.0 * deg, 8.0 * inch, {{"G4_Cu", cu_thin}}),
-    new CeBr3_2x2("cebr_K", 90. * deg, 45.0 * deg, 5.75 * inch, {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_B", 90. * deg, 27.5 * deg, 8.0 * inch,
+                  {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_C", 90. * deg, 45.0 * deg, 8.0 * inch,
+                  {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_D", 90. * deg, 45.0 * deg, 8.0 * inch,
+                  {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_F", 90. * deg, 45.0 * deg, 8.0 * inch,
+                  {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_G", 90. * deg, 45.0 * deg, 8.0 * inch,
+                  {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_H", 90. * deg, 45.0 * deg, 8.0 * inch,
+                  {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_K", 90. * deg, 45.0 * deg, 5.75 * inch,
+                  {{"G4_Cu", cu_thin}}),
 
-    new CeBr3_2x2("cebr_BD", 135. * deg, 90.0 * deg, 6.5 * inch, {{"G4_Cu", cu_thin}}),
-    new CeBr3_2x2("cebr_BK", 135. * deg, 270.0 * deg, 7.13 * inch, {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_BD", 135. * deg, 90.0 * deg, 6.5 * inch,
+                  {{"G4_Cu", cu_thin}}),
+    new CeBr3_2x2("cebr_BK", 135. * deg, 270.0 * deg, 7.13 * inch,
+                  {{"G4_Cu", cu_thin}}),
 
     new CeBr3_2x2("cebr_Z", 35. * deg, 0. * deg, 57. * inch),
 
-    new LaBr3Ce_3x3("labr_L1", 90. * deg, 0. * deg, 1.75 * inch, {{"G4_Pb", pb_thick}}),
-    new LaBr3Ce_3x3("labr_L7", 90. * deg, 270. * deg, 2.38 * inch, {{"G4_Pb", pb_thick}}),
-    new LaBr3Ce_3x3("labr_L1", 135. * deg, 225. * deg, 4.75 * inch, {{"G4_Pb", pb_thick}}),
-    new LaBr3Ce_3x3("labr_L1", 135. * deg, 315. * deg, 4.50 * inch, {{"G4_Pb", pb_thick}}),
+    new LaBr3Ce_3x3("labr_L1", 90. * deg, 0. * deg, 1.75 * inch,
+                    {{"G4_Pb", pb_thick}}),
+    new LaBr3Ce_3x3("labr_L7", 90. * deg, 270. * deg, 2.38 * inch,
+                    {{"G4_Pb", pb_thick}}),
+    new LaBr3Ce_3x3("labr_L1", 135. * deg, 225. * deg, 4.75 * inch,
+                    {{"G4_Pb", pb_thick}}),
+    new LaBr3Ce_3x3("labr_L1", 135. * deg, 315. * deg, 4.50 * inch,
+                    {{"G4_Pb", pb_thick}}),
 
 };
 
-G4VPhysicalVolume* DetectorConstruction::Construct()
-{
+G4VPhysicalVolume *DetectorConstruction::Construct() {
 
-    G4NistManager* nist_manager = G4NistManager::Instance();
+  G4NistManager *nist_manager = G4NistManager::Instance();
 
-    world_solid = new G4Box("world_solid", 2. * m, 2. * m, 3.5 * m);
-    world_logical = new G4LogicalVolume(
-        world_solid, nist_manager->FindOrBuildMaterial("G4_AIR"),
-        "world_logical");
-    world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
-    world_phys = new G4PVPlacement(new G4RotationMatrix(),
-        G4ThreeVector(), world_logical,
-        "world", nullptr, false, 0);
+  world_solid = new G4Box("world_solid", 2. * m, 2. * m, 3.5 * m);
+  world_logical = new G4LogicalVolume(
+      world_solid, nist_manager->FindOrBuildMaterial("G4_AIR"),
+      "world_logical");
+  world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
+  world_phys = new G4PVPlacement(new G4RotationMatrix(), G4ThreeVector(),
+                                 world_logical, "world", nullptr, false, 0);
 
-    CollimatorRoom(world_logical).Construct({});
-    BeamPipe(world_logical).Construct({});
-    LeadShieldingUTR(world_logical).Construct({});
+  CollimatorRoom(world_logical).Construct({});
+  BeamPipe(world_logical).Construct({});
+  LeadShieldingUTR(world_logical).Construct({});
 
-    for(auto det: detectors){
-        det->Construct(world_logical, {});
-        RegisterSensitiveLogicalVolumes(det->get_sensitive_logical_volumes());
-    }
+  for (auto det : detectors) {
+    det->Construct(world_logical, {});
+    RegisterSensitiveLogicalVolumes(det->get_sensitive_logical_volumes());
+  }
 
-    Target96Mo(world_logical).Construct({});
+  Target96Mo(world_logical).Construct({});
 
-    return world_phys;
+  return world_phys;
 }

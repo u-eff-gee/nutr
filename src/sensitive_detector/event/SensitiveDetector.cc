@@ -21,29 +21,26 @@
 
 #include "SensitiveDetector.hh"
 
-void SensitiveDetector::Initialize(G4HCofThisEvent* hce)
-{
+void SensitiveDetector::Initialize(G4HCofThisEvent *hce) {
 
-    fDetectorHitsCollection
-      = new G4THitsCollection<DetectorHit>(SensitiveDetectorName, collectionName[0]);
+  fDetectorHitsCollection = new G4THitsCollection<DetectorHit>(
+      SensitiveDetectorName, collectionName[0]);
 
-    G4int hcID 
-      = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
-    hce->AddHitsCollection( hcID, fDetectorHitsCollection );
+  G4int hcID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
+  hce->AddHitsCollection(hcID, fDetectorHitsCollection);
 }
 
-G4bool SensitiveDetector::ProcessHits(G4Step* aStep,
-                                     G4TouchableHistory*)
-{
-    G4double edep = aStep->GetTotalEnergyDeposit();
-    if (edep==0.) return false;
+G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *) {
+  G4double edep = aStep->GetTotalEnergyDeposit();
+  if (edep == 0.)
+    return false;
 
-    DetectorHit* newDetectorHit = new DetectorHit();
+  DetectorHit *newDetectorHit = new DetectorHit();
 
-    newDetectorHit->SetDetectorID(fDetectorID);
-    newDetectorHit->SetEdep(edep);
+  newDetectorHit->SetDetectorID(fDetectorID);
+  newDetectorHit->SetEdep(edep);
 
-    fDetectorHitsCollection->insert( newDetectorHit );
+  fDetectorHitsCollection->insert(newDetectorHit);
 
-    return true;
+  return true;
 }

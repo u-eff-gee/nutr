@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-	Copyright (C) 2020-2022 Udo Friman-Gayer
+        Copyright (C) 2020-2022 Udo Friman-Gayer
 */
 
 #pragma once
@@ -24,161 +24,189 @@
 
 #include "G4LogicalVolume.hh"
 
-using std::vector;
 using std::string;
+using std::vector;
 
 /**
  * \brief Container for filter properties
  */
 struct Filter {
-    Filter(const string material, const double thickness, const double radius):
-        material(material), thickness(thickness), radius(radius), use_default_radius(false){}
-    Filter(const string material, const double thickness):
-        material(material), thickness(thickness), radius(0.), use_default_radius(true){}
+  Filter(const string material, const double thickness, const double radius)
+      : material(material), thickness(thickness), radius(radius),
+        use_default_radius(false) {}
+  Filter(const string material, const double thickness)
+      : material(material), thickness(thickness), radius(0.),
+        use_default_radius(true) {}
 
-    string material; /**< Filter materials given as G4Material names. */
-    double thickness; /**< Filter thickness. */
-    double radius; /**< Filter radius. If zero, some default might be used. */
-    bool use_default_radius;
+  string material;  /**< Filter materials given as G4Material names. */
+  double thickness; /**< Filter thickness. */
+  double radius;    /**< Filter radius. If zero, some default might be used. */
+  bool use_default_radius;
 };
 typedef Filter Wrap;
 
 /**
  * \brief Abstract class for a detector with an obvious main axis
- * 
- * This class standardizes the placement of a detector with respect to a point \f$\mathbf{r}_s\f$ 
- * in space (e.g. the location of a radiation source) along a given axis, and the placement of 
+ *
+ * This class standardizes the placement of a detector with respect to a point
+ \f$\mathbf{r}_s\f$
+ * in space (e.g. the location of a radiation source) along a given axis, and
+ the placement of
  * shielding next to it.
- * 
- * The main axis of the detector will be oriented along an axis defined by the polar (\f$\theta\f$) 
- * and aximuthal (\f$\varphi\f$) angles in spherical coordinates, which are defined with respect
+ *
+ * The main axis of the detector will be oriented along an axis defined by the
+ polar (\f$\theta\f$)
+ * and aximuthal (\f$\varphi\f$) angles in spherical coordinates, which are
+ defined with respect
  * to the coordinate system of Geant4.
- * If a 'front part' of the detector can be defined, it is assumed to be facing \f$r_s\f$.
- * The distance of the detector to \f$r_s\f$, measured along the orientation axis, is given by a 
+ * If a 'front part' of the detector can be defined, it is assumed to be facing
+ \f$r_s\f$.
+ * The distance of the detector to \f$r_s\f$, measured along the orientation
+ axis, is given by a
  * parameter \f$d\f$.
- * In most cases, this will be the minimum distance from the source position to the planar surface 
+ * In most cases, this will be the minimum distance from the source position to
+ the planar surface
  * of the detector.
- * The class also accounts for intrinsic rotations of the detector by an angle \f$\alpha\f$ around
+ * The class also accounts for intrinsic rotations of the detector by an angle
+ \f$\alpha\f$ around
  * its main axis, so it does not have to be cylindrically symmetric.
- * 
- * It is furthermore assumed that there are well defined ways of placing shielding material 
- * 
- * - in front of (i.e., between the front part of the detector and the radiation source),
- * 
- * and 
+ *
+ * It is furthermore assumed that there are well defined ways of placing
+ shielding material
+ *
+ * - in front of (i.e., between the front part of the detector and the radiation
+ source),
+ *
+ * and
 
- * - around the detector (i.e. 'wrap' the detector in a sheet of shielding material to block
+ * - around the detector (i.e. 'wrap' the detector in a sheet of shielding
+ material to block
  * incoming radiation from the side).
- * 
- * The former shielding will often be denoted as 'filters', and the latter will be denoted as 
+ *
+ * The former shielding will often be denoted as 'filters', and the latter will
+ be denoted as
  * 'wrap(pings)'.
  * This class standardizes the definition of both.
- * 
+ *
  * \todo Unify the naming of the descriptions and the C++ variables.
  */
-class Detector
-{
+class Detector {
 public:
-    /**
-     * \brief Constructor
-     * 
-     * \param name Initializer for detector_name.
-     * \param theta \f$\theta\f$ polar angle in spherical coordinates.
-     * \param phi \f$\varphi\f$ polar angle in spherical coordinates.
-     * \param dist_from_center \f$d\f$, distance from the source to the front of the detector.
-     * \param intrinsic_rotation_angle \f$\alpha\f$, intrinsic rotation angle of the detector
-     * around its main axis (default: 0).
-     */
-    Detector(const G4String name, const G4double theta, const G4double phi, const G4double dist_from_center, const vector<Filter> filters = {}, const vector<Wrap> wraps = {}, G4double intrinsic_rotation_angle = 0.);
+  /**
+   * \brief Constructor
+   *
+   * \param name Initializer for detector_name.
+   * \param theta \f$\theta\f$ polar angle in spherical coordinates.
+   * \param phi \f$\varphi\f$ polar angle in spherical coordinates.
+   * \param dist_from_center \f$d\f$, distance from the source to the front of
+   * the detector. \param intrinsic_rotation_angle \f$\alpha\f$, intrinsic
+   * rotation angle of the detector around its main axis (default: 0).
+   */
+  Detector(const G4String name, const G4double theta, const G4double phi,
+           const G4double dist_from_center, const vector<Filter> filters = {},
+           const vector<Wrap> wraps = {},
+           G4double intrinsic_rotation_angle = 0.);
 
-    /**
-     * \brief Construct the detector in a Geant4 geometry
-     * 
-     * The detector is constructed with world_volume as its mother volume.
-     * Within its intrinsic coordinate system, the detector is assumed to be constructed such 
-     * that it is oriented along the z-axis, with the 'center' of its front part exactly at 
-     * the origin for \f$d = 0\f$.
-     * 
-     * Note that filters and wrappings must be added via the respective methods before the 
-     * construction via this method.
-     * 
-     * \param global_coordinates \f$r_s\f$, point in space on which the placement of the 
-     * detector is based.
-     */
-    virtual void Construct(G4LogicalVolume* world_logical, G4ThreeVector global_coordinates) = 0;
+  /**
+   * \brief Construct the detector in a Geant4 geometry
+   *
+   * The detector is constructed with world_volume as its mother volume.
+   * Within its intrinsic coordinate system, the detector is assumed to be
+   * constructed such that it is oriented along the z-axis, with the 'center' of
+   * its front part exactly at the origin for \f$d = 0\f$.
+   *
+   * Note that filters and wrappings must be added via the respective methods
+   * before the construction via this method.
+   *
+   * \param global_coordinates \f$r_s\f$, point in space on which the placement
+   * of the detector is based.
+   */
+  virtual void Construct(G4LogicalVolume *world_logical,
+                         G4ThreeVector global_coordinates) = 0;
 
-    /**
-     * \brief Return detector's sensitive logical volumes.
-     */
-    vector<G4LogicalVolume *> get_sensitive_logical_volumes()
-    {
-        return sensitive_logical_volumes;
-    };
+  /**
+   * \brief Return detector's sensitive logical volumes.
+   */
+  vector<G4LogicalVolume *> get_sensitive_logical_volumes() {
+    return sensitive_logical_volumes;
+  };
 
 protected:
-    double Construct_Filters(G4LogicalVolume* world_logical, G4ThreeVector global_coordinates, double dist_from_center, double theta, double phi, double filter_position_z, const std::function<G4VSolid *(string, double, double)> &construct_solid);
+  double Construct_Filters(
+      G4LogicalVolume *world_logical, G4ThreeVector global_coordinates,
+      double dist_from_center, double theta, double phi,
+      double filter_position_z,
+      const std::function<G4VSolid *(string, double, double)> &construct_solid);
 
-    const G4String detector_name; /**< Name of the detector. This name will be used as a prefix for all parts of the geometry. */
-    const double theta, phi, dist_from_center;
-    const vector<Filter> filters; /**< Filters placed in front of the detector. */
-    const vector<Filter> wraps; /**< Filters wrapped around the detector face */
-    const double intrinsic_rotation_angle;
+  const G4String
+      detector_name; /**< Name of the detector. This name will be used as a
+                        prefix for all parts of the geometry. */
+  const double theta, phi, dist_from_center;
+  const vector<Filter> filters; /**< Filters placed in front of the detector. */
+  const vector<Filter> wraps;   /**< Filters wrapped around the detector face */
+  const double intrinsic_rotation_angle;
 
-    /**
-     * \brief Return radial unit vector in spherical coordinates
-     * 
-     * The radial unit vector \f$\hat{e_r}\f$ is the direction along which the main axis of 
-     * the detector is oriented.
-     * 
-     * \param theta \f$\theta\f$, polar angle
-     * \param phi \f$\varphi\f$, aximuthal angle
-     * 
-     * \return \f$\hat{e_r}\f$
-     */
-    G4ThreeVector unit_vector_r(const double theta, const double phi) const;
+  /**
+   * \brief Return radial unit vector in spherical coordinates
+   *
+   * The radial unit vector \f$\hat{e_r}\f$ is the direction along which the
+   * main axis of the detector is oriented.
+   *
+   * \param theta \f$\theta\f$, polar angle
+   * \param phi \f$\varphi\f$, aximuthal angle
+   *
+   * \return \f$\hat{e_r}\f$
+   */
+  G4ThreeVector unit_vector_r(const double theta, const double phi) const;
 
-    /**
-     * \brief Return polar unit vector in spherical coordinates
-     * 
-     * The polar unit vector \f$\hat{e_\theta}\f$ is perpendicular to the main axis of the 
-     * detector and can be used to place off-axis elements in the geometry.
-     * 
-     * \param theta \f$\theta\f$, polar angle
-     * \param phi \f$\varphi\f$, aximuthal angle
-     * 
-     * \return \f$\hat{e_\theta}\f$
-     */
-    G4ThreeVector unit_vector_theta(const double theta, const double phi) const;
+  /**
+   * \brief Return polar unit vector in spherical coordinates
+   *
+   * The polar unit vector \f$\hat{e_\theta}\f$ is perpendicular to the main
+   * axis of the detector and can be used to place off-axis elements in the
+   * geometry.
+   *
+   * \param theta \f$\theta\f$, polar angle
+   * \param phi \f$\varphi\f$, aximuthal angle
+   *
+   * \return \f$\hat{e_\theta}\f$
+   */
+  G4ThreeVector unit_vector_theta(const double theta, const double phi) const;
 
-    /**
-     * \brief Return azimuthal unit vector in spherical coordinates
-     * 
-     * The azimuthal unit vector \f$\hat{e_\theta}\f$ is perpendicular to the main axis of the 
-     * detector and can be used to place off-axis elements in the geometry.
-     * 
-     * \param theta \f$\theta\f$, polar angle
-     * \param phi \f$\varphi\f$, aximuthal angle
-     * 
-     * \return \f$\hat{e_\varphi}\f$
-     */
-    G4ThreeVector unit_vector_phi(const double theta, const double phi) const;
+  /**
+   * \brief Return azimuthal unit vector in spherical coordinates
+   *
+   * The azimuthal unit vector \f$\hat{e_\theta}\f$ is perpendicular to the main
+   * axis of the detector and can be used to place off-axis elements in the
+   * geometry.
+   *
+   * \param theta \f$\theta\f$, polar angle
+   * \param phi \f$\varphi\f$, aximuthal angle
+   *
+   * \return \f$\hat{e_\varphi}\f$
+   */
+  G4ThreeVector unit_vector_phi(const double theta, const double phi) const;
 
-    /**
-     * \brief Set up rotation matrix for transformation into the desired coordinate system
-     * 
-     * This function sets the member rotation_matrix to a G4RotationMatrix that will transform
-     * an object with a main axis that was originally oriented along the z axis into an 
-     * orientation along a new axis given by \f$\theta\f$ and \f$\varphi\f$.
-     * Furthermore, a third angle \f$\alpha\f$ can be provided to rotate the object around 
-     * its main axis.
-     * 
-     * \param theta \f$\theta\f$, polar angle
-     * \param phi \f$\varphi\f$, aximuthal angle
-     * \param alpha \f$\alpha\f$, intrinsic rotation angle of the detector
-     * around its main axis
-     */
-    void rotate(const double theta, const double phi, const double alpha);
+  /**
+   * \brief Set up rotation matrix for transformation into the desired
+   * coordinate system
+   *
+   * This function sets the member rotation_matrix to a G4RotationMatrix that
+   * will transform an object with a main axis that was originally oriented
+   * along the z axis into an orientation along a new axis given by \f$\theta\f$
+   * and \f$\varphi\f$. Furthermore, a third angle \f$\alpha\f$ can be provided
+   * to rotate the object around its main axis.
+   *
+   * \param theta \f$\theta\f$, polar angle
+   * \param phi \f$\varphi\f$, aximuthal angle
+   * \param alpha \f$\alpha\f$, intrinsic rotation angle of the detector
+   * around its main axis
+   */
+  void rotate(const double theta, const double phi, const double alpha);
 
-    vector<G4LogicalVolume *> sensitive_logical_volumes; /**< List of sensitive logical volumes of this detector. */
-    G4RotationMatrix *rotation_matrix; /**< Rotation matrix for transformation into desired coordinate system.*/
+  vector<G4LogicalVolume *>
+      sensitive_logical_volumes; /**< List of sensitive logical volumes of this
+                                    detector. */
+  G4RotationMatrix *rotation_matrix; /**< Rotation matrix for transformation
+                                        into desired coordinate system.*/
 };
