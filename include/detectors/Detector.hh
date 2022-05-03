@@ -41,6 +41,7 @@ struct Filter {
     double radius; /**< Filter radius. If zero, some default might be used. */
     bool use_default_radius;
 };
+typedef Filter Wrap;
 
 /**
  * \brief Abstract class for a detector with an obvious main axis
@@ -88,7 +89,7 @@ public:
      * \param intrinsic_rotation_angle \f$\alpha\f$, intrinsic rotation angle of the detector
      * around its main axis (default: 0).
      */
-    Detector(const G4String name, const G4double theta, const G4double phi, const G4double dist_from_center, const vector<Filter> filters = {}, const vector<Filter> wraps = {}, G4double intrinsic_rotation_angle = 0.);
+    Detector(const G4String name, const G4double theta, const G4double phi, const G4double dist_from_center, const vector<Filter> filters = {}, const vector<Wrap> wraps = {}, G4double intrinsic_rotation_angle = 0.);
 
     /**
      * \brief Construct the detector in a Geant4 geometry
