@@ -30,9 +30,7 @@
 
 CeBr3 cebr3;
 
-void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
-                          G4double phi, G4double dist_from_center,
-                          G4double intrinsic_rotation_angle) {
+void CeBr3_2x2::Construct(G4LogicalVolume* world_logical, G4ThreeVector global_coordinates) {
 
   /*********** Dimensions ***********/
   // Front
@@ -122,7 +120,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
       global_coordinates +
           (dist_from_center + 0.5 * front_entrance_window_thickness) * e_r,
       front_entrance_window_logical, detector_name + "_front_entrance_window",
-      world_Logical, 0, 0, false);
+      world_logical, 0, 0, false);
 
   // Case
   G4Tubs *front_case_wall_solid =
@@ -138,7 +136,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                     global_coordinates +
                         (dist_from_center + 0.5 * front_case_length) * e_r,
                     front_case_wall_logical, detector_name + "_front_case_wall",
-                    world_Logical, 0, 0, false);
+                    world_logical, 0, 0, false);
 
   G4Tubs *front_entrance_vacuum_solid =
       new G4Tubs(detector_name + "_front_entrance_vacuum_sold", 0.,
@@ -154,7 +152,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                             0.5 * crystal_to_entrance_window) *
                                e_r,
       front_entrance_vacuum_logical, detector_name + "_front_entrance_vacuum",
-      world_Logical, 0, 0, false);
+      world_logical, 0, 0, false);
 
   G4Tubs *front_case_vacuum_solid =
       new G4Tubs(detector_name + "_front_case_vacuum_sold", crystal_radius,
@@ -171,7 +169,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                             0.5 * front_case_length) *
                                e_r,
       front_case_vacuum_logical, detector_name + "_front_case_vacuum",
-      world_Logical, 0, 0, false);
+      world_logical, 0, 0, false);
 
   /*********** Crystal ***********/
 
@@ -188,7 +186,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                          crystal_to_entrance_window + 0.5 * crystal_length) *
                             e_r,
                     sensitive_logical_volumes[0], detector_name + "_crystal",
-                    world_Logical, 0, 0, false);
+                    world_logical, 0, 0, false);
 
   /*********** PMT ***********/
   // PMT
@@ -205,7 +203,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
           (dist_from_center + front_entrance_window_thickness +
            crystal_to_entrance_window + crystal_length + 0.5 * pmt_length) *
               e_r,
-      pmt_logical, detector_name + "_pmt", world_Logical, 0, 0, false);
+      pmt_logical, detector_name + "_pmt", world_logical, 0, 0, false);
 
   G4Tubs *pmt_vacuum_solid = new G4Tubs(detector_name + "_pmt_vacuum_sold", 0.,
                                         pmt_outer_radius - pmt_wall_thickness,
@@ -221,7 +219,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                          0.5 * pmt_length) *
                             e_r,
                     pmt_vacuum_logical, detector_name + "_pmt_vacuum",
-                    world_Logical, 0, 0, false);
+                    world_logical, 0, 0, false);
 
   // PMT case
   G4Tubs *pmt_case_solid =
@@ -237,7 +235,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
       rotation_matrix,
       global_coordinates +
           (dist_from_center + front_case_length + 0.5 * pmt_case_length) * e_r,
-      pmt_case_logical, detector_name + "_pmt_case", world_Logical, 0, 0,
+      pmt_case_logical, detector_name + "_pmt_case", world_logical, 0, 0,
       false);
 
   G4Tubs *pmt_case_vacuum_solid =
@@ -254,7 +252,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
       global_coordinates +
           (dist_from_center + front_case_length + 0.5 * pmt_case_length) * e_r,
       pmt_case_vacuum_logical, detector_name + "_pmt_case_vacuum",
-      world_Logical, 0, 0, false);
+      world_logical, 0, 0, false);
 
   /*********** PMT ***********/
   // Connector base
@@ -273,7 +271,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                          0.5 * connector_base_length) *
                             e_r,
                     connector_base_logical, detector_name + "_connector_base",
-                    world_Logical, 0, 0, false);
+                    world_logical, 0, 0, false);
 
   G4Tubs *connector_base_inside_solid = new G4Tubs(
       detector_name + "_connector_base_inside_sold", 0.,
@@ -294,7 +292,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
            0.5 * (connector_base_length - connector_base_wall_thickness)) *
               e_r,
       connector_base_inside_logical, detector_name + "_connector_base_inside",
-      world_Logical, 0, 0, false);
+      world_logical, 0, 0, false);
 
   // Connector lid
   G4Tubs *connector_lid_solid =
@@ -312,7 +310,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                          0.5 * connector_base_wall_thickness) *
                             e_r,
                     connector_lid_logical, detector_name + "_connector_lid",
-                    world_Logical, 0, 0, false);
+                    world_logical, 0, 0, false);
 
   // HV connector
   G4Tubs *hv_connector_solid =
@@ -330,7 +328,7 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
                         0.5 / sqrt(2.) * connector_base_outer_radius * e_theta +
                         0.5 / sqrt(2.) * connector_base_outer_radius * e_phi,
                     hv_connector_logical, detector_name + "_hv_connector",
-                    world_Logical, 0, 0, false);
+                    world_logical, 0, 0, false);
 
   // Signal connector
   G4Tubs *signal_connector_solid = new G4Tubs(
@@ -350,16 +348,12 @@ void CeBr3_2x2::Construct(G4ThreeVector global_coordinates, G4double theta,
           0.5 / sqrt(2.) * connector_base_outer_radius * e_theta -
           0.5 / sqrt(2.) * connector_base_outer_radius * e_phi,
       signal_connector_logical, detector_name + "_signal_connector",
-      world_Logical, 0, 0, false);
+      world_logical, 0, 0, false);
 
   /************** Filters *************/
   rotate(theta, phi, intrinsic_rotation_angle);
 
-  for (auto &f : filters) {
-    f.radius = f.radius ? f.radius : front_case_outer_radius;
-  }
-
-  [[maybe_unused]] auto filter_position_z = Construct_Filters(
+  [[maybe_unused]] auto filter_position_z = Construct_Filters(world_logical, 
       global_coordinates, dist_from_center, theta, phi, 0.,
       [](std::string name, double radius, double thickness) {
         return new G4Tubs(name, 0., radius, thickness * 0.5, 0., twopi);

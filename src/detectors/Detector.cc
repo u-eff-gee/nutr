@@ -28,34 +28,24 @@
 
 using std::string, std::to_string;
 
-Detector::Detector(G4LogicalVolume *World_Logical, const G4String name)
-: world_Logical(World_Logical),
-  detector_name(name),
+Detector::Detector(const G4String name, const G4double theta, const G4double phi, const G4double dist_from_center, const vector<Filter> filters, const vector<Filter> wraps, G4double intrinsic_rotation_angle)
+: detector_name(detector_name),
+  theta(theta),
+  phi(phi),
+  dist_from_center(dist_from_center),
+  filters(filters),
+  wraps(wraps),
+  intrinsic_rotation_angle(intrinsic_rotation_angle),
   rotation_matrix(nullptr)
 {}
 
-void Detector::Add_Filter(string filter_material, double filter_thickness, double filter_radius)
-{
-    filters.emplace_back(Filter{filter_material, filter_thickness, filter_radius});
-}
-
-void Detector::Add_Filter(Filter filter)
-{
-    filters.push_back(filter);
-}
-
-void Detector::Add_Wrap(G4String wrap_material, G4double wrap_thickness)
-{
-    wrap_materials.push_back(wrap_material);
-    wrap_thicknesses.push_back(wrap_thickness);
-}
-
-double Detector::Construct_Filters(G4ThreeVector global_coordinates, double dist_from_center, double theta, double phi, double filter_position_z, const std::function<G4VSolid *(string, double, double)> &construct_solid)
+double Detector::Construct_Filters(G4LogicalVolume* world_logical, G4ThreeVector global_coordinates, double dist_from_center, double theta, double phi, double filter_position_z, const std::function<G4VSolid *(string, double, double)> &construct_solid)
 {
     G4NistManager *nist = G4NistManager::Instance();
     G4ThreeVector e_r = unit_vector_r(theta, phi);
     /* G4ThreeVector e_theta = unit_vector_theta(theta, phi); */
 
+    G4cout << "filters.size() = " << filters.size() << G4endl;
     for(size_t i = 0; i < filters.size(); ++i) {
         const auto &filter = filters[i];
         string filter_solid_name = "filter_" + detector_name + "_" + to_string(i) + "_solid";
@@ -69,7 +59,7 @@ double Detector::Construct_Filters(G4ThreeVector global_coordinates, double dist
             new G4VisAttributes((i % 2) ? G4Color::Green() : G4Color::Red()));
 
         string filter_name = "filter_" + detector_name + "_" + to_string(i);
-        new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center - filter_position_z - filter.thickness * 0.5) * e_r, filter_logical, filter_name, world_Logical, 0, 0, false);
+        new G4PVPlacement(rotation_matrix, global_coordinates + (dist_from_center - filter_position_z - filter.thickness * 0.5) * e_r, filter_logical, filter_name, world_logical, 0, 0, false);
         filter_position_z = filter_position_z + filter.thickness;
     }
     return filter_position_z;

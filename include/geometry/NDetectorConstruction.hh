@@ -44,9 +44,9 @@ public:
     vector<shared_ptr<SourceVolume>> GetSourceVolumes(){ return source_volumes; }
 
 protected:
-    unique_ptr<G4VSolid> world_solid;
-    unique_ptr<G4LogicalVolume> world_logical;
-    unique_ptr<G4VPhysicalVolume> world_phys;
+    G4VSolid* world_solid;
+    G4LogicalVolume* world_logical;
+    G4VPhysicalVolume* world_phys;
 
     vector<G4LogicalVolume*> sensitive_logical_volumes;
     vector<shared_ptr<SourceVolume>> source_volumes;
