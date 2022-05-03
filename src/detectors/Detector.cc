@@ -28,24 +28,23 @@
 
 using std::string, std::to_string;
 
-Detector::Detector(const G4String name, const G4double theta,
-                   const G4double phi, const G4double dist_from_center,
-                   const vector<Filter> filters, const vector<Filter> wraps,
-                   G4double intrinsic_rotation_angle)
-    : detector_name(detector_name), theta(theta), phi(phi),
-      dist_from_center(dist_from_center), filters(filters), wraps(wraps),
-      intrinsic_rotation_angle(intrinsic_rotation_angle),
+Detector::Detector(const G4String _name, const G4double _theta,
+                   const G4double _phi, const G4double _dist_from_center,
+                   const vector<Filter> _filters, const vector<Filter> _wraps,
+                   G4double _intrinsic_rotation_angle)
+    : detector_name(_name), theta(_theta), phi(_phi),
+      dist_from_center(_dist_from_center), filters(_filters), wraps(_wraps),
+      intrinsic_rotation_angle(_intrinsic_rotation_angle),
       rotation_matrix(nullptr) {}
 
 double Detector::Construct_Filters(
     G4LogicalVolume *world_logical, G4ThreeVector global_coordinates,
-    double dist_from_center, double theta, double phi, double filter_position_z,
+    [[maybe_unused]] double _dist_from_center, double _theta, double _phi, double filter_position_z,
     const std::function<G4VSolid *(string, double, double)> &construct_solid) {
   G4NistManager *nist = G4NistManager::Instance();
-  G4ThreeVector e_r = unit_vector_r(theta, phi);
+  G4ThreeVector e_r = unit_vector_r(_theta, _phi);
   /* G4ThreeVector e_theta = unit_vector_theta(theta, phi); */
 
-  G4cout << "filters.size() = " << filters.size() << G4endl;
   for (size_t i = 0; i < filters.size(); ++i) {
     const auto &filter = filters[i];
     string filter_solid_name =
@@ -73,30 +72,30 @@ double Detector::Construct_Filters(
   return filter_position_z;
 }
 
-G4ThreeVector Detector::unit_vector_r(const double theta,
-                                      const double phi) const {
-  return G4ThreeVector(sin(theta) * cos(phi), sin(theta) * sin(phi),
-                       cos(theta));
+G4ThreeVector Detector::unit_vector_r(const double _theta,
+                                      const double _phi) const {
+  return G4ThreeVector(sin(_theta) * cos(_phi), sin(_theta) * sin(_phi),
+                       cos(_theta));
 }
 
-G4ThreeVector Detector::unit_vector_theta(const double theta,
-                                          const double phi) const {
-  return G4ThreeVector(cos(theta) * cos(phi), cos(theta) * sin(phi),
-                       -sin(theta));
+G4ThreeVector Detector::unit_vector_theta(const double _theta,
+                                          const double _phi) const {
+  return G4ThreeVector(cos(_theta) * cos(_phi), cos(_theta) * sin(_phi),
+                       -sin(_theta));
 }
 
-G4ThreeVector Detector::unit_vector_phi([[maybe_unused]] const double theta,
-                                        const double phi) const {
-  return G4ThreeVector(-sin(phi), cos(phi), 0.);
+G4ThreeVector Detector::unit_vector_phi([[maybe_unused]] const double _theta,
+                                        const double _phi) const {
+  return G4ThreeVector(-sin(_phi), cos(_phi), 0.);
 }
 
-void Detector::rotate(const double theta, const double phi,
+void Detector::rotate(const double _theta, const double _phi,
                       const double alpha) {
 
   rotation_matrix = new G4RotationMatrix();
 
-  rotation_matrix->rotateZ(-phi);
-  rotation_matrix->rotateY(-theta);
+  rotation_matrix->rotateZ(-_phi);
+  rotation_matrix->rotateY(-_theta);
   if (alpha != 0.) {
     rotation_matrix->rotateZ(alpha);
   }

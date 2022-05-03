@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -35,7 +36,7 @@ struct Filter {
       : material(_material), thickness(_thickness), radius(_radius),
         use_default_radius(false) {}
   Filter(const string _material, const double _thickness)
-      : material(_material), thickness(_thickness), radius(0.),
+      : material(_material), thickness(_thickness), radius(std::numeric_limits<double>::quiet_NaN()),
         use_default_radius(true) {}
 
   string material;  /**< Filter materials given as G4Material names. */
