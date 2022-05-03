@@ -33,20 +33,20 @@ Physics::Physics() {
   RegisterPhysics(new G4EmLivermorePolarizedPhysics());
 
   G4EmExtraPhysics *emExtraPhysics = new G4EmExtraPhysics();
-  emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR @);
+  emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR@);
   RegisterPhysics(emExtraPhysics);
 
   RegisterPhysics(new G4DecayPhysics());
   RegisterPhysics(new G4RadioactiveDecayPhysics());
 
 #ifdef USE_HADRON_PHYSICS
-  RegisterPhysics(new @HADRON_ELASTIC @());
+  RegisterPhysics(new @HADRON_ELASTIC@());
 
-  RegisterPhysics(new @HADRON_INELASTIC @());
+  RegisterPhysics(new @HADRON_INELASTIC@());
 #endif
 }
 
 void Physics::SetCuts() {
   G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(
-      @PRODUCTION_CUT_LOW_KEV @ * keV, 1. * GeV);
+      @PRODUCTION_CUT_LOW_KEV@ * keV, 1. * GeV);
 }

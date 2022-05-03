@@ -12,13 +12,11 @@ clang-format -i --verbose include/geometry/materials/*.hh
 clang-format -i --verbose include/geometry/scintillator/*.hh
 
 clang-format -i --verbose include/physics/*.hh
-clang-format -i --verbose include/physics/*.hh.in
 
 clang-format -i --verbose include/primary_generator/angcorr/*.hh
 clang-format -i --verbose include/primary_generator/gps/*.hh
 
 clang-format -i --verbose include/sensitive_detector/*.hh
-clang-format -i --verbose include/sensitive_detector/*.hh.in
 clang-format -i --verbose include/sensitive_detector/edep/*.hh
 clang-format -i --verbose include/sensitive_detector/event/*.hh
 clang-format -i --verbose include/sensitive_detector/flux/*.hh
@@ -36,8 +34,6 @@ clang-format -i --verbose src/geometry/clover_array/array/*.cc
 clang-format -i --verbose src/geometry/hpge/*.cc
 clang-format -i --verbose src/geometry/materials/*.cc
 clang-format -i --verbose src/geometry/scintillator/*.cc
-
-clang-format -i --verbose src/physics/*.cc.in
 
 clang-format -i --verbose src/primary_generator/angcorr/*.cc
 clang-format -i --verbose src/primary_generator/gps/*.cc
