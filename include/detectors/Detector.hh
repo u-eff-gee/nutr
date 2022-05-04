@@ -142,7 +142,7 @@ protected:
                                   G4ThreeVector global_coordinates) = 0;
   void Construct_Filter_Case(G4LogicalVolume *world_logical,
                              G4ThreeVector global_coordinates,
-                             double dist_from_center){};
+                             double filter_dist_from_center){};
   virtual G4VSolid *Filter_Shape(const string name,
                                  const Filter &filter) const = 0;
 
