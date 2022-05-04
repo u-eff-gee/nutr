@@ -13,7 +13,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 #
-#    Copyright (C) 2020, 2021 Udo Friman-Gayer
+#    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
 set(COAXIAL_B4 "HPGe_ANL_41203" CACHE STRING "Detector at position B4")
 set_property(CACHE
