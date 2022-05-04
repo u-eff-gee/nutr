@@ -41,6 +41,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 
+find_package(Boost COMPONENTS program_options REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 option(WITH_GEANT4_UIVIS "Build nutr with Geant4 UI and Vis drivers" ON)
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
@@ -83,7 +86,7 @@ add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 
 add_executable(nutr src/fundamentals/nutr.cc)
 target_include_directories(nutr PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
-target_link_libraries(nutr actionInitialization detectorConstruction physics ${Geant4_LIBRARIES})
+target_link_libraries(nutr actionInitialization ${Boost_LIBRARIES} detectorConstruction physics ${Geant4_LIBRARIES})
 
 set(MACROS_ESSENTIAL init_vis.mac vis.mac)
 foreach(macro ${MACROS_ESSENTIAL})

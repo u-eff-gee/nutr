@@ -32,9 +32,9 @@ using std::put_time;
 #include "G4RunManager.hh"
 #include "G4Threading.hh"
 
-NRunAction::NRunAction(AnalysisManager *ana_man)
-    : G4UserRunAction(), analysis_manager(ana_man),
-      start_time(system_clock::now()) {}
+NRunAction::NRunAction(const string _output_file_name, AnalysisManager *ana_man)
+    : G4UserRunAction(), output_file_name(_output_file_name),
+      analysis_manager(ana_man), start_time(system_clock::now()) {}
 
 void NRunAction::BeginOfRunAction(const G4Run *) {
   const time_t start_time_t = system_clock::to_time_t(start_time);

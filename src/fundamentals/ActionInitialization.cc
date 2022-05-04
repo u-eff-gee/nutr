@@ -33,13 +33,13 @@ ActionInitialization::~ActionInitialization() {}
 void ActionInitialization::BuildForMaster() const {
   TupleManager *tuple = new TupleManager();
 
-  SetUserAction(new NRunAction(tuple));
+  SetUserAction(new NRunAction(output_file_name, tuple));
 }
 
 void ActionInitialization::Build() const {
   TupleManager *tuple = new TupleManager();
 
   SetUserAction(new PrimaryGeneratorAction(random_number_seed));
-  SetUserAction(new NRunAction(tuple));
+  SetUserAction(new NRunAction(output_file_name, tuple));
   SetUserAction(new EventAction(tuple));
 }

@@ -21,6 +21,10 @@
 
 using std::string;
 
+#include <boost/program_options.hpp>
+
+namespace po = boost::program_options;
+
 #include "G4RunManagerFactory.hh"
 
 #include "G4UImanager.hh"
@@ -33,12 +37,33 @@ using std::string;
 #include "Physics.hh"
 
 int main(int argc, char **argv) {
+  po::options_description desc("nutr: new utr - program options");
+  desc.add_options()("help", "Show help message.")(
+      "macro", po::value<string>(),
+      "Name of a Geant4 macro file to be executed. If no macro file is given, "
+      "nutr tries to launch the interactive user interface and a visualization "
+      "of the geometry.")(
+      "output", po::value<string>()->default_value(""),
+      "Output file name. Please note that, in Geant4, the suffix of the output "
+      "file determines the output format. If no output file name is specified, "
+      "a time stamp is used. Default: \"\", i.e. use time stamp.")(
+      "seed", po::value<long>()->default_value(1),
+      "Set random-number seed. Default: 1.");
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, desc), vm);
+  po::notify(vm);
+
+  if (vm.count("help")) {
+    G4cout << desc << G4endl;
+    return 1;
+  }
+
   G4UIExecutive *ui = nullptr;
-  if (argc == 1) {
+  if (!vm.count("macro")) {
     ui = new G4UIExecutive(argc, argv);
   }
-  const long seed = argc == 3 ? atoi(argv[2]) : 1;
-  G4Random::setTheSeed(seed);
+
+  G4Random::setTheSeed(vm["seed"].as<long>());
 
   auto *runManager =
       G4RunManagerFactory::CreateRunManager(G4RunManagerType::Default);
@@ -49,12 +74,8 @@ int main(int argc, char **argv) {
   physicsList->SetCuts();
   runManager->SetUserInitialization(physicsList);
 
-  string output_file_name = "";
-  if (argc == 4) {
-    output_file_name = argv[3];
-  }
-  runManager->SetUserInitialization(
-      new ActionInitialization(output_file_name, seed));
+  runManager->SetUserInitialization(new ActionInitialization(
+      vm["output"].as<string>(), vm["seed"].as<long>()));
 
   G4VisManager *visManager = new G4VisExecutive();
   visManager->Initialize();
@@ -62,7 +83,7 @@ int main(int argc, char **argv) {
 
   if (!ui) {
     G4String command = "/control/execute ";
-    G4String fileName = argv[1];
+    G4String fileName = vm["macro"].as<string>();
     UImanager->ApplyCommand(command + fileName);
   } else {
     UImanager->ApplyCommand("/control/execute init_vis.mac");

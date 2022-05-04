@@ -31,7 +31,7 @@ using std::chrono::time_point;
 
 class NRunAction : public G4UserRunAction {
 public:
-  NRunAction(AnalysisManager *ana_man);
+  NRunAction(const string _output_file_name, AnalysisManager *ana_man);
 
   void BeginOfRunAction(const G4Run *run) override;
   void EndOfRunAction(const G4Run *run) override;

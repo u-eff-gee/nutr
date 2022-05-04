@@ -28,8 +28,6 @@ void AnalysisManager::Book(string output_file_name) {
 
   if (output_file_name == "") {
     output_file_name = create_default_file_name();
-  } else if (std::filesystem::exists(output_file_name)) {
-    throw;
   }
 
   G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
@@ -41,7 +39,6 @@ void AnalysisManager::Book(string output_file_name) {
   // with OUTPUT_FORMAT="root" and switches to OUTPUT_FORMAT="csv" will not
   // wonder why the files are not merged any more.
   analysisManager->SetNtupleMerging(true);
-  G4cout << output_file_name << G4endl;
   analysisManager->OpenFile(output_file_name);
   CreateNtupleColumns(analysisManager);
   analysisManager->FinishNtuple();
