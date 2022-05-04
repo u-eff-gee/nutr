@@ -30,8 +30,8 @@
 
 CeBr3 cebr3;
 
-void CeBr3_2x2::Construct(G4LogicalVolume *world_logical,
-                          G4ThreeVector global_coordinates) {
+void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
+                                   G4ThreeVector global_coordinates) {
 
   /*********** Dimensions ***********/
   // Front
@@ -350,13 +350,9 @@ void CeBr3_2x2::Construct(G4LogicalVolume *world_logical,
           0.5 / sqrt(2.) * connector_base_outer_radius * e_phi,
       signal_connector_logical, detector_name + "_signal_connector",
       world_logical, 0, 0, false);
+}
 
-  /************** Filters *************/
-  rotate(theta, phi, intrinsic_rotation_angle);
-
-  [[maybe_unused]] auto filter_position_z = Construct_Filters(
-      world_logical, global_coordinates, dist_from_center, theta, phi, 0.,
-      [](std::string name, double radius, double thickness) {
-        return new G4Tubs(name, 0., radius, thickness * 0.5, 0., twopi);
-      });
+G4VSolid *CeBr3_2x2::Filter_Shape(const string name,
+                                  const Filter &filter) const {
+  return new G4Tubs(name, 0., filter.radius, filter.thickness * 0.5, 0., twopi);
 }

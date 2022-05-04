@@ -36,11 +36,13 @@ public:
               const vector<Filter> _wraps = {},
               G4double _intrinsic_rotation_angle = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filters, _wraps,
-                 _intrinsic_rotation_angle),
+                 _intrinsic_rotation_angle, _prop.end_cap_front_side_length),
         properties(_prop), use_dewar(true){};
 
-  void Construct(G4LogicalVolume *world_logical,
-                 G4ThreeVector global_coordinates) override;
+  void Construct_Detector(G4LogicalVolume *world_logical,
+                          G4ThreeVector global_coordinates) override final;
+  G4VSolid *Filter_Shape(const string name,
+                         const Filter &filter) const override final;
   void useDewar() { use_dewar = true; };
 
 private:

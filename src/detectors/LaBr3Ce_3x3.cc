@@ -35,8 +35,8 @@ using std::stringstream;
 
 LaBr3Ce labr3ce;
 
-void LaBr3Ce_3x3::Construct(G4LogicalVolume *world_logical,
-                            G4ThreeVector global_coordinates) {
+void LaBr3Ce_3x3::Construct_Detector(G4LogicalVolume *world_logical,
+                                     G4ThreeVector global_coordinates) {
 
   G4NistManager *nist = G4NistManager::Instance();
 
@@ -256,17 +256,9 @@ void LaBr3Ce_3x3::Construct(G4LogicalVolume *world_logical,
               symmetry_axis,
       pmt_housing_bottom_logical, detector_name + "_pmt_housing_bottom",
       world_logical, 0, 0, false);
+}
 
-  /************** Filters *************/
-  rotate(theta, phi, intrinsic_rotation_angle);
-
-  // for(auto &f: filters) {
-  //     f.radius = f.radius ? f.radius : crystal_housing_outer_radius;
-  // }
-
-  [[maybe_unused]] auto filter_position_z = Construct_Filters(
-      world_logical, global_coordinates, dist_from_center, theta, phi, 0.,
-      [](std::string name, double radius, double thickness) {
-        return new G4Tubs(name, 0., radius, thickness * 0.5, 0., twopi);
-      });
+G4VSolid *LaBr3Ce_3x3::Filter_Shape(const string name,
+                                    const Filter &filter) const {
+  return new G4Tubs(name, 0., filter.radius, filter.thickness * 0.5, 0., twopi);
 }

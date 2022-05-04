@@ -36,8 +36,8 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 using std::string;
 using std::to_string;
 
-void HPGe_Coaxial::Construct(G4LogicalVolume *world_logical,
-                             G4ThreeVector global_coordinates) {
+void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
+                                      G4ThreeVector global_coordinates) {
 
   G4NistManager *nist = G4NistManager::Instance();
   G4ThreeVector e_r = unit_vector_r(theta, phi);
@@ -385,25 +385,13 @@ void HPGe_Coaxial::Construct(G4LogicalVolume *world_logical,
         dist_from_center - filter_case.get_filter_case_ring_thickness() * 0.5);
   }
 
-  // Filters
-  // for (auto &f : filters) {
-  //     f.radius = f.radius ? f.radius : end_cap_outer_radius;
-  // }
-
-  auto filter_position_z = Construct_Filters(
-      world_logical, global_coordinates, dist_from_center, theta, phi,
-      filter_case.get_filter_case_ring_thickness(),
-      [](std::string name, double radius, double thickness) {
-        return new G4Tubs(name, 0., radius, thickness * 0.5, 0., twopi);
-      });
-
-  if (use_filter_case) {
-    filter_case.Construct_Case(
-        global_coordinates, theta, phi,
-        dist_from_center -
-            filter_case.get_filter_case_bottom_thickness() * 0.5 -
-            filter_position_z);
-  }
+  //   if (use_filter_case) {
+  //     filter_case.Construct_Case(
+  //         global_coordinates, theta, phi,
+  //         dist_from_center -
+  //             filter_case.get_filter_case_bottom_thickness() * 0.5 -
+  //             filter_position_z);
+  //   }
 
   // Wraps
   if (wraps.size()) {
@@ -438,4 +426,9 @@ void HPGe_Coaxial::Construct(G4LogicalVolume *world_logical,
       wrap_radius = wrap_radius + wraps[i].thickness;
     }
   }
+}
+
+G4VSolid *HPGe_Coaxial::Filter_Shape(const string name,
+                                     const Filter &filter) const {
+  return new G4Tubs(name, 0., filter.radius, filter.thickness * 0.5, 0., twopi);
 }

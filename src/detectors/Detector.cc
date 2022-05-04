@@ -31,26 +31,42 @@ using std::string, std::to_string;
 Detector::Detector(const G4String _name, const G4double _theta,
                    const G4double _phi, const G4double _dist_from_center,
                    const vector<Filter> _filters, const vector<Filter> _wraps,
-                   G4double _intrinsic_rotation_angle)
+                   G4double _intrinsic_rotation_angle,
+                   const double _default_filter_radius)
     : detector_name(_name), theta(_theta), phi(_phi),
       dist_from_center(_dist_from_center), filters(_filters), wraps(_wraps),
       intrinsic_rotation_angle(_intrinsic_rotation_angle),
-      rotation_matrix(nullptr) {}
+      default_filter_radius(_default_filter_radius), rotation_matrix(nullptr) {}
 
-double Detector::Construct_Filters(
-    G4LogicalVolume *world_logical, G4ThreeVector global_coordinates,
-    [[maybe_unused]] double _dist_from_center, double _theta, double _phi, double filter_position_z,
-    const std::function<G4VSolid *(string, double, double)> &construct_solid) {
+void Detector::Construct(G4LogicalVolume *world_logical,
+                         G4ThreeVector global_coordinates) {
+  Construct_Detector(world_logical, global_coordinates);
+  const double filter_dist_from_center =
+      Construct_Filters(world_logical, global_coordinates);
+  Construct_Filter_Case(world_logical, global_coordinates,
+                        filter_dist_from_center);
+}
+
+double Detector::Construct_Filters(G4LogicalVolume *world_logical,
+                                   G4ThreeVector global_coordinates) {
   G4NistManager *nist = G4NistManager::Instance();
-  G4ThreeVector e_r = unit_vector_r(_theta, _phi);
-  /* G4ThreeVector e_theta = unit_vector_theta(theta, phi); */
+  G4ThreeVector e_r = unit_vector_r(theta, phi);
+  double filter_position_z = 0.;
+
+  rotate(theta, phi, intrinsic_rotation_angle);
 
   for (size_t i = 0; i < filters.size(); ++i) {
     const auto &filter = filters[i];
     string filter_solid_name =
         "filter_" + detector_name + "_" + to_string(i) + "_solid";
-    auto *filter_solid =
-        construct_solid(filter_solid_name, filter.radius, filter.thickness);
+    G4VSolid *filter_solid = nullptr;
+    if (filter.use_default_radius) {
+      filter_solid = Filter_Shape(
+          filter_solid_name,
+          Filter(filter.material, filter.thickness, default_filter_radius));
+    } else {
+      filter_solid = Filter_Shape(filter_solid_name, filter);
+    }
 
     string filter_logical_name =
         "filter_" + detector_name + "_" + to_string(i) + "_logical";

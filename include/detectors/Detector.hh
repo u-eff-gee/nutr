@@ -36,7 +36,8 @@ struct Filter {
       : material(_material), thickness(_thickness), radius(_radius),
         use_default_radius(false) {}
   Filter(const string _material, const double _thickness)
-      : material(_material), thickness(_thickness), radius(std::numeric_limits<double>::quiet_NaN()),
+      : material(_material), thickness(_thickness),
+        radius(std::numeric_limits<double>::quiet_NaN()),
         use_default_radius(true) {}
 
   string material;  /**< Filter materials given as G4Material names. */
@@ -106,7 +107,9 @@ public:
   Detector(const G4String _name, const G4double _theta, const G4double _phi,
            const G4double _dist_from_center, const vector<Filter> _filters = {},
            const vector<Wrap> _wraps = {},
-           G4double _intrinsic_rotation_angle = 0.);
+           G4double _intrinsic_rotation_angle = 0.,
+           const double _default_filter_radius =
+               std::numeric_limits<double>::quiet_NaN());
 
   /**
    * \brief Construct the detector in a Geant4 geometry
@@ -122,8 +125,8 @@ public:
    * \param global_coordinates \f$r_s\f$, point in space on which the placement
    * of the detector is based.
    */
-  virtual void Construct(G4LogicalVolume *world_logical,
-                         G4ThreeVector global_coordinates) = 0;
+  void Construct(G4LogicalVolume *world_logical,
+                 G4ThreeVector global_coordinates);
 
   /**
    * \brief Return detector's sensitive logical volumes.
@@ -133,16 +136,20 @@ public:
   };
 
 protected:
-  double Construct_Filters(
-      G4LogicalVolume *world_logical, G4ThreeVector global_coordinates,
-      double dist_from_center, double theta, double phi,
-      double filter_position_z,
-      const std::function<G4VSolid *(string, double, double)> &construct_solid);
+  double Construct_Filters(G4LogicalVolume *world_logical,
+                           G4ThreeVector global_coordinates);
+  virtual void Construct_Detector(G4LogicalVolume *world_logical,
+                                  G4ThreeVector global_coordinates) = 0;
+  void Construct_Filter_Case(G4LogicalVolume *world_logical,
+                             G4ThreeVector global_coordinates,
+                             double dist_from_center){};
+  virtual G4VSolid *Filter_Shape(const string name,
+                                 const Filter &filter) const = 0;
 
   const G4String
       detector_name; /**< Name of the detector. This name will be used as a
                         prefix for all parts of the geometry. */
-  const double theta, phi, dist_from_center;
+  const double default_filter_radius, theta, phi, dist_from_center;
   const vector<Filter> filters; /**< Filters placed in front of the detector. */
   const vector<Filter> wraps;   /**< Filters wrapped around the detector face */
   const double intrinsic_rotation_angle;

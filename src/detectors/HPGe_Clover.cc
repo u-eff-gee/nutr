@@ -34,8 +34,8 @@
 
 #include "HPGe_Clover.hh"
 
-void HPGe_Clover::Construct(G4LogicalVolume *world_logical,
-                            G4ThreeVector global_coordinates) {
+void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
+                                     G4ThreeVector global_coordinates) {
 
   G4NistManager *nist = G4NistManager::Instance();
   G4ThreeVector symmetry_axis(
@@ -320,16 +320,6 @@ void HPGe_Clover::Construct(G4LogicalVolume *world_logical,
                       dewar_base_logical, detector_name + "_dewar_base",
                       world_logical, 0, 0, false);
   }
-
-  // Filters
-  rotate(theta, phi, intrinsic_rotation_angle);
-
-  [[maybe_unused]] auto filter_position_z = Construct_Filters(
-      world_logical, global_coordinates, dist_from_center, theta, phi, 0.,
-      [rounding_radius = properties.end_cap_front_rounding_radius](
-          std::string name, double radius, double thickness) {
-        return rounded_box(name, radius, thickness, rounding_radius, 20);
-      });
 }
 
 G4VSolid *HPGe_Clover::rounded_box(const G4String name,
@@ -373,4 +363,10 @@ G4VSolid *HPGe_Clover::rounded_box(const G4String name,
   }
 
   return new G4ExtrudedSolid(name, base, length * 0.5, 0., 1., 0., 1.);
+}
+
+G4VSolid *HPGe_Clover::Filter_Shape(const string name,
+                                    const Filter &filter) const {
+  return rounded_box(name, filter.radius, filter.thickness * 0.5,
+                     properties.end_cap_front_rounding_radius, 20);
 }
