@@ -23,13 +23,11 @@ include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
 
 add_library(detector Detector.cc)
 
-add_library(filterCase EXCLUDE_FROM_ALL Filter_Case.cc)
-
 add_library(hpgeClover EXCLUDE_FROM_ALL HPGe_Clover.cc)
 target_link_libraries(hpgeClover detector)
 
 add_library(hpgeCoaxial EXCLUDE_FROM_ALL HPGe_Coaxial.cc)
-target_link_libraries(hpgeCoaxial detector filterCase)
+target_link_libraries(hpgeCoaxial detector)
 
 add_library(cebr3_2x2 EXCLUDE_FROM_ALL CeBr3_2x2.cc)
 target_link_libraries(cebr3_2x2 cebr3 detector)

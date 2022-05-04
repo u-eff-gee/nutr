@@ -29,7 +29,6 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 #include "G4Tubs.hh"
 #include "G4VisAttributes.hh"
 
-#include "Filter_Case.hh"
 #include "HPGe_Coaxial.hh"
 #include "OptimizePolycone.hh"
 
@@ -376,22 +375,6 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
         dewar_base_logical, detector_name + "_dewar_base", world_logical, 0, 0,
         false);
   }
-
-  // Filter case
-  Filter_Case filter_case(world_logical, detector_name);
-  if (use_filter_case_ring) {
-    filter_case.Construct_Ring(
-        global_coordinates, theta, phi,
-        dist_from_center - filter_case.get_filter_case_ring_thickness() * 0.5);
-  }
-
-  //   if (use_filter_case) {
-  //     filter_case.Construct_Case(
-  //         global_coordinates, theta, phi,
-  //         dist_from_center -
-  //             filter_case.get_filter_case_bottom_thickness() * 0.5 -
-  //             filter_position_z);
-  //   }
 
   // Wraps
   if (wraps.size()) {
