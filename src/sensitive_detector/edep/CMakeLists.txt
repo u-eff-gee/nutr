@@ -35,6 +35,3 @@ target_link_libraries(tupleManager analysisManager DetectorHit)
 add_library(eventAction EventAction.cc)
 target_include_directories(eventAction PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector)
 target_link_libraries(eventAction nEventAction tupleManager)
-
-add_library(runAction RunAction.cc)
-target_link_libraries(runAction nRunAction tupleManager)

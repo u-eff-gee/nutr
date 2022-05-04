@@ -39,6 +39,7 @@ public:
   time_point<system_clock> get_start_time() { return start_time; };
 
 private:
+  const string output_file_name;
   AnalysisManager *analysis_manager;
   const time_point<system_clock> start_time;
 };

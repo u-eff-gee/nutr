@@ -20,7 +20,7 @@
 #include "TupleManager.hh"
 #include "DetectorHit.hh"
 
-void TupleManager::CreateNtupleColumns(G4VAnalysisManager *analysisManager) {
+void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   analysisManager->CreateNtuple("part", "Particles");
   analysisManager->CreateNtupleIColumn("deid");
   analysisManager->CreateNtupleIColumn("pid");
@@ -35,7 +35,7 @@ void TupleManager::CreateNtupleColumns(G4VAnalysisManager *analysisManager) {
   analysisManager->CreateNtupleDColumn("pz");
 }
 
-void TupleManager::FillNtupleColumns(G4VAnalysisManager *analysisManager,
+void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
                                      [[maybe_unused]] G4int eventID,
                                      vector<shared_ptr<G4VHit>> hits) {
   analysisManager->FillNtupleIColumn(

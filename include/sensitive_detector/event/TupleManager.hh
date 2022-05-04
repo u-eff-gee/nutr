@@ -23,8 +23,7 @@
 
 class TupleManager : public AnalysisManager {
 public:
-  TupleManager(const string out_file_name)
-      : AnalysisManager(out_file_name), n_sensitive_detectors(0){};
+  TupleManager() : AnalysisManager(), n_sensitive_detectors(0){};
 
   void CreateNtupleColumns(G4AnalysisManager *analysisManager) override;
 

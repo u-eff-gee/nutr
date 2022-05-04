@@ -23,4 +23,4 @@ include(${Geant4_USE_FILE})
 
 add_library(actionInitialization ActionInitialization.cc)
 target_include_directories(actionInitialization PUBLIC ${PROJECT_SOURCE_DIR}/include/primary_generator/${PRIMARY_GENERATOR_DIR} ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
-target_link_libraries(actionInitialization eventAction primaryGeneratorAction runAction)
+target_link_libraries(actionInitialization eventAction primaryGeneratorAction nRunAction)

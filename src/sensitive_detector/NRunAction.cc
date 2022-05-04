@@ -41,7 +41,7 @@ void NRunAction::BeginOfRunAction(const G4Run *) {
   G4cout << "Run started on "
          << put_time(localtime(&start_time_t), "%F %T (thread ID ")
          << G4Threading::G4GetThreadId() << ")" << G4endl;
-  analysis_manager->Book();
+  analysis_manager->Book(output_file_name);
 }
 
 void NRunAction::EndOfRunAction(const G4Run *) { analysis_manager->Save(); }

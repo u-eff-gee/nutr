@@ -19,8 +19,8 @@
 
 #include "ActionInitialization.hh"
 #include "EventAction.hh"
+#include "NRunAction.hh"
 #include "PrimaryGeneratorAction.hh"
-#include "RunAction.hh"
 #include "TupleManager.hh"
 
 ActionInitialization::ActionInitialization(const string out_file_name,
@@ -31,15 +31,15 @@ ActionInitialization::ActionInitialization(const string out_file_name,
 ActionInitialization::~ActionInitialization() {}
 
 void ActionInitialization::BuildForMaster() const {
-  TupleManager *tuple = new TupleManager(output_file_name);
+  TupleManager *tuple = new TupleManager();
 
-  SetUserAction(new RunAction(tuple));
+  SetUserAction(new NRunAction(tuple));
 }
 
 void ActionInitialization::Build() const {
-  TupleManager *tuple = new TupleManager(output_file_name);
+  TupleManager *tuple = new TupleManager();
 
   SetUserAction(new PrimaryGeneratorAction(random_number_seed));
-  SetUserAction(new RunAction(tuple));
+  SetUserAction(new NRunAction(tuple));
   SetUserAction(new EventAction(tuple));
 }

@@ -1,20 +1,36 @@
 #include <ctime>
+#include <filesystem>
 
 using std::time;
 
 #include "AnalysisManager.hh"
 
-AnalysisManager::AnalysisManager(const string out_file_name)
-    : fFactoryOn(false) {
+AnalysisManager::AnalysisManager() : fFactoryOn(false) {}
 
-  if (out_file_name == "") {
-    output_file_name = to_string(time(nullptr)) + ".root";
-  } else {
-    output_file_name = out_file_name;
+string AnalysisManager::create_default_file_name() const {
+  string prefix = to_string(time(nullptr));
+  string file_name_proposal = prefix + ".root";
+  if (std::filesystem::exists(file_name_proposal)) {
+    unsigned int i = 0;
+    while (true) {
+      file_name_proposal = prefix + "_" + to_string(i) + ".root";
+      if (!std::filesystem::exists(file_name_proposal)) {
+        break;
+      }
+      ++i;
+    }
   }
+
+  return file_name_proposal;
 }
 
-void AnalysisManager::Book() {
+void AnalysisManager::Book(string output_file_name) {
+
+  if (output_file_name == "") {
+    output_file_name = create_default_file_name();
+  } else if (std::filesystem::exists(output_file_name)) {
+    throw;
+  }
 
   G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
   // The command below merges the output created by different threads into a
@@ -25,6 +41,7 @@ void AnalysisManager::Book() {
   // with OUTPUT_FORMAT="root" and switches to OUTPUT_FORMAT="csv" will not
   // wonder why the files are not merged any more.
   analysisManager->SetNtupleMerging(true);
+  G4cout << output_file_name << G4endl;
   analysisManager->OpenFile(output_file_name);
   CreateNtupleColumns(analysisManager);
   analysisManager->FinishNtuple();

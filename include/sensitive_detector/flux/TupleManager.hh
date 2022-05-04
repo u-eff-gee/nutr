@@ -23,10 +23,10 @@
 
 class TupleManager : public AnalysisManager {
 public:
-  TupleManager(const string out_file_name) : AnalysisManager(out_file_name){};
+  TupleManager() : AnalysisManager(){};
 
-  void CreateNtupleColumns(G4VAnalysisManager *analysisManager) override;
+  void CreateNtupleColumns(G4AnalysisManager *analysisManager) override;
 
-  void FillNtupleColumns(G4VAnalysisManager *analysisManager, G4int eventID,
+  void FillNtupleColumns(G4AnalysisManager *analysisManager, G4int eventID,
                          vector<shared_ptr<G4VHit>> hits) override;
 };

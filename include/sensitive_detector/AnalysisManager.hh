@@ -40,10 +40,10 @@ using std::vector;
 
 class AnalysisManager {
 public:
-  AnalysisManager(const string out_file_name);
+  AnalysisManager();
   ~AnalysisManager();
 
-  void Book();
+  void Book(string output_file_name);
   virtual void CreateNtupleColumns(G4AnalysisManager *analysisManager) = 0;
   virtual void FillNtuple(G4int eventID, vector<shared_ptr<G4VHit>> hits);
   virtual void FillNtupleColumns(G4AnalysisManager *analysisManager,
@@ -52,6 +52,6 @@ public:
   void Save();
 
 protected:
-  string output_file_name;
+  string create_default_file_name() const;
   G4bool fFactoryOn;
 };
