@@ -99,9 +99,9 @@ vector<Detector *> detectors = {
                     {{"G4_Pb", pb_thick}}),
     new LaBr3Ce_3x3("labr_L7", 90. * deg, 270. * deg, 2.38 * inch,
                     {{"G4_Pb", pb_thick}}),
-    new LaBr3Ce_3x3("labr_L1", 135. * deg, 225. * deg, 4.75 * inch,
+    new LaBr3Ce_3x3("labr_LBI", 135. * deg, 225. * deg, 4.75 * inch,
                     {{"G4_Pb", pb_thick}}),
-    new LaBr3Ce_3x3("labr_L1", 135. * deg, 315. * deg, 4.50 * inch,
+    new LaBr3Ce_3x3("labr_LBM", 135. * deg, 315. * deg, 4.50 * inch,
                     {{"G4_Pb", pb_thick}}),
 
 };
@@ -122,9 +122,14 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   BeamPipe(world_logical).Construct({});
   LeadShieldingUTR(world_logical).Construct({});
 
-  for (auto det : detectors) {
-    det->Construct(world_logical, {});
-    RegisterSensitiveLogicalVolumes(det->get_sensitive_logical_volumes());
+  // for (auto det : detectors) {
+  //   det->Construct(world_logical, {});
+  //   RegisterSensitiveLogicalVolumes(det->get_sensitive_logical_volumes());
+  // }
+  for (size_t n = 0; n < detectors.size(); ++n) {
+    detectors[n]->Construct(world_logical, {});
+    RegisterSensitiveLogicalVolumes(
+        detectors[n]->get_sensitive_logical_volumes());
   }
 
   Target96Mo(world_logical).Construct({});
