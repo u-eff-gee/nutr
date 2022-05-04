@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 
-    Copyright (C) 2020-2022 Udo Friman-Gayer
+    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
 #include <stdexcept>
@@ -22,12 +22,14 @@
 using std::runtime_error;
 
 #include "G4SDManager.hh"
-
+pre - commit migrate -
+    config
 #include "NDetectorConstruction.hh"
 #include "SensitiveDetector.hh"
 
-void NDetectorConstruction::RegisterSensitiveLogicalVolumes(
-    vector<G4LogicalVolume *> logical_volumes) {
+    void
+    NDetectorConstruction::RegisterSensitiveLogicalVolumes(
+        vector<G4LogicalVolume *> logical_volumes) {
   if (!logical_volumes.size()) {
     throw runtime_error(
         "NDetectorConstruction::RegisterSensitiveLogicalVolumes() called with "

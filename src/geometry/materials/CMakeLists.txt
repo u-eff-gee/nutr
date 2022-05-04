@@ -13,7 +13,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nutr.  If not, see <https://www.gnu.org/licenses/>.
 #
-#    Copyright (C) 2020-2022 Udo Friman-Gayer
+#    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
 add_library(cebr3 EXCLUDE_FROM_ALL CeBr3.cc)
 target_include_directories(cebr3 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)
