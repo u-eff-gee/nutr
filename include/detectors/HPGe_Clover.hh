@@ -17,6 +17,14 @@
         Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
+/**
+ * This file contains code from the "utr" Geant4 simulation project.
+ *
+ * U. Friman-Gayer, J. Kleemann, and O. Papst, GEANT4 simulation of the Upstream
+ * Target ROOM (UTR) at the HIγS facility (v2019.09), Zenodo (2019)
+ * https://doi.org/10.5281/zenodo.3430154
+ */
+
 // Class for a generic High-purity Germanium (HPGe) clover detector
 
 #pragma once
