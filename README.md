@@ -75,7 +75,7 @@ along with this program.  If not, see [https://www.gnu.org/licenses/](https://ww
 
 This product includes software developed by Members of the Geant4 Collaboration [http://cern.ch/geant4](http://cern.ch/geant4).
 
-Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst (udo.friman-gayer@duke.edu) and Oliver Papst (opapst@ikp.tu-darmstadt.de)
+Copyright (C) 2020-2022 Udo Friman-Gayer (udo.friman-gayer@duke.edu) and Oliver Papst (opapst@ikp.tu-darmstadt.de)
 
 ## 4. Acknowledgments
 
