@@ -42,6 +42,7 @@ target_link_libraries(detectorConstruction
     collimatorRoom
     target96Mo
     comptonMonitor_2021-09-09_to_2021-10-10
+    mechanical
     nDetectorConstruction
     hpgeClover
     hpgeCoaxial

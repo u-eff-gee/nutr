@@ -40,6 +40,7 @@
 #include "HPGe_Collection.hh"
 #include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR.hh"
+#include "Mechanical.hh"
 #include "Target96Mo.hh"
 
 constexpr double inch = 25.4 * mm;
@@ -120,15 +121,11 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   CollimatorRoom(world_logical).Construct({});
   BeamPipe(world_logical).Construct({});
   LeadShieldingUTR(world_logical).Construct({});
+  Mechanical(world_logical).Construct({});
 
-  // for (auto det : detectors) {
-  //   det->Construct(world_logical, {});
-  //   RegisterSensitiveLogicalVolumes(det->get_sensitive_logical_volumes());
-  // }
-  for (size_t n = 0; n < detectors.size(); ++n) {
-    detectors[n]->Construct(world_logical, {});
-    RegisterSensitiveLogicalVolumes(
-        detectors[n]->get_sensitive_logical_volumes());
+  for (auto det : detectors) {
+    det->Construct(world_logical, {});
+    RegisterSensitiveLogicalVolumes(det->get_sensitive_logical_volumes());
   }
 
   Target96Mo(world_logical).Construct({});
