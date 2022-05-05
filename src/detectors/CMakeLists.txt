@@ -24,7 +24,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
 add_library(detector Detector.cc)
 
 add_library(hpgeClover EXCLUDE_FROM_ALL HPGe_Clover.cc)
-target_link_libraries(hpgeClover detector)
+target_link_libraries(hpgeClover detector pla)
 
 add_library(hpgeCoaxial EXCLUDE_FROM_ALL HPGe_Coaxial.cc)
 target_link_libraries(hpgeCoaxial detector)

@@ -17,19 +17,16 @@
         Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
-#include <memory>
-
-using std::make_shared;
-
-#include "LaBr3Ce.hh"
+#include "PLA.hh"
 
 #include "G4NistManager.hh"
 #include "G4SystemOfUnits.hh"
 
-LaBr3Ce::LaBr3Ce() {
-  material = new G4Material("LaBr3Ce", 5.08 * g / cm3, 3);
+PLA::PLA() {
+  material = new G4Material("PLA", 1.5297 * g / cm3, 3);
   G4NistManager *nist = G4NistManager::Instance();
-  material->AddElement(nist->FindOrBuildElement("La"), 95);
-  material->AddElement(nist->FindOrBuildElement("Br"), 300);
-  material->AddElement(nist->FindOrBuildElement("Ce"), 5);
+
+  material->AddElement(nist->FindOrBuildElement("H"), 4);
+  material->AddElement(nist->FindOrBuildElement("O"), 2);
+  material->AddElement(nist->FindOrBuildElement("C"), 3);
 }

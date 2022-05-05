@@ -17,10 +17,6 @@
         Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
-#include <memory>
-
-using std::make_shared;
-
 #include "CeBr3.hh"
 
 #include "G4NistManager.hh"
@@ -28,7 +24,7 @@ using std::make_shared;
 
 CeBr3::CeBr3() {
   // CeBr3, density from Wikipedia \cite CeriumBromideWikipedia2020
-  material = make_shared<G4Material>("CeBr3", 5.1 * g / cm3, 2);
+  material = new G4Material("CeBr3", 5.1 * g / cm3, 2);
   G4NistManager *nist = G4NistManager::Instance();
   material->AddElement(nist->FindOrBuildElement("Ce"), 1);
   material->AddElement(nist->FindOrBuildElement("Br"), 3);

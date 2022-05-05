@@ -17,19 +17,25 @@
         Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
-#include <memory>
+#pragma once
 
-using std::make_shared;
+#include "G4Material.hh"
 
-#include "LaBr3Ce.hh"
+#include "Material.hh"
 
-#include "G4NistManager.hh"
-#include "G4SystemOfUnits.hh"
-
-LaBr3Ce::LaBr3Ce() {
-  material = new G4Material("LaBr3Ce", 5.08 * g / cm3, 3);
-  G4NistManager *nist = G4NistManager::Instance();
-  material->AddElement(nist->FindOrBuildElement("La"), 95);
-  material->AddElement(nist->FindOrBuildElement("Br"), 300);
-  material->AddElement(nist->FindOrBuildElement("Ce"), 5);
-}
+/**
+ * \brief Polyactic acid (PLA).
+ *
+ * This material is commonly used in 3D printing.
+ * Its chemical formula is (C_3 H_4 O_2)_n [1].
+ * In the Clover Array setup, it was used for the filter cases of the clover
+ * detectors. Since a 3D printed object is usually not made of solid material,
+ * we determined the density by weighing a real-life sample and dividing by the
+ * volume of the Geant4 model.
+ *
+ * [1] https://en.wikipedia.org/wiki/Polylactic_acid, accessed on 05/04/2020
+ */
+class PLA : public Material {
+public:
+  PLA();
+};

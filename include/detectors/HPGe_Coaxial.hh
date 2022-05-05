@@ -52,6 +52,9 @@ public:
 
   void Construct_Detector(G4LogicalVolume *world_logical,
                           G4ThreeVector global_coordinates) override final;
+  void Construct_Filter_Case(G4LogicalVolume *world_logical,
+                             G4ThreeVector global_coordinates,
+                             double filter_dist_from_center) override final{};
   G4VSolid *Filter_Shape(const string name,
                          const Filter &filter) const override final;
   void useDewar() { use_dewar = true; };

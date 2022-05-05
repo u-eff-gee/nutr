@@ -20,3 +20,6 @@ target_include_directories(cebr3 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/m
 
 add_library(labr3ce EXCLUDE_FROM_ALL LaBr3Ce.cc)
 target_include_directories(labr3ce PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)
+
+add_library(pla EXCLUDE_FROM_ALL PLA.cc)
+target_include_directories(pla PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)

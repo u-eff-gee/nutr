@@ -85,7 +85,7 @@ double Detector::Construct_Filters(G4LogicalVolume *world_logical,
         filter_logical, filter_name, world_logical, 0, 0, false);
     filter_position_z = filter_position_z + filter.thickness;
   }
-  return filter_position_z;
+  return dist_from_center - filter_position_z;
 }
 
 G4ThreeVector Detector::unit_vector_r(const double _theta,

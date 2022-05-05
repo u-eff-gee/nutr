@@ -19,10 +19,6 @@
 
 #pragma once
 
-#include <memory>
-
-using std::shared_ptr;
-
 #include "G4Material.hh"
 
 /**
@@ -47,6 +43,6 @@ using std::shared_ptr;
 class Material {
 
 protected:
-  shared_ptr<G4Material>
-      material; /**< Pointer to the material implemented in this class. */
+  G4Material
+      *material; /**< Pointer to the material implemented in this class. */
 };
