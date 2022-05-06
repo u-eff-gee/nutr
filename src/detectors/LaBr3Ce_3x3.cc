@@ -263,6 +263,8 @@ void LaBr3Ce_3x3::Construct_Filter_Case(G4LogicalVolume *world_logical,
                                         G4ThreeVector global_coordinates,
                                         double filter_dist_from_center) {
 
+  PLA pla;
+
   const G4ThreeVector e_r = unit_vector_r(theta, phi);
 
   const double filter_case_inner_radius = 0.5 * 83.5 * mm;

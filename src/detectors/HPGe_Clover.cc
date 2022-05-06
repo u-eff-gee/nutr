@@ -35,8 +35,6 @@
 #include "HPGe_Clover.hh"
 #include "PLA.hh"
 
-PLA pla;
-
 void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
                                      G4ThreeVector global_coordinates) {
 
@@ -328,6 +326,8 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
 void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
                                         G4ThreeVector global_coordinates,
                                         double filter_dist_from_center) {
+
+  PLA pla;
 
   const double filter_case_x = 87 * mm;
   const double filter_case_y = 4.5 * mm;
