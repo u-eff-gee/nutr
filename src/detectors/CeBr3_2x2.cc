@@ -352,6 +352,57 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
       world_logical, 0, 0, false);
 }
 
+void CeBr3_2x2::Construct_Filter_Case(G4LogicalVolume *world_logical,
+                                      G4ThreeVector global_coordinates,
+                                      double filter_dist_from_center) {
+
+  G4NistManager *nist = G4NistManager::Instance();
+
+  const G4ThreeVector e_r = unit_vector_r(theta, phi);
+
+  const double filter_case_inner_radius = 0.5 * 54.0 * mm;
+  const double filter_case_wall_thickness = 4. * mm;
+  const double filter_case_length = 38. * mm;
+  const double filter_case_front_inner_radius = 0.5 * 51. * mm;
+  const double filter_case_front_length = 3. * mm;
+
+  G4Tubs *filter_case_front_solid =
+      new G4Tubs(detector_name + "_filter_case_front_solid",
+                 filter_case_front_inner_radius,
+                 filter_case_inner_radius + filter_case_wall_thickness,
+                 filter_case_front_length * 0.5, 0., twopi);
+  G4LogicalVolume *filter_case_front_logical = new G4LogicalVolume(
+      filter_case_front_solid, nist->FindOrBuildMaterial("G4_PLEXIGLASS"),
+      detector_name + "_filter_case_front_logical");
+  G4RotationMatrix *rotation = new G4RotationMatrix();
+  rotation->rotateZ(-phi);
+  rotation->rotateY(-theta);
+  filter_case_front_logical->SetVisAttributes(
+      new G4VisAttributes(G4Color::Blue()));
+  new G4PVPlacement(
+      rotation,
+      global_coordinates +
+          (filter_dist_from_center - 0.5 * filter_case_front_length) * e_r,
+      filter_case_front_logical, detector_name + "_filter_case_front",
+      world_logical, 0, 0, false);
+
+  G4Tubs *filter_case_solid = new G4Tubs(
+      detector_name + "_filter_case_solid", filter_case_inner_radius,
+      filter_case_inner_radius + filter_case_wall_thickness,
+      (filter_case_length - filter_case_front_length) * 0.5, 0., twopi);
+  G4LogicalVolume *filter_case_logical = new G4LogicalVolume(
+      filter_case_solid, nist->FindOrBuildMaterial("G4_PLEXIGLASS"),
+      detector_name + "_filter_case_logical");
+  filter_case_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
+  new G4PVPlacement(rotation,
+                    global_coordinates + (filter_dist_from_center +
+                                          0.5 * (filter_case_length -
+                                                 filter_case_front_length)) *
+                                             e_r,
+                    filter_case_logical, detector_name + "_filter_case",
+                    world_logical, 0, 0, false);
+}
+
 G4VSolid *CeBr3_2x2::Filter_Shape(const string name,
                                   const Filter &filter) const {
   return new G4Tubs(name, 0., filter.radius, filter.thickness * 0.5, 0., twopi);

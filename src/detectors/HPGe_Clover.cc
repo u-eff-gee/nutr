@@ -345,11 +345,11 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
 
   // North Part of Case
   G4Box *filter_case_side_solid =
-      new G4Box("filter_case_side_solid", 0.5 * filter_case_x,
+      new G4Box(detector_name + "_filter_case_side_solid", 0.5 * filter_case_x,
                 0.5 * filter_case_y, 0.5 * filter_case_z);
   G4LogicalVolume *filter_case_north_logical = new G4LogicalVolume(
       filter_case_side_solid, G4Material::GetMaterial("PLA"),
-      "filter_case_north_logical");
+      detector_name + "_filter_case_north_logical");
   filter_case_north_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Blue()));
   G4RotationMatrix *rotate_north = new G4RotationMatrix();
@@ -366,13 +366,13 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
           (0.5 * filter_case_y + (filter_case_radius + filter_case_gap)) *
               (cos(-intrinsic_rotation_angle) * e_t +
                sin(-intrinsic_rotation_angle) * e_p),
-      filter_case_north_logical, "fliter_case_north", world_logical, false, 0,
-      false);
+      filter_case_north_logical, detector_name + "_fliter_case_north",
+      world_logical, false, 0, false);
 
   // East Part of Case
   G4LogicalVolume *filter_case_east_logical = new G4LogicalVolume(
       filter_case_side_solid, G4Material::GetMaterial("PLA"),
-      "filter_case_east_logical");
+      detector_name + "_filter_case_east_logical");
   filter_case_east_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Blue()));
   G4RotationMatrix *rotate_east = new G4RotationMatrix();
@@ -389,13 +389,13 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
           (0.5 * filter_case_y + (filter_case_radius + filter_case_gap)) *
               (cos(intrinsic_rotation_angle) * e_p +
                sin(intrinsic_rotation_angle) * e_t),
-      filter_case_east_logical, "filter_case_east", world_logical, false, 0,
-      false);
+      filter_case_east_logical, detector_name + "_filter_case_east",
+      world_logical, false, 0, false);
 
   // South Part of Case
   G4LogicalVolume *filter_case_south_logical = new G4LogicalVolume(
       filter_case_side_solid, G4Material::GetMaterial("PLA"),
-      "filter_case_south_logical");
+      detector_name + "_filter_case_south_logical");
   filter_case_south_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Blue()));
   G4RotationMatrix *rotate_south = new G4RotationMatrix();
@@ -412,13 +412,13 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
           (-0.5 * filter_case_y - (filter_case_radius + filter_case_gap)) *
               (cos(-intrinsic_rotation_angle) * e_t +
                sin(-intrinsic_rotation_angle) * e_p),
-      filter_case_south_logical, "filter_case_south", world_logical, false, 0,
-      false);
+      filter_case_south_logical, detector_name + "_filter_case_south",
+      world_logical, false, 0, false);
 
   // West Part of Case
   G4LogicalVolume *filter_case_west_logical = new G4LogicalVolume(
       filter_case_side_solid, G4Material::GetMaterial("PLA"),
-      "filter_case_west_logical");
+      detector_name + "_filter_case_west_logical");
   filter_case_west_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Blue()));
   G4RotationMatrix *rotate_west = new G4RotationMatrix();
@@ -435,20 +435,21 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
           (-0.5 * filter_case_y - (filter_case_radius + filter_case_gap)) *
               (cos(intrinsic_rotation_angle) * e_p +
                sin(intrinsic_rotation_angle) * e_t),
-      filter_case_west_logical, "filter_case_west", world_logical, false, 0,
-      false);
+      filter_case_west_logical, detector_name + "_filter_case_west",
+      world_logical, false, 0, false);
 
   // Filter Case Curves
 
   // NE Curve
   G4Tubs *curve_solid =
-      new G4Tubs("curve_solid",
+      new G4Tubs(detector_name + "_curve_solid",
                  filter_case_radius + filter_case_gap - (0.5 * filter_case_x),
                  filter_case_y + filter_case_radius + filter_case_gap -
                      (0.5 * filter_case_x),
                  filter_case_z * 0.5, 0, 90 * deg);
-  G4LogicalVolume *curve_NE_logical = new G4LogicalVolume(
-      curve_solid, G4Material::GetMaterial("PLA"), "curve_NE_logical");
+  G4LogicalVolume *curve_NE_logical =
+      new G4LogicalVolume(curve_solid, G4Material::GetMaterial("PLA"),
+                          detector_name + "_curve_NE_logical");
   curve_NE_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
   new G4PVPlacement(rotate_west,
                     global_coordinates +
@@ -458,12 +459,13 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
                         1. / sqrt(2.) * filter_case_x *
                             (cos(45. * deg + intrinsic_rotation_angle) * e_p +
                              sin(45. * deg + intrinsic_rotation_angle) * e_t),
-                    curve_NE_logical, "curve_NE", world_logical, false, 0,
-                    false);
+                    curve_NE_logical, detector_name + "_curve_NE",
+                    world_logical, false, 0, false);
 
   // SE Curve
-  G4LogicalVolume *curve_SE_logical = new G4LogicalVolume(
-      curve_solid, G4Material::GetMaterial("PLA"), "curve_SE_logical");
+  G4LogicalVolume *curve_SE_logical =
+      new G4LogicalVolume(curve_solid, G4Material::GetMaterial("PLA"),
+                          detector_name + "_curve_SE_logical");
   curve_SE_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
   new G4PVPlacement(rotate_south,
                     global_coordinates +
@@ -473,12 +475,13 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
                         1. / sqrt(2.) * filter_case_x *
                             (cos(45. * deg - intrinsic_rotation_angle) * e_p -
                              sin(45. * deg - intrinsic_rotation_angle) * e_t),
-                    curve_SE_logical, "curve_SE", world_logical, false, 0,
-                    false);
+                    curve_SE_logical, detector_name + "_curve_SE",
+                    world_logical, false, 0, false);
 
   // SW Curve
-  G4LogicalVolume *curve_SW_logical = new G4LogicalVolume(
-      curve_solid, G4Material::GetMaterial("PLA"), "curve_SW_logical");
+  G4LogicalVolume *curve_SW_logical =
+      new G4LogicalVolume(curve_solid, G4Material::GetMaterial("PLA"),
+                          detector_name + "_curve_SW_logical");
   curve_SW_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
   new G4PVPlacement(rotate_east,
                     global_coordinates +
@@ -488,12 +491,13 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
                         1. / sqrt(2.) * filter_case_x *
                             (cos(45. * deg + intrinsic_rotation_angle) * e_p +
                              sin(45. * deg + intrinsic_rotation_angle) * e_t),
-                    curve_SW_logical, "curve_SW", world_logical, false, 0,
-                    false);
+                    curve_SW_logical, detector_name + "_curve_SW",
+                    world_logical, false, 0, false);
 
   // NW Curve
-  G4LogicalVolume *curve_NW_logical = new G4LogicalVolume(
-      curve_solid, G4Material::GetMaterial("PLA"), "curve_NW_logical");
+  G4LogicalVolume *curve_NW_logical =
+      new G4LogicalVolume(curve_solid, G4Material::GetMaterial("PLA"),
+                          detector_name + "_curve_NW_logical");
   curve_NW_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
   new G4PVPlacement(rotate_north,
                     global_coordinates +
@@ -503,20 +507,21 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
                         1. / sqrt(2.) * filter_case_x *
                             (-cos(45. * deg - intrinsic_rotation_angle) * e_p +
                              sin(45. * deg - intrinsic_rotation_angle) * e_t),
-                    curve_NW_logical, "curve_NW", world_logical, false, 0,
-                    false);
+                    curve_NW_logical, detector_name + "_curve_NW",
+                    world_logical, false, 0, false);
 
   // Flat Box
   G4Box *flat_box = new G4Box(
       "flat_box", (corner_radius + filter_case_x + filter_case_gap) * 0.5,
       (corner_radius + filter_case_x + filter_case_gap) * 0.5,
       0.5 * filter_case_top_thickness);
-  G4Tubs *circular_hole = new G4Tubs("circular_hole", 0, filter_case_radius,
-                                     filter_case_z, 0, twopi);
+  G4Tubs *circular_hole =
+      new G4Tubs(detector_name + "_circular_hole", 0, filter_case_radius,
+                 filter_case_z, 0, twopi);
 
   // Substitutions
   G4Tubs *curve_solid_sub =
-      new G4Tubs("curve_solid_sub",
+      new G4Tubs(detector_name + "_curve_solid_sub",
                  filter_case_radius + filter_case_gap - (0.5 * filter_case_x),
                  filter_case_y + filter_case_radius + filter_case_gap,
                  filter_case_z * 0.5, 0, 90 * deg);
@@ -524,31 +529,32 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
   rotate_west = new G4RotationMatrix();
   rotate_west->rotateZ(270 * deg);
   G4SubtractionSolid *curve_piece_1 = new G4SubtractionSolid(
-      "curve_piece_1", flat_box, curve_solid_sub, rotate_west,
+      detector_name + "_curve_piece_1", flat_box, curve_solid_sub, rotate_west,
       G4ThreeVector(-0.5 * filter_case_x, 0.5 * filter_case_x, 0));
 
   G4SubtractionSolid *curve_piece_2 = new G4SubtractionSolid(
-      "curve_piece_2", curve_piece_1, curve_solid_sub, 0,
+      detector_name + "_curve_piece_2", curve_piece_1, curve_solid_sub, 0,
       G4ThreeVector(0.5 * filter_case_x, 0.5 * filter_case_x, 0));
 
   rotate_south = new G4RotationMatrix();
   rotate_south->rotateZ(180 * deg);
   G4SubtractionSolid *curve_piece_3 = new G4SubtractionSolid(
-      "curve_piece_3", curve_piece_2, curve_solid_sub, rotate_south,
+      detector_name + "_curve_piece_3", curve_piece_2, curve_solid_sub,
+      rotate_south,
       G4ThreeVector(-0.5 * filter_case_x, -0.5 * filter_case_x, 0));
 
   rotate_east = new G4RotationMatrix();
   rotate_east->rotateZ(90 * deg);
   G4SubtractionSolid *curve_piece_4 = new G4SubtractionSolid(
-      "curve_piece_4", curve_piece_3, curve_solid_sub, rotate_east,
-      G4ThreeVector(0.5 * filter_case_x, -0.5 * filter_case_x, 0));
+      detector_name + "_curve_piece_4", curve_piece_3, curve_solid_sub,
+      rotate_east, G4ThreeVector(0.5 * filter_case_x, -0.5 * filter_case_x, 0));
 
   G4SubtractionSolid *flat_box_with_hole = new G4SubtractionSolid(
-      "flat_box_with_hole", curve_piece_4, circular_hole);
+      detector_name + "_flat_box_with_hole", curve_piece_4, circular_hole);
 
   G4LogicalVolume *final_curve_piece_logical =
       new G4LogicalVolume(flat_box_with_hole, G4Material::GetMaterial("PLA"),
-                          "final_curve_piece_logical");
+                          detector_name + "_final_curve_piece_logical");
   final_curve_piece_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Blue()));
   // The part is rotationally symmetric around the original z axis.
@@ -558,8 +564,8 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
       rotate_north,
       global_coordinates +
           (filter_dist_from_center - 0.5 * filter_case_top_thickness) * e_r,
-      final_curve_piece_logical, "final_curve_piece", world_logical, false, 0,
-      false);
+      final_curve_piece_logical, detector_name + "_final_curve_piece",
+      world_logical, false, 0, false);
 }
 
 G4VSolid *HPGe_Clover::rounded_box(const G4String name,

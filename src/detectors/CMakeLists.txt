@@ -27,7 +27,7 @@ add_library(hpgeClover EXCLUDE_FROM_ALL HPGe_Clover.cc)
 target_link_libraries(hpgeClover detector pla)
 
 add_library(hpgeCoaxial EXCLUDE_FROM_ALL HPGe_Coaxial.cc)
-target_link_libraries(hpgeCoaxial detector)
+target_link_libraries(hpgeCoaxial detector pla)
 
 add_library(cebr3_2x2 EXCLUDE_FROM_ALL CeBr3_2x2.cc)
 target_link_libraries(cebr3_2x2 cebr3 detector)

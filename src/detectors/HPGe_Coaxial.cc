@@ -38,6 +38,7 @@
 
 #include "HPGe_Coaxial.hh"
 #include "OptimizePolycone.hh"
+#include "PLA.hh"
 
 using std::string;
 using std::to_string;
@@ -416,6 +417,60 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       wrap_radius = wrap_radius + wraps[i].thickness;
     }
   }
+}
+
+void HPGe_Coaxial::Construct_Filter_Case(G4LogicalVolume *world_logical,
+                                         G4ThreeVector global_coordinates,
+                                         double filter_dist_from_center) {
+  // The part modeled here does not exist in reality, but may be 3D printed in
+  // the future. The dimensions are estimated from similar cases for the
+  // LaBr3Ce_3x2 and CeBr3_2x2 classes.
+  PLA pla;
+
+  const G4ThreeVector e_r = unit_vector_r(theta, phi);
+
+  const double filter_case_inner_radius = properties.end_cap_outer_radius;
+  const double filter_case_wall_thickness = 5. * mm;
+  const double filter_case_length = 40. * mm;
+  const double filter_case_front_inner_radius =
+      properties.end_cap_outer_radius - 4. * mm;
+  const double filter_case_front_length = 3. * mm;
+
+  G4Tubs *filter_case_front_solid =
+      new G4Tubs(detector_name + "_filter_case_front_solid",
+                 filter_case_front_inner_radius,
+                 filter_case_inner_radius + filter_case_wall_thickness,
+                 filter_case_front_length * 0.5, 0., twopi);
+  G4LogicalVolume *filter_case_front_logical = new G4LogicalVolume(
+      filter_case_front_solid, G4Material::GetMaterial("PLA"),
+      detector_name + "_filter_case_front_logical");
+  G4RotationMatrix *rotation = new G4RotationMatrix();
+  rotation->rotateZ(-phi);
+  rotation->rotateY(-theta);
+  filter_case_front_logical->SetVisAttributes(
+      new G4VisAttributes(G4Color::Blue()));
+  new G4PVPlacement(
+      rotation,
+      global_coordinates +
+          (filter_dist_from_center - 0.5 * filter_case_front_length) * e_r,
+      filter_case_front_logical, detector_name + "_filter_case_front",
+      world_logical, 0, 0, false);
+
+  G4Tubs *filter_case_solid = new G4Tubs(
+      detector_name + "_filter_case_solid", filter_case_inner_radius,
+      filter_case_inner_radius + filter_case_wall_thickness,
+      (filter_case_length - filter_case_front_length) * 0.5, 0., twopi);
+  G4LogicalVolume *filter_case_logical =
+      new G4LogicalVolume(filter_case_solid, G4Material::GetMaterial("PLA"),
+                          detector_name + "_filter_case_logical");
+  filter_case_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
+  new G4PVPlacement(rotation,
+                    global_coordinates + (filter_dist_from_center +
+                                          0.5 * (filter_case_length -
+                                                 filter_case_front_length)) *
+                                             e_r,
+                    filter_case_logical, detector_name + "_filter_case",
+                    world_logical, 0, 0, false);
 }
 
 G4VSolid *HPGe_Coaxial::Filter_Shape(const string name,
