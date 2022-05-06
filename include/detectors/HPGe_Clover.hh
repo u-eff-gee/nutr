@@ -40,11 +40,12 @@ public:
   HPGe_Clover(const G4String _name, const HPGe_Clover_Properties _prop,
               const G4double _theta, const G4double _phi,
               const G4double _dist_from_center,
-              const vector<Filter> _filters = {},
+              const FilterConfiguration _filter_configuration = {{}},
               const vector<Filter> _wraps = {},
               G4double _intrinsic_rotation_angle = 0.)
-      : Detector(_name, _theta, _phi, _dist_from_center, _filters, _wraps,
-                 _intrinsic_rotation_angle, _prop.end_cap_front_side_length),
+      : Detector(_name, _theta, _phi, _dist_from_center, _filter_configuration,
+                 _wraps, _intrinsic_rotation_angle,
+                 _prop.end_cap_front_side_length),
         properties(_prop), use_dewar(true){};
 
   void Construct_Detector(G4LogicalVolume *world_logical,

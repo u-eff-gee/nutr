@@ -30,21 +30,25 @@ using std::string, std::to_string;
 
 Detector::Detector(const G4String _name, const G4double _theta,
                    const G4double _phi, const G4double _dist_from_center,
-                   const vector<Filter> _filters, const vector<Filter> _wraps,
+                   const FilterConfiguration _filter_configuration,
+                   const vector<Filter> _wraps,
                    G4double _intrinsic_rotation_angle,
                    const double _default_filter_radius)
-    : detector_name(_name), theta(_theta), phi(_phi),
-      dist_from_center(_dist_from_center), filters(_filters), wraps(_wraps),
+    : detector_name(_name), default_filter_radius(_default_filter_radius),
+      theta(_theta), phi(_phi), dist_from_center(_dist_from_center),
+      filter_configuration(_filter_configuration), wraps(_wraps),
       intrinsic_rotation_angle(_intrinsic_rotation_angle),
-      default_filter_radius(_default_filter_radius), rotation_matrix(nullptr) {}
+      rotation_matrix(nullptr) {}
 
 void Detector::Construct(G4LogicalVolume *world_logical,
                          G4ThreeVector global_coordinates) {
   Construct_Detector(world_logical, global_coordinates);
   const double filter_dist_from_center =
       Construct_Filters(world_logical, global_coordinates);
-  Construct_Filter_Case(world_logical, global_coordinates,
-                        filter_dist_from_center);
+  if (filter_configuration.use_filter_case) {
+    Construct_Filter_Case(world_logical, global_coordinates,
+                          filter_dist_from_center);
+  }
 }
 
 double Detector::Construct_Filters(G4LogicalVolume *world_logical,
@@ -55,12 +59,14 @@ double Detector::Construct_Filters(G4LogicalVolume *world_logical,
 
   rotate(theta, phi, intrinsic_rotation_angle);
 
-  for (size_t i = 0; i < filters.size(); ++i) {
-    const auto &filter = filters[i];
+  for (size_t i = 0; i < filter_configuration.filters.size(); ++i) {
+    const auto &filter = filter_configuration.filters[i];
     string filter_solid_name =
         "filter_" + detector_name + "_" + to_string(i) + "_solid";
     G4VSolid *filter_solid = nullptr;
-    if (filter.use_default_radius) {
+    if (filter.use_custom_filter_shape) {
+      filter_solid = filter.custom_filter_shape(filter_solid_name);
+    } else if (filter.use_default_radius) {
       filter_solid = Filter_Shape(
           filter_solid_name,
           Filter(filter.material, filter.thickness, default_filter_radius));
@@ -73,8 +79,13 @@ double Detector::Construct_Filters(G4LogicalVolume *world_logical,
     G4LogicalVolume *filter_logical = new G4LogicalVolume(
         filter_solid, nist->FindOrBuildMaterial(filter.material),
         filter_logical_name);
-    filter_logical->SetVisAttributes(
-        new G4VisAttributes((i % 2) ? G4Color::Green() : G4Color::Red()));
+    G4Color filter_color = G4Color::Gray();
+    if (filter.material == "G4_Cu") {
+      filter_color = G4Color(1., 165. / 255., 0.);
+    } else if (filter.material == "G4_Pb") {
+      filter_color = G4Color::Green();
+    }
+    filter_logical->SetVisAttributes(new G4VisAttributes(filter_color));
 
     string filter_name = "filter_" + detector_name + "_" + to_string(i);
     new G4PVPlacement(

@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <functional>
 #include <limits>
 #include <string>
 #include <vector>
@@ -33,19 +34,42 @@ using std::vector;
  */
 struct Filter {
   Filter(const string _material, const double _thickness, const double _radius)
-      : material(_material), thickness(_thickness), radius(_radius),
-        use_default_radius(false) {}
+      : custom_filter_shape(nullptr), material(_material),
+        thickness(_thickness), radius(_radius), use_default_radius(false),
+        use_custom_filter_shape(false) {}
   Filter(const string _material, const double _thickness)
-      : material(_material), thickness(_thickness),
-        radius(std::numeric_limits<double>::quiet_NaN()),
-        use_default_radius(true) {}
+      : custom_filter_shape(nullptr), material(_material),
+        thickness(_thickness), radius(std::numeric_limits<double>::quiet_NaN()),
+        use_default_radius(true), use_custom_filter_shape(false) {}
+  Filter(const string _material,
+         const std::function<G4VSolid *(const string)> _custom_filter_shape,
+         const double _thickness)
+      : custom_filter_shape(_custom_filter_shape), material(_material),
+        thickness(_thickness), radius(std::numeric_limits<double>::quiet_NaN()),
+        use_default_radius(false), use_custom_filter_shape(true) {}
 
+  std::function<G4VSolid *(const string)> custom_filter_shape;
   string material;  /**< Filter materials given as G4Material names. */
   double thickness; /**< Filter thickness. */
   double radius;    /**< Filter radius. If zero, some default might be used. */
   bool use_default_radius;
+  bool use_custom_filter_shape;
 };
 typedef Filter Wrap;
+
+/**
+ * @brief Container for Filter objects and general information about the filter
+ * array.
+ */
+struct FilterConfiguration {
+  FilterConfiguration(const vector<Filter> _filters,
+                      const bool _use_filter_case)
+      : filters(_filters), use_filter_case(_use_filter_case) {}
+  FilterConfiguration(const vector<Filter> _filters)
+      : filters(_filters), use_filter_case(false) {}
+  vector<Filter> filters;
+  bool use_filter_case;
+};
 
 /**
  * \brief Abstract class for a detector with an obvious main axis
@@ -105,7 +129,8 @@ public:
    * rotation angle of the detector around its main axis (default: 0).
    */
   Detector(const G4String _name, const G4double _theta, const G4double _phi,
-           const G4double _dist_from_center, const vector<Filter> _filters = {},
+           const G4double _dist_from_center,
+           const FilterConfiguration _filter_configuration = {{}},
            const vector<Wrap> _wraps = {},
            G4double _intrinsic_rotation_angle = 0.,
            const double _default_filter_radius =
@@ -150,8 +175,9 @@ protected:
       detector_name; /**< Name of the detector. This name will be used as a
                         prefix for all parts of the geometry. */
   const double default_filter_radius, theta, phi, dist_from_center;
-  const vector<Filter> filters; /**< Filters placed in front of the detector. */
-  const vector<Filter> wraps;   /**< Filters wrapped around the detector face */
+  const FilterConfiguration
+      filter_configuration;   /**< Filters placed in front of the detector. */
+  const vector<Filter> wraps; /**< Filters wrapped around the detector face */
   const double intrinsic_rotation_angle;
 
   /**
