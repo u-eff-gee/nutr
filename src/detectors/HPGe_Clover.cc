@@ -117,9 +117,17 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
 
   /******** Crystals ********/
 
-  G4Tubs *crystal_original = new G4Tubs(
-      detector_name + "_crystal_original", 0., properties.crystal_radius,
-      properties.crystal_length * 0.5, 0., twopi);
+  G4Tubs *crystal_full =
+      new G4Tubs(detector_name + "_crystal_full", 0., properties.crystal_radius,
+                 properties.crystal_length * 0.5, 0., twopi);
+  G4Tubs *anode_solid =
+      new G4Tubs(detector_name + "anode_solid", 0., properties.anode_radius,
+                 properties.anode_length * 0.5, 0., twopi);
+  G4SubtractionSolid *crystal_original = new G4SubtractionSolid(
+      detector_name + "_crystal_original", crystal_full, anode_solid, 0,
+      G4ThreeVector(0., 0.,
+                    0.5 * properties.crystal_length -
+                        0.5 * properties.anode_length));
   G4Box *subtraction_solid =
       new G4Box(detector_name + "_subtraction_solid", properties.crystal_radius,
                 properties.crystal_radius, properties.crystal_length);

@@ -170,6 +170,8 @@ HPGe_Clover_Properties HPGe_Clover_Yale{
     .crystal_gap = 2. * mm,
     .end_cap_to_crystal_gap_front = 10. * mm,
     .vacuum_length = 125. * mm,
+    .anode_length = 72. * mm, // Estimated (see HPGe_Clover class)
+    .anode_radius = 5. * mm,  // Estimated (see HPGe_Clover class)
     .end_cap_front_side_length = 101. * mm,
     .end_cap_front_rounding_radius = 15.5 * mm,
     .end_cap_front_length = 260. * mm,

@@ -25,8 +25,6 @@
  * https://doi.org/10.5281/zenodo.3430154
  */
 
-// Class for a generic High-purity Germanium (HPGe) clover detector
-
 #pragma once
 
 #include "G4ExtrudedSolid.hh"
@@ -35,6 +33,25 @@
 #include "Detector.hh"
 #include "HPGe_Clover_Properties.hh"
 
+/**
+ * \brief Clover-type high-purity germanium (HPGe) detector
+ *
+ * This class models a clover-type detector whose four crystals are made from
+ * identical cylindric pieces of germanium. To be able to achieve a compact and
+ * quadratic geometry, the cylindric crystals are flattened on four sides. The
+ * geometry is mainly based on a "Germanium 2 Fold Segmented Clover Detector
+ * OPERATING MANUAL" by Eurisys Mesures from 1997 that came with one of the
+ * "Yale clover detectors" (V. Werner, private communication). The Eurisys
+ * manual only shows the central holes in the germanium crystals for the anode
+ * implicitly, but an experimental study of similar detectors [1] proves that
+ * they exist and provided the basis for modeling the holes in this code. The
+ * radius of the hole given in [1] (5 mm) agrees with the size of the implied
+ * holes in the Eurisys manual. No value is given for the length of the hole,
+ * but it is 8 mm shorter than the crystal length in [1].
+ *
+ * [1] S. A. A. Gros, "Characterization of an EXOGAM Clover", Phd thesis,
+ * University of Liverpool (2005)
+ */
 class HPGe_Clover : public Detector {
 public:
   HPGe_Clover(const G4String _name, const HPGe_Clover_Properties _prop,

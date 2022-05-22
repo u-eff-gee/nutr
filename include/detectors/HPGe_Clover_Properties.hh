@@ -26,7 +26,7 @@
  */
 
 // Struct that contains the properties of a specific
-// coaxial High-purity Germanium (HPGe) detector
+// clover-type High-purity Germanium (HPGe) detector
 
 #pragma once
 
@@ -35,8 +35,6 @@
 
 struct HPGe_Clover_Properties {
   // Struct that contains the dimensions of a clover detector
-  // It is assumed to be constructed from 4 formerly coaxial crystals,
-  // which were flattened on all sides to fit into a rectangular arrangement.
   //
   // 'Front' = towards the target
   // 'Back' = away from the target
@@ -55,6 +53,9 @@ struct HPGe_Clover_Properties {
                                          // cap and the detector
                                          // crystals at the front
   G4double vacuum_length; // Length of the evacuated area inside the end cap
+  G4double
+      anode_length; // Length of the anode hole from the back of each crystal.
+  G4double anode_radius; // Radius of the anode hole.
 
   // End cap
   // Case with quadratic base area and smoothed edges which covers the whole
