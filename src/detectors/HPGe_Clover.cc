@@ -582,7 +582,7 @@ G4VSolid *HPGe_Clover::rounded_box(const G4String name,
                                    const G4double rounding_radius,
                                    const G4int n_points_per_corner) {
 
-  G4double inverse_n_points_per_corner = 1. / (n_points_per_corner - 1.);
+  const double inverse_n_points_per_corner = 1. / (n_points_per_corner - 1.);
   vector<G4TwoVector> base(4 * n_points_per_corner);
 
   for (int i = 0; i < n_points_per_corner; ++i) {

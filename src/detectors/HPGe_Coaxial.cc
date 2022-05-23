@@ -33,7 +33,9 @@
 #include "G4PVPlacement.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4Polycone.hh"
+#include "G4Sphere.hh"
 #include "G4Tubs.hh"
+#include "G4UnionSolid.hh"
 #include "G4VisAttributes.hh"
 
 #include "HPGe_Coaxial.hh"
@@ -192,37 +194,25 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
 
   G4double z;
 
-  for (int i = 0; i < nsteps; i++) {
-    z = (1. - (double)i / (nsteps - 1)) * cold_finger_length;
-
-    zPlaneTemp[i] = z;
-
-    rInnerTemp[i] = 0. * mm;
-
-    if (z >= properties.cold_finger_radius) {
-      rOuterTemp[i] = properties.cold_finger_radius;
-    } else if (z >= 0.) {
-      rOuterTemp[i] = properties.cold_finger_radius *
-                      sqrt(1. - pow((z - properties.cold_finger_radius) /
-                                        properties.cold_finger_radius,
-                                    2));
-    } else {
-      rOuterTemp[i] = 0. * mm;
-    }
-  }
-
   G4double zPlane[nsteps];
   G4double rInner[nsteps];
   G4double rOuter[nsteps];
 
   OptimizePolycone *opt = new OptimizePolycone();
-  G4int nsteps_optimized =
-      opt->Optimize(zPlaneTemp, rInnerTemp, rOuterTemp, zPlane, rInner, rOuter,
-                    nsteps, detector_name + "_cold_finger_solid");
+  G4int nsteps_optimized;
 
-  G4Polycone *cold_finger_solid =
-      new G4Polycone(detector_name + "_cold_finger_solid", 0. * deg, 360. * deg,
-                     nsteps_optimized, zPlane, rInner, rOuter);
+  G4Tubs *cold_finger_shaft_solid = new G4Tubs(
+      detector_name + "_cold_finger_shaft_solid", 0.,
+      properties.cold_finger_radius,
+      0.5 * (cold_finger_length - properties.cold_finger_radius), 0., twopi);
+  G4Sphere *cold_finger_tip_solid =
+      new G4Sphere(detector_name + "cold_finger_tip_solid", 0.,
+                   properties.cold_finger_radius, 0., twopi, 0., pi);
+  G4UnionSolid *cold_finger_solid = new G4UnionSolid(
+      detector_name + "cold_finger_solid", cold_finger_shaft_solid,
+      cold_finger_tip_solid, 0,
+      G4ThreeVector(
+          0., 0., -0.5 * (cold_finger_length - properties.cold_finger_radius)));
 
   G4LogicalVolume *cold_finger_logical = new G4LogicalVolume(
       cold_finger_solid,
@@ -233,7 +223,9 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       new G4VisAttributes(G4Color(1.0, 0.5, 0.0)));
 
   new G4PVPlacement(
-      0, G4ThreeVector(0., 0., end_cap_side_length * 0.5 - cold_finger_length),
+      0,
+      G4ThreeVector(0., 0.,
+                    end_cap_side_length * 0.5 - 0.5 * cold_finger_length),
       cold_finger_logical, detector_name + "_cold_finger",
       end_cap_vacuum_logical, 0, 0, false);
 
