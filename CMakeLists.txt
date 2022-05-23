@@ -59,7 +59,7 @@ if(BUILD_DOCUMENTATION)
   add_custom_target(doc_doxygen ALL COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
 endif(BUILD_DOCUMENTATION)
 
-set(GEOMETRY_DIR "clover_array/02_16_2021_to_04_10_2021" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry (default: 'clover_array/02_16_2021_to_04_10_2021').")
+set(GEOMETRY_DIR "clover_array/2021-02-16_to_2021-04-10" CACHE STRING "Select directory in ${PROJECT_SOURCE_DIR}/src/geometry that contains the desired geometry (default: 'clover_array/2021-02-16_to_2021-04-10').")
 
 set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator` that contains the desired primary generator Possible choices: 'gps' (default), 'angcorr'.")
 
