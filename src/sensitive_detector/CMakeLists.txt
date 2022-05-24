@@ -28,7 +28,6 @@ add_library(nDetectorHit NDetectorHit.cc)
 
 add_library(nRunAction NRunAction.cc)
 
-configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/NEventAction.hh.in ${PROJECT_BINARY_DIR}/include/sensitive_detector/NEventAction.hh)
 add_library(nEventAction NEventAction.cc)
 target_link_libraries(nEventAction nRunAction)
 

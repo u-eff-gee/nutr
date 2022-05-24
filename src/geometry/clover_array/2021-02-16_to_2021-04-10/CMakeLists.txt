@@ -15,6 +15,12 @@
 #
 #    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
-add_library(detectorConstruction DetectorConstruction.cc)
-target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/2021-02-16_to_2021-04-10 ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
-target_link_libraries(detectorConstruction beamPipe collimatorRoom comptonMonitor_02_16_2021_to_04_18_2021 mechanical nDetectorConstruction hpgeClover labr3ce_3x3 leadShieldingUTR SensitiveDetector cebr3_2x2 sourceVolumeTubs)
+add_library(detectorConstruction_2021-02-16_to_2021-04-10 DetectorConstruction.cc)
+target_include_directories(detectorConstruction_2021-02-16_to_2021-04-10 PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/2021-02-16_to_2021-04-10 ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
+target_link_libraries(detectorConstruction_2021-02-16_to_2021-04-10 beamPipe collimatorRoom comptonMonitor_2021-02-16_to_2021-04-18 mechanical nDetectorConstruction hpgeClover labr3ce_3x3 leadShieldingUTR SensitiveDetector cebr3_2x2 sourceVolumeTubs)
+
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/2021-02-16_to_2021-04-10)
+add_executable(nutr_2021-02-16_to_2021-04-10 ${PROJECT_SOURCE_DIR}/src/fundamentals/nutr.cc)
+set_target_properties(nutr_2021-02-16_to_2021-04-10 PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/2021-02-16_to_2021-04-10)
+target_include_directories(nutr_2021-02-16_to_2021-04-10 PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
+target_link_libraries(nutr_2021-02-16_to_2021-04-10 actionInitialization_2021-02-16_to_2021-04-10 ${Boost_LIBRARIES} detectorConstruction_2021-02-16_to_2021-04-10 physics ${Geant4_LIBRARIES})

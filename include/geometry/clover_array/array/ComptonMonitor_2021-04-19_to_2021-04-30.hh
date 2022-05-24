@@ -28,7 +28,7 @@
  * collaboration with the Howell group.
  *
  * The geometry of this class consists of the Cu scattering target only.
- * As compared to ComptonMonitor_02_16_2021_to_04_18_2021, there was no
+ * As compared to ComptonMonitor_2021-02-16_to_2021-04-18, there was no
  * significant lead shielding constructed around the LaBr detector.
  */
 class ComptonMonitor {

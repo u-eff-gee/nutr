@@ -15,6 +15,12 @@
 #
 #    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
-add_library(detectorConstruction DetectorConstruction.cc)
-target_include_directories(detectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/2021-04-19_to_2021-04-30 ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
-target_link_libraries(detectorConstruction beamPipe collimatorRoom comptonMonitor_04_19_2021_to_04_30_2021 nDetectorConstruction hpgeClover labr3ce_3x3 leadShieldingUTR SensitiveDetector cebr3_2x2)
+add_library(detectorConstruction_2021-04-19_to_2021-04-30 DetectorConstruction.cc)
+target_include_directories(detectorConstruction_2021-04-19_to_2021-04-30 PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/2021-04-19_to_2021-04-30 ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
+target_link_libraries(detectorConstruction_2021-04-19_to_2021-04-30 beamPipe collimatorRoom comptonMonitor_2021-04-19_to_2021-04-30 mechanical nDetectorConstruction hpgeClover labr3ce_3x3 leadShieldingUTR SensitiveDetector cebr3_2x2)
+
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/2021-04-19_to_2021-04-30)
+add_executable(nutr_2021-04-19_to_2021-04-30 ${PROJECT_SOURCE_DIR}/src/fundamentals/nutr.cc)
+set_target_properties(nutr_2021-04-19_to_2021-04-30 PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/2021-04-19_to_2021-04-30)
+target_include_directories(nutr_2021-04-19_to_2021-04-30 PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
+target_link_libraries(nutr_2021-04-19_to_2021-04-30 actionInitialization_2021-04-19_to_2021-04-30 ${Boost_LIBRARIES} detectorConstruction_2021-04-19_to_2021-04-30 physics ${Geant4_LIBRARIES})

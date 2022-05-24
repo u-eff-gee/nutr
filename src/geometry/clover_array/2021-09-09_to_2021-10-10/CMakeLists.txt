@@ -27,8 +27,8 @@ configure_file(
 	"${PROJECT_BINARY_DIR}/src/geometry/clover_array/2021-09-09_to_2021-10-10/CoaxB4Config.hh"
 )
 
-add_library(detectorConstruction DetectorConstruction.cc)
-target_include_directories(detectorConstruction
+add_library(detectorConstruction_2021-09-09_to_2021-10-10 DetectorConstruction.cc)
+target_include_directories(detectorConstruction_2021-09-09_to_2021-10-10
     PUBLIC
     ${PROJECT_SOURCE_DIR}/include/detectors
     ${PROJECT_SOURCE_DIR}/include/geometry
@@ -37,7 +37,7 @@ target_include_directories(detectorConstruction
     ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR}
     ${PROJECT_BINARY_DIR}/src/geometry/clover_array/2021-09-09_to_2021-10-10
 )
-target_link_libraries(detectorConstruction
+target_link_libraries(detectorConstruction_2021-09-09_to_2021-10-10
     beamPipe
     collimatorRoom
     target96Mo
@@ -51,3 +51,9 @@ target_link_libraries(detectorConstruction
     SensitiveDetector
     cebr3_2x2
 )
+
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/2021-09-09_to_2021-10-10)
+add_executable(nutr_2021-09-09_to_2021-10-10 ${PROJECT_SOURCE_DIR}/src/fundamentals/nutr.cc)
+set_target_properties(nutr_2021-09-09_to_2021-10-10 PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/2021-09-09_to_2021-10-10)
+target_include_directories(nutr_2021-09-09_to_2021-10-10 PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
+target_link_libraries(nutr_2021-09-09_to_2021-10-10 actionInitialization_2021-09-09_to_2021-10-10 ${Boost_LIBRARIES} detectorConstruction_2021-09-09_to_2021-10-10 physics ${Geant4_LIBRARIES})

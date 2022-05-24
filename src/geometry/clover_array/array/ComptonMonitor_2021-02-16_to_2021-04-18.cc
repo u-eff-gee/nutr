@@ -25,7 +25,7 @@
 #include "G4VisAttributes.hh"
 
 #include "ComptonMonitorTarget.hh"
-#include "ComptonMonitor_02_16_2021_to_04_18_2021.hh"
+#include "ComptonMonitor_2021-02-16_to_2021-04-18.hh"
 
 void ComptonMonitor::Construct(const G4ThreeVector global_coordinates) {
 

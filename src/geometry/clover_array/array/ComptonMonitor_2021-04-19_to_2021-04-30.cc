@@ -17,7 +17,7 @@
     Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
-#include "ComptonMonitor_04_19_2021_to_04_30_2021.hh"
+#include "ComptonMonitor_2021-04-19_to_2021-04-30.hh"
 #include "ComptonMonitorTarget.hh"
 
 void ComptonMonitor::Construct(const G4ThreeVector global_coordinates) {
