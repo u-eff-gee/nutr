@@ -15,7 +15,7 @@ WORKDIR /work
 COPY . /work
 RUN mkdir -p build
 WORKDIR /work/build
-RUN cmake -DGEOMETRY_DIR=clover_array/2021-09-09_to_2021-10-10 .. && \
+RUN cmake .. && \
     cmake --build . -- -j `nproc`
 RUN chmod +x /work/entry_point.sh
 WORKDIR /output
