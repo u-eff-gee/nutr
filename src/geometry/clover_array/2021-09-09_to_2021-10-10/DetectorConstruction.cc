@@ -153,6 +153,8 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   }
   detectors[detectors.size() - 1]->Construct(
       world_logical, G4ThreeVector(0., ZeroDegree::offset_y, 0.));
+  RegisterSensitiveLogicalVolumes(
+      detectors[detectors.size() - 1]->get_sensitive_logical_volumes());
 
   Target96Mo(world_logical).Construct({});
 

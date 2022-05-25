@@ -1,0 +1,21 @@
+/run/numberOfThreads
+/run/initialize
+/random/setSeeds 0 0
+
+## Define particle
+
+# Monoenergetic source
+/gps/particle gamma
+/gps/energy 10.0 MeV
+
+## Define beam dimensions
+
+# Circular, monoenergetic, polarized beam
+/gps/pos/type Beam
+/gps/pos/shape Circle
+/gps/pos/radius 9.525 mm
+/gps/pos/centre 0. 0. -3500. mm
+/gps/direction 0. 0. 1.
+/gps/polarization 1. 0. 0.
+
+/run/beamOn
