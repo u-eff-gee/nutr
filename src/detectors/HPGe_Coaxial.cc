@@ -291,87 +291,95 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                     sensitive_logical_volumes[0], detector_name + "_crystal",
                     end_cap_vacuum_logical, 0, 0, false);
 
-  if (use_dewar) {
+  if (dewar_properties.dewar_material != "") {
     /************* Connection dewar-detector *************/
-    G4Tubs *connection_solid = new G4Tubs(
-        detector_name + "connection_solid", 0., properties.connection_radius,
-        properties.connection_length * 0.5, 0., twopi);
+    G4Tubs *connection_solid =
+        new G4Tubs(detector_name + "_connection_solid", 0.,
+                   dewar_properties.connection_radius,
+                   dewar_properties.connection_length * 0.5, 0., twopi);
     G4LogicalVolume *connection_logical = new G4LogicalVolume(
         connection_solid,
-        nist->FindOrBuildMaterial(properties.connection_material),
-        detector_name + "connection_logical");
+        nist->FindOrBuildMaterial(dewar_properties.connection_material),
+        detector_name + "_connection_logical");
     connection_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
     new G4PVPlacement(
         rotation_matrix,
         global_coordinates +
             (dist_from_center + properties.end_cap_window_thickness +
-             end_cap_side_length + properties.connection_length * 0.5) *
+             end_cap_side_length + dewar_properties.connection_length * 0.5) *
                 e_r,
-        connection_logical, detector_name + "connection", world_logical, 0, 0,
+        connection_logical, detector_name + "_connection", world_logical, 0, 0,
         false);
 
     if (intrinsic_rotation_angle != 0.)
       e_theta.rotate(intrinsic_rotation_angle, e_r);
 
     /************* Dewar *************/
-    double dewar_side_length =
-        properties.dewar_length - 2. * properties.dewar_wall_thickness;
+    double dewar_side_length = dewar_properties.dewar_length -
+                               2. * dewar_properties.dewar_wall_thickness;
 
     // Dewar face
-    G4Tubs *dewar_face_solid = new G4Tubs(
-        detector_name + "_dewar_face_solid", 0., properties.dewar_outer_radius,
-        properties.dewar_wall_thickness * 0.5, 0., twopi);
+    G4Tubs *dewar_face_solid =
+        new G4Tubs(detector_name + "_dewar_face_solid", 0.,
+                   dewar_properties.dewar_outer_radius,
+                   dewar_properties.dewar_wall_thickness * 0.5, 0., twopi);
     G4LogicalVolume *dewar_face_logical = new G4LogicalVolume(
-        dewar_face_solid, nist->FindOrBuildMaterial(properties.dewar_material),
+        dewar_face_solid,
+        nist->FindOrBuildMaterial(dewar_properties.dewar_material),
         detector_name + "_dewar_face_logical");
     dewar_face_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
-    new G4PVPlacement(rotation_matrix,
-                      global_coordinates +
-                          (dist_from_center +
-                           properties.end_cap_window_thickness +
-                           end_cap_side_length + properties.connection_length +
-                           properties.dewar_wall_thickness * 0.5) *
-                              e_r +
-                          properties.dewar_offset * e_theta,
-                      dewar_face_logical, detector_name + "_dewar_face",
-                      world_logical, 0, 0, false);
+    new G4PVPlacement(
+        rotation_matrix,
+        global_coordinates +
+            (dist_from_center + properties.end_cap_window_thickness +
+             end_cap_side_length + dewar_properties.connection_length +
+             dewar_properties.dewar_wall_thickness * 0.5) *
+                e_r +
+            dewar_properties.dewar_offset * e_theta,
+        dewar_face_logical, detector_name + "_dewar_face", world_logical, 0, 0,
+        false);
 
     // Dewar side
-    G4Tubs *dewar_side_solid = new G4Tubs(
-        detector_name + "_dewar_side_solid",
-        properties.dewar_outer_radius - properties.dewar_wall_thickness,
-        properties.dewar_outer_radius, dewar_side_length * 0.5, 0., twopi);
+    G4Tubs *dewar_side_solid =
+        new G4Tubs(detector_name + "_dewar_side_solid",
+                   dewar_properties.dewar_outer_radius -
+                       dewar_properties.dewar_wall_thickness,
+                   dewar_properties.dewar_outer_radius, dewar_side_length * 0.5,
+                   0., twopi);
     G4LogicalVolume *dewar_side_logical = new G4LogicalVolume(
-        dewar_side_solid, nist->FindOrBuildMaterial(properties.dewar_material),
+        dewar_side_solid,
+        nist->FindOrBuildMaterial(dewar_properties.dewar_material),
         detector_name + "_dewar_side_logical");
     dewar_side_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(
         rotation_matrix,
         global_coordinates +
             (dist_from_center + properties.end_cap_window_thickness +
-             end_cap_side_length + properties.connection_length +
-             properties.dewar_wall_thickness + dewar_side_length * 0.5) *
+             end_cap_side_length + dewar_properties.connection_length +
+             dewar_properties.dewar_wall_thickness + dewar_side_length * 0.5) *
                 e_r +
-            properties.dewar_offset * e_theta,
+            dewar_properties.dewar_offset * e_theta,
         dewar_side_logical, detector_name + "_dewar_side", world_logical, 0, 0,
         false);
 
     // Dewar base
-    G4Tubs *dewar_base_solid = new G4Tubs(
-        detector_name + "_dewar_base_solid", 0., properties.dewar_outer_radius,
-        properties.dewar_wall_thickness * 0.5, 0., twopi);
+    G4Tubs *dewar_base_solid =
+        new G4Tubs(detector_name + "_dewar_base_solid", 0.,
+                   dewar_properties.dewar_outer_radius,
+                   dewar_properties.dewar_wall_thickness * 0.5, 0., twopi);
     G4LogicalVolume *dewar_base_logical = new G4LogicalVolume(
-        dewar_base_solid, nist->FindOrBuildMaterial(properties.dewar_material),
+        dewar_base_solid,
+        nist->FindOrBuildMaterial(dewar_properties.dewar_material),
         detector_name + "_dewar_base_logical");
     dewar_base_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(
         rotation_matrix,
         global_coordinates +
             (dist_from_center + properties.end_cap_window_thickness +
-             end_cap_side_length + properties.connection_length +
-             properties.dewar_wall_thickness * 1.5 + dewar_side_length) *
+             end_cap_side_length + dewar_properties.connection_length +
+             dewar_properties.dewar_wall_thickness * 1.5 + dewar_side_length) *
                 e_r +
-            properties.dewar_offset * e_theta,
+            dewar_properties.dewar_offset * e_theta,
         dewar_base_logical, detector_name + "_dewar_base", world_logical, 0, 0,
         false);
   }

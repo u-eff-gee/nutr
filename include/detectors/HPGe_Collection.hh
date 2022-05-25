@@ -67,14 +67,17 @@ HPGe_Coaxial_Properties HPGe_60_TUNL_21033{
     .cold_finger_penetration_depth = 73.1 * mm  // hole_depth
                                      - 5. * mm, // Estimated
     .cold_finger_material = "G4_Cu",            // Estimated
-    .connection_length = 2. * inch,             // Measured
-    .connection_radius = 0.75 * inch,           // Estimated
-    .dewar_offset = 1. * inch,                  // Measured
-    .connection_material = "G4_Al",             // Estimated
-    .dewar_length = 9. * inch,                  // Measured
-    .dewar_outer_radius = 3. * inch,            // Measured
-    .dewar_wall_thickness = 5. * mm,            // Estimated
-    .dewar_material = "G4_Al",                  // Estimated
+};
+
+HPGe_Coaxial_Dewar_Properties HPGe_60_TUNL_21033_Dewar{
+    .connection_length = 2. * inch,   // Measured
+    .connection_radius = 0.75 * inch, // Estimated
+    .dewar_offset = 1. * inch,        // Measured
+    .connection_material = "G4_Al",   // Estimated
+    .dewar_length = 9. * inch,        // Measured
+    .dewar_outer_radius = 3. * inch,  // Measured
+    .dewar_wall_thickness = 5. * mm,  // Estimated
+    .dewar_material = "G4_Al",        // Estimated
 };
 
 // 100% (103.5% according to data sheet) coaxial HPGe
@@ -108,8 +111,11 @@ HPGe_Coaxial_Properties HPGe_ANL_41203{
     .cold_finger_penetration_depth = 0.8 * 98.3 * mm // hole_depth
                                      - 5. * mm,      // Estimated
     .cold_finger_material = "G4_Cu",                 // Estimated
-    .connection_length = 4.5 * inch,                 // Data sheet
-    .connection_radius = 0.5 * 4.5 * inch,           // Data sheet
+};
+
+HPGe_Coaxial_Dewar_Properties HPGe_ANL_41203_Dewar{
+    .connection_length = 4.5 * inch,       // Data sheet
+    .connection_radius = 0.5 * 4.5 * inch, // Data sheet
     .dewar_offset = 0. * inch,
     .connection_material = "G4_Al",        // Estimated
     .dewar_length = 16.5 * inch,           // Data sheet
@@ -149,8 +155,11 @@ HPGe_Coaxial_Properties HPGe_ANL_31670{
     .cold_finger_penetration_depth = 0.8 * 98.3 * mm // hole_depth
                                      - 5. * mm,      // Estimated
     .cold_finger_material = "G4_Cu",                 // Estimated
-    .connection_length = 4.5 * inch,                 // Data sheet
-    .connection_radius = 0.5 * 4.5 * inch,           // Data sheet
+};
+
+HPGe_Coaxial_Dewar_Properties HPGe_ANL_31670_Dewar{
+    .connection_length = 4.5 * inch,       // Data sheet
+    .connection_radius = 0.5 * 4.5 * inch, // Data sheet
     .dewar_offset = 0. * inch,
     .connection_material = "G4_Al",        // Estimated
     .dewar_length = 16.5 * inch,           // Data sheet

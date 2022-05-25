@@ -40,15 +40,17 @@ using std::vector;
 
 class HPGe_Coaxial : public Detector {
 public:
-  HPGe_Coaxial(const string _name, const HPGe_Coaxial_Properties _prop,
+  HPGe_Coaxial(const string _name, const HPGe_Coaxial_Properties _properties,
+               const HPGe_Coaxial_Dewar_Properties _dewar_properties,
                const double _theta, const double _phi,
                const double _dist_from_center,
                const FilterConfiguration _filters_configuration = {{}},
                const vector<Filter> _wraps = {},
                double _intrinsic_rotation_angle = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filters_configuration,
-                 _wraps, _intrinsic_rotation_angle, _prop.end_cap_outer_radius),
-        properties(_prop), use_dewar(true){};
+                 _wraps, _intrinsic_rotation_angle,
+                 _properties.end_cap_outer_radius),
+        properties(_properties), dewar_properties(_dewar_properties){};
 
   void Construct_Detector(G4LogicalVolume *world_logical,
                           G4ThreeVector global_coordinates) override final;
@@ -57,9 +59,8 @@ public:
                              double filter_dist_from_center) override final;
   G4VSolid *Filter_Shape(const string name,
                          const Filter &filter) const override final;
-  void useDewar() { use_dewar = true; };
 
 private:
   const HPGe_Coaxial_Properties properties;
-  bool use_dewar;
+  const HPGe_Coaxial_Dewar_Properties dewar_properties;
 };

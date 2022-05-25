@@ -25,8 +25,13 @@
  * https://doi.org/10.5281/zenodo.3430154
  */
 
-// Struct that contains the properties of a specific
-// coaxial High-purity Germanium (HPGe) detector
+// This file implements two structs.
+// 1) A struct 'HPGe_Coaxial_Properties' that contains the properties of the
+// front part of a specific coaxial High-purity Germanium (HPGe) detector.
+// 2) A struct 'HPGe_Coaxial_Dewar_Properties' that can be used to supply the
+// properties of a standard axially symmetry liquid-nitrogen dewar. The dewar
+// parts are implemented mainly for visualization reasons and they are rough
+// estimates of the actual structure of the dewar and the connecting piece.
 #pragma once
 
 struct HPGe_Coaxial_Properties {
@@ -96,26 +101,28 @@ struct HPGe_Coaxial_Properties {
                                         // including the rounded tip, reaches
                                         // into the crystal
   string cold_finger_material;
+};
 
-  /* The following parts are implemented mainly for aesthetic reasons and
-   * they are rough estimates for the actual structure of the dewar and the
-   * connecting piece.
+struct HPGe_Coaxial_Dewar_Properties {
+  /* Struct that contains the dimensions of a coaxial detector's dewar and the
+   * connecting piece between the front part and the dewar.
    */
 
   // Connection between dewar and mount cup / end cap
   // Contains the cold finger and electronics, but the latter are not
   // implemented here. Assumed to consist of solid aluminium.
-  double connection_length; // Length of the connecting piece
-  double connection_radius; // Radius of the connecting piece
-  double dewar_offset; // Offset of the symmetry axis of dewar and connection
-                       // from the symmetry axis of the front part.
-  string connection_material;
+  double connection_length = 0.; // Length of the connecting piece
+  double connection_radius = 0.; // Radius of the connecting piece
+  double dewar_offset =
+      0.; // Offset of the symmetry axis of dewar and connection
+          // from the symmetry axis of the front part.
+  string connection_material = "";
 
   // Dewar
   // A cylindric tube with top and bottom
-  double dewar_length;         // Dewar length, including top and bottom
-  double dewar_outer_radius;   // Outer radius, can be measured most easily
-  double dewar_wall_thickness; // Dewar wall thickness. Assumed to be the same
-                               // for top, bottom and side
-  string dewar_material;
+  double dewar_length = 0.;         // Dewar length, including top and bottom
+  double dewar_outer_radius = 0.;   // Outer radius, can be measured most easily
+  double dewar_wall_thickness = 0.; // Dewar wall thickness. Assumed to be the
+                                    // same for top, bottom and side
+  string dewar_material = "";
 };

@@ -73,7 +73,8 @@ vector<Detector *> detectors = {
                     {{{"G4_Cu", cu_thin}, {"G4_Pb", pb_thin}}, true}, {},
                     0.5 * pi),
     new HPGe_Coaxial(
-        "coaxial_B4", COAXIAL_B4, 125.26 * deg, 135. * deg, 9.25 * inch,
+        "coaxial_B4", COAXIAL_B4, COAXIAL_B4_DEWAR, 125.26 * deg, 135. * deg,
+        9.25 * inch,
         {
             {{"G4_Cu",
               [](const string name) {
@@ -123,8 +124,9 @@ vector<Detector *> detectors = {
                     {{{"G4_Pb", pb_thick}}}),
 
     new HPGe_Coaxial("zero_degree",
-                     HPGe_Coaxial_Collection::HPGe_120_TUNL_40383, 0. * deg,
-                     0. * deg, ZeroDegree::zero_degree_to_target),
+                     HPGe_Coaxial_Collection::HPGe_120_TUNL_40383,
+                     HPGe_Coaxial_Dewar_Properties(), 0. * deg, 0. * deg,
+                     ZeroDegree::zero_degree_to_target),
 };
 
 G4VPhysicalVolume *DetectorConstruction::Construct() {

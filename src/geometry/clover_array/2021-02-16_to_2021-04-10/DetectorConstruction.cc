@@ -110,8 +110,9 @@ vector<Detector *> detectors = {
                   {{{"G4_Cu", cu_thin}, {"G4_Pb", pb_thin}}, true}),
 
     new HPGe_Coaxial("zero_degree",
-                     HPGe_Coaxial_Collection::HPGe_120_TUNL_40383, 0. * deg,
-                     0. * deg, ZeroDegree::zero_degree_to_target),
+                     HPGe_Coaxial_Collection::HPGe_120_TUNL_40383,
+                     HPGe_Coaxial_Dewar_Properties(), 0. * deg, 0. * deg,
+                     ZeroDegree::zero_degree_to_target),
     new LaBr3Ce_3x3("labr_Z", ComptonMonitor::detector_angle, 0. * deg,
                     ComptonMonitor::scattering_target_to_detector),
 };

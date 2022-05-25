@@ -22,6 +22,7 @@ set_property(CACHE
     STRINGS
     "HPGe_ANL_41203"
     "HPGe_ANL_31670")
+set(COAXIAL_B4_DEWAR "${COAXIAL_B4}_Dewar" CACHE STRING "Dewar of detector B4")
 configure_file(
 	"${CMAKE_CURRENT_LIST_DIR}/CoaxB4Config.hh.in"
 	"${PROJECT_BINARY_DIR}/src/geometry/clover_array/2021-09-09_to_2021-10-10/CoaxB4Config.hh"
