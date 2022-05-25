@@ -42,6 +42,7 @@
 #include "LeadShieldingUTR.hh"
 #include "Mechanical.hh"
 #include "Target96Mo.hh"
+#include "ZeroDegree.hh"
 
 constexpr double inch = 25.4 * mm;
 
@@ -120,6 +121,10 @@ vector<Detector *> detectors = {
                     {{{"G4_Pb", pb_thick}}}),
     new LaBr3Ce_3x3("labr_LBM", 135. * deg, 315. * deg, 4.50 * inch,
                     {{{"G4_Pb", pb_thick}}}),
+
+    new HPGe_Coaxial("zero_degree",
+                     HPGe_Coaxial_Collection::HPGe_120_TUNL_40383, 0. * deg,
+                     0. * deg, ZeroDegree::zero_degree_to_target),
 };
 
 G4VPhysicalVolume *DetectorConstruction::Construct() {
@@ -139,10 +144,13 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
 
-  for (auto det : detectors) {
-    det->Construct(world_logical, {});
-    RegisterSensitiveLogicalVolumes(det->get_sensitive_logical_volumes());
+  for (size_t n_detector = 0; n_detector < detectors.size() - 1; ++n_detector) {
+    detectors[n_detector]->Construct(world_logical, {});
+    RegisterSensitiveLogicalVolumes(
+        detectors[n_detector]->get_sensitive_logical_volumes());
   }
+  detectors[detectors.size() - 1]->Construct(
+      world_logical, G4ThreeVector(0., ZeroDegree::offset_y, 0.));
 
   Target96Mo(world_logical).Construct({});
 

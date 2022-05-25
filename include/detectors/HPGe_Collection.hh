@@ -159,6 +159,40 @@ HPGe_Coaxial_Properties HPGe_ANL_31670{
     .dewar_material = "G4_Al",             // Estimated
 };
 
+// 120% coaxial HPGe with ORTEC serial number 33-P40383A
+// 'zero-degree detector'
+// Property of TUNL
+HPGe_Coaxial_Properties HPGe_120_TUNL_40383{
+    .detector_radius = 0.5 * 82. * mm, // ORTEC data sheet
+    .detector_length = 108.7 * mm,     // ORTEC data sheet
+    .detector_face_radius = 8. * mm,   // (J) in ORTEC data sheet
+    .hole_radius = 0.5 * 10.9 * mm,    // ORTEC data sheet
+    .hole_depth = 96.1 * mm,           // ORTEC data sheet
+    .hole_face_radius =
+        0.5 * 10.9 * mm, // Estimated to be the same as hole radius
+    .mount_cup_length =
+        5.5 * inch - 1.5 * mm -
+        4. * mm, // Calculated from end cap length. Different from (A) in ORTEC
+                 // data sheet, because it shows only the part which contains
+                 // the detector crystal.
+    .mount_cup_thickness = 0.76 * mm,        // (H) in ORTEC data sheet
+    .mount_cup_base_thickness = 3.2 * mm,    // (C) in ORTEC data sheet
+    .mount_cup_material = "G4_Al",           // ORTEC data sheet
+    .end_cap_to_crystal_gap_front = 4. * mm, // (B) in ORTEC data sheet
+    .end_cap_to_crystal_gap_side = 4. * mm,  // (B) in ORTEC data sheet
+    .end_cap_thickness = 1.5 * mm,           // (I) in ORTEC data sheet
+    .end_cap_length = 5.5 * inch,            // Estimated
+    .end_cap_outer_radius = (0.5 * 82. + 0.76 + 4. + 1.5) * mm,
+    .end_cap_window_thickness = 1.5 * mm, // (D) in ORTEC data sheet
+    .end_cap_material = "G4_Al",          // ORTEC data sheet
+    .end_cap_window_material = "G4_Al",   // ORTEC data sheet
+    .cold_finger_radius =
+        0.5 * 4. *
+        mm, // Suggestion by B. Fallin, Duke University. Not in ORTEC data sheet
+    .cold_finger_penetration_depth = 91.1 * mm, // Estimated
+    .cold_finger_material = "G4_Cu",            // Estimated
+};
+
 } // namespace HPGe_Coaxial_Collection
 
 namespace HPGe_Clover_Collection {

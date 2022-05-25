@@ -40,6 +40,7 @@
 #include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR.hh"
 #include "Mechanical.hh"
+#include "ZeroDegree.hh"
 
 constexpr double inch = 25.4 * mm;
 
@@ -108,6 +109,9 @@ vector<Detector *> detectors = {
     new CeBr3_2x2("cebr_BM", 135. * deg, 25. / 14. * 180. * deg, 8.00 * inch,
                   {{{"G4_Cu", cu_thin}, {"G4_Pb", pb_thin}}, true}),
 
+    new HPGe_Coaxial("zero_degree",
+                     HPGe_Coaxial_Collection::HPGe_120_TUNL_40383, 0. * deg,
+                     0. * deg, ZeroDegree::zero_degree_to_target),
     new LaBr3Ce_3x3("labr_Z", ComptonMonitor::detector_angle, 0. * deg,
                     ComptonMonitor::scattering_target_to_detector),
 };
@@ -130,11 +134,13 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
 
-  for (size_t n_detector = 0; n_detector < detectors.size() - 1; ++n_detector) {
+  for (size_t n_detector = 0; n_detector < detectors.size() - 2; ++n_detector) {
     detectors[n_detector]->Construct(world_logical, {});
     RegisterSensitiveLogicalVolumes(
         detectors[n_detector]->get_sensitive_logical_volumes());
   }
+  detectors[detectors.size() - 2]->Construct(
+      world_logical, G4ThreeVector(0., ZeroDegree::offset_y, 0.));
   detectors[detectors.size() - 1]->Construct(
       world_logical,
       G4ThreeVector(0., 0., ComptonMonitor::scattering_target_to_target));
