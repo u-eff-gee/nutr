@@ -54,12 +54,12 @@
  */
 class HPGe_Clover : public Detector {
 public:
-  HPGe_Clover(const G4String _name, const HPGe_Clover_Properties _prop,
-              const G4double _theta, const G4double _phi,
-              const G4double _dist_from_center,
+  HPGe_Clover(const string _name, const HPGe_Clover_Properties _prop,
+              const double _theta, const double _phi,
+              const double _dist_from_center,
               const FilterConfiguration _filter_configuration = {{}},
               const vector<Filter> _wraps = {},
-              G4double _intrinsic_rotation_angle = 0.)
+              double _intrinsic_rotation_angle = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filter_configuration,
                  _wraps, _intrinsic_rotation_angle,
                  _prop.end_cap_front_side_length),
@@ -75,10 +75,10 @@ public:
   void useDewar() { use_dewar = true; };
 
 private:
-  static G4VSolid *rounded_box(const G4String name, const G4double side_length,
-                               const G4double length,
-                               const G4double rounding_radius,
-                               const G4int n_points_per_corner);
+  static G4VSolid *rounded_box(const string name, const double side_length,
+                               const double length,
+                               const double rounding_radius,
+                               const int n_points_per_corner);
   const HPGe_Clover_Properties properties;
   bool use_dewar;
 };

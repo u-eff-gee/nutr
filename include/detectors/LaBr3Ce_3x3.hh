@@ -41,11 +41,11 @@
  */
 class LaBr3Ce_3x3 : public Detector {
 public:
-  LaBr3Ce_3x3(const G4String _name, const G4double _theta, const G4double _phi,
-              const G4double _dist_from_center,
+  LaBr3Ce_3x3(const string _name, const double _theta, const double _phi,
+              const double _dist_from_center,
               const FilterConfiguration _filter_configuration = {{}},
               const vector<Filter> _wraps = {},
-              G4double _intrinsic_rotation_angle = 0.)
+              double _intrinsic_rotation_angle = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filter_configuration,
                  _wraps, _intrinsic_rotation_angle, 4.1275 * cm){};
 

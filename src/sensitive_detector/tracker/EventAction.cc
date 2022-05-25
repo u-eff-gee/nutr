@@ -31,7 +31,7 @@ using std::make_shared;
 EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
 void EventAction::EndOfEventAction(const G4Event *event) {
-  G4int eventID = event->GetEventID();
+  int eventID = event->GetEventID();
 
   G4VHitsCollection *hc = nullptr;
   for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();

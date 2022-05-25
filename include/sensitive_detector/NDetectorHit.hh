@@ -38,7 +38,7 @@ public:
 
   void Draw(){};
 
-  void SetDetectorID(const G4int detectorID) { fDetectorID = detectorID; };
+  void SetDetectorID(const int detectorID) { fDetectorID = detectorID; };
 
   int GetDetectorID() const { return fDetectorID; };
 

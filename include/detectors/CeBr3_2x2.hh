@@ -50,11 +50,11 @@
  */
 class CeBr3_2x2 : public Detector {
 public:
-  CeBr3_2x2(const G4String _name, const G4double _theta, const G4double _phi,
-            const G4double _dist_from_center,
+  CeBr3_2x2(const string _name, const double _theta, const double _phi,
+            const double _dist_from_center,
             const FilterConfiguration _filter_configuration = {{}},
             const vector<Filter> _wraps = {},
-            G4double _intrinsic_rotation_angle = 0.)
+            double _intrinsic_rotation_angle = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filter_configuration,
                  _wraps, _intrinsic_rotation_angle, 0.5 * 57. * mm){};
 

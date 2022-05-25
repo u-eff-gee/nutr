@@ -53,9 +53,9 @@ void BeamPipe::Construct(const G4ThreeVector global_coordinates) {
 
   // Main pipe
 
-  G4double beam_pipe_z = -0.5 * beam_pipe_length +
-                         beam_pipe_downstream_lid_to_target_position -
-                         insert_pipe_lid_thickness;
+  double beam_pipe_z = -0.5 * beam_pipe_length +
+                       beam_pipe_downstream_lid_to_target_position -
+                       insert_pipe_lid_thickness;
   G4Tubs *beam_pipe_solid =
       new G4Tubs("beam_pipe_solid", beam_pipe_inner_radius,
                  beam_pipe_outer_radius, 0.5 * beam_pipe_length, 0., twopi);

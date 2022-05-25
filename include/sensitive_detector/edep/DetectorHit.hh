@@ -36,12 +36,12 @@ public:
   inline void *operator new(size_t);
   inline void operator delete(void *);
 
-  void SetEdep(const G4double de) { fEdep = de; };
+  void SetEdep(const double de) { fEdep = de; };
 
-  G4double GetEdep() const { return fEdep; };
+  double GetEdep() const { return fEdep; };
 
 private:
-  G4double fEdep;
+  double fEdep;
 };
 
 extern G4ThreadLocal G4Allocator<DetectorHit> *DetectorHitAllocator;

@@ -28,11 +28,11 @@
 
 using std::string, std::to_string;
 
-Detector::Detector(const G4String _name, const G4double _theta,
-                   const G4double _phi, const G4double _dist_from_center,
+Detector::Detector(const string _name, const double _theta, const double _phi,
+                   const double _dist_from_center,
                    const FilterConfiguration _filter_configuration,
                    const vector<Filter> _wraps,
-                   G4double _intrinsic_rotation_angle,
+                   double _intrinsic_rotation_angle,
                    const double _default_filter_radius)
     : detector_name(_name), default_filter_radius(_default_filter_radius),
       theta(_theta), phi(_phi), dist_from_center(_dist_from_center),

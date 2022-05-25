@@ -34,18 +34,18 @@ class OptimizePolycone {
 public:
   OptimizePolycone() = default;
 
-  G4int Optimize(double *zPlane, double *rInner, double *rOuter,
-                 double *zPlaneOpt, double *rInnerOpt, double *rOuterOpt,
-                 int nsteps, G4String PolyconeName) {
+  int Optimize(double *zPlane, double *rInner, double *rOuter,
+               double *zPlaneOpt, double *rInnerOpt, double *rOuterOpt,
+               int nsteps, string PolyconeName) {
 
-    G4double last_ri = rInner[0];
-    G4double last_ro = rOuter[0];
+    double last_ri = rInner[0];
+    double last_ro = rOuter[0];
 
     zPlaneOpt[0] = zPlane[0];
     rInnerOpt[0] = last_ri;
     rOuterOpt[0] = last_ro;
 
-    G4int nsteps_optimized = 1;
+    int nsteps_optimized = 1;
 
     for (int i = 1; i < nsteps - 1; i++) {
       if (rInner[i] != last_ri || rOuter[i] != last_ro) {
@@ -70,8 +70,8 @@ public:
 
     nsteps_optimized++;
 
-    G4double reductionfactor = (1. - (double)nsteps_optimized / nsteps) * 100.;
-    G4double tolerance = (zPlane[nsteps - 1] - zPlane[0]) / nsteps;
+    double reductionfactor = (1. - (double)nsteps_optimized / nsteps) * 100.;
+    double tolerance = (zPlane[nsteps - 1] - zPlane[0]) / nsteps;
 
     G4cout << "Polycone " << PolyconeName << " optimized." << G4endl;
     G4cout << "  Using " << reductionfactor

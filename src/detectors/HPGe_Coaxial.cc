@@ -56,13 +56,13 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
 
   /************* End cap *************/
   // End cap side
-  G4double end_cap_inner_radius = properties.detector_radius +
-                                  properties.mount_cup_thickness +
-                                  properties.end_cap_to_crystal_gap_side;
-  G4double end_cap_outer_radius =
+  double end_cap_inner_radius = properties.detector_radius +
+                                properties.mount_cup_thickness +
+                                properties.end_cap_to_crystal_gap_side;
+  double end_cap_outer_radius =
       properties.detector_radius + properties.mount_cup_thickness +
       properties.end_cap_to_crystal_gap_side + properties.end_cap_thickness;
-  G4double end_cap_side_length =
+  double end_cap_side_length =
       properties.mount_cup_length + properties.end_cap_to_crystal_gap_front;
 
   G4Tubs *end_cap_side_solid =
@@ -116,12 +116,12 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
 
   /************* Mount cup *************/
   // Mount cup side
-  G4double mount_cup_inner_radius = properties.detector_radius;
-  G4double mount_cup_outer_radius =
+  double mount_cup_inner_radius = properties.detector_radius;
+  double mount_cup_outer_radius =
       properties.detector_radius + properties.mount_cup_thickness;
-  G4double mount_cup_side_length = properties.mount_cup_length -
-                                   properties.mount_cup_thickness -
-                                   properties.mount_cup_base_thickness;
+  double mount_cup_side_length = properties.mount_cup_length -
+                                 properties.mount_cup_thickness -
+                                 properties.mount_cup_base_thickness;
 
   G4Tubs *mount_cup_side_solid = new G4Tubs(
       detector_name + "_mount_cup_side_solid", mount_cup_inner_radius,
@@ -182,24 +182,24 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
 
   /************* Cold finger *************/
 
-  G4double cold_finger_length =
+  double cold_finger_length =
       properties.cold_finger_penetration_depth + mount_cup_side_length +
       properties.mount_cup_base_thickness - properties.detector_length;
 
-  const G4int nsteps = 500;
+  const int nsteps = 500;
 
-  G4double zPlaneTemp[nsteps];
-  G4double rInnerTemp[nsteps];
-  G4double rOuterTemp[nsteps];
+  double zPlaneTemp[nsteps];
+  double rInnerTemp[nsteps];
+  double rOuterTemp[nsteps];
 
-  G4double z;
+  double z;
 
-  G4double zPlane[nsteps];
-  G4double rInner[nsteps];
-  G4double rOuter[nsteps];
+  double zPlane[nsteps];
+  double rInner[nsteps];
+  double rOuter[nsteps];
 
   OptimizePolycone *opt = new OptimizePolycone();
-  G4int nsteps_optimized;
+  int nsteps_optimized;
 
   G4Tubs *cold_finger_shaft_solid = new G4Tubs(
       detector_name + "_cold_finger_shaft_solid", 0.,
@@ -314,7 +314,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       e_theta.rotate(intrinsic_rotation_angle, e_r);
 
     /************* Dewar *************/
-    G4double dewar_side_length =
+    double dewar_side_length =
         properties.dewar_length - 2. * properties.dewar_wall_thickness;
 
     // Dewar face
@@ -378,7 +378,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
 
   // Wraps
   if (wraps.size()) {
-    G4double wrap_radius =
+    double wrap_radius =
         end_cap_outer_radius; // Will be gradually increased to be able to place
     // wraps on top of each other
     G4Tubs *wrap_solid = nullptr;

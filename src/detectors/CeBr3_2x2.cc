@@ -35,23 +35,23 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   /*********** Dimensions ***********/
   // Front
-  const G4double front_and_pmt_length = 185. * mm;
+  const double front_and_pmt_length = 185. * mm;
 
-  const G4double front_case_wall_thickness = 0.4 * mm;
-  const G4double front_entrance_window_thickness =
+  const double front_case_wall_thickness = 0.4 * mm;
+  const double front_entrance_window_thickness =
       front_case_wall_thickness; // Technical drawing gives no reason to assume
                                  // it should be different from
                                  // front_wall_thickness, but chose to implement
                                  // an independent variable anyway.
-  const G4double front_case_length = 42.5 * mm;
-  const G4double front_case_outer_radius = 0.5 * 57. * mm;
+  const double front_case_length = 42.5 * mm;
+  const double front_case_outer_radius = 0.5 * 57. * mm;
 
   // Crystal
   // The crystal dimensions are given as '51 mm x 51 mm', but this is probably
   // the rounded value of 2 inch x 2 inch. Take the exact value here.
-  const G4double crystal_length = 50.8 * mm;
-  const G4double crystal_radius = 0.5 * 50.8 * mm;
-  const G4double crystal_to_entrance_window =
+  const double crystal_length = 50.8 * mm;
+  const double crystal_radius = 0.5 * 50.8 * mm;
+  const double crystal_to_entrance_window =
       front_case_outer_radius - front_case_wall_thickness -
       crystal_radius; // Estimated that the gap between the crystal and the
   // entrance window is as wide as the gap between the crystal and the case on
@@ -59,41 +59,41 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   // PMT
 
-  const G4double pmt_case_outer_radius = 0.5 * 58.8 * mm;
-  const G4double pmt_case_length = front_and_pmt_length - front_case_length;
-  const G4double pmt_case_wall_thickness = 0.64 * mm;
+  const double pmt_case_outer_radius = 0.5 * 58.8 * mm;
+  const double pmt_case_length = front_and_pmt_length - front_case_length;
+  const double pmt_case_wall_thickness = 0.64 * mm;
 
-  const G4double pmt_outer_radius = crystal_radius;
-  const G4double pmt_length =
+  const double pmt_outer_radius = crystal_radius;
+  const double pmt_length =
       front_and_pmt_length - front_entrance_window_thickness -
       crystal_to_entrance_window -
       crystal_length; // Assume it extends all the way to the back of the case.
-  const G4double pmt_wall_thickness =
+  const double pmt_wall_thickness =
       pmt_case_wall_thickness; // Estimated to be the same as the thickness of
                                // the case wall. Not clear from the drawing,
                                // which leaves out most of the PMT anyway.
 
   // Connector
-  const G4double connector_base_length = 220. * mm - front_and_pmt_length;
-  const G4double connector_base_wall_thickness =
+  const double connector_base_length = 220. * mm - front_and_pmt_length;
+  const double connector_base_wall_thickness =
       pmt_case_wall_thickness; // Assumption
-  const G4double connector_base_outer_radius = pmt_case_outer_radius;
-  const G4double signal_connector_radius = 3. * mm; // Estimated
-  const G4double signal_connector_length = 8. * mm; // Estimated
-  const G4double hv_connector_radius = 3. * mm;     // Estimated
-  const G4double hv_connector_length = 8. * mm;     // Estimated
+  const double connector_base_outer_radius = pmt_case_outer_radius;
+  const double signal_connector_radius = 3. * mm; // Estimated
+  const double signal_connector_length = 8. * mm; // Estimated
+  const double hv_connector_radius = 3. * mm;     // Estimated
+  const double hv_connector_length = 8. * mm;     // Estimated
 
   /*********** Materials ***********/
 
   G4NistManager *nist = G4NistManager::Instance();
-  const G4String front_case_material = "G4_Al";
-  const G4String pmt_material = "G4_Al"; // Assumption
-  const G4String pmt_case_material =
+  const string front_case_material = "G4_Al";
+  const string pmt_material = "G4_Al"; // Assumption
+  const string pmt_case_material =
       "G4_Al"; // Assumption (it is called 'magnetic shield' in the drawing)
-  const G4String connector_material =
+  const string connector_material =
       "G4_Al"; // Assume that the connectors on top are made of the same
                // material
-  const G4String crystal_material = "CeBr3";
+  const string crystal_material = "CeBr3";
 
   /*********** Orientation in space ***********/
 

@@ -271,7 +271,7 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
                       world_logical, 0, 0, false);
 
     /************* Dewar *************/
-    G4double dewar_side_length =
+    double dewar_side_length =
         properties.dewar_length - 2. * properties.dewar_wall_thickness;
 
     // Dewar face
@@ -576,11 +576,10 @@ void HPGe_Clover::Construct_Filter_Case(G4LogicalVolume *world_logical,
       world_logical, false, 0, false);
 }
 
-G4VSolid *HPGe_Clover::rounded_box(const G4String name,
-                                   const G4double side_length,
-                                   const G4double length,
-                                   const G4double rounding_radius,
-                                   const G4int n_points_per_corner) {
+G4VSolid *HPGe_Clover::rounded_box(const string name, const double side_length,
+                                   const double length,
+                                   const double rounding_radius,
+                                   const int n_points_per_corner) {
 
   const double inverse_n_points_per_corner = 1. / (n_points_per_corner - 1.);
   vector<G4TwoVector> base(4 * n_points_per_corner);

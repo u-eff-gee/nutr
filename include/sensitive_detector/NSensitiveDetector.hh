@@ -19,6 +19,10 @@
 
 #pragma once
 
+#include <string>
+
+using std::string;
+
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
 #include "G4VSensitiveDetector.hh"
@@ -27,7 +31,7 @@
 
 class NSensitiveDetector : public G4VSensitiveDetector {
 public:
-  NSensitiveDetector(const G4String &name, const G4String &hitsCollectionName);
+  NSensitiveDetector(const string &name, const string &hitsCollectionName);
 
   virtual void Initialize(G4HCofThisEvent *hitCollection) = 0;
   virtual G4bool ProcessHits(G4Step *step, G4TouchableHistory *history) = 0;

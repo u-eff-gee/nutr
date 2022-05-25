@@ -50,29 +50,29 @@ void LaBr3Ce_3x3::Construct_Detector(G4LogicalVolume *world_logical,
   rotation->rotateZ(-phi);
   rotation->rotateY(-theta);
 
-  const G4double inch = 25.4 * mm;
-  const G4double crystal_length = 3. * inch;                       // BI
-  const G4double crystal_radius = 3. * inch * 0.5;                 // BI
-  const G4double crystal_housing_thickness = 0.5 * mm;             // BI
-  const G4double crystal_housing_outer_radius = 3.25 * inch * 0.5; // BI
-  const G4double vacuum_thickness_front = 2. * mm;                 // BI
-  const G4double vacuum_thickness_back = 2. * mm;                  // BI
+  const double inch = 25.4 * mm;
+  const double crystal_length = 3. * inch;                       // BI
+  const double crystal_radius = 3. * inch * 0.5;                 // BI
+  const double crystal_housing_thickness = 0.5 * mm;             // BI
+  const double crystal_housing_outer_radius = 3.25 * inch * 0.5; // BI
+  const double vacuum_thickness_front = 2. * mm;                 // BI
+  const double vacuum_thickness_back = 2. * mm;                  // BI
 
-  const G4double circuit_housing_thickness =
+  const double circuit_housing_thickness =
       2. * mm; // Estimated, determines the thickness of
   // all circuit_housing elements
-  const G4double circuit_housing_1_length = 2.25 * inch;      // Measured
-  const G4double circuit_housing_1_radius = 3.5 * inch * 0.5; // Measured
+  const double circuit_housing_1_length = 2.25 * inch;      // Measured
+  const double circuit_housing_1_radius = 3.5 * inch * 0.5; // Measured
 
-  const G4double circuit_housing_2_length = 3. * cm;        // Measured
-  const G4double circuit_housing_2_rmin = 2.5 * inch * 0.5; // Measured
-  const G4double circuit_housing_2_rmax = 3.5 * inch * 0.5; // Measured
+  const double circuit_housing_2_length = 3. * cm;        // Measured
+  const double circuit_housing_2_rmin = 2.5 * inch * 0.5; // Measured
+  const double circuit_housing_2_rmax = 3.5 * inch * 0.5; // Measured
 
-  const G4double circuit_housing_3_length = 3. * cm;          // Measured
-  const G4double circuit_housing_3_radius = 2.5 * inch * 0.5; // Measured
+  const double circuit_housing_3_length = 3. * cm;          // Measured
+  const double circuit_housing_3_radius = 2.5 * inch * 0.5; // Measured
 
-  const G4double pmt_housing_length = 7. * cm;          // Measured
-  const G4double pmt_housing_radius = 2.5 * inch * 0.5; // Measured
+  const double pmt_housing_length = 7. * cm;          // Measured
+  const double pmt_housing_radius = 2.5 * inch * 0.5; // Measured
 
   /************** Crystal housing *************/
 
@@ -92,9 +92,9 @@ void LaBr3Ce_3x3::Construct_Detector(G4LogicalVolume *world_logical,
       crystal_housing_face_logical, detector_name + "_crystal_housing_face",
       world_logical, 0, 0, false);
 
-  G4double crystal_housing_case_length =
-      vacuum_thickness_back + vacuum_thickness_front + crystal_length +
-      2. * crystal_housing_thickness;
+  double crystal_housing_case_length = vacuum_thickness_back +
+                                       vacuum_thickness_front + crystal_length +
+                                       2. * crystal_housing_thickness;
   G4Tubs *crystal_housing_case_solid =
       new G4Tubs(detector_name + "_crystal_housing_case_solid",
                  crystal_housing_outer_radius - crystal_housing_thickness,

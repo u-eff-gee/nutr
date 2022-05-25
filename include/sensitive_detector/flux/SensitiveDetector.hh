@@ -23,7 +23,7 @@
 
 class SensitiveDetector : public NSensitiveDetector {
 public:
-  SensitiveDetector(const G4String &name, const G4String &hitsCollectionName)
+  SensitiveDetector(const string &name, const string &hitsCollectionName)
       : NSensitiveDetector(name, hitsCollectionName),
         fDetectorHitsCollection(nullptr){};
 

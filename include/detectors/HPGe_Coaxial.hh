@@ -40,12 +40,12 @@ using std::vector;
 
 class HPGe_Coaxial : public Detector {
 public:
-  HPGe_Coaxial(const G4String _name, const HPGe_Coaxial_Properties _prop,
-               const G4double _theta, const G4double _phi,
-               const G4double _dist_from_center,
+  HPGe_Coaxial(const string _name, const HPGe_Coaxial_Properties _prop,
+               const double _theta, const double _phi,
+               const double _dist_from_center,
                const FilterConfiguration _filters_configuration = {{}},
                const vector<Filter> _wraps = {},
-               G4double _intrinsic_rotation_angle = 0.)
+               double _intrinsic_rotation_angle = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filters_configuration,
                  _wraps, _intrinsic_rotation_angle, _prop.end_cap_outer_radius),
         properties(_prop), use_dewar(true){};

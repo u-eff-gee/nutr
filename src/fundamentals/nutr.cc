@@ -82,8 +82,8 @@ int main(int argc, char **argv) {
   G4UImanager *UImanager = G4UImanager::GetUIpointer();
 
   if (!ui) {
-    G4String command = "/control/execute ";
-    G4String fileName = vm["macro"].as<string>();
+    string command = "/control/execute ";
+    string fileName = vm["macro"].as<string>();
     UImanager->ApplyCommand(command + fileName);
   } else {
     UImanager->ApplyCommand("/control/execute init_vis.mac");

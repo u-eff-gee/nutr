@@ -26,12 +26,12 @@ void SensitiveDetector::Initialize(G4HCofThisEvent *hce) {
   fDetectorHitsCollection = new G4THitsCollection<DetectorHit>(
       SensitiveDetectorName, collectionName[0]);
 
-  G4int hcID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
+  int hcID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
   hce->AddHitsCollection(hcID, fDetectorHitsCollection);
 }
 
 G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *) {
-  G4double edep = aStep->GetTotalEnergyDeposit();
+  double edep = aStep->GetTotalEnergyDeposit();
   if (edep == 0.)
     return false;
 

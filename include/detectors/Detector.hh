@@ -128,11 +128,11 @@ public:
    * the detector. \param intrinsic_rotation_angle \f$\alpha\f$, intrinsic
    * rotation angle of the detector around its main axis (default: 0).
    */
-  Detector(const G4String _name, const G4double _theta, const G4double _phi,
-           const G4double _dist_from_center,
+  Detector(const string _name, const double _theta, const double _phi,
+           const double _dist_from_center,
            const FilterConfiguration _filter_configuration = {{}},
            const vector<Wrap> _wraps = {},
-           G4double _intrinsic_rotation_angle = 0.,
+           double _intrinsic_rotation_angle = 0.,
            const double _default_filter_radius =
                std::numeric_limits<double>::quiet_NaN());
 
@@ -171,9 +171,8 @@ protected:
   virtual G4VSolid *Filter_Shape(const string name,
                                  const Filter &filter) const = 0;
 
-  const G4String
-      detector_name; /**< Name of the detector. This name will be used as a
-                        prefix for all parts of the geometry. */
+  const string detector_name; /**< Name of the detector. This name will be used
+                                 as a prefix for all parts of the geometry. */
   const double default_filter_radius, theta, phi, dist_from_center;
   const FilterConfiguration
       filter_configuration;   /**< Filters placed in front of the detector. */

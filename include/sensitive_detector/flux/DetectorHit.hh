@@ -37,25 +37,25 @@ public:
   inline void *operator new(size_t);
   inline void operator delete(void *);
 
-  void SetParticleID(const G4int pid) { fParticleID = pid; };
-  void SetParentID(const G4int pid) { fParentID = pid; };
-  void SetTrackID(const G4int tid) { fTrackID = tid; };
-  void SetEkin(const G4double de) { fEkin = de; };
+  void SetParticleID(const int pid) { fParticleID = pid; };
+  void SetParentID(const int pid) { fParentID = pid; };
+  void SetTrackID(const int tid) { fTrackID = tid; };
+  void SetEkin(const double de) { fEkin = de; };
   void SetPos(const G4ThreeVector xyz) { fPos = xyz; };
   void SetMom(const G4ThreeVector pxpypz) { fMom = pxpypz; };
 
-  G4int GetParticleID() const { return fParticleID; };
-  G4int GetParentID() const { return fParentID; };
-  G4int GetTrackID() const { return fTrackID; };
-  G4double GetEkin() const { return fEkin; };
+  int GetParticleID() const { return fParticleID; };
+  int GetParentID() const { return fParentID; };
+  int GetTrackID() const { return fTrackID; };
+  double GetEkin() const { return fEkin; };
   G4ThreeVector GetPos() const { return fPos; };
   G4ThreeVector GetMom() const { return fMom; };
 
 private:
-  G4int fParticleID;
-  G4int fParentID;
-  G4int fTrackID;
-  G4double fEkin;
+  int fParticleID;
+  int fParentID;
+  int fTrackID;
+  double fEkin;
   G4ThreeVector fPos;
   G4ThreeVector fMom;
 };

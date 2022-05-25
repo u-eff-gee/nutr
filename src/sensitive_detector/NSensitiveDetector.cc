@@ -25,8 +25,8 @@
 
 #include "NSensitiveDetector.hh"
 
-NSensitiveDetector::NSensitiveDetector(
-    const G4String &name, const G4String &DetectorHitsCollectionName)
+NSensitiveDetector::NSensitiveDetector(const string &name,
+                                       const string &DetectorHitsCollectionName)
     : G4VSensitiveDetector(name) {
   collectionName.insert(DetectorHitsCollectionName);
 }

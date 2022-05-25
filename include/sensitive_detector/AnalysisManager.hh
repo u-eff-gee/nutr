@@ -45,9 +45,9 @@ public:
 
   void Book(string output_file_name);
   virtual void CreateNtupleColumns(G4AnalysisManager *analysisManager) = 0;
-  virtual void FillNtuple(G4int eventID, vector<shared_ptr<G4VHit>> hits);
+  virtual void FillNtuple(int eventID, vector<shared_ptr<G4VHit>> hits);
   virtual void FillNtupleColumns(G4AnalysisManager *analysisManager,
-                                 G4int eventID,
+                                 int eventID,
                                  vector<shared_ptr<G4VHit>> hits) = 0;
   void Save();
 

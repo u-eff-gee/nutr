@@ -38,7 +38,7 @@ void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
 }
 
 void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
-                                     G4int eventID,
+                                     int eventID,
                                      vector<shared_ptr<G4VHit>> hits) {
   analysisManager->FillNtupleIColumn(0, 0, eventID);
   analysisManager->FillNtupleIColumn(
