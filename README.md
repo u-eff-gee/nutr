@@ -136,7 +136,7 @@ Copyright (C) 2020-2022 Udo Friman-Gayer (udo.friman-gayer@duke.edu) and Oliver 
 
 ## 5. Acknowledgments
 
-The authors would like to thank Ethan McConnell for help with implementing geometry.
+The authors would like to thank Ethan McConnell for help with implementing geometry and Jörn Kleemann for helpful discussions.
 
 ## 6. References
 

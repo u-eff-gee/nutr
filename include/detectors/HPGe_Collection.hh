@@ -60,7 +60,7 @@ HPGe_Coaxial_Properties HPGe_60_TUNL_21033{
     .end_cap_outer_radius = 0.5 * 85. * mm, // Estimated
     .end_cap_window_thickness = 0.5 * mm,   // (D) in ORTEC data sheet
     .end_cap_material = "G4_Al",            // ORTEC data sheet
-    .end_cap_window_material = "G4_Be",     // ORTEC data sheet
+    .end_cap_window_material = "G4_Al",     // ORTEC data sheet
     .cold_finger_radius =
         0.5 * 4. *
         mm, // Suggestion by B. Fallin, Duke University. Not in ORTEC data sheet
@@ -167,7 +167,7 @@ HPGe_Clover_Properties HPGe_Clover_Yale{
     .crystal_radius = 0.5 * 50. * mm,
     .crystal_length = 80. * mm,
     .crystal_face_radius = 2. * mm,
-    .crystal_gap = 2. * mm,
+    .crystal_gap = 0.2 * mm,
     .end_cap_to_crystal_gap_front = 10. * mm,
     .vacuum_length = 125. * mm,
     .anode_length = 72. * mm, // Estimated (see HPGe_Clover class)
@@ -175,8 +175,11 @@ HPGe_Clover_Properties HPGe_Clover_Yale{
     .end_cap_front_side_length = 101. * mm,
     .end_cap_front_rounding_radius = 15.5 * mm,
     .end_cap_front_length = 260. * mm,
-    .end_cap_front_thickness = 1. * mm,
-    .end_cap_window_thickness = 0.5 * mm,
+    .end_cap_front_thickness = 1.5 * mm,
+    .end_cap_window_thickness =
+        1.5 * mm, // Eurisys Mesures manual gives no specific value for the
+                  // front window, might be thinner, but assuming the same
+                  // thickness everywhere is the best guess we have
     .end_cap_back_side_length = 130. * mm,
     .end_cap_back_rounding_radius = 30. * mm,
     .end_cap_back_length = 220. * mm,
