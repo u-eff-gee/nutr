@@ -32,14 +32,15 @@
 #include "G4NistManager.hh"
 #include "G4PVPlacement.hh"
 #include "G4PhysicalConstants.hh"
-#include "G4Polycone.hh"
 #include "G4Sphere.hh"
+#include "G4SubtractionSolid.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4Torus.hh"
 #include "G4Tubs.hh"
 #include "G4UnionSolid.hh"
 #include "G4VisAttributes.hh"
 
 #include "HPGe_Coaxial.hh"
-#include "OptimizePolycone.hh"
 #include "PLA.hh"
 
 using std::string;
@@ -186,21 +187,6 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       properties.cold_finger_penetration_depth + mount_cup_side_length +
       properties.mount_cup_base_thickness - properties.detector_length;
 
-  const int nsteps = 500;
-
-  double zPlaneTemp[nsteps];
-  double rInnerTemp[nsteps];
-  double rOuterTemp[nsteps];
-
-  double z;
-
-  double zPlane[nsteps];
-  double rInner[nsteps];
-  double rOuter[nsteps];
-
-  OptimizePolycone *opt = new OptimizePolycone();
-  int nsteps_optimized;
-
   G4Tubs *cold_finger_shaft_solid = new G4Tubs(
       detector_name + "_cold_finger_shaft_solid", 0.,
       properties.cold_finger_radius,
@@ -225,56 +211,59 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
   new G4PVPlacement(
       0,
       G4ThreeVector(0., 0.,
-                    end_cap_side_length * 0.5 - 0.5 * cold_finger_length),
+                    0.5 * (end_cap_side_length - cold_finger_length +
+                           properties.cold_finger_radius)),
       cold_finger_logical, detector_name + "_cold_finger",
       end_cap_vacuum_logical, 0, 0, false);
 
   /************* Detector crystal *************/
 
-  for (int i = 0; i < nsteps; i++) {
-    z = (1. - (double)i / (nsteps - 1)) * properties.detector_length;
+  G4Tubs *crystal_tube_solid = new G4Tubs(
+      detector_name + "crystal_tube_solid", 0., properties.detector_radius,
+      0.5 * (properties.detector_length - properties.detector_face_radius), 0.,
+      twopi);
 
-    zPlaneTemp[i] = z;
+  G4Torus *crystal_rim_solid = new G4Torus(
+      detector_name + "crystal_rim_solid", 0., properties.detector_face_radius,
+      properties.detector_radius - properties.detector_face_radius, 0., twopi);
+  G4Tubs *crystal_front_solid =
+      new G4Tubs(detector_name + "crystal_front_solid", 0.,
+                 properties.detector_radius - properties.detector_face_radius,
+                 properties.detector_face_radius, 0., twopi);
 
-    // rInnerTemp[i] = 0. * mm;
-    if (z >= properties.detector_length - properties.hole_depth) {
-      if (z >= properties.detector_length - properties.hole_depth +
-                   properties.hole_radius) {
-        rInnerTemp[i] = properties.hole_radius;
-      } else {
-        rInnerTemp[i] =
-            properties.hole_radius *
-            sqrt(1. -
-                 pow((z - (properties.detector_length - properties.hole_depth +
-                           properties.hole_radius)) /
-                         properties.hole_radius,
-                     2));
-      }
-    } else {
-      rInnerTemp[i] = 0.;
-    }
+  G4UnionSolid *crystal_tube_with_rim_solid =
+      new G4UnionSolid(detector_name + "crystal_tube_with_rim_solid",
+                       crystal_tube_solid, crystal_rim_solid, 0,
+                       G4ThreeVector(0., 0.,
+                                     -0.5 * (properties.detector_length -
+                                             properties.detector_face_radius)));
 
-    if (z >= properties.detector_face_radius) {
-      rOuterTemp[i] = properties.detector_radius;
-    } else if (z >= 0.) {
-      rOuterTemp[i] =
-          properties.detector_face_radius *
-              sqrt(1. - pow((z - properties.detector_face_radius) /
-                                properties.detector_face_radius,
-                            2)) +
-          (properties.detector_radius - properties.detector_face_radius);
-    } else {
-      rOuterTemp[i] = 0. * mm;
-    }
-  }
+  G4UnionSolid *crystal_full_solid =
+      new G4UnionSolid(detector_name + "crystal_new_solid",
+                       crystal_tube_with_rim_solid, crystal_front_solid, 0,
+                       G4ThreeVector(0., 0.,
+                                     -0.5 * (properties.detector_length -
+                                             properties.detector_face_radius)));
 
-  nsteps_optimized =
-      opt->Optimize(zPlaneTemp, rInnerTemp, rOuterTemp, zPlane, rInner, rOuter,
-                    nsteps, detector_name + "_crystal_solid");
+  G4Tubs *crystal_hole_shaft_solid = new G4Tubs(
+      detector_name + "_crystal_hole_shaft_solid", 0., properties.hole_radius,
+      0.5 * (properties.hole_depth - properties.hole_radius), 0., twopi);
+  G4Sphere *crystal_hole_tip_solid =
+      new G4Sphere(detector_name + "_crystal_hole_tip_solid", 0.,
+                   properties.hole_radius, 0., twopi, 0., pi);
+  G4UnionSolid *crystal_hole_solid = new G4UnionSolid(
+      detector_name + "_crystal_hole_solid", crystal_hole_shaft_solid,
+      crystal_hole_tip_solid, 0,
+      G4ThreeVector(0., 0.,
+                    -0.5 * (properties.hole_depth - properties.hole_radius)));
 
-  G4Polycone *crystal_solid =
-      new G4Polycone("crystal_solid", 0. * deg, 360. * deg, nsteps_optimized,
-                     zPlane, rInner, rOuter);
+  G4SubtractionSolid *crystal_solid = new G4SubtractionSolid(
+      detector_name + "crystal_solid", crystal_full_solid, crystal_hole_solid,
+      0,
+      G4ThreeVector(0., 0.,
+                    0.5 * (properties.detector_length -
+                           properties.detector_face_radius -
+                           properties.hole_depth + properties.hole_radius)));
 
   sensitive_logical_volumes.push_back(
       new G4LogicalVolume(crystal_solid, nist->FindOrBuildMaterial("G4_Ge"),
@@ -287,7 +276,9 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                     G4ThreeVector(0., 0.,
                                   -end_cap_side_length * 0.5 +
                                       properties.end_cap_to_crystal_gap_front +
-                                      properties.mount_cup_thickness),
+                                      properties.mount_cup_thickness +
+                                      0.5 * (properties.detector_length +
+                                             properties.detector_face_radius)),
                     sensitive_logical_volumes[0], detector_name + "_crystal",
                     end_cap_vacuum_logical, 0, 0, false);
 
