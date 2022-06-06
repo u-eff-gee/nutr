@@ -265,12 +265,11 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                            properties.detector_face_radius -
                            properties.hole_depth + properties.hole_radius)));
 
-  sensitive_logical_volumes.push_back(
+  G4LogicalVolume *crystal_logical =
       new G4LogicalVolume(crystal_solid, nist->FindOrBuildMaterial("G4_Ge"),
-                          detector_name, 0, 0, 0));
+                          detector_name + "_logical", 0, 0, 0);
 
-  sensitive_logical_volumes[0]->SetVisAttributes(
-      new G4VisAttributes(G4Color::Green()));
+  crystal_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
 
   new G4PVPlacement(0,
                     G4ThreeVector(0., 0.,
@@ -279,8 +278,81 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                                       properties.mount_cup_thickness +
                                       0.5 * (properties.detector_length +
                                              properties.detector_face_radius)),
-                    sensitive_logical_volumes[0], detector_name + "_crystal",
+                    crystal_logical, detector_name + "_crystal",
                     end_cap_vacuum_logical, 0, 0, false);
+
+  /************* Detector crystal (active volume) *************/
+
+  G4Tubs *crystal_active_tube_solid = new G4Tubs(
+      detector_name + "crystal_active_tube_solid", 0.,
+      (1. - dead_layer) * properties.detector_radius,
+      0.5 * (1. - dead_layer) *
+          (properties.detector_length - properties.detector_face_radius),
+      0., twopi);
+
+  G4Torus *crystal_active_rim_solid =
+      new G4Torus(detector_name + "crystal_active_rim_solid", 0.,
+                  (1. - dead_layer) * properties.detector_face_radius,
+                  (1. - dead_layer) * (properties.detector_radius -
+                                       properties.detector_face_radius),
+                  0., twopi);
+  G4Tubs *crystal_active_front_solid = new G4Tubs(
+      detector_name + "crystal_active_front_solid", 0.,
+      (1. - dead_layer) *
+          (properties.detector_radius - properties.detector_face_radius),
+      (1. - dead_layer) * properties.detector_face_radius, 0., twopi);
+
+  G4UnionSolid *crystal_active_tube_with_rim_solid =
+      new G4UnionSolid(detector_name + "crystal_active_tube_with_rim_solid",
+                       crystal_active_tube_solid, crystal_active_rim_solid, 0,
+                       G4ThreeVector(0., 0.,
+                                     -0.5 * (1. - dead_layer) *
+                                         (properties.detector_length -
+                                          properties.detector_face_radius)));
+
+  G4UnionSolid *crystal_active_full_solid = new G4UnionSolid(
+      detector_name + "crystal_active_full_solid",
+      crystal_active_tube_with_rim_solid, crystal_active_front_solid, 0,
+      G4ThreeVector(
+          0., 0.,
+          -0.5 * (1. - dead_layer) *
+              (properties.detector_length - properties.detector_face_radius)));
+
+  G4Tubs *crystal_active_hole_shaft_solid =
+      new G4Tubs(detector_name + "_crystal_active_hole_shaft_solid", 0.,
+                 (1. + dead_layer) * properties.hole_radius,
+                 0.5 * (1. + dead_layer) *
+                     (properties.hole_depth - properties.hole_radius),
+                 0., twopi);
+  G4Sphere *crystal_active_hole_tip_solid = new G4Sphere(
+      detector_name + "_crystal_active_hole_tip_solid", 0.,
+      (1. + dead_layer) * properties.hole_radius, 0., twopi, 0., pi);
+  G4UnionSolid *crystal_active_hole_solid = new G4UnionSolid(
+      detector_name + "_crystal_active_hole_solid",
+      crystal_active_hole_shaft_solid, crystal_active_hole_tip_solid, 0,
+      G4ThreeVector(0., 0.,
+                    -0.5 * (1. + dead_layer) *
+                        (properties.hole_depth - properties.hole_radius)));
+
+  G4SubtractionSolid *crystal_active_solid = new G4SubtractionSolid(
+      detector_name + "_crystal_active_solid", crystal_active_full_solid,
+      crystal_active_hole_solid, 0,
+      G4ThreeVector(0., 0.,
+                    0.5 * ((1. - dead_layer) * properties.detector_length -
+                           (1. - dead_layer) * properties.detector_face_radius -
+                           (1. + dead_layer) * properties.hole_depth +
+                           (1. + dead_layer) * properties.hole_radius)));
+
+  sensitive_logical_volumes.push_back(new G4LogicalVolume(
+      crystal_active_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name,
+      0, 0, 0));
+
+  sensitive_logical_volumes[0]->SetVisAttributes(
+      new G4VisAttributes(G4Color::Green()));
+
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), sensitive_logical_volumes[0],
+                    detector_name + "_crystal_active", crystal_logical, 0, 0,
+                    false);
 
   if (dewar_properties.dewar_material != "") {
     /************* Connection dewar-detector *************/

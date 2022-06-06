@@ -59,9 +59,10 @@ public:
               const double _dist_from_center,
               const FilterConfiguration _filter_configuration = {{}},
               const vector<Filter> _wraps = {},
-              double _intrinsic_rotation_angle = 0.)
+              const double _intrinsic_rotation_angle = 0.,
+              const double _dead_layer = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filter_configuration,
-                 _wraps, _intrinsic_rotation_angle,
+                 _wraps, _intrinsic_rotation_angle, _dead_layer,
                  _prop.end_cap_front_side_length),
         properties(_prop), use_dewar(true){};
 

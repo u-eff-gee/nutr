@@ -84,8 +84,4 @@ struct DetectorPosition {
 class DetectorConstruction : public NDetectorConstruction {
 public:
   G4VPhysicalVolume *Construct() override final;
-
-private:
-  template <typename Detector, typename... Args>
-  void construct_detector(DetectorPosition det_pos, Args... args);
 };

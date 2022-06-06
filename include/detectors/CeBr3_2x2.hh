@@ -54,9 +54,11 @@ public:
             const double _dist_from_center,
             const FilterConfiguration _filter_configuration = {{}},
             const vector<Filter> _wraps = {},
-            double _intrinsic_rotation_angle = 0.)
+            const double _intrinsic_rotation_angle = 0.,
+            double _dead_layer = 0.)
       : Detector(_name, _theta, _phi, _dist_from_center, _filter_configuration,
-                 _wraps, _intrinsic_rotation_angle, 0.5 * 57. * mm){};
+                 _wraps, _intrinsic_rotation_angle, _dead_layer,
+                 0.5 * 57. * mm){};
 
   void Construct_Detector(G4LogicalVolume *world_logical,
                           G4ThreeVector global_coordinates) override final;

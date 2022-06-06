@@ -107,7 +107,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   // Entrance window
   G4Tubs *front_entrance_window_solid =
-      new G4Tubs(detector_name + "_front_entrance_window_sold", 0.,
+      new G4Tubs(detector_name + "_front_entrance_window_solid", 0.,
                  front_case_outer_radius - front_case_wall_thickness,
                  0.5 * front_entrance_window_thickness, 0., twopi);
   G4LogicalVolume *front_entrance_window_logical =
@@ -125,7 +125,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   // Case
   G4Tubs *front_case_wall_solid =
-      new G4Tubs(detector_name + "_front_case_wall_sold",
+      new G4Tubs(detector_name + "_front_case_wall_solid",
                  front_case_outer_radius - front_case_wall_thickness,
                  front_case_outer_radius, 0.5 * front_case_length, 0., twopi);
   G4LogicalVolume *front_case_wall_logical = new G4LogicalVolume(
@@ -140,7 +140,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
                     world_logical, 0, 0, false);
 
   G4Tubs *front_entrance_vacuum_solid =
-      new G4Tubs(detector_name + "_front_entrance_vacuum_sold", 0.,
+      new G4Tubs(detector_name + "_front_entrance_vacuum_solid", 0.,
                  crystal_radius, 0.5 * crystal_to_entrance_window, 0., twopi);
   G4LogicalVolume *front_entrance_vacuum_logical = new G4LogicalVolume(
       front_entrance_vacuum_solid, nist->FindOrBuildMaterial("G4_Galactic"),
@@ -156,7 +156,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
       world_logical, 0, 0, false);
 
   G4Tubs *front_case_vacuum_solid =
-      new G4Tubs(detector_name + "_front_case_vacuum_sold", crystal_radius,
+      new G4Tubs(detector_name + "_front_case_vacuum_solid", crystal_radius,
                  front_case_outer_radius - front_case_wall_thickness,
                  0.5 * front_case_length, 0., twopi);
   G4LogicalVolume *front_case_vacuum_logical = new G4LogicalVolume(
@@ -175,23 +175,35 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
   /*********** Crystal ***********/
 
   G4Tubs *crystal_solid =
-      new G4Tubs(detector_name + "_crystal_sold", 0., crystal_radius,
+      new G4Tubs(detector_name + "_crystal_solid", 0., crystal_radius,
                  0.5 * crystal_length, 0., twopi);
+  G4LogicalVolume *crystal_logical = new G4LogicalVolume(
+      crystal_solid, G4Material::GetMaterial(crystal_material),
+      detector_name + "_logical");
+  crystal_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
+  new G4PVPlacement(
+      rotation_matrix,
+      global_coordinates + (dist_from_center + front_entrance_window_thickness +
+                            crystal_to_entrance_window + 0.5 * crystal_length) *
+                               e_r,
+      crystal_logical, detector_name + "_crystal", world_logical, 0, 0, false);
+
+  G4Tubs *crystal_active_solid =
+      new G4Tubs(detector_name + "_crystal_active_solid", 0.,
+                 (1. - dead_layer) * crystal_radius,
+                 0.5 * (1. - dead_layer) * crystal_length, 0., twopi);
   sensitive_logical_volumes.push_back(new G4LogicalVolume(
-      crystal_solid, G4Material::GetMaterial(crystal_material), detector_name));
+      crystal_active_solid, G4Material::GetMaterial(crystal_material),
+      detector_name));
   sensitive_logical_volumes[0]->SetVisAttributes(
       new G4VisAttributes(G4Color::Green()));
-  new G4PVPlacement(rotation_matrix,
-                    global_coordinates +
-                        (dist_from_center + front_entrance_window_thickness +
-                         crystal_to_entrance_window + 0.5 * crystal_length) *
-                            e_r,
-                    sensitive_logical_volumes[0], detector_name + "_crystal",
-                    world_logical, 0, 0, false);
+  new G4PVPlacement(0, G4ThreeVector(), sensitive_logical_volumes[0],
+                    detector_name + "_crystal_active", crystal_logical, 0, 0,
+                    false);
 
   /*********** PMT ***********/
   // PMT
-  G4Tubs *pmt_solid = new G4Tubs(detector_name + "_pmt_sold",
+  G4Tubs *pmt_solid = new G4Tubs(detector_name + "_pmt_solid",
                                  pmt_outer_radius - pmt_wall_thickness,
                                  pmt_outer_radius, 0.5 * pmt_length, 0., twopi);
   G4LogicalVolume *pmt_logical =
@@ -206,7 +218,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
               e_r,
       pmt_logical, detector_name + "_pmt", world_logical, 0, 0, false);
 
-  G4Tubs *pmt_vacuum_solid = new G4Tubs(detector_name + "_pmt_vacuum_sold", 0.,
+  G4Tubs *pmt_vacuum_solid = new G4Tubs(detector_name + "_pmt_vacuum_solid", 0.,
                                         pmt_outer_radius - pmt_wall_thickness,
                                         0.5 * pmt_length, 0., twopi);
   G4LogicalVolume *pmt_vacuum_logical = new G4LogicalVolume(
@@ -224,7 +236,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   // PMT case
   G4Tubs *pmt_case_solid =
-      new G4Tubs(detector_name + "_pmt_case_sold",
+      new G4Tubs(detector_name + "_pmt_case_solid",
                  pmt_case_outer_radius - pmt_case_wall_thickness,
                  pmt_case_outer_radius, 0.5 * pmt_case_length, 0., twopi);
   G4LogicalVolume *pmt_case_logical = new G4LogicalVolume(
@@ -240,7 +252,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
       false);
 
   G4Tubs *pmt_case_vacuum_solid =
-      new G4Tubs(detector_name + "_pmt_case_vacuum_sold", pmt_outer_radius,
+      new G4Tubs(detector_name + "_pmt_case_vacuum_solid", pmt_outer_radius,
                  pmt_case_outer_radius - pmt_wall_thickness,
                  0.5 * pmt_case_length, 0., twopi);
   G4LogicalVolume *pmt_case_vacuum_logical = new G4LogicalVolume(
@@ -258,7 +270,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
   /*********** PMT ***********/
   // Connector base
   G4Tubs *connector_base_solid = new G4Tubs(
-      detector_name + "_connector_base_sold",
+      detector_name + "_connector_base_solid",
       connector_base_outer_radius - connector_base_wall_thickness,
       connector_base_outer_radius, 0.5 * connector_base_length, 0., twopi);
   G4LogicalVolume *connector_base_logical = new G4LogicalVolume(
@@ -275,7 +287,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
                     world_logical, 0, 0, false);
 
   G4Tubs *connector_base_inside_solid = new G4Tubs(
-      detector_name + "_connector_base_inside_sold", 0.,
+      detector_name + "_connector_base_inside_solid", 0.,
       connector_base_outer_radius - connector_base_wall_thickness,
       0.5 * (connector_base_length - connector_base_wall_thickness), 0., twopi);
   G4LogicalVolume *connector_base_inside_logical = new G4LogicalVolume(
@@ -297,7 +309,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   // Connector lid
   G4Tubs *connector_lid_solid =
-      new G4Tubs(detector_name + "_connector_lid_sold", 0.,
+      new G4Tubs(detector_name + "_connector_lid_solid", 0.,
                  connector_base_outer_radius - connector_base_wall_thickness,
                  0.5 * connector_base_wall_thickness, 0., twopi);
   G4LogicalVolume *connector_lid_logical = new G4LogicalVolume(
@@ -315,7 +327,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   // HV connector
   G4Tubs *hv_connector_solid =
-      new G4Tubs(detector_name + "_hv_connector_sold", 0., hv_connector_radius,
+      new G4Tubs(detector_name + "_hv_connector_solid", 0., hv_connector_radius,
                  0.5 * hv_connector_length, 0., twopi);
   G4LogicalVolume *hv_connector_logical = new G4LogicalVolume(
       hv_connector_solid, nist->FindOrBuildMaterial(connector_material),
@@ -333,7 +345,7 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   // Signal connector
   G4Tubs *signal_connector_solid = new G4Tubs(
-      detector_name + "_signal_connector_sold", 0., signal_connector_radius,
+      detector_name + "_signal_connector_solid", 0., signal_connector_radius,
       0.5 * signal_connector_length, 0., twopi);
   G4LogicalVolume *signal_connector_logical = new G4LogicalVolume(
       signal_connector_solid, nist->FindOrBuildMaterial(connector_material),
