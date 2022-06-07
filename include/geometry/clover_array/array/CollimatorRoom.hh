@@ -37,7 +37,7 @@ using std::string;
 class CollimatorRoom {
 public:
   CollimatorRoom(G4LogicalVolume *world_log,
-                 const double col_rad = 0.75 * 25.4 * mm,
+                 const double col_rad = 0.5 * 0.75 * 25.4 * mm,
                  const double col_len = 300. * mm,
                  const string col_mat = "G4_Pb")
       : world_logical(world_log), collimator_radius(col_rad),

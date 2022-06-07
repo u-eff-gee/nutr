@@ -35,9 +35,14 @@ void CollimatorRoom::Construct(const G4ThreeVector global_coordinates) {
   const double downstream_wall_to_target = 72. * inch; // Estimated
   const double downstream_wall_to_upstream_wall = 320. * mm;
   const double collimator_to_upstream_wall = 200. * mm;
+  const double precollimator_to_collimator = 500. * mm;
 
   const double gap_size = 1. * mm; // Gap between the inside of the holes in the
                                    // lead walls and the beam pipe, estimated
+
+  const double precollimator_length = 9. * inch;
+  const double precollimator_outer_radius = 2. * inch;
+  const double precollimator_inner_radius = 0.75 * inch;
 
   const double collimator_width = 60. * mm;
   const double collimator_height = 60. * mm;
@@ -46,11 +51,38 @@ void CollimatorRoom::Construct(const G4ThreeVector global_coordinates) {
   const double upstream_wall_width = 24. * inch;
   const double upstream_wall_height = 16. * inch;
 
+  const double collimator_room_wall_thickness = 4. * inch;
+  const double collimator_room_wall_width =
+      2000. * mm; // Estimated, width and height should be large enough to take
+                  // into account the effect of the wall on the HIγS beam.
+  const double collimator_room_wall_height = 2000. * mm;     // Estimated
+  const double collimator_room_wall_hole_radius = 2. * inch; // Estimated
+
   const double downstream_wall_thickness = 16. * inch;
   const double downstream_wall_width = 24. * inch;
   const double downstream_wall_height = 16. * inch;
 
   G4NistManager *nist = G4NistManager::Instance();
+
+  // Precollimator
+
+  G4Tubs *precollimator_solid = new G4Tubs(
+      "precollimator_solid", precollimator_inner_radius,
+      precollimator_outer_radius, 0.5 * precollimator_length, 0., twopi);
+  G4LogicalVolume *precollimator_logical = new G4LogicalVolume(
+      precollimator_solid, nist->FindOrBuildMaterial("G4_Cu"),
+      "precollimator_logical");
+  precollimator_logical->SetVisAttributes(G4Color::Red());
+  new G4PVPlacement(
+      0,
+      global_coordinates +
+          G4ThreeVector(
+              0., 0.,
+              -downstream_wall_to_target - downstream_wall_thickness -
+                  downstream_wall_to_upstream_wall - upstream_wall_thickness -
+                  collimator_to_upstream_wall - collimator_length -
+                  precollimator_to_collimator - 0.5 * precollimator_length),
+      precollimator_logical, "precollimator", world_logical, false, 0, false);
 
   // Collimator
 
@@ -100,6 +132,29 @@ void CollimatorRoom::Construct(const G4ThreeVector global_coordinates) {
                             0.5 * upstream_wall_thickness),
       collimator_room_upstream_wall_logical, "collimator_room_upstream_wall",
       world_logical, false, 0, false);
+
+  // Wall between collimator room and UTR
+
+  G4Box *collimator_room_wall_without_hole_solid = new G4Box(
+      "collimator_room_wall_without_hole_solid",
+      0.5 * collimator_room_wall_width, 0.5 * collimator_room_wall_height,
+      0.5 * collimator_room_wall_thickness);
+  G4SubtractionSolid *collimator_room_wall_solid = new G4SubtractionSolid(
+      "collimator_room_wall_solid", collimator_room_wall_without_hole_solid,
+      new G4Tubs("collimator_room_wall_hole", 0.,
+                 collimator_room_wall_hole_radius,
+                 collimator_room_wall_thickness, 0., twopi));
+  G4LogicalVolume *collimator_room_wall_logical = new G4LogicalVolume(
+      collimator_room_wall_solid, nist->FindOrBuildMaterial("G4_CONCRETE"),
+      "collimator_room_wall_logical");
+  collimator_room_wall_logical->SetVisAttributes(G4Color::White());
+  new G4PVPlacement(0,
+                    global_coordinates +
+                        G4ThreeVector(0., 0.,
+                                      -downstream_wall_to_target +
+                                          0.5 * collimator_room_wall_thickness),
+                    collimator_room_wall_logical, "collimator_room_wall",
+                    world_logical, false, 0, false);
 
   // Downstream wall
 

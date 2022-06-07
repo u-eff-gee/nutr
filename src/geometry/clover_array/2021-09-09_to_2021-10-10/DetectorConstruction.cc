@@ -133,7 +133,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
 
   G4NistManager *nist_manager = G4NistManager::Instance();
 
-  world_solid = new G4Box("world_solid", 2. * m, 2. * m, 3.5 * m);
+  world_solid = new G4Box("world_solid", 2. * m, 2. * m, 4.0 * m);
   world_logical = new G4LogicalVolume(
       world_solid, nist_manager->FindOrBuildMaterial("G4_AIR"),
       "world_logical");
