@@ -60,7 +60,7 @@ public:
               const FilterConfiguration _filter_configuration = {{}},
               const vector<Filter> _wraps = {},
               const double _intrinsic_rotation_angle = 0.,
-              const double _dead_layer = 0.)
+              const vector<double> _dead_layer = {0., 0., 0., 0.})
       : Detector(_name, _theta, _phi, _dist_from_center, _filter_configuration,
                  _wraps, _intrinsic_rotation_angle, _dead_layer,
                  _prop.end_cap_front_side_length),
@@ -80,6 +80,7 @@ private:
                                const double length,
                                const double rounding_radius,
                                const int n_points_per_corner);
+  G4VSolid *detector_crystal(const string suffix, const double _dead_layer);
   const HPGe_Clover_Properties properties;
   bool use_dewar;
 };

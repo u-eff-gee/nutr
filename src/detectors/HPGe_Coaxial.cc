@@ -285,28 +285,28 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
 
   G4Tubs *crystal_active_tube_solid = new G4Tubs(
       detector_name + "crystal_active_tube_solid", 0.,
-      (1. - dead_layer) * properties.detector_radius,
-      0.5 * (1. - dead_layer) *
+      (1. - dead_layer[0]) * properties.detector_radius,
+      0.5 * (1. - dead_layer[0]) *
           (properties.detector_length - properties.detector_face_radius),
       0., twopi);
 
   G4Torus *crystal_active_rim_solid =
       new G4Torus(detector_name + "crystal_active_rim_solid", 0.,
-                  (1. - dead_layer) * properties.detector_face_radius,
-                  (1. - dead_layer) * (properties.detector_radius -
-                                       properties.detector_face_radius),
+                  (1. - dead_layer[0]) * properties.detector_face_radius,
+                  (1. - dead_layer[0]) * (properties.detector_radius -
+                                          properties.detector_face_radius),
                   0., twopi);
   G4Tubs *crystal_active_front_solid = new G4Tubs(
       detector_name + "crystal_active_front_solid", 0.,
-      (1. - dead_layer) *
+      (1. - dead_layer[0]) *
           (properties.detector_radius - properties.detector_face_radius),
-      (1. - dead_layer) * properties.detector_face_radius, 0., twopi);
+      (1. - dead_layer[0]) * properties.detector_face_radius, 0., twopi);
 
   G4UnionSolid *crystal_active_tube_with_rim_solid =
       new G4UnionSolid(detector_name + "crystal_active_tube_with_rim_solid",
                        crystal_active_tube_solid, crystal_active_rim_solid, 0,
                        G4ThreeVector(0., 0.,
-                                     -0.5 * (1. - dead_layer) *
+                                     -0.5 * (1. - dead_layer[0]) *
                                          (properties.detector_length -
                                           properties.detector_face_radius)));
 
@@ -315,33 +315,34 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       crystal_active_tube_with_rim_solid, crystal_active_front_solid, 0,
       G4ThreeVector(
           0., 0.,
-          -0.5 * (1. - dead_layer) *
+          -0.5 * (1. - dead_layer[0]) *
               (properties.detector_length - properties.detector_face_radius)));
 
   G4Tubs *crystal_active_hole_shaft_solid =
       new G4Tubs(detector_name + "_crystal_active_hole_shaft_solid", 0.,
-                 (1. + dead_layer) * properties.hole_radius,
-                 0.5 * (1. + dead_layer) *
+                 (1. + dead_layer[0]) * properties.hole_radius,
+                 0.5 * (1. + dead_layer[0]) *
                      (properties.hole_depth - properties.hole_radius),
                  0., twopi);
   G4Sphere *crystal_active_hole_tip_solid = new G4Sphere(
       detector_name + "_crystal_active_hole_tip_solid", 0.,
-      (1. + dead_layer) * properties.hole_radius, 0., twopi, 0., pi);
+      (1. + dead_layer[0]) * properties.hole_radius, 0., twopi, 0., pi);
   G4UnionSolid *crystal_active_hole_solid = new G4UnionSolid(
       detector_name + "_crystal_active_hole_solid",
       crystal_active_hole_shaft_solid, crystal_active_hole_tip_solid, 0,
       G4ThreeVector(0., 0.,
-                    -0.5 * (1. + dead_layer) *
+                    -0.5 * (1. + dead_layer[0]) *
                         (properties.hole_depth - properties.hole_radius)));
 
   G4SubtractionSolid *crystal_active_solid = new G4SubtractionSolid(
       detector_name + "_crystal_active_solid", crystal_active_full_solid,
       crystal_active_hole_solid, 0,
-      G4ThreeVector(0., 0.,
-                    0.5 * ((1. - dead_layer) * properties.detector_length -
-                           (1. - dead_layer) * properties.detector_face_radius -
-                           (1. + dead_layer) * properties.hole_depth +
-                           (1. + dead_layer) * properties.hole_radius)));
+      G4ThreeVector(
+          0., 0.,
+          0.5 * ((1. - dead_layer[0]) * properties.detector_length -
+                 (1. - dead_layer[0]) * properties.detector_face_radius -
+                 (1. + dead_layer[0]) * properties.hole_depth +
+                 (1. + dead_layer[0]) * properties.hole_radius)));
 
   sensitive_logical_volumes.push_back(new G4LogicalVolume(
       crystal_active_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name,

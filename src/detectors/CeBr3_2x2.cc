@@ -190,8 +190,8 @@ void CeBr3_2x2::Construct_Detector(G4LogicalVolume *world_logical,
 
   G4Tubs *crystal_active_solid =
       new G4Tubs(detector_name + "_crystal_active_solid", 0.,
-                 (1. - dead_layer) * crystal_radius,
-                 0.5 * (1. - dead_layer) * crystal_length, 0., twopi);
+                 (1. - dead_layer[0]) * crystal_radius,
+                 0.5 * (1. - dead_layer[0]) * crystal_length, 0., twopi);
   sensitive_logical_volumes.push_back(new G4LogicalVolume(
       crystal_active_solid, G4Material::GetMaterial(crystal_material),
       detector_name));

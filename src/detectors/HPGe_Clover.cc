@@ -22,6 +22,12 @@
  * Eurysis manual for clover detectors.
  */
 
+#include <string>
+
+using std::to_string;
+
+#include <utility>
+
 #include "G4Box.hh"
 #include "G4Color.hh"
 #include "G4NistManager.hh"
@@ -117,173 +123,56 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
 
   /******** Crystals ********/
 
-  G4Tubs *crystal_full_solid = new G4Tubs(
-      detector_name + "_crystal_full_solid", 0., properties.crystal_radius,
-      properties.crystal_length * 0.5, 0., twopi);
-  G4Tubs *anode_solid =
-      new G4Tubs(detector_name + "_anode_solid", 0., properties.anode_radius,
-                 properties.anode_length * 0.5, 0., twopi);
-  G4SubtractionSolid *crystal_original =
-      new G4SubtractionSolid(detector_name + "_crystal_original_solid",
-                             crystal_full_solid, anode_solid, 0,
-                             G4ThreeVector(0., 0.,
-                                           0.5 * properties.crystal_length -
-                                               0.5 * properties.anode_length));
-  G4Box *subtraction_solid =
-      new G4Box(detector_name + "_subtraction_solid", properties.crystal_radius,
-                properties.crystal_radius, properties.crystal_length);
-  G4SubtractionSolid *crystal_step1_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_step1_solid", crystal_original,
-      subtraction_solid, 0,
-      G4ThreeVector(properties.crystal_radius + 23. * mm, 0., 0.));
-  G4SubtractionSolid *crystal_step2_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_step2_solid", crystal_step1_solid,
-      subtraction_solid, 0,
-      G4ThreeVector(-properties.crystal_radius - 22. * mm, 0., 0.));
-  G4SubtractionSolid *crystal_step3_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_step3_solid", crystal_step2_solid,
-      subtraction_solid, 0,
-      G4ThreeVector(0., -properties.crystal_radius - 22. * mm, 0.));
-  G4SubtractionSolid *crystal_step4_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_step4_solid", crystal_step3_solid,
-      subtraction_solid, 0,
-      G4ThreeVector(0., properties.crystal_radius + 23. * mm, 0.));
+  G4VSolid *crystal_full_solid = detector_crystal("", 0.);
+  vector<G4LogicalVolume *> crystal_full_logical(4);
+  const vector<G4Color> colors = {G4Color::Blue(), G4Color::Red(),
+                                  G4Color::Brown(), G4Color::Green()};
+  const double crystal_distance_from_center_xy =
+      22. * mm + 0.5 * properties.crystal_gap;
+  const vector<std::pair<double, double>> crystal_xy = {
+      {crystal_distance_from_center_xy, crystal_distance_from_center_xy},
+      {-crystal_distance_from_center_xy, crystal_distance_from_center_xy},
+      {crystal_distance_from_center_xy, -crystal_distance_from_center_xy},
+      {-crystal_distance_from_center_xy, -crystal_distance_from_center_xy}};
+  const double crystal_z = -0.5 * properties.vacuum_length +
+                           0.5 * properties.crystal_length +
+                           properties.end_cap_to_crystal_gap_front;
+  const vector<double> crystal_rotation = {0. * deg, -90. * deg, -270. * deg,
+                                           -180. * deg};
+  G4RotationMatrix *crystal_rotation_matrix;
 
-  G4LogicalVolume *crystal_1_logical = new G4LogicalVolume(
-      crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_1_logical");
-  crystal_1_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));
-  new G4PVPlacement(0,
-                    G4ThreeVector(22. * mm + 0.5 * properties.crystal_gap,
-                                  22. * mm + 0.5 * properties.crystal_gap,
-                                  -0.5 * properties.vacuum_length +
-                                      0.5 * properties.crystal_length +
-                                      properties.end_cap_to_crystal_gap_front),
-                    crystal_1_logical, detector_name + "_crystal_1",
-                    vacuum_logical, 0, 0, false);
+  for (size_t n_crystal = 0; n_crystal < 4; ++n_crystal) {
+    crystal_full_logical[n_crystal] = new G4LogicalVolume(
+        crystal_full_solid, nist->FindOrBuildMaterial("G4_Ge"),
+        detector_name + "_1_logical");
+    crystal_full_logical[n_crystal]->SetVisAttributes(
+        new G4VisAttributes(colors[n_crystal]));
+    crystal_rotation_matrix = new G4RotationMatrix();
+    crystal_rotation_matrix->rotateZ(crystal_rotation[n_crystal]);
+    new G4PVPlacement(crystal_rotation_matrix,
+                      G4ThreeVector(crystal_xy[n_crystal].first,
+                                    crystal_xy[n_crystal].second, crystal_z),
+                      crystal_full_logical[n_crystal],
+                      detector_name + "_crystal_" + to_string(n_crystal + 1),
+                      vacuum_logical, 0, 0, false);
+  }
 
-  G4RotationMatrix *rotate2 = new G4RotationMatrix();
-  rotate2->rotateZ(-90. * deg);
-  G4LogicalVolume *crystal_2_logical = new G4LogicalVolume(
-      crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_2_logical");
-  crystal_2_logical->SetVisAttributes(new G4VisAttributes(G4Color::Red()));
-  new G4PVPlacement(rotate2,
-                    G4ThreeVector(-22. * mm - 0.5 * properties.crystal_gap,
-                                  22. * mm + 0.5 * properties.crystal_gap,
-                                  -0.5 * properties.vacuum_length +
-                                      0.5 * properties.crystal_length +
-                                      properties.end_cap_to_crystal_gap_front),
-                    crystal_2_logical, detector_name + "_crystal_2",
-                    vacuum_logical, 0, 0, false);
+  //   /******** Crystals (active volume) ********/
 
-  G4RotationMatrix *rotate3 = new G4RotationMatrix();
-  rotate3->rotateZ(-270. * deg);
-  G4LogicalVolume *crystal_3_logical = new G4LogicalVolume(
-      crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_3_logical");
-  crystal_3_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
-  new G4PVPlacement(rotate3,
-                    G4ThreeVector(22. * mm + 0.5 * properties.crystal_gap,
-                                  -22. * mm - 0.5 * properties.crystal_gap,
-                                  -0.5 * properties.vacuum_length +
-                                      0.5 * properties.crystal_length +
-                                      properties.end_cap_to_crystal_gap_front),
-                    crystal_3_logical, detector_name + "_crystal_3",
-                    vacuum_logical, 0, 0, false);
-
-  G4RotationMatrix *rotate4 = new G4RotationMatrix();
-  rotate4->rotateZ(-180. * deg);
-  G4LogicalVolume *crystal_4_logical = new G4LogicalVolume(
-      crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_4_logical");
-  crystal_4_logical->SetVisAttributes(new G4VisAttributes(G4Color::Green()));
-  new G4PVPlacement(rotate4,
-                    G4ThreeVector(-22. * mm - 0.5 * properties.crystal_gap,
-                                  -22. * mm - 0.5 * properties.crystal_gap,
-                                  -0.5 * properties.vacuum_length +
-                                      0.5 * properties.crystal_length +
-                                      properties.end_cap_to_crystal_gap_front),
-                    crystal_4_logical, detector_name + "_crystal_4",
-                    vacuum_logical, 0, 0, false);
-
-  /******** Crystals (active volume) ********/
-
-  G4Tubs *crystal_active_full_solid = new G4Tubs(
-      detector_name + "_crystal_active_full_solid", 0.,
-      (1. - dead_layer) * properties.crystal_radius,
-      (1. - dead_layer) * properties.crystal_length * 0.5, 0., twopi);
-  G4Tubs *anode_active_solid =
-      new G4Tubs(detector_name + "_anode_solid", 0.,
-                 (1. + dead_layer) * properties.anode_radius,
-                 (1. + dead_layer) * properties.anode_length * 0.5, 0., twopi);
-  G4SubtractionSolid *crystal_active_original = new G4SubtractionSolid(
-      detector_name + "_crystal_active_original", crystal_active_full_solid,
-      anode_active_solid, 0,
-      G4ThreeVector(0., 0.,
-                    0.5 * (1. - dead_layer) * properties.crystal_length -
-                        0.5 * (1. + dead_layer) * properties.anode_length));
-  G4Box *subtraction_active_solid =
-      new G4Box(detector_name + "_subtraction_active_solid",
-                (1. - dead_layer) * properties.crystal_radius,
-                (1. - dead_layer) * properties.crystal_radius,
-                (1. - dead_layer) * properties.crystal_length);
-  G4SubtractionSolid *crystal_active_step1_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_active_step1_solid", crystal_active_original,
-      subtraction_active_solid, 0,
-      G4ThreeVector((1. - dead_layer) * (properties.crystal_radius + 23. * mm),
-                    0., 0.));
-  G4SubtractionSolid *crystal_active_step2_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_active_step2_solid", crystal_active_step1_solid,
-      subtraction_active_solid, 0,
-      G4ThreeVector((1. - dead_layer) * (-properties.crystal_radius - 22. * mm),
-                    0., 0.));
-  G4SubtractionSolid *crystal_active_step3_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_active_step3_solid", crystal_active_step2_solid,
-      subtraction_active_solid, 0,
-      G4ThreeVector(
-          0., (1. - dead_layer) * (-properties.crystal_radius - 22. * mm), 0.));
-  G4SubtractionSolid *crystal_active_step4_solid = new G4SubtractionSolid(
-      detector_name + "_crystal_active_step4_solid", crystal_active_step3_solid,
-      subtraction_active_solid, 0,
-      G4ThreeVector(
-          0., (1. - dead_layer) * (properties.crystal_radius + 23. * mm), 0.));
-
-  sensitive_logical_volumes.push_back(new G4LogicalVolume(
-      crystal_active_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_1"));
-  sensitive_logical_volumes[0]->SetVisAttributes(
-      new G4VisAttributes(G4Color::Blue()));
-  new G4PVPlacement(0, G4ThreeVector(), sensitive_logical_volumes[0],
-                    detector_name + "_crystal_1_active", crystal_1_logical, 0,
-                    0, false);
-
-  sensitive_logical_volumes.push_back(new G4LogicalVolume(
-      crystal_active_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_2"));
-  sensitive_logical_volumes[1]->SetVisAttributes(
-      new G4VisAttributes(G4Color::Red()));
-  new G4PVPlacement(rotate2, G4ThreeVector(), sensitive_logical_volumes[1],
-                    detector_name + "_crystal_2_active", crystal_2_logical, 0,
-                    0, false);
-
-  sensitive_logical_volumes.push_back(new G4LogicalVolume(
-      crystal_active_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_3"));
-  sensitive_logical_volumes[2]->SetVisAttributes(
-      new G4VisAttributes(G4Color::Brown()));
-  new G4PVPlacement(rotate3, G4ThreeVector(), sensitive_logical_volumes[2],
-                    detector_name + "_crystal_3_active", crystal_3_logical, 0,
-                    0, false);
-
-  sensitive_logical_volumes.push_back(new G4LogicalVolume(
-      crystal_active_step4_solid, nist->FindOrBuildMaterial("G4_Ge"),
-      detector_name + "_4"));
-  sensitive_logical_volumes[3]->SetVisAttributes(
-      new G4VisAttributes(G4Color::Green()));
-  new G4PVPlacement(rotate4, G4ThreeVector(), sensitive_logical_volumes[3],
-                    detector_name + "_crystal_4_active", crystal_4_logical, 0,
-                    0, false);
+  vector<G4VSolid *> crystal_solid(4);
+  for (size_t n_crystal = 0; n_crystal < 4; ++n_crystal) {
+    crystal_solid[n_crystal] =
+        detector_crystal(to_string(n_crystal + 1), dead_layer[n_crystal]);
+    sensitive_logical_volumes.push_back(new G4LogicalVolume(
+        crystal_solid[n_crystal], nist->FindOrBuildMaterial("G4_Ge"),
+        detector_name + "_" + to_string(n_crystal + 1)));
+    sensitive_logical_volumes[n_crystal]->SetVisAttributes(
+        new G4VisAttributes(colors[n_crystal]));
+    new G4PVPlacement(0, G4ThreeVector(), sensitive_logical_volumes[n_crystal],
+                      detector_name + "_crystal_" + to_string(n_crystal + 1) +
+                          "_active",
+                      crystal_full_logical[n_crystal], 0, 0, false);
+  }
 
   /******** Back end cap *********/
 
@@ -691,6 +580,51 @@ G4VSolid *HPGe_Clover::rounded_box(const string name, const double side_length,
   }
 
   return new G4ExtrudedSolid(name, base, length * 0.5, 0., 1., 0., 1.);
+}
+
+G4VSolid *HPGe_Clover::detector_crystal(const string suffix,
+                                        const double _dead_layer) {
+  G4Tubs *crystal_full_solid = new G4Tubs(
+      detector_name + "_crystal_full_solid_" + suffix, 0.,
+      (1. - _dead_layer) * properties.crystal_radius,
+      (1. - _dead_layer) * properties.crystal_length * 0.5, 0., twopi);
+  G4Tubs *anode_solid =
+      new G4Tubs(detector_name + "_anode_solid_" + suffix, 0.,
+                 (1. + _dead_layer) * properties.anode_radius,
+                 (1. + _dead_layer) * properties.anode_length * 0.5, 0., twopi);
+  G4SubtractionSolid *crystal_original = new G4SubtractionSolid(
+      detector_name + "_crystal_original_" + suffix, crystal_full_solid,
+      anode_solid, 0,
+      G4ThreeVector(0., 0.,
+                    0.5 * (1. - _dead_layer) * properties.crystal_length -
+                        0.5 * (1. + _dead_layer) * properties.anode_length));
+  G4Box *subtraction_solid =
+      new G4Box(detector_name + "_subtraction_solid_" + suffix,
+                (1. - _dead_layer) * properties.crystal_radius,
+                (1. - _dead_layer) * properties.crystal_radius,
+                (1. - _dead_layer) * properties.crystal_length);
+  G4SubtractionSolid *crystal_step1_solid = new G4SubtractionSolid(
+      detector_name + "_crystal_step1_solid_" + suffix, crystal_original,
+      subtraction_solid, 0,
+      G4ThreeVector((1. - _dead_layer) * (properties.crystal_radius + 23. * mm),
+                    0., 0.));
+  G4SubtractionSolid *crystal_step2_solid = new G4SubtractionSolid(
+      detector_name + "_crystal_step2_solid_" + suffix, crystal_step1_solid,
+      subtraction_solid, 0,
+      G4ThreeVector((1. - _dead_layer) *
+                        (-properties.crystal_radius - 22. * mm),
+                    0., 0.));
+  G4SubtractionSolid *crystal_step3_solid = new G4SubtractionSolid(
+      detector_name + "_crystal_step3_solid_" + suffix, crystal_step2_solid,
+      subtraction_solid, 0,
+      G4ThreeVector(
+          0., (1. - _dead_layer) * (-properties.crystal_radius - 22. * mm),
+          0.));
+  return new G4SubtractionSolid(
+      detector_name + "_crystal_step4_solid_" + suffix, crystal_step3_solid,
+      subtraction_solid, 0,
+      G4ThreeVector(
+          0., (1. - _dead_layer) * (properties.crystal_radius + 23. * mm), 0.));
 }
 
 G4VSolid *HPGe_Clover::Filter_Shape(const string name,

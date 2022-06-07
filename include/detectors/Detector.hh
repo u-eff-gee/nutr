@@ -133,7 +133,7 @@ public:
            const FilterConfiguration _filter_configuration = {{}},
            const vector<Wrap> _wraps = {},
            const double _intrinsic_rotation_angle = 0.,
-           const double dead_layer = 0.,
+           const vector<double> dead_layer = {},
            const double _default_filter_radius =
                std::numeric_limits<double>::quiet_NaN());
 
@@ -174,11 +174,12 @@ protected:
 
   const string detector_name; /**< Name of the detector. This name will be used
                                  as a prefix for all parts of the geometry. */
-  const double dead_layer, default_filter_radius, theta, phi, dist_from_center;
+  const double default_filter_radius, theta, phi, dist_from_center;
   const FilterConfiguration
       filter_configuration;   /**< Filters placed in front of the detector. */
   const vector<Filter> wraps; /**< Filters wrapped around the detector face */
   const double intrinsic_rotation_angle;
+  const vector<double> dead_layer;
 
   /**
    * \brief Return radial unit vector in spherical coordinates
