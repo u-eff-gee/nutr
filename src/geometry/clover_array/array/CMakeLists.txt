@@ -34,6 +34,12 @@ target_link_libraries(comptonMonitor_2021-04-19_to_2021-04-30 comptonMonitorTarg
 add_library(comptonMonitor_2021-09-09_to_2021-10-10 EXCLUDE_FROM_ALL ComptonMonitor_2021-09-09_to_2021-10-10.cc)
 target_link_libraries(comptonMonitor_2021-09-09_to_2021-10-10 comptonMonitorTarget)
 
-add_library(leadShieldingUTR EXCLUDE_FROM_ALL LeadShieldingUTR.cc)
+add_library(leadShieldingUTR_2021-02-16_to_2021-05-06 EXCLUDE_FROM_ALL LeadShieldingUTR_2021-02-16_to_2021-05-06.cc)
+
+add_library(leadShieldingUTR_2021-05-07_to_2021-05-31 EXCLUDE_FROM_ALL LeadShieldingUTR_2021-05-07_to_2021-05-31.cc)
+
+add_library(leadShieldingUTR_2021-08-23_to_2021-09-09 EXCLUDE_FROM_ALL LeadShieldingUTR_2021-08-23_to_2021-09-09.cc)
+
+add_library(leadShieldingUTR_2021-09-10_to_2021-10-10 EXCLUDE_FROM_ALL LeadShieldingUTR_2021-09-10_to_2021-10-10.cc)
 
 add_library(mechanical EXCLUDE_FROM_ALL Mechanical.cc)

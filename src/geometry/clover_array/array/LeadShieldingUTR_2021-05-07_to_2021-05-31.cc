@@ -27,7 +27,7 @@
 #include "G4VisAttributes.hh"
 
 #include "BeamPipe.hh"
-#include "LeadShieldingUTR.hh"
+#include "LeadShieldingUTR_2021-05-07_to_2021-05-31.hh"
 
 void LeadShieldingUTR::Construct(const G4ThreeVector global_coordinates) {
   const double inch = 25.4 * mm;
@@ -44,9 +44,6 @@ void LeadShieldingUTR::Construct(const G4ThreeVector global_coordinates) {
   const double upstream_wall_thickness = 8. * inch;
   const double upstream_wall_width = 28. * inch;
   const double upstream_wall_height = 24. * inch;
-
-  const double wrap_thickness = 3. * mm;
-  const double wrap_length = downstream_wall_to_target - 7. * inch;
 
   G4NistManager *nist = G4NistManager::Instance();
 
@@ -94,19 +91,4 @@ void LeadShieldingUTR::Construct(const G4ThreeVector global_coordinates) {
                                           0.5 * downstream_wall_thickness),
                     downstream_wall_logical, "downstream_wall", world_logical,
                     false, 0, false);
-
-  // Wrapping
-
-  G4Tubs *wrap_solid =
-      new G4Tubs("wrap_solid", BeamPipe::beam_pipe_outer_radius,
-                 BeamPipe::beam_pipe_outer_radius + wrap_thickness,
-                 0.5 * wrap_length, 0., twopi);
-  G4LogicalVolume *wrap_logical = new G4LogicalVolume(
-      wrap_solid, nist->FindOrBuildMaterial("G4_Pb"), "wrap_logical");
-  wrap_logical->SetVisAttributes(G4Color::Green());
-  new G4PVPlacement(
-      0,
-      global_coordinates +
-          G4ThreeVector(0., 0., -downstream_wall_to_target + 0.5 * wrap_length),
-      wrap_logical, "wrap", world_logical, false, 0, false);
 }

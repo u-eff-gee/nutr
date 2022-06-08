@@ -22,10 +22,12 @@
 #include "G4LogicalVolume.hh"
 
 /**
- * \brief Lead shielding in the UTR in the spring 2021 experiments.
+ * \brief Lead shielding in the UTR during the last experiments of the
+ * fall-2021 campaign.
  *
- * The shielding consists of two brick walls and some lead sheets wrapped around
- * the beam pipe, which are implemented in a simplistic way here.
+ * As opposed to the first experiment, an additional lead-brick wall was built
+ * inside the clover-array mechanical structure, as close to the detectors as
+ * possible.
  */
 class LeadShieldingUTR {
 public:

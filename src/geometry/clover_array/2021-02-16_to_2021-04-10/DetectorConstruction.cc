@@ -38,7 +38,7 @@
 #include "HPGe_Coaxial.hh"
 #include "HPGe_Collection.hh"
 #include "LaBr3Ce_3x3.hh"
-#include "LeadShieldingUTR.hh"
+#include "LeadShieldingUTR_2021-02-16_to_2021-05-06.hh"
 #include "Mechanical.hh"
 #include "ZeroDegree.hh"
 
