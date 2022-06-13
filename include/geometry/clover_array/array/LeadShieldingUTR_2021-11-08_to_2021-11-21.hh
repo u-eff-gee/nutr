@@ -22,12 +22,12 @@
 #include "G4LogicalVolume.hh"
 
 /**
- * \brief Lead shielding in the UTR during the intermediate experiments of the
+ * \brief Lead shielding in the UTR during the last experiment of the
  * fall-2021 campaign.
  *
- * As opposed to the first experiment, an additional lead-brick wall was built
- * inside the clover-array mechanical structure, as close to the detectors as
- * possible.
+ * As opposed to the intermediate experiments of the fall-2021 campaign, the
+ * lead-brick wall inside the Clover-Array mechanical structure had to be
+ * changed, because a new detector position (B3) was added.
  */
 class LeadShieldingUTR {
 public:
