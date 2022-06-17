@@ -36,10 +36,7 @@ void LeadShieldingUTR::Construct(const G4ThreeVector global_coordinates) {
                                    // lead walls and the beam pipe, estimated
 
   const double array_wall_to_target =
-      13. * inch; // Estimated. CeBr BK had to be pushed a little forward to
-                  // make room for this wall. Its back part almost touched the
-                  // base of the wall (which is not implemented at the moment).
-                  // The wall's position should be fine within +- 0.5 inch.
+      14.5 * inch; // The wall touched the horizontal plate of the clover array.
   const double array_wall_thickness = 8. * inch;
   const double array_wall_width = 16. * inch;
   const double array_wall_height = 10. * inch;
@@ -121,7 +118,9 @@ void LeadShieldingUTR::Construct(const G4ThreeVector global_coordinates) {
                 BeamPipe::beam_pipe_outer_radius + gap_size,
                 BeamPipe::beam_pipe_outer_radius + gap_size,
                 downstream_wall_thickness),
-      0, G4ThreeVector(0., -downstream_wall_y, 0.));
+      0,
+      G4ThreeVector(0., -downstream_wall_y,
+                    0.)); // This wall has a rectangular hole.
   G4LogicalVolume *downstream_wall_logical = new G4LogicalVolume(
       downstream_wall_solid, nist->FindOrBuildMaterial("G4_Pb"),
       "downstream_wall_logical");
@@ -135,6 +134,7 @@ void LeadShieldingUTR::Construct(const G4ThreeVector global_coordinates) {
                     false, 0, false);
 
   // Clover-Array wall
+
   G4Box *_array_wall_solid =
       new G4Box("array_wall_solid", 0.5 * array_wall_width,
                 0.5 * array_wall_height, 0.5 * array_wall_thickness);

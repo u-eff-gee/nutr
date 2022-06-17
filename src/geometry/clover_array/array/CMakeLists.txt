@@ -44,4 +44,6 @@ add_library(leadShieldingUTR_2021-09-10_to_2021-10-10 EXCLUDE_FROM_ALL LeadShiel
 
 add_library(leadShieldingUTR_2021-11-08_to_2021-11-21 EXCLUDE_FROM_ALL LeadShieldingUTR_2021-11-08_to_2021-11-21.cc)
 
+add_library(leadShieldingUTR_2022-01-21_to_2022-03-07 EXCLUDE_FROM_ALL LeadShieldingUTR_2022-01-21_to_2022-03-07.cc)
+
 add_library(mechanical EXCLUDE_FROM_ALL Mechanical.cc)
