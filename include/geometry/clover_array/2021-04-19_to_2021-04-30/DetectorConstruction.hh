@@ -22,7 +22,12 @@
 #include "NDetectorConstruction.hh"
 
 /**
- * \brief Clover Array @ HIγS (photon-flux measurement tests)
+ * \brief Clover Array @ HIγS in the spring-2021 campaign, part II.
+ *
+ * This includes the following experiments:
+ * PI                 - Target      - First run - Last run - Comment
+ * Howell                             659         677        Compton monitor and
+ * paddle test runs
  */
 class DetectorConstruction : public NDetectorConstruction {
 public:

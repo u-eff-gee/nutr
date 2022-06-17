@@ -95,9 +95,9 @@ There also exist holders to mount 3"x3" LaBr detectors at any of the clover or C
 ## Filters
 
 For the clover, CeBr, and LaBr detectors, custom-made copper and lead filters exist whose 
-dimensions fit the front faces of the detectors. For the former two types of detectors, special
-3D-printed plastic cups also exist to mount the filters. For all other detectors, the filters were
-usually simply taped on the detector faces.
+dimensions fit the front faces of the detectors. For all detectors, special 3D-printed plastic cups
+exist to mount the filters. For all other detectors, the filters were usually simply taped on the 
+detector faces.
 The filter cases of the close-packed clover detectors (for example B4 and B5) overlap slightly in 
 the simulation at their nominal distance of 8", because the gap was also very narrow in reality. 
 The experimenters usually managed to put them on anyway by using gentle force or cutting off the

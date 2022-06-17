@@ -22,13 +22,12 @@
 #include "NDetectorConstruction.hh"
 
 /**
- * \brief Clover Array @ HIγS in the spring-2021 campaign, part I.
+ * \brief Clover Array @ HIγS in the spring-2021 campaign, part III.
  *
  * This includes the following experiments:
  * PI                 - Target      - First run - Last run - Comment
- * Janssens             62Ni/78Zn     51          621
- * Kleemann/Pietralla   154Sm/140Ce   622         633        Test runs
- * Finch                56Fe          634         637        Test runs
+ * Kleemann/Pietralla   140Ce/154Sm   699         702        Test runs
+ * Kleemann/Pietralla   140Ce/154Sm   707         805
  */
 class DetectorConstruction : public NDetectorConstruction {
 public:

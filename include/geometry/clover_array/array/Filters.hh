@@ -19,18 +19,23 @@
 
 #pragma once
 
-#include "NDetectorConstruction.hh"
+#include "G4SystemOfUnits.hh"
 
-/**
- * \brief Clover Array @ HIγS in the spring-2021 campaign, part I.
- *
- * This includes the following experiments:
- * PI                 - Target      - First run - Last run - Comment
- * Janssens             62Ni/78Zn     51          621
- * Kleemann/Pietralla   154Sm/140Ce   622         633        Test runs
- * Finch                56Fe          634         637        Test runs
- */
-class DetectorConstruction : public NDetectorConstruction {
-public:
-  G4VPhysicalVolume *Construct() override final;
-};
+constexpr double inch = 25.4 * mm;
+
+constexpr double cu_cebr_thin = 0.040 * inch;
+constexpr double cu_cebr_thick = 0.082 * inch;
+constexpr double pb_cebr_thin = 0.046 * inch;
+constexpr double pb_cebr_very_thin = 0.038 * inch;
+constexpr double pb_cebr_thick = 0.101 * inch;
+
+constexpr double cu_labr_thin = 0.040 * inch;
+constexpr double cu_labr_thick = 0.082 * inch;
+constexpr double pb_labr_thin = 0.046 * inch;
+constexpr double pb_labr_thick = 0.101 * inch;
+
+constexpr double cu_clover_thin = 0.040 * inch;
+constexpr double cu_clover_thick = 0.081 * inch;
+constexpr double pb_clover_very_thin = 0.038 * inch;
+constexpr double pb_clover_thin = 0.045 * inch;
+constexpr double pb_clover_thick = 0.101 * inch;

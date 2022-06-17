@@ -33,6 +33,12 @@ if(${GEOMETRY_2021-04-19_to_2021-04-30})
     target_link_libraries(actionInitialization_2021-04-19_to_2021-04-30 eventAction_2021-04-19_to_2021-04-30 primaryGeneratorAction nRunAction)
 endif()
 
+if(${GEOMETRY_2021-05-07_to_2021-05-30})
+    add_library(actionInitialization_2021-05-07_to_2021-05-30 ActionInitialization.cc)
+    target_include_directories(actionInitialization_2021-05-07_to_2021-05-30 PUBLIC ${PROJECT_SOURCE_DIR}/include/primary_generator/${PRIMARY_GENERATOR_DIR} ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
+    target_link_libraries(actionInitialization_2021-05-07_to_2021-05-30 eventAction_2021-05-07_to_2021-05-30 primaryGeneratorAction nRunAction)
+endif()
+
 if(${GEOMETRY_2021-09-09_to_2021-10-10})
     add_library(actionInitialization_2021-09-09_to_2021-10-10 ActionInitialization.cc)
     target_include_directories(actionInitialization_2021-09-09_to_2021-10-10 PUBLIC ${PROJECT_SOURCE_DIR}/include/primary_generator/${PRIMARY_GENERATOR_DIR} ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})

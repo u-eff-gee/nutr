@@ -33,4 +33,4 @@ add_library(cebr3_2x2 EXCLUDE_FROM_ALL CeBr3_2x2.cc)
 target_link_libraries(cebr3_2x2 cebr3 detector)
 
 add_library(labr3ce_3x3 EXCLUDE_FROM_ALL LaBr3Ce_3x3.cc)
-target_link_libraries(labr3ce_3x3 labr3ce detector)
+target_link_libraries(labr3ce_3x3 labr3ce detector pla)
