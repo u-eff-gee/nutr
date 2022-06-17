@@ -132,13 +132,13 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
   const vector<std::pair<double, double>> crystal_xy = {
       {crystal_distance_from_center_xy, crystal_distance_from_center_xy},
       {-crystal_distance_from_center_xy, crystal_distance_from_center_xy},
-      {crystal_distance_from_center_xy, -crystal_distance_from_center_xy},
-      {-crystal_distance_from_center_xy, -crystal_distance_from_center_xy}};
+      {-crystal_distance_from_center_xy, -crystal_distance_from_center_xy},
+      {crystal_distance_from_center_xy, -crystal_distance_from_center_xy}};
   const double crystal_z = -0.5 * properties.vacuum_length +
                            0.5 * properties.crystal_length +
                            properties.end_cap_to_crystal_gap_front;
-  const vector<double> crystal_rotation = {0. * deg, -90. * deg, -270. * deg,
-                                           -180. * deg};
+  const vector<double> crystal_rotation = {0. * deg, -90. * deg, -180. * deg,
+                                           -270. * deg};
   G4RotationMatrix *crystal_rotation_matrix;
 
   for (size_t n_crystal = 0; n_crystal < 4; ++n_crystal) {

@@ -99,8 +99,10 @@ dimensions fit the front faces of the detectors. For the former two types of det
 3D-printed plastic cups also exist to mount the filters. For all other detectors, the filters were
 usually simply taped on the detector faces.
 The filter cases of the close-packed clover detectors (for example B4 and B5) overlap slightly in 
-the simulation, because the gap was also very narrow in reality. This should not affect the 
-simulated results significantly.
+the simulation at their nominal distance of 8", because the gap was also very narrow in reality. 
+The experimenters usually managed to put them on anyway by using gentle force or cutting off the
+corners of the plastic pieces. The overlaps should not affect the simulated results significantly 
+in typical use cases.
 
 The available filter thicknesses are as follows:
 
