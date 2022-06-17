@@ -1,0 +1,81 @@
+In the Clover Array geometries, a right-handed cartesian coordinate system is used. The direction 
+of propagation of the beam defines the positive z axis, and the positive y axis is assumed to 
+point upwards. Usually, the HIγS beam is linearly polarized along the x axis. The polar angle 
+theta is defined with respect to the z axis, i.e. theta = 0 deg is the direction of the beam, and
+theta = 180 deg is pointing upstream. The positive x axis is defined by theta = 90 deg and an 
+azimuthal angle phi = 0 deg. The positive y axis is theta = 90 deg and phi = 90 deg.
+
+From February 2021 to October 2021, the Clover Array could hold up to 8 clover detectors at a
+polar angle of 90 deg and 6 clover detectors at backward angles. In November 2021, the backward-
+angle position B3 was added at a polar angle of 125.26 degrees. After the last experiment of the 
+fall-2021 campaign, the polar angle of B3 was modified to the originally planned angle of 135 
+degress.
+
+Clover ID - theta (deg) - phi (deg) - Comment
+ 1           90              0
+ 2           90             45
+ 3           90             90
+ 4           90            135
+ 5           90            180
+ 6           90            225
+ 7           90            270
+ 8           90            315
+B1           135             0
+B2           125.26         45
+B3           125.26         90        2021-11-08 - 2021-11-21
+B3           135            90        since 2022-01-21
+B4           125.26        135
+B5           135           180
+B6           125.26        225
+B8           125.26        315
+
+About the odd polar angle of some of the backward-angle detectors, see footnote [1].
+
+In addition to the clover detectors, the metal frame can hold up to 8 2"x2" CeBr detectors at a 
+polar angle of 90 deg, and 14 CeBr detectors at a polar angle of 135 deg.
+
+CeBr   ID - theta (deg) - phi (deg) - Comment
+ B           90            22.5
+ C           90            45
+ D           90            62.5
+ F           90           117.5
+ G           90           135
+ H           90           152.5
+ K           90           225
+ O           90           315
+BA          135            1/28*360
+BB          135            3/28*360
+BC          135            5/28*360
+BD          135            7/28*360
+BE          135            9/28*360
+BF          135           11/28*360
+BG          135           13/28*360
+BH          135           15/28*360
+BI          135           17/28*360
+BJ          135           19/28*360
+BK          135           21/28*360
+BL          135           23/28*360
+BM          135           25/28*360
+BN          135           27/28*360
+
+There also exist holders to mount 3"x3" LaBr detectors at any of the clover or CeBr positions.
+
+[1] For the backward-angle detectors B2, B4, B6, and B8 the following information was given to UFG 
+by the engineer Mark Emamian (quote from an email which holds for all four detectors):
+
+"the angle between the clover detector’s central axis (or its base plate) and
+the horizontal plate is 35.26 degree. And the angle between the detector’s
+central axis and the gamma beam is 54.74 degrees"
+
+As opposed to the usual polar angle of 135 degrees that is optimized for the expected angular 
+correlations in photonuclear experiments, the four detectors were designed to be right on top of 
+each other when viewed from above. If they were all at a polar angle of 135 degrees, their face 
+centers would lie on a circle, instead. In spherical coordinates, the information above implies 
+that the polar angle of the detectors is
+
+theta = 180 deg - 54.74 deg = 125.26 deg
+
+(Mark gave the equivalent acute angle).
+
+To obtain the azimuthal angle, note that the angle of 35.26 deg given by Mark is the projection of
+the detector axis on the x-z plane. A short calculation gives phi = 45 deg.
