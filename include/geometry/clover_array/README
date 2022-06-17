@@ -1,9 +1,15 @@
+This document describes the idealized detector setup of the Clover Array.
+
+## Coordinate System
+
 In the Clover Array geometries, a right-handed cartesian coordinate system is used. The direction 
 of propagation of the beam defines the positive z axis, and the positive y axis is assumed to 
 point upwards. Usually, the HIγS beam is linearly polarized along the x axis. The polar angle 
 theta is defined with respect to the z axis, i.e. theta = 0 deg is the direction of the beam, and
 theta = 180 deg is pointing upstream. The positive x axis is defined by theta = 90 deg and an 
 azimuthal angle phi = 0 deg. The positive y axis is theta = 90 deg and phi = 90 deg.
+
+## Clover-type high-purity germanium (HPGe) detectors
 
 From February 2021 to October 2021, the Clover Array could hold up to 8 clover detectors at a
 polar angle of 90 deg and 6 clover detectors at backward angles. In November 2021, the backward-
@@ -30,6 +36,30 @@ B6           125.26        225
 B8           125.26        315
 
 About the odd polar angle of some of the backward-angle detectors, see footnote [1].
+
+The clover detectors are not rotationally symmetric around their main axis. Therefore, it is 
+crucial to have the correct orientation of the detectors in the simulation. In reality, the clover
+detectors have different different color codes on their front faces, but the crystal positions are
+in most cases marked with "E1", "E2", "E3", and "E4" in clockwise order. The only exception is 
+clover detector "Yale 142051" for which the signal cables of E1 and E4 are swapped with respect to
+the labels on its front face. If they are color coded, most of the clover detectors have the 
+following coloring:
+
+Channel - Color
+E1        Blue
+E2        Red
+E3        Green
+E4        Brown
+
+In the simulation, all clover detectors, even Yale 142051, follow this coloring scheme, because 
+they are all built from the same base class.
+
+## Coaxial HPGe detectors
+
+On any of the clover-detector positions, a large-volume 100% relative efficiency coaxial HPGe can 
+also be mounted.
+
+## Cerium-bromide scintillators
 
 In addition to the clover detectors, the metal frame can hold up to 8 2"x2" CeBr detectors at a 
 polar angle of 90 deg, and 14 CeBr detectors at a polar angle of 135 deg.
@@ -58,7 +88,39 @@ BL          135           23/28*360
 BM          135           25/28*360
 BN          135           27/28*360
 
+## Cerium-doped lanthanum-bromide detectors
+
 There also exist holders to mount 3"x3" LaBr detectors at any of the clover or CeBr positions.
+
+## Filters
+
+For the clover, CeBr, and LaBr detectors, custom-made copper and lead filters exist whose 
+dimensions fit the front faces of the detectors. For the former two types of detectors, special
+3D-printed plastic cups also exist to mount the filters. For all other detectors, the filters were
+usually simply taped on the detector faces.
+The filter cases of the close-packed clover detectors (for example B4 and B5) overlap slightly in 
+the simulation, because the gap was also very narrow in reality. This should not affect the 
+simulated results significantly.
+
+The available filter thicknesses are as follows:
+
+Material - Thickness - Description
+CeBr
+Cu         0.040"      thin
+Cu         0.082"      thick
+Pb         0.038"      very thin
+Pb         0.046"      thin
+Pb         0.101"      thick
+
+Clover
+Cu         0.040"      thin
+Cu         0.081"      thick
+Pb         0.038"      very thin
+Pb         0.045"      thin
+Pb         0.101"      thick
+
+LaBr
+Pb         0.100"      thick
 
 [1] For the backward-angle detectors B2, B4, B6, and B8 the following information was given to UFG 
 by the engineer Mark Emamian (quote from an email which holds for all four detectors):

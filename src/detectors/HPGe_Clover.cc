@@ -126,7 +126,7 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
   G4VSolid *crystal_full_solid = detector_crystal("", 0.);
   vector<G4LogicalVolume *> crystal_full_logical(4);
   const vector<G4Color> colors = {G4Color::Blue(), G4Color::Red(),
-                                  G4Color::Brown(), G4Color::Green()};
+                                  G4Color::Green(), G4Color::Brown()};
   const double crystal_distance_from_center_xy =
       22. * mm + 0.5 * properties.crystal_gap;
   const vector<std::pair<double, double>> crystal_xy = {
