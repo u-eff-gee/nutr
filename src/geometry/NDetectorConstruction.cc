@@ -21,7 +21,12 @@
 
 using std::runtime_error;
 
+#include "G4Box.hh"
+#include "G4NistManager.hh"
+#include "G4PVPlacement.hh"
 #include "G4SDManager.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4VisAttributes.hh"
 
 #include "NDetectorConstruction.hh"
 #include "SensitiveDetector.hh"
@@ -36,6 +41,21 @@ void NDetectorConstruction::RegisterSensitiveLogicalVolumes(
   for (auto log_vol : logical_volumes) {
     sensitive_logical_volumes.push_back(log_vol);
   }
+}
+
+void NDetectorConstruction::ConstructBoxWorld(const double x, const double y,
+                                              const double z,
+                                              const string material) {
+  G4NistManager *nist_manager = G4NistManager::Instance();
+
+  world_solid = new G4Box("world_solid", x, y, z);
+  G4cout << "world_solid (in World) = " << world_solid << G4endl;
+  world_logical = new G4LogicalVolume(
+      world_solid, nist_manager->FindOrBuildMaterial(material),
+      "world_logical");
+  world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
+  world_phys = new G4PVPlacement(0, G4ThreeVector(), world_logical, "world",
+                                 nullptr, false, 0);
 }
 
 void NDetectorConstruction::ConstructSDandField() {

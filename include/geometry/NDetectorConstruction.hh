@@ -20,8 +20,10 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 
+using std::string;
 using std::unique_ptr;
 using std::vector;
 
@@ -37,6 +39,8 @@ class NDetectorConstruction : public G4VUserDetectorConstruction {
 public:
   virtual G4VPhysicalVolume *Construct() override = 0;
   void ConstructSDandField() override final;
+  void ConstructBoxWorld(const double x, const double y, const double z,
+                         const string material = "G4_AIR");
 
   void
   RegisterSensitiveLogicalVolumes(vector<G4LogicalVolume *> logical_volumes);

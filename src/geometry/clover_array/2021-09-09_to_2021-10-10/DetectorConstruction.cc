@@ -20,13 +20,8 @@
 #include <memory>
 #include <vector>
 
-#include "G4Box.hh"
-#include "G4LogicalVolume.hh"
-#include "G4NistManager.hh"
-#include "G4PVPlacement.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4VisAttributes.hh"
 
 #include "DetectorConstruction.hh"
 
@@ -131,15 +126,7 @@ vector<Detector *> detectors = {
 
 G4VPhysicalVolume *DetectorConstruction::Construct() {
 
-  G4NistManager *nist_manager = G4NistManager::Instance();
-
-  world_solid = new G4Box("world_solid", 2. * m, 2. * m, 4.0 * m);
-  world_logical = new G4LogicalVolume(
-      world_solid, nist_manager->FindOrBuildMaterial("G4_AIR"),
-      "world_logical");
-  world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
-  world_phys = new G4PVPlacement(new G4RotationMatrix(), G4ThreeVector(),
-                                 world_logical, "world", nullptr, false, 0);
+  ConstructBoxWorld(2. * m, 2. * m, 5.0 * m);
 
   CollimatorRoom(world_logical).Construct({});
   BeamPipe(world_logical).Construct({});
