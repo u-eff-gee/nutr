@@ -24,12 +24,14 @@
 /**
  * \brief Zero-degree detector mechanical setup
  *
- * At the moment, this class is simply used to supply the
- * zero-degree-detector-target distance to all geometries.
+ * At the moment, this class implements the NaI annulus around the zero-degree
+ * detector. Although the annulus is a detector by itself, it has never been
+ * used during the author's career. Therefore, it is simply implemented as a
+ * passive component here.
  */
-class ZeroDegree {
+class ZeroDegreeMechanical {
 public:
-  ZeroDegree(G4LogicalVolume *world_log) : world_logical(world_log){};
+  ZeroDegreeMechanical(G4LogicalVolume *world_log) : world_logical(world_log){};
   void Construct(const G4ThreeVector global_coordinates);
 
   static constexpr double zero_degree_to_target =

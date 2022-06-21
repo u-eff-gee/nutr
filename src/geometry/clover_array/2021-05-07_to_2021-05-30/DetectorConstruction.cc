@@ -40,7 +40,7 @@
 #include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR_2021-05-07_to_2021-05-31.hh"
 #include "Mechanical.hh"
-#include "ZeroDegree.hh"
+#include "ZeroDegreeMechanical.hh"
 
 vector<Detector *> detectors = {
     new LaBr3Ce_3x3(
@@ -111,7 +111,7 @@ vector<Detector *> detectors = {
     new HPGe_Coaxial("zero_degree",
                      HPGe_Coaxial_Collection::HPGe_120_TUNL_40383,
                      HPGe_Coaxial_Dewar_Properties(), 0. * deg, 0. * deg,
-                     ZeroDegree::zero_degree_to_target),
+                     ZeroDegreeMechanical::zero_degree_to_target),
 };
 
 G4VPhysicalVolume *DetectorConstruction::Construct() {
@@ -130,6 +130,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   BeamPipe(world_logical).Construct({});
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
+  ZeroDegreeMechanical(world_logical).Construct({});
 
   // Offsets of LaBr detectors in y direction need to be treated separately.
   detectors[0]->Construct(world_logical, {});
@@ -150,7 +151,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
         detectors[n_detector]->get_sensitive_logical_volumes());
   }
   detectors[detectors.size() - 1]->Construct(
-      world_logical, G4ThreeVector(0., ZeroDegree::offset_y, 0.));
+      world_logical, G4ThreeVector(0., ZeroDegreeMechanical::offset_y, 0.));
   RegisterSensitiveLogicalVolumes(
       detectors[detectors.size() - 1]->get_sensitive_logical_volumes());
 

@@ -47,3 +47,5 @@ add_library(leadShieldingUTR_2021-11-08_to_2021-11-21 EXCLUDE_FROM_ALL LeadShiel
 add_library(leadShieldingUTR_2022-01-21_to_2022-03-07 EXCLUDE_FROM_ALL LeadShieldingUTR_2022-01-21_to_2022-03-07.cc)
 
 add_library(mechanical EXCLUDE_FROM_ALL Mechanical.cc)
+
+add_library(zero_degree_mechanical EXCLUDE_FROM_ALL ZeroDegreeMechanical.cc)

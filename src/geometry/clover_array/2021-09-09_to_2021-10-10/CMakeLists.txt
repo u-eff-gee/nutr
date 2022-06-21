@@ -51,6 +51,7 @@ target_link_libraries(detectorConstruction_2021-09-09_to_2021-10-10
     leadShieldingUTR_2021-09-10_to_2021-10-10
     SensitiveDetector
     cebr3_2x2
+    zero_degree_mechanical
 )
 
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/2021-09-09_to_2021-10-10)
