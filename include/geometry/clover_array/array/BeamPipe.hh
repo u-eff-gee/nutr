@@ -24,7 +24,7 @@
 #include "G4VPhysicalVolume.hh"
 
 /**
- * \brief Plexiglass beam pipe used in the 2020/2021 experiments.
+ * \brief Plexiglass beam pipe used in the 2020-2022 experiments.
  *
  * A vacuum pump can be attached to the beam pipe to evacuate the beam line.
  * If the pump is running at maximum power, a value of 28.5(3) inches Hg  was
