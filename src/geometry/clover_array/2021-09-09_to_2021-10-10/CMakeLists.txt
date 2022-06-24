@@ -40,17 +40,19 @@ target_include_directories(detectorConstruction_2021-09-09_to_2021-10-10
 )
 target_link_libraries(detectorConstruction_2021-09-09_to_2021-10-10
     beamPipe
+    cebr3_2x2
     collimatorRoom
     target96Mo
     comptonMonitor_2021-09-09_to_2021-10-10
-    mechanical
-    nDetectorConstruction
+    gamma_vault
     hpgeClover
     hpgeCoaxial
     labr3ce_3x3
     leadShieldingUTR_2021-09-10_to_2021-10-10
+    mechanical
+    molly
+    nDetectorConstruction
     SensitiveDetector
-    cebr3_2x2
     zero_degree_mechanical
 )
 

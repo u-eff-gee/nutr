@@ -29,11 +29,13 @@
 #include "CeBr3_2x2.hh"
 #include "CollimatorRoom.hh"
 #include "ComptonMonitor_2021-04-19_to_2021-04-30.hh"
+#include "GammaVault.hh"
 #include "HPGe_Clover.hh"
 #include "HPGe_Coaxial.hh"
 #include "HPGe_Collection.hh"
 #include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR_2021-02-16_to_2021-05-06.hh"
+#include "MOLLY.hh"
 #include "Mechanical.hh"
 #include "ZeroDegreeMechanical.hh"
 
@@ -111,11 +113,11 @@ vector<Detector *> detectors = {
                      ZeroDegreeMechanical::zero_degree_to_target),
     new LaBr3Ce_3x3("labr_Z", ComptonMonitor::detector_angle, 0. * deg,
                     ComptonMonitor::scattering_target_to_detector),
-};
+    new MOLLY(0. * deg, 0. * deg, 11. * m)};
 
 G4VPhysicalVolume *DetectorConstruction::Construct() {
 
-  ConstructBoxWorld(2. * m, 2. * m, 5.0 * m);
+  ConstructBoxWorld(2. * m, 2. * m, 12.0 * m);
 
   CollimatorRoom(world_logical).Construct({});
   ComptonMonitor(world_logical).Construct({});
@@ -123,19 +125,23 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
   ZeroDegreeMechanical(world_logical).Construct({});
+  GammaVault(world_logical).Construct({});
 
-  for (size_t n_detector = 0; n_detector < detectors.size() - 2; ++n_detector) {
+  for (size_t n_detector = 0; n_detector < detectors.size() - 3; ++n_detector) {
     detectors[n_detector]->Construct(world_logical, {});
     RegisterSensitiveLogicalVolumes(
         detectors[n_detector]->get_sensitive_logical_volumes());
   }
-  detectors[detectors.size() - 2]->Construct(
+  detectors[detectors.size() - 3]->Construct(
       world_logical, G4ThreeVector(0., ZeroDegreeMechanical::offset_y, 0.));
   RegisterSensitiveLogicalVolumes(
-      detectors[detectors.size() - 2]->get_sensitive_logical_volumes());
-  detectors[detectors.size() - 1]->Construct(
+      detectors[detectors.size() - 3]->get_sensitive_logical_volumes());
+  detectors[detectors.size() - 2]->Construct(
       world_logical,
       G4ThreeVector(0., 0., ComptonMonitor::scattering_target_to_target));
+  RegisterSensitiveLogicalVolumes(
+      detectors[detectors.size() - 2]->get_sensitive_logical_volumes());
+  detectors[detectors.size() - 1]->Construct(world_logical, G4ThreeVector());
   RegisterSensitiveLogicalVolumes(
       detectors[detectors.size() - 1]->get_sensitive_logical_volumes());
 

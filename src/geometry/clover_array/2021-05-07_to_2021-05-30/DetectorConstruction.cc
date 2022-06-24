@@ -29,11 +29,13 @@
 #include "CeBr3_2x2.hh"
 #include "CollimatorRoom.hh"
 #include "Filters.hh"
+#include "GammaVault.hh"
 #include "HPGe_Clover.hh"
 #include "HPGe_Coaxial.hh"
 #include "HPGe_Collection.hh"
 #include "LaBr3Ce_3x3.hh"
 #include "LeadShieldingUTR_2021-05-07_to_2021-05-31.hh"
+#include "MOLLY.hh"
 #include "Mechanical.hh"
 #include "ZeroDegreeMechanical.hh"
 
@@ -107,17 +109,18 @@ vector<Detector *> detectors = {
                      HPGe_Coaxial_Collection::HPGe_120_TUNL_40383,
                      HPGe_Coaxial_Dewar_Properties(), 0. * deg, 0. * deg,
                      ZeroDegreeMechanical::zero_degree_to_target),
-};
+    new MOLLY(0. * deg, 0. * deg, 11. * m)};
 
 G4VPhysicalVolume *DetectorConstruction::Construct() {
 
-  ConstructBoxWorld(2. * m, 2. * m, 5.0 * m);
+  ConstructBoxWorld(2. * m, 2. * m, 12.0 * m);
 
   CollimatorRoom(world_logical).Construct({});
   BeamPipe(world_logical).Construct({});
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
   ZeroDegreeMechanical(world_logical).Construct({});
+  GammaVault(world_logical).Construct({});
 
   // Offsets of LaBr detectors in y direction need to be treated separately.
   detectors[0]->Construct(world_logical, {});
@@ -132,13 +135,16 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   detectors[3]->Construct(world_logical, {});
   RegisterSensitiveLogicalVolumes(
       detectors[3]->get_sensitive_logical_volumes());
-  for (size_t n_detector = 4; n_detector < detectors.size() - 1; ++n_detector) {
+  for (size_t n_detector = 4; n_detector < detectors.size() - 2; ++n_detector) {
     detectors[n_detector]->Construct(world_logical, {});
     RegisterSensitiveLogicalVolumes(
         detectors[n_detector]->get_sensitive_logical_volumes());
   }
-  detectors[detectors.size() - 1]->Construct(
+  detectors[detectors.size() - 2]->Construct(
       world_logical, G4ThreeVector(0., ZeroDegreeMechanical::offset_y, 0.));
+  RegisterSensitiveLogicalVolumes(
+      detectors[detectors.size() - 2]->get_sensitive_logical_volumes());
+  detectors[detectors.size() - 1]->Construct(world_logical, G4ThreeVector());
   RegisterSensitiveLogicalVolumes(
       detectors[detectors.size() - 1]->get_sensitive_logical_volumes());
 

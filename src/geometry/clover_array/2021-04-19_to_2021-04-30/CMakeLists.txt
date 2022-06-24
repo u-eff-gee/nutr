@@ -17,7 +17,7 @@
 
 add_library(detectorConstruction_2021-04-19_to_2021-04-30 DetectorConstruction.cc)
 target_include_directories(detectorConstruction_2021-04-19_to_2021-04-30 PUBLIC ${PROJECT_SOURCE_DIR}/include/detectors ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/2021-04-19_to_2021-04-30 ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
-target_link_libraries(detectorConstruction_2021-04-19_to_2021-04-30 beamPipe collimatorRoom comptonMonitor_2021-04-19_to_2021-04-30 mechanical nDetectorConstruction hpgeCoaxial hpgeClover labr3ce_3x3 leadShieldingUTR_2021-02-16_to_2021-05-06 SensitiveDetector cebr3_2x2 zero_degree_mechanical)
+target_link_libraries(detectorConstruction_2021-04-19_to_2021-04-30 beamPipe cebr3_2x2 collimatorRoom comptonMonitor_2021-04-19_to_2021-04-30 gamma_vault mechanical nDetectorConstruction hpgeCoaxial hpgeClover labr3ce_3x3 leadShieldingUTR_2021-02-16_to_2021-05-06 molly SensitiveDetector zero_degree_mechanical)
 
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/2021-04-19_to_2021-04-30)
 add_executable(nutr_2021-04-19_to_2021-04-30 ${PROJECT_SOURCE_DIR}/src/fundamentals/nutr.cc)
