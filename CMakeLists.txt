@@ -67,6 +67,7 @@ option(GEOMETRY_2021-08-24_to_2021-08-25 "Build Clover Array geometry for time i
 option(GEOMETRY_2021-08-25_to_2021-08-27 "Build Clover Array geometry for time interval 2021-08-25 to 2021-08-27." ON)
 option(GEOMETRY_2021-08-28_to_2021-09-09 "Build Clover Array geometry for time interval 2021-08-28 to 2021-09-09." ON)
 option(GEOMETRY_2021-09-09_to_2021-10-10 "Build Clover Array geometry for time interval 2021-09-09 to 2021-10-10." ON)
+option(GEOMETRY_2021-11-08_to_2021-11-21 "Build Clover Array geometry for time interval 2021-11-08 to 2021-11-21." ON)
 
 set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator` that contains the desired primary generator Possible choices: 'gps' (default), 'angcorr'.")
 
@@ -106,6 +107,9 @@ if(${GEOMETRY_2021-08-28_to_2021-09-09})
 endif()
 if(${GEOMETRY_2021-09-09_to_2021-10-10})
   add_subdirectory(src/geometry/clover_array/2021-09-09_to_2021-10-10)
+endif()
+if(${GEOMETRY_2021-11-08_to_2021-11-21})
+  add_subdirectory(src/geometry/clover_array/2021-11-08_to_2021-11-21)
 endif()
 add_subdirectory(src/physics)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/${PRIMARY_GENERATOR_DIR})
