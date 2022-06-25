@@ -79,7 +79,7 @@ vector<Detector *> detectors = {
         {{{"G4_Cu", cu_clover_thick}, {"G4_Pb", 2. * pb_clover_thin}}, true},
         {}, 0.5 * pi),
     new HPGe_Clover(
-        "clover_B6", HPGe_Clover_Collection::HPGe_Clover_Yale, 125.26 * deg,
+        "clover_B8", HPGe_Clover_Collection::HPGe_Clover_Yale, 125.26 * deg,
         315. * deg, 8.00 * inch,
         {{{"G4_Cu", cu_clover_thick}, {"G4_Pb", pb_clover_thick}}, true}, {},
         1.0 * pi),
