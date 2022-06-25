@@ -33,16 +33,6 @@
 
 #include <string>
 
-struct DetectorPosition {
-  const std::string id;
-  const double theta;
-  const double phi;
-  const double distance;
-  const double intrinsic_rotation_angle;
-  const double filter_pb = 0.;
-  const double filter_cu = 0.;
-};
-
 class DetectorConstruction : public NDetectorConstruction {
 public:
   G4VPhysicalVolume *Construct() override final;
