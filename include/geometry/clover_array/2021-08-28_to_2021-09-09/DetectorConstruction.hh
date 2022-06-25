@@ -22,18 +22,11 @@
 #include "NDetectorConstruction.hh"
 
 /**
- * \brief Clover Array @ HIγS in the fall-2021 campaign, part III
+ * \brief Clover Array @ HIγS in the fall-2021 campaign, part II
  *
- * This includes the following experiments
+ * This includes the following experiment
  * PI                 - Target      - First run - Last run - Comment
- * Papst                96Mo          1           67         low energy
- * Müscher              112Cd         68          134        low energy
- *                                    135         154        radioactive-source
- * calibration Papst                96Mo          155         244        high
- * energy 11B           245         246        calibration 247         249
- * radioactive-source calibration Müscher              112Cd         250 325
- * high energy 32S           326         332        calibration 333         337
- * radioactive-source calibration
+ * Banu                 78Kr          860         1028
  */
 
 #pragma once
