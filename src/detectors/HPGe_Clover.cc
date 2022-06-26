@@ -629,6 +629,6 @@ G4VSolid *HPGe_Clover::detector_crystal(const string suffix,
 
 G4VSolid *HPGe_Clover::Filter_Shape(const string name,
                                     const Filter &filter) const {
-  return rounded_box(name, filter.radius, filter.thickness * 0.5,
+  return rounded_box(name, filter.radius, filter.thickness,
                      properties.end_cap_front_rounding_radius, 20);
 }
