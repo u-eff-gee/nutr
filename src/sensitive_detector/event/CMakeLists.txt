@@ -117,3 +117,33 @@ if(${GEOMETRY_2021-11-08_to_2021-11-21})
     target_include_directories(eventAction_2021-11-08_to_2021-11-21 PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector ${PROJECT_BINARY_DIR}/include/sensitive_detector)
     target_link_libraries(eventAction_2021-11-08_to_2021-11-21 nEventAction tupleManager_2021-11-08_to_2021-11-21)
 endif()
+
+if(${GEOMETRY_2022-01-21_to_2022-02-05})
+    add_library(tupleManager_2022-01-21_to_2022-02-05 TupleManager.cc)
+    target_include_directories(tupleManager_2022-01-21_to_2022-02-05 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/2022-01-21_to_2022-02-05 ${PROJECT_BINARY_DIR}/include/sensitive_detector)
+    target_link_libraries(tupleManager_2022-01-21_to_2022-02-05 analysisManager detectorConstruction_2022-01-21_to_2022-02-05 DetectorHit)
+
+    add_library(eventAction_2022-01-21_to_2022-02-05 EventAction.cc)
+    target_include_directories(eventAction_2022-01-21_to_2022-02-05 PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector ${PROJECT_BINARY_DIR}/include/sensitive_detector)
+    target_link_libraries(eventAction_2022-01-21_to_2022-02-05 nEventAction tupleManager_2022-01-21_to_2022-02-05)
+endif()
+
+if(${GEOMETRY_2022-02-07_to_2022-02-15})
+    add_library(tupleManager_2022-02-07_to_2022-02-15 TupleManager.cc)
+    target_include_directories(tupleManager_2022-02-07_to_2022-02-15 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/2022-02-07_to_2022-02-15 ${PROJECT_BINARY_DIR}/include/sensitive_detector)
+    target_link_libraries(tupleManager_2022-02-07_to_2022-02-15 analysisManager detectorConstruction_2022-02-07_to_2022-02-15 DetectorHit)
+
+    add_library(eventAction_2022-02-07_to_2022-02-15 EventAction.cc)
+    target_include_directories(eventAction_2022-02-07_to_2022-02-15 PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector ${PROJECT_BINARY_DIR}/include/sensitive_detector)
+    target_link_libraries(eventAction_2022-02-07_to_2022-02-15 nEventAction tupleManager_2022-02-07_to_2022-02-15)
+endif()
+
+if(${GEOMETRY_2022-02-21_to_2022-03-02})
+    add_library(tupleManager_2022-02-21_to_2022-03-02 TupleManager.cc)
+    target_include_directories(tupleManager_2022-02-21_to_2022-03-02 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/2022-02-21_to_2022-03-02 ${PROJECT_BINARY_DIR}/include/sensitive_detector)
+    target_link_libraries(tupleManager_2022-02-21_to_2022-03-02 analysisManager detectorConstruction_2022-02-21_to_2022-03-02 DetectorHit)
+
+    add_library(eventAction_2022-02-21_to_2022-03-02 EventAction.cc)
+    target_include_directories(eventAction_2022-02-21_to_2022-03-02 PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector ${PROJECT_BINARY_DIR}/include/sensitive_detector)
+    target_link_libraries(eventAction_2022-02-21_to_2022-03-02 nEventAction tupleManager_2022-02-21_to_2022-03-02)
+endif()
