@@ -25,6 +25,7 @@
 
 #include "DetectorConstruction.hh"
 
+#include "ActivationTarget.hh"
 #include "BeamPipe.hh"
 #include "CeBr3_2x2.hh"
 #include "CollimatorRoom.hh"
@@ -119,6 +120,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   BeamPipe(world_logical).Construct({});
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
+  ActivationTarget(world_logical).Construct({});
   ZeroDegreeMechanical(world_logical).Construct({});
   GammaVault(world_logical).Construct({});
 

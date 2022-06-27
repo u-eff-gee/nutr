@@ -17,6 +17,8 @@
 
 include_directories(${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
 
+add_library(activation_target EXCLUDE_FROM_ALL ActivationTarget.cc)
+
 add_library(beamPipe EXCLUDE_FROM_ALL BeamPipe.cc)
 
 add_library(collimatorRoom EXCLUDE_FROM_ALL CollimatorRoom.cc)
