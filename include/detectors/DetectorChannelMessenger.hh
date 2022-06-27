@@ -19,20 +19,22 @@
 
 #pragma once
 
-#include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithADouble.hh"
 #include "G4UImessenger.hh"
 
-#include "DetectorConstruction.hh"
+#include "Detector.hh"
 
-class DetectorConstruction;
+class Detector;
 
-class DetectorConstructionMessenger : public G4UImessenger {
+class DetectorChannelMessenger : public G4UImessenger {
 public:
-  DetectorConstructionMessenger(DetectorConstruction *detector_construction);
+  DetectorChannelMessenger(Detector *_detector);
+  DetectorChannelMessenger(Detector *_detector, const size_t _n_channel);
   void SetNewValue(G4UIcommand *command, G4String str) override;
 
 protected:
-  DetectorConstruction *detector_construction;
+  Detector *detector;
 
-  G4UIcmdWithABool *activation_target_in_out_cmd;
+  const size_t n_channel;
+  G4UIcmdWithADouble *dead_layer_cmd;
 };

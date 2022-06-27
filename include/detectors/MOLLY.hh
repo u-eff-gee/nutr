@@ -40,7 +40,8 @@
 class MOLLY : public Detector {
 public:
   MOLLY(const double _theta, const double _phi, const double _dist_from_center)
-      : Detector("molly", _theta, _phi, _dist_from_center){};
+      : Detector("molly", _theta, _phi, _dist_from_center, {{}}, {}, 0.,
+                 {0.}){};
 
 protected:
   void Construct_Detector(G4LogicalVolume *world_logical,

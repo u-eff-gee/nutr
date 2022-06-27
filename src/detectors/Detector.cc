@@ -39,7 +39,16 @@ Detector::Detector(const string _name, const double _theta, const double _phi,
       theta(_theta), phi(_phi), dist_from_center(_dist_from_center),
       filter_configuration(_filter_configuration), wraps(_wraps),
       intrinsic_rotation_angle(_intrinsic_rotation_angle),
-      dead_layer(_dead_layer), rotation_matrix(nullptr) {}
+      dead_layer(_dead_layer), rotation_matrix(nullptr) {
+  if (dead_layer.size() == 1) {
+    channel_messenger.push_back(new DetectorChannelMessenger(this));
+  } else {
+    for (size_t n_channel = 0; n_channel < dead_layer.size(); ++n_channel) {
+      channel_messenger.push_back(
+          new DetectorChannelMessenger(this, n_channel));
+    }
+  }
+}
 
 void Detector::Construct(G4LogicalVolume *world_logical,
                          G4ThreeVector global_coordinates) {

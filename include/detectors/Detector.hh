@@ -29,6 +29,10 @@
 using std::string;
 using std::vector;
 
+#include "DetectorChannelMessenger.hh"
+
+class DetectorChannelMessenger;
+
 /**
  * \brief Container for filter properties
  */
@@ -160,6 +164,12 @@ public:
   vector<G4LogicalVolume *> get_sensitive_logical_volumes() {
     return sensitive_logical_volumes;
   };
+  const string detector_name; /**< Name of the detector. This name will be used
+                                 as a prefix for all parts of the geometry. */
+
+  void set_dead_layer(const size_t n_channel, const double _dead_layer) {
+    dead_layer[n_channel] = _dead_layer;
+  }
 
 protected:
   double Construct_Filters(G4LogicalVolume *world_logical,
@@ -172,14 +182,13 @@ protected:
   virtual G4VSolid *Filter_Shape(const string name,
                                  const Filter &filter) const = 0;
 
-  const string detector_name; /**< Name of the detector. This name will be used
-                                 as a prefix for all parts of the geometry. */
+  vector<DetectorChannelMessenger *> channel_messenger;
   const double default_filter_radius, theta, phi, dist_from_center;
   const FilterConfiguration
       filter_configuration;   /**< Filters placed in front of the detector. */
   const vector<Filter> wraps; /**< Filters wrapped around the detector face */
   const double intrinsic_rotation_angle;
-  const vector<double> dead_layer;
+  vector<double> dead_layer;
 
   /**
    * \brief Return radial unit vector in spherical coordinates

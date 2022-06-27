@@ -21,7 +21,10 @@ include(${Geant4_USE_FILE})
 
 include_directories(${PROJECT_SOURCE_DIR}/include/detectors)
 
+add_library(detector_channel_messenger DetectorChannelMessenger.cc)
+
 add_library(detector Detector.cc)
+target_link_libraries(detector detector_channel_messenger)
 
 add_library(hpgeClover EXCLUDE_FROM_ALL HPGe_Clover.cc)
 target_link_libraries(hpgeClover detector pla)

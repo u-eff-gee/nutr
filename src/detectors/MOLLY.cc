@@ -36,18 +36,30 @@ void MOLLY::Construct_Detector(G4LogicalVolume *world_logical,
   G4Tubs *crystal_solid =
       new G4Tubs(detector_name + "_crystal_solid", 0., crystal_dimension,
                  crystal_dimension, 0., twopi);
-  sensitive_logical_volumes.push_back(new G4LogicalVolume(
+  G4LogicalVolume *crystal_logical = new G4LogicalVolume(
       crystal_solid, nist->FindOrBuildMaterial("G4_SODIUM_IODIDE"),
-      detector_name + "_crystal_logical"));
-  sensitive_logical_volumes[0]->SetVisAttributes(G4Color::Magenta());
+      detector_name + "_crystal_logical");
+  crystal_logical->SetVisAttributes(G4Color::Magenta());
   G4RotationMatrix *rotation = new G4RotationMatrix();
   rotation->rotateZ(-phi);
   rotation->rotateY(-theta);
   new G4PVPlacement(rotation,
                     global_coordinates +
                         (dist_from_center + crystal_dimension) * e_r,
-                    sensitive_logical_volumes[0], detector_name + "crystal",
-                    world_logical, false, 0, false);
+                    crystal_logical, detector_name + "crystal", world_logical,
+                    false, 0, false);
+
+  G4Tubs *crystal_active_solid =
+      new G4Tubs(detector_name + "_crystal_active_solid", 0.,
+                 (1. - dead_layer[0]) * crystal_dimension,
+                 (1. - dead_layer[0]) * crystal_dimension, 0., twopi);
+  sensitive_logical_volumes.push_back(new G4LogicalVolume(
+      crystal_active_solid, nist->FindOrBuildMaterial("G4_SODIUM_IODIDE"),
+      detector_name + "_crystal_active_logical"));
+  sensitive_logical_volumes[0]->SetVisAttributes(G4Color::Magenta());
+  new G4PVPlacement(0, G4ThreeVector(), sensitive_logical_volumes[0],
+                    detector_name + "_crystal_active", crystal_logical, false,
+                    0, false);
 }
 
 G4VSolid *MOLLY::Filter_Shape(const string name, const Filter &filter) const {
