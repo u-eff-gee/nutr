@@ -86,6 +86,11 @@ vector<Detector *> detectors = {
                      ZeroDegreeMechanical::zero_degree_to_target),
     new MOLLY(0. * deg, 0. * deg, 11. * m)};
 
+DetectorConstruction::DetectorConstruction()
+    : NDetectorConstruction(), use_activation_target(true) {
+  messenger = new DetectorConstructionMessenger(this);
+}
+
 G4VPhysicalVolume *DetectorConstruction::Construct() {
 
   ConstructBoxWorld(2. * m, 2. * m, 12.0 * m);
@@ -94,7 +99,9 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   BeamPipe(world_logical).Construct({});
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
-  ActivationTarget(world_logical).Construct({});
+  if (use_activation_target) {
+    ActivationTarget(world_logical).Construct({});
+  }
   ZeroDegreeMechanical(world_logical)
       .Construct(G4ThreeVector(zero_degree_x, zero_degree_y, 0.));
   GammaVault(world_logical).Construct({});

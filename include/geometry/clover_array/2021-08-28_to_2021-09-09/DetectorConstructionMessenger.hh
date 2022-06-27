@@ -19,35 +19,22 @@
 
 #pragma once
 
-#include "NDetectorConstruction.hh"
+#include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIdirectory.hh"
+#include "G4UImessenger.hh"
 
-/**
- * \brief Clover Array @ HIγS in the fall-2021 campaign, part II
- *
- * This includes the following experiment
- * PI                 - Target      - First run - Last run - Comment
- * Banu                 78Kr          860         1028
- */
+#include "DetectorConstruction.hh"
 
-#pragma once
+class DetectorConstruction;
 
-#include <string>
-
-#include "DetectorConstructionMessenger.hh"
-
-class DetectorConstructionMessenger;
-
-class DetectorConstruction : public NDetectorConstruction {
+class DetectorConstructionMessenger : public G4UImessenger {
 public:
-  DetectorConstruction();
-  G4VPhysicalVolume *Construct() override final;
-
-  void activation_target_in_out(const bool in) {
-    in ? use_activation_target = true : use_activation_target = false;
-  }
+  DetectorConstructionMessenger(DetectorConstruction *detector_construction);
+  void SetNewValue(G4UIcommand *command, G4String str) override;
 
 protected:
-  DetectorConstructionMessenger *messenger;
+  DetectorConstruction *detector_construction;
 
-  bool use_activation_target;
+  G4UIcmdWithABool *activation_target_in_out_cmd;
 };

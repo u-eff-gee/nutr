@@ -19,6 +19,10 @@
 
 #pragma once
 
+#include "DetectorConstructionMessenger.hh"
+
+class DetectorConstructionMessenger;
+
 #include "NDetectorConstruction.hh"
 
 /**
@@ -31,5 +35,15 @@
  */
 class DetectorConstruction : public NDetectorConstruction {
 public:
+  DetectorConstruction();
   G4VPhysicalVolume *Construct() override final;
+
+  void activation_target_in_out(const bool in) {
+    in ? use_activation_target = true : use_activation_target = false;
+  }
+
+protected:
+  DetectorConstructionMessenger *messenger;
+
+  bool use_activation_target;
 };
