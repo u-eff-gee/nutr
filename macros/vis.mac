@@ -58,7 +58,7 @@
 /vis/viewer/set/targetPoint 0. 0. 0. cm
 #
 # Specify zoom value:
-/vis/viewer/zoom 1.4
+#/vis/viewer/zoom 1.4
 #
 # Specify style (surface, wireframe, auxiliary edges,...)
 #/vis/viewer/set/style wireframe

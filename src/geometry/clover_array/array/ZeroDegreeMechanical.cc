@@ -64,7 +64,7 @@ void ZeroDegreeMechanical::Construct(const G4ThreeVector global_coordinates) {
   new G4PVPlacement(
       0,
       global_coordinates +
-          G4ThreeVector(0., offset_y,
+          G4ThreeVector(0., 0.,
                         zero_degree_to_target + 0.5 * annulus_rim_thickness),
       annulus_upstream_rim_logical, "annulus_upstream_rim", world_logical,
       false, 0, false);
@@ -79,7 +79,7 @@ void ZeroDegreeMechanical::Construct(const G4ThreeVector global_coordinates) {
   new G4PVPlacement(
       0,
       global_coordinates +
-          G4ThreeVector(0., offset_y,
+          G4ThreeVector(0., 0.,
                         zero_degree_to_target + annulus_rim_thickness +
                             0.5 * annulus_length),
       annulus_body_logical, "annulus_body", world_logical, false, 0, false);
@@ -101,7 +101,7 @@ void ZeroDegreeMechanical::Construct(const G4ThreeVector global_coordinates) {
   annulus_downstream_rim_logical->SetVisAttributes(G4Color::Gray());
   new G4PVPlacement(0,
                     global_coordinates +
-                        G4ThreeVector(0., offset_y,
+                        G4ThreeVector(0., 0.,
                                       zero_degree_to_target +
                                           1.5 * annulus_rim_thickness +
                                           annulus_length),

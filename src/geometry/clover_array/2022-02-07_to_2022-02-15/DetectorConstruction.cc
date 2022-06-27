@@ -151,7 +151,8 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   BeamPipe(world_logical).Construct({});
   LeadShieldingUTR(world_logical).Construct({});
   Mechanical(world_logical).Construct({});
-  ZeroDegreeMechanical(world_logical).Construct({});
+  ZeroDegreeMechanical(world_logical)
+      .Construct(G4ThreeVector(zero_degree_x, zero_degree_y, 0.));
   GammaVault(world_logical).Construct({});
 
   for (size_t n_detector = 0; n_detector < detectors.size() - 2; ++n_detector) {
@@ -160,10 +161,11 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
         detectors[n_detector]->get_sensitive_logical_volumes());
   }
   detectors[detectors.size() - 2]->Construct(
-      world_logical, G4ThreeVector(0., ZeroDegreeMechanical::offset_y, 0.));
+      world_logical, G4ThreeVector(zero_degree_x, zero_degree_y, 0.));
   RegisterSensitiveLogicalVolumes(
       detectors[detectors.size() - 2]->get_sensitive_logical_volumes());
-  detectors[detectors.size() - 1]->Construct(world_logical, G4ThreeVector());
+  detectors[detectors.size() - 1]->Construct(world_logical,
+                                             G4ThreeVector(molly_x, 0., 0.));
   RegisterSensitiveLogicalVolumes(
       detectors[detectors.size() - 1]->get_sensitive_logical_volumes());
 

@@ -19,24 +19,25 @@
 
 #pragma once
 
-#include "G4LogicalVolume.hh"
+#include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIdirectory.hh"
+#include "G4UImessenger.hh"
 
-/**
- * \brief Zero-degree detector mechanical setup
- *
- * At the moment, this class implements the NaI annulus around the zero-degree
- * detector. Although the annulus is a detector by itself, it has never been
- * used during the author's career. Therefore, it is simply implemented as a
- * passive component here.
- */
-class ZeroDegreeMechanical {
+#include "NDetectorConstruction.hh"
+
+class NDetectorConstruction;
+
+class NDetectorConstructionMessenger : public G4UImessenger {
 public:
-  ZeroDegreeMechanical(G4LogicalVolume *world_log) : world_logical(world_log){};
-  void Construct(const G4ThreeVector global_coordinates);
-
-  static constexpr double zero_degree_to_target =
-      108.8 * 25.4 * mm; // 108.8 inch
+  NDetectorConstructionMessenger(NDetectorConstruction *detector_construction);
+  void SetNewValue(G4UIcommand *command, G4String str) override;
 
 protected:
-  G4LogicalVolume *world_logical;
+  NDetectorConstruction *detector_construction;
+
+  G4UIdirectory *detector_construction_dir;
+  G4UIcmdWithABool *molly_in_out_cmd;
+  G4UIcmdWithABool *zero_degree_in_out_cmd;
+  G4UIcmdWithADoubleAndUnit *zero_degree_y_cmd;
 };

@@ -33,10 +33,15 @@ using std::vector;
 
 class G4VPhysicalVolume;
 
+#include "NDetectorConstructionMessenger.hh"
+
+class NDetectorConstructionMessenger;
+
 #include "SourceVolume.hh"
 
 class NDetectorConstruction : public G4VUserDetectorConstruction {
 public:
+  NDetectorConstruction();
   virtual G4VPhysicalVolume *Construct() override = 0;
   void ConstructSDandField() override final;
   void ConstructBoxWorld(const double x, const double y, const double z,
@@ -49,11 +54,19 @@ public:
   };
   vector<shared_ptr<SourceVolume>> GetSourceVolumes() { return source_volumes; }
 
+  void set_molly_x(const double x) { molly_x = x; }
+  void set_zero_degree_x(const double x) { zero_degree_x = x; }
+  void set_zero_degree_y(const double y) { zero_degree_y = y; }
+
 protected:
   G4VSolid *world_solid;
   G4LogicalVolume *world_logical;
   G4VPhysicalVolume *world_phys;
 
+  NDetectorConstructionMessenger *messenger;
+
   vector<G4LogicalVolume *> sensitive_logical_volumes;
   vector<shared_ptr<SourceVolume>> source_volumes;
+
+  double molly_x, zero_degree_x, zero_degree_y;
 };

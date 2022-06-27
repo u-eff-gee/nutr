@@ -31,6 +31,11 @@ using std::runtime_error;
 #include "NDetectorConstruction.hh"
 #include "SensitiveDetector.hh"
 
+NDetectorConstruction::NDetectorConstruction()
+    : molly_x(0.), zero_degree_x(0.), zero_degree_y(30. * mm) {
+  messenger = new NDetectorConstructionMessenger(this);
+}
+
 void NDetectorConstruction::RegisterSensitiveLogicalVolumes(
     vector<G4LogicalVolume *> logical_volumes) {
   if (!logical_volumes.size()) {
