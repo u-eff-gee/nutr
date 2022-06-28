@@ -35,7 +35,7 @@ using std::vector;
 #include "G4SystemOfUnits.hh"
 
 #include "AngularCorrelation.hh"
-#include "DetectorConstruction.hh"
+#include "NDetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
 
 PrimaryGeneratorAction::PrimaryGeneratorAction(const long seed)
@@ -56,7 +56,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const long seed)
       G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
   particle_gun->SetParticleEnergy(1. * MeV);
 
-  source_volumes = ((DetectorConstruction *)G4RunManager::GetRunManager()
+  source_volumes = ((NDetectorConstruction *)G4RunManager::GetRunManager()
                         ->GetUserDetectorConstruction())
                        ->GetSourceVolumes();
   normalize_intensities();

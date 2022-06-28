@@ -52,6 +52,8 @@ else()
 endif()
 include(${Geant4_USE_FILE})
 
+find_package(alpaca)
+
 option(BUILD_DOCUMENTATION "Build doxygen documentation for some classes of nutr" OFF)
 if(BUILD_DOCUMENTATION)
   find_package(Doxygen)
@@ -71,8 +73,6 @@ option(GEOMETRY_2021-11-08_to_2021-11-21 "Build Clover Array geometry for time i
 option(GEOMETRY_2022-01-21_to_2022-02-05 "Build Clover Array geometry for time interval 2022-01-21 to 2022-02-05." ON)
 option(GEOMETRY_2022-02-07_to_2022-02-15 "Build Clover Array geometry for time interval 2022-02-07 to 2022-02-15." ON)
 option(GEOMETRY_2022-02-21_to_2022-03-02 "Build Clover Array geometry for time interval 2022-02-21 to 2022-03-02." ON)
-
-set(PRIMARY_GENERATOR_DIR "gps" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/fundamentals/primary_generator` that contains the desired primary generator Possible choices: 'gps' (default), 'angcorr'.")
 
 set(PRODUCTION_CUT_LOW_KEV "0.99" CACHE STRING "Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: '0.99', i.e. use default production cut of G4EmLivermorePolarizedPhysics). A straightforward way to view the current production cuts is the '/run/particle/dumpCutValues' macro command.")
 
@@ -124,7 +124,10 @@ if(${GEOMETRY_2022-02-21_to_2022-03-02})
   add_subdirectory(src/geometry/clover_array/2022-02-21_to_2022-03-02)
 endif()
 add_subdirectory(src/physics)
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/${PRIMARY_GENERATOR_DIR})
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/gps)
+if(${alpaca_FOUND})
+  add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/angcorr)
+endif()
 add_subdirectory(src/sensitive_detector)
 configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/NEventAction.hh.in ${PROJECT_BINARY_DIR}/include/sensitive_detector/NEventAction.hh)
 add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
