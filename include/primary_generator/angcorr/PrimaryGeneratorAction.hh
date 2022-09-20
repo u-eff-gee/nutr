@@ -22,37 +22,49 @@
 #include <functional>
 #include <memory>
 #include <random>
+#include <string_view>
+#include <vector>
 
-using std::mt19937;
 using std::shared_ptr;
 using std::uniform_real_distribution;
 using std::unique_ptr;
+using std::vector;
 
-#include "G4ParticleGun.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
-#include "CascadeRejectionSampler.hh"
-#include "SourceVolume.hh"
+class PrimaryGeneratorMessenger;
+class G4ParticleGun;
+class SourceVolume;
+class CascadeRejectionSampler;
+class AngularCorrelation;
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 public:
-  PrimaryGeneratorAction(const long seed);
+  PrimaryGeneratorAction(long seed);
 
   void GeneratePrimaries(G4Event *) override final;
+
+  void set_cascade(const std::string &);
+  void set_energies(const std::string &);
+  void set_particle(const std::string &);
 
 private:
   void normalize_intensities();
 
   unique_ptr<G4ParticleGun> particle_gun;
   unique_ptr<CascadeRejectionSampler> cas_rej_sam;
+  vector<double> cascade_energies;
+  vector<AngularCorrelation> cascade;
 
   vector<shared_ptr<SourceVolume>> source_volumes;
   vector<double> relative_intensities_normalized;
 
-  mt19937 random_engine; /**< Deterministic random number engine. */
+  PrimaryGeneratorMessenger *messenger;
+
+  std::mt19937 random_engine; /**< Deterministic random number engine. */
   uniform_real_distribution<double>
       uniform_random; /**< Uniform distribution from which all random numbers
                          are derived here. */
 
-  const long random_number_seed;
+  long random_number_seed;
 };

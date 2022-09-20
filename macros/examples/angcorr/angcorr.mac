@@ -3,4 +3,8 @@
 /run/numberOfThreads 1
 /run/initialize
 
+/alpaca/cascade 0+ 1- [0.3] 2 0
+/alpaca/energies 5000. 130. keV
+
+
 /run/beamOn
