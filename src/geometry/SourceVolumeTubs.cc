@@ -45,8 +45,16 @@ G4ThreeVector SourceVolumeTubs::operator()() {
   double random_z =
       (2. * uniform_random(random_engine) - 1.) * source_tubs->GetZHalfLength();
 
-  return G4ThreeVector(random_r * cos(random_phi), random_r * sin(random_phi),
-                       random_z)
-             .transform(*source_physical->GetRotation()) +
-         source_physical->GetTranslation();
+  G4RotationMatrix rotation;
+  if (source_physical->GetRotation()) {
+    rotation = *(source_physical->GetRotation());
+  }
+  auto translation = source_physical->GetTranslation();
+
+  auto res = G4ThreeVector(random_r * cos(random_phi),
+                           random_r * sin(random_phi), random_z)
+                 .transform(rotation) +
+             translation;
+
+  return res;
 }
