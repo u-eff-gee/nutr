@@ -26,6 +26,8 @@ add_library(collimatorRoom EXCLUDE_FROM_ALL CollimatorRoom.cc)
 add_library(comptonMonitorTarget EXCLUDE_FROM_ALL ComptonMonitorTarget.cc)
 
 add_library(target96Mo EXCLUDE_FROM_ALL Target96Mo.cc)
+target_include_directories(target96Mo PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
+target_link_libraries(target96Mo PUBLIC sourceVolume sourceVolumeTubs)
 
 add_library(comptonMonitor_2021-02-16_to_2021-04-18 EXCLUDE_FROM_ALL ComptonMonitor_2021-02-16_to_2021-04-18.cc)
 target_link_libraries(comptonMonitor_2021-02-16_to_2021-04-18 comptonMonitorTarget)

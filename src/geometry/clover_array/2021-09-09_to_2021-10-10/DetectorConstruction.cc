@@ -152,7 +152,9 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   RegisterSensitiveLogicalVolumes(
       detectors[detectors.size() - 1]->get_sensitive_logical_volumes());
 
-  Target96Mo(world_logical).Construct({});
+  auto target = Target96Mo(world_logical);
+  target.Construct({});
+  source_volumes.push_back(target.get_source_volume());
 
   return world_phys;
 }
