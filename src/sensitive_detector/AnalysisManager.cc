@@ -3,6 +3,8 @@
 
 using std::time;
 
+#include "G4Threading.hh"
+
 #include "AnalysisManager.hh"
 
 AnalysisManager::AnalysisManager() : fFactoryOn(false) {}
@@ -62,8 +64,10 @@ void AnalysisManager::Save() {
   analysisManager->Write();
   analysisManager->CloseFile();
 
-  G4cout << "Created output file '" << analysisManager->GetFileName() << "'."
-         << G4endl;
+  if (G4Threading::G4GetThreadId() == 0) {
+    G4cout << "Created output file '" << analysisManager->GetFileName() << "'."
+           << G4endl;
+  }
 
   fFactoryOn = false;
 }

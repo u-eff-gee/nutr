@@ -22,6 +22,8 @@
 #include <iostream>
 #include <memory>
 #include <ranges>
+#include <sstream>
+#include <stdexcept>
 #include <string_view>
 #include <system_error>
 #include <utility>
@@ -147,7 +149,7 @@ parse_angular_correlation(std::vector<State> states,
 
 PrimaryGeneratorAction::PrimaryGeneratorAction(const long seed)
     : G4VUserPrimaryGeneratorAction(), cas_rej_sam(nullptr),
-      random_number_seed(seed) {
+      random_number_seed(seed + G4Threading::G4GetThreadId()) {
 
   particle_gun = make_unique<G4ParticleGun>(1);
   particle_gun->SetParticleDefinition(
@@ -161,9 +163,12 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const long seed)
   normalize_intensities();
 
   if (source_volumes.size() > 0) {
-    random_engine = mt19937(random_number_seed);
+    random_engine = mt19937(random_number_seed +
+                            2 * G4Threading::GetNumberOfRunningWorkerThreads());
     for (size_t i = 0; i < source_volumes.size(); ++i) {
-      source_volumes[i]->initialize(random_number_seed);
+      source_volumes[i]->initialize(
+          random_number_seed +
+          (10 + i) * G4Threading::GetNumberOfRunningWorkerThreads());
     }
   }
 }
@@ -237,11 +242,17 @@ void PrimaryGeneratorAction::set_energies(const std::string &s_energies) {
   }
 
   auto unit = s_energies.substr(start, end - start);
-  std::cout << "Set alpaca energies to";
-  for (auto energy : cascade_energies) {
-    std::cout << " " << energy << " " << unit;
+  if (G4Threading::G4GetThreadId() == 0) {
+    std::stringstream ss;
+    ss << "Set alpaca energies to";
+    for (auto energy : cascade_energies) {
+      ss << " " << energy << " " << unit << ",";
+    }
+    ss.seekp(-1, ss.cur);
+    ss << ".\n";
+    std::cout << ss.str();
   }
-  std::cout << ".\n";
+
   double k = G4UnitDefinition::GetValueOf(unit);
   std::transform(cascade_energies.cbegin(), cascade_energies.cend(),
                  cascade_energies.begin(), [k](double c) { return c * k; });
@@ -251,18 +262,26 @@ void PrimaryGeneratorAction::set_cascade(const std::string &s_cascade) {
   auto [states, deltas] = parse_cascade(s_cascade);
   cascade = parse_angular_correlation(states, deltas);
 
-  std::cout << "Set alpaca cascade to";
-  for (auto &state : states) {
-    std::cout << " " << state.str_rep();
+  if (G4Threading::G4GetThreadId() == 0) {
+    std::stringstream ss;
+    ss << "Set alpaca cascade to";
+    for (auto &state : states) {
+      ss << " " << state.str_rep() << " ->";
+    }
+    ss.seekp(-3, ss.cur);
+    ss << ", with deltas";
+    for (auto delta : deltas) {
+      ss << " " << delta << ",";
+    }
+    ss.seekp(-1, ss.cur);
+    ss << ".\n";
+    std::cout << ss.str();
   }
-  std::cout << ", with deltas";
-  for (auto delta : deltas) {
-    std::cout << " " << delta;
-  }
-  std::cout << ".\n";
 
   cas_rej_sam = unique_ptr<CascadeRejectionSampler>(new CascadeRejectionSampler(
-      cascade, random_number_seed, {0., 0., 0.}, false));
+      cascade,
+      random_number_seed + 3 * G4Threading::GetNumberOfRunningWorkerThreads(),
+      {0., 0., 0.}, false));
 }
 
 void PrimaryGeneratorAction::set_particle(const std::string &particle) {
