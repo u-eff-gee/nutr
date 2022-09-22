@@ -44,7 +44,6 @@ using std::vector;
 #include "CascadeRejectionSampler.hh"
 #include "NDetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
-#include "PrimaryGeneratorMessenger.hh"
 #include "SourceVolume.hh"
 #include "State.hh"
 
@@ -148,23 +147,21 @@ parse_angular_correlation(std::vector<State> states,
 }
 
 PrimaryGeneratorAction::PrimaryGeneratorAction(const long seed)
-    : G4VUserPrimaryGeneratorAction(), cas_rej_sam(nullptr),
-      random_number_seed(seed + G4Threading::G4GetThreadId()) {
+    : G4VUserPrimaryGeneratorAction(),
+      particle_gun(make_unique<G4ParticleGun>(1)), cas_rej_sam(nullptr),
+      force_point_source(false),
+      source_volumes(((NDetectorConstruction *)G4RunManager::GetRunManager()
+                          ->GetUserDetectorConstruction())
+                         ->GetSourceVolumes()),
+      messenger(this), random_number_seed(seed + G4Threading::G4GetThreadId()),
+      random_engine(random_number_seed +
+                    2 * G4Threading::GetNumberOfRunningWorkerThreads()) {
 
-  particle_gun = make_unique<G4ParticleGun>(1);
   particle_gun->SetParticleDefinition(
       G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
 
-  messenger = new PrimaryGeneratorMessenger(this);
-
-  source_volumes = ((NDetectorConstruction *)G4RunManager::GetRunManager()
-                        ->GetUserDetectorConstruction())
-                       ->GetSourceVolumes();
   normalize_intensities();
-
-  if (source_volumes.size() > 0) {
-    random_engine = mt19937(random_number_seed +
-                            2 * G4Threading::GetNumberOfRunningWorkerThreads());
+  if (!force_point_source && source_volumes.size() > 0) {
     for (size_t i = 0; i < source_volumes.size(); ++i) {
       source_volumes[i]->initialize(
           random_number_seed +
@@ -175,22 +172,22 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const long seed)
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event *event) {
 
-  if (cascade_energies.size() != cascade.size() ||
-      cascade_energies.size() == 0) {
+  if (cascade.size() != cascade_energies.size() || cascade.size() == 0)
+      [[unlikely]] {
     std::cerr << "Alpaca not initialized. Use /alpaca/cascade and "
                  "/alpaca/energies.\n";
-    std::cerr << "cascade_energies: " << cascade_energies.size() << "\n";
-    std::cerr << "cascade: " << cascade.size() << "\n";
     event->SetEventAborted();
     return;
   }
 
-  const double ran_uni = uniform_random(random_engine);
-  for (size_t i = 0; i < source_volumes.size(); ++i) {
-    if (ran_uni <= relative_intensities_normalized[i]) {
-      auto position = source_volumes[i]->operator()();
-      particle_gun->SetParticlePosition(position);
-      break;
+  if (!force_point_source) {
+    const double ran_uni = uniform_random(random_engine);
+    for (size_t i = 0; i < source_volumes.size(); ++i) {
+      if (ran_uni <= relative_intensities_normalized[i]) {
+        auto position = source_volumes[i]->operator()();
+        particle_gun->SetParticlePosition(position);
+        break;
+      }
     }
   }
 
@@ -288,4 +285,8 @@ void PrimaryGeneratorAction::set_cascade(const std::string &s_cascade) {
 void PrimaryGeneratorAction::set_particle(const std::string &particle) {
   particle_gun->SetParticleDefinition(
       G4ParticleTable::GetParticleTable()->FindParticle(particle));
+}
+
+void PrimaryGeneratorAction::set_force_point_source(bool force) {
+  force_point_source = force;
 }

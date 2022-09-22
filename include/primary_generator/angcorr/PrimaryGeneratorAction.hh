@@ -31,6 +31,7 @@ using std::unique_ptr;
 using std::vector;
 
 #include "G4VUserPrimaryGeneratorAction.hh"
+#include "PrimaryGeneratorMessenger.hh"
 
 class PrimaryGeneratorMessenger;
 class G4ParticleGun;
@@ -47,6 +48,7 @@ public:
   void set_cascade(const std::string &);
   void set_energies(const std::string &);
   void set_particle(const std::string &);
+  void set_force_point_source(bool);
 
 private:
   void normalize_intensities();
@@ -55,16 +57,16 @@ private:
   unique_ptr<CascadeRejectionSampler> cas_rej_sam;
   vector<double> cascade_energies;
   vector<AngularCorrelation> cascade;
+  bool force_point_source;
 
   vector<shared_ptr<SourceVolume>> source_volumes;
   vector<double> relative_intensities_normalized;
 
-  PrimaryGeneratorMessenger *messenger;
+  PrimaryGeneratorMessenger messenger;
 
+  long random_number_seed;
   std::mt19937 random_engine; /**< Deterministic random number engine. */
   uniform_real_distribution<double>
       uniform_random; /**< Uniform distribution from which all random numbers
                          are derived here. */
-
-  long random_number_seed;
 };
