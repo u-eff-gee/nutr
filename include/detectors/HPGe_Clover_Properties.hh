@@ -30,6 +30,10 @@
 
 #pragma once
 
+#include <string_view>
+
+using std::string_view;
+
 struct HPGe_Clover_Properties {
   // Struct that contains the dimensions of a clover detector
   //
@@ -80,14 +84,14 @@ struct HPGe_Clover_Properties {
   double end_cap_back_rounding_radius; // Rounding radius of the edges
   double end_cap_back_length; // Length of the end cap around the electronics.
   double end_cap_back_thickness; // Thickness of the end cap
-  string end_cap_material;
+  string_view end_cap_material;
 
   // Connection between dewar and mount cup / end cap
   // Contains the cold finger and electronics, but the latter are not
   // implemented here. Assumed to consist of solid aluminium.
   double connection_length; // Length of the connecting piece
   double connection_radius; // Radius of the connecting piece
-  string connection_material;
+  string_view connection_material;
 
   // Dewar
   // A cylindric tube with top and bottom
@@ -95,5 +99,5 @@ struct HPGe_Clover_Properties {
   double dewar_outer_radius;   // Outer radius, can be measured most easily
   double dewar_wall_thickness; // Dewar wall thickness. Assumed to be the same
                                // for top, bottom and side
-  string dewar_material;
+  string_view dewar_material;
 };
