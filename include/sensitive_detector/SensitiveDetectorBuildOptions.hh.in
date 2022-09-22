@@ -19,8 +19,10 @@
 
 #pragma once
 
+// clang-format off
 #cmakedefine UPDATE_FREQUENCY @UPDATE_FREQUENCY@
 #cmakedefine01 TRACK_PRIMARY
+// clang-format on
 
 struct SensitiveDetectorBuildOptions {
   constexpr static int update_frequency = UPDATE_FREQUENCY;
