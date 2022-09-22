@@ -29,29 +29,35 @@ using std::dynamic_pointer_cast;
 
 void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
 
+  analysisManager->CreateNtuple("edep", "Energy Deposition");
+
+  AnalysisManager::CreateNtupleColumns(analysisManager);
+
   n_sensitive_detectors = ((DetectorConstruction *)G4RunManager::GetRunManager()
                                ->GetUserDetectorConstruction())
                               ->GetNumberOfSensitiveDetectors();
 
-  analysisManager->CreateNtuple("edep", "Energy Deposition");
   for (size_t i = 0; i < n_sensitive_detectors; ++i) {
     analysisManager->CreateNtupleDColumn("det" + to_string(i));
   }
 }
 
-void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
-                                     [[maybe_unused]] const G4Event *event,
-                                     vector<shared_ptr<G4VHit>> hits) {
+size_t TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
+                                       const G4Event *event,
+                                       vector<shared_ptr<G4VHit>> &hits) {
+
+  auto col = AnalysisManager::FillNtupleColumns(analysisManager, event, hits);
 
   for (size_t i = 0; i < hits.size(); ++i) {
     analysisManager->FillNtupleDColumn(
-        0, i, dynamic_pointer_cast<DetectorHit>(hits[i])->GetEdep());
+        0, col++, dynamic_pointer_cast<DetectorHit>(hits[i])->GetEdep());
   }
   // The number of entries in std::vector hits will only be as large as highest
   // ID of all detectors that were hit. There may be detectors with an even
   // higher ID which were not hit. Fill all higher IDs than hits.size()-1 with
   // zeros.
   for (size_t i = hits.size(); i < n_sensitive_detectors; ++i) {
-    analysisManager->FillNtupleDColumn(0, i, 0.);
+    analysisManager->FillNtupleDColumn(0, col++, 0.);
   }
+  return col;
 }

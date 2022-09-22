@@ -76,10 +76,6 @@ option(GEOMETRY_2022-02-21_to_2022-03-02 "Build Clover Array geometry for time i
 
 set(PRODUCTION_CUT_LOW_KEV "0.99" CACHE STRING "Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: '0.99', i.e. use default production cut of G4EmLivermorePolarizedPhysics). A straightforward way to view the current production cuts is the '/run/particle/dumpCutValues' macro command.")
 
-set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/sensitive_detector` that contains the desired sensitive detector. Possible choices: `edep`, `event` (default), `flux`, `tracker`.")
-
-set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
-
 add_compile_options(-Wall -Wextra -Wpedantic)
 
 add_subdirectory(src/detectors)
@@ -129,8 +125,6 @@ if(${alpaca_FOUND})
   add_subdirectory(${PROJECT_SOURCE_DIR}/src/primary_generator/angcorr)
 endif()
 add_subdirectory(src/sensitive_detector)
-configure_file(${PROJECT_SOURCE_DIR}/include/sensitive_detector/NEventAction.hh.in ${PROJECT_BINARY_DIR}/include/sensitive_detector/NEventAction.hh)
-add_subdirectory(src/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 
 set(MACROS_ESSENTIAL init_vis.mac vis.mac)
 foreach(macro ${MACROS_ESSENTIAL})

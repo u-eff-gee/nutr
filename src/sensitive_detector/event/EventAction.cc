@@ -29,6 +29,7 @@ using std::shared_ptr;
 
 #include "DetectorHit.hh"
 #include "EventAction.hh"
+#include "SensitiveDetectorBuildOptions.hh"
 
 EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
@@ -64,7 +65,7 @@ void EventAction::EndOfEventAction(const G4Event *event) {
     }
   }
 
-  if (sum_edep > 0.) {
+  if (sensitive_detector_build_options.track_primary || sum_edep > 0.) {
     analysis_manager->FillNtuple(event, hits);
   }
 }

@@ -188,7 +188,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event *event) {
   const double ran_uni = uniform_random(random_engine);
   for (size_t i = 0; i < source_volumes.size(); ++i) {
     if (ran_uni <= relative_intensities_normalized[i]) {
-      particle_gun->SetParticlePosition(source_volumes[i]->operator()());
+      auto position = source_volumes[i]->operator()();
+      particle_gun->SetParticlePosition(position);
       break;
     }
   }

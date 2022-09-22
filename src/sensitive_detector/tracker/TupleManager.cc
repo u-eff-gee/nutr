@@ -22,7 +22,7 @@
 
 void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   analysisManager->CreateNtuple("hits", "Hits");
-  analysisManager->CreateNtupleIColumn("evid");
+  AnalysisManager::CreateNtupleColumns(analysisManager);
   analysisManager->CreateNtupleIColumn("trid");
   analysisManager->CreateNtupleIColumn("paid");
   analysisManager->CreateNtupleIColumn("deid");
@@ -37,32 +37,34 @@ void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   analysisManager->CreateNtupleDColumn("momz");
 }
 
-void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
-                                     const G4Event *event,
-                                     vector<shared_ptr<G4VHit>> hits) {
-  analysisManager->FillNtupleIColumn(0, 0, event->GetEventID());
+size_t TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
+                                       const G4Event *event,
+                                       vector<shared_ptr<G4VHit>> &hits) {
+  auto col = AnalysisManager::FillNtupleColumns(analysisManager, event, hits);
   analysisManager->FillNtupleIColumn(
-      0, 1, dynamic_pointer_cast<DetectorHit>(hits[0])->GetTrackID());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetTrackID());
   analysisManager->FillNtupleIColumn(
-      0, 2, dynamic_pointer_cast<DetectorHit>(hits[0])->GetParticleID());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetParticleID());
   analysisManager->FillNtupleIColumn(
-      0, 3, dynamic_pointer_cast<DetectorHit>(hits[0])->GetDetectorID());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetDetectorID());
   analysisManager->FillNtupleDColumn(
-      0, 4, dynamic_pointer_cast<DetectorHit>(hits[0])->GetGlobalTime());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetGlobalTime());
   analysisManager->FillNtupleDColumn(
-      0, 5, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEdep());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEdep());
   analysisManager->FillNtupleDColumn(
-      0, 6, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEkin());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEkin());
   analysisManager->FillNtupleDColumn(
-      0, 7, dynamic_pointer_cast<DetectorHit>(hits[0])->GetPos().x());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetPos().x());
   analysisManager->FillNtupleDColumn(
-      0, 8, dynamic_pointer_cast<DetectorHit>(hits[0])->GetPos().y());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetPos().y());
   analysisManager->FillNtupleDColumn(
-      0, 9, dynamic_pointer_cast<DetectorHit>(hits[0])->GetPos().z());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetPos().z());
   analysisManager->FillNtupleDColumn(
-      0, 10, dynamic_pointer_cast<DetectorHit>(hits[0])->GetMom().x());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetMom().x());
   analysisManager->FillNtupleDColumn(
-      0, 11, dynamic_pointer_cast<DetectorHit>(hits[0])->GetMom().y());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetMom().y());
   analysisManager->FillNtupleDColumn(
-      0, 12, dynamic_pointer_cast<DetectorHit>(hits[0])->GetMom().z());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetMom().z());
+
+  return col;
 }

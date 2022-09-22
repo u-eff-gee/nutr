@@ -44,12 +44,12 @@ public:
   ~AnalysisManager();
 
   void Book(string output_file_name);
-  virtual void CreateNtupleColumns(G4AnalysisManager *analysisManager) = 0;
-  virtual void FillNtuple(const G4Event *event,
-                          vector<shared_ptr<G4VHit>> hits);
-  virtual void FillNtupleColumns(G4AnalysisManager *analysisManager,
-                                 const G4Event *event,
-                                 vector<shared_ptr<G4VHit>> hits) = 0;
+  [[maybe_unused]] virtual void
+  CreateNtupleColumns(G4AnalysisManager *analysisManager);
+  void FillNtuple(const G4Event *event, vector<shared_ptr<G4VHit>> &hits);
+  [[maybe_unused]] virtual size_t
+  FillNtupleColumns(G4AnalysisManager *analysisManager, const G4Event *event,
+                    vector<shared_ptr<G4VHit>> &hits);
   void Save();
 
 protected:

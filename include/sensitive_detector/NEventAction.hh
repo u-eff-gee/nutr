@@ -19,18 +19,23 @@
 
 #pragma once
 
+#include "G4Event.hh"
+#include "G4UserEventAction.hh"
+#include "globals.hh"
+
 #include "AnalysisManager.hh"
+#include "SensitiveDetectorBuildOptions.hh"
 
-class TupleManager : public AnalysisManager {
+class NEventAction : public G4UserEventAction {
 public:
-  TupleManager() : AnalysisManager(), n_sensitive_detectors(0){};
+  NEventAction(AnalysisManager *ana_man)
+      : G4UserEventAction(), analysis_manager(ana_man),
+        update_frequency(sensitive_detector_build_options.update_frequency){};
 
-  void CreateNtupleColumns(G4AnalysisManager *analysisManager) override;
+  void BeginOfEventAction(const G4Event *event) override final;
+  virtual void EndOfEventAction(const G4Event *) = 0;
 
-  size_t FillNtupleColumns(G4AnalysisManager *analysisManager,
-                           const G4Event *event,
-                           vector<shared_ptr<G4VHit>> &hits) override;
-
-private:
-  size_t n_sensitive_detectors;
+protected:
+  AnalysisManager *analysis_manager;
+  const int update_frequency;
 };
