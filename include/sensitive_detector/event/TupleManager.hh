@@ -27,7 +27,8 @@ public:
 
   void CreateNtupleColumns(G4AnalysisManager *analysisManager) override;
 
-  void FillNtupleColumns(G4AnalysisManager *analysisManager, int eventID,
+  void FillNtupleColumns(G4AnalysisManager *analysisManager,
+                         const G4Event *event,
                          vector<shared_ptr<G4VHit>> hits) override;
 
 private:

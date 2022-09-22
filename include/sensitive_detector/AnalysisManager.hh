@@ -31,10 +31,10 @@ using std::shared_ptr;
 #include <vector>
 
 using std::string;
-using std::to_string;
 using std::vector;
 
 #include "G4AnalysisManager.hh"
+#include "G4Event.hh"
 #include "G4VHit.hh"
 #include "globals.hh"
 
@@ -45,9 +45,10 @@ public:
 
   void Book(string output_file_name);
   virtual void CreateNtupleColumns(G4AnalysisManager *analysisManager) = 0;
-  virtual void FillNtuple(int eventID, vector<shared_ptr<G4VHit>> hits);
+  virtual void FillNtuple(const G4Event *event,
+                          vector<shared_ptr<G4VHit>> hits);
   virtual void FillNtupleColumns(G4AnalysisManager *analysisManager,
-                                 int eventID,
+                                 const G4Event *event,
                                  vector<shared_ptr<G4VHit>> hits) = 0;
   void Save();
 

@@ -31,8 +31,6 @@ using std::make_shared;
 EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
 void EventAction::EndOfEventAction(const G4Event *event) {
-  int eventID = event->GetEventID();
-
   G4VHitsCollection *hc = nullptr;
   for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
        ++n_hc) {
@@ -40,6 +38,6 @@ void EventAction::EndOfEventAction(const G4Event *event) {
 
     for (size_t i = 0; i < hc->GetSize(); ++i)
       analysis_manager->FillNtuple(
-          eventID, {make_shared<DetectorHit>((DetectorHit *)hc->GetHit(i))});
+          event, {make_shared<DetectorHit>((DetectorHit *)hc->GetHit(i))});
   }
 }
