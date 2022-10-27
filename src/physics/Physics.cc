@@ -30,12 +30,17 @@ Physics::Physics() {
 
   RegisterPhysics(new G4EmLivermorePolarizedPhysics());
 
-  G4EmExtraPhysics *emExtraPhysics = new G4EmExtraPhysics();
-  emExtraPhysics->LENDGammaNuclear(physics_build_options.use_lendgammanuclear);
-  RegisterPhysics(emExtraPhysics);
+  if constexpr (physics_build_options.use_em_extra_physics) {
+    G4EmExtraPhysics *emExtraPhysics = new G4EmExtraPhysics();
+    emExtraPhysics->LENDGammaNuclear(
+        physics_build_options.use_lendgammanuclear);
+    RegisterPhysics(emExtraPhysics);
+  }
 
-  RegisterPhysics(new G4DecayPhysics());
-  RegisterPhysics(new G4RadioactiveDecayPhysics());
+  if constexpr (physics_build_options.use_decay_physics) {
+    RegisterPhysics(new G4DecayPhysics());
+    RegisterPhysics(new G4RadioactiveDecayPhysics());
+  }
 
   if constexpr (physics_build_options.use_hadron_physics) {
     RegisterPhysics(new HadronElastic());

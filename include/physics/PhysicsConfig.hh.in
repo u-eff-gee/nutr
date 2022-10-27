@@ -22,6 +22,8 @@
 // clang-format off
 #cmakedefine01 USE_HADRON_PHYSICS
 #cmakedefine01 USE_LENDGAMMANUCLEAR
+#cmakedefine01 USE_EM_EXTRA_PHYSICS
+#cmakedefine01 USE_DECAY_PHYSICS
 #cmakedefine PRODUCTION_CUT_LOW_KEV @PRODUCTION_CUT_LOW_KEV@
 
 #include "@HADRON_ELASTIC@.hh"
@@ -33,8 +35,13 @@ using HadronInelastic = @HADRON_INELASTIC@;
 
 struct PhysicsBuildOptions {
   constexpr static double production_cut_low_keV = PRODUCTION_CUT_LOW_KEV;
-  constexpr static bool use_hadron_physics = static_cast<bool>(USE_HADRON_PHYSICS);
-  constexpr static bool use_lendgammanuclear = static_cast<bool>(USE_LENDGAMMANUCLEAR);
+  constexpr static bool use_hadron_physics =
+      static_cast<bool>(USE_HADRON_PHYSICS);
+  constexpr static bool use_lendgammanuclear =
+      static_cast<bool>(USE_LENDGAMMANUCLEAR);
+  constexpr static bool use_em_extra_physics =
+      static_cast<bool>(USE_EM_EXTRA_PHYSICS);
+  constexpr static bool use_decay_physics =
+      static_cast<bool>(USE_DECAY_PHYSICS);
 };
 inline constexpr PhysicsBuildOptions physics_build_options;
-

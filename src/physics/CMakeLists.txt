@@ -19,7 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/physics
 
 if(DEFINED ENV{G4LENDDATA})
   set(USE_LENDGAMMANUCLEAR
-      "true"
+      ON
       CACHE STRING "Use LENDGammaNuclear option of G4EmExtraPhysics.")
   set(HADRON_ELASTIC
       "G4HadronElasticPhysicsLEND"
@@ -33,7 +33,7 @@ else()
       "Warning: Low-energy nuclear data (LEND) not found, using fallback physics models."
   )
   set(USE_LENDGAMMANUCLEAR
-      "false"
+      OFF
       CACHE STRING "Do not use LENDGammaNuclear option of G4EmExtraPhysics.")
   set(HADRON_ELASTIC
       "G4HadronElasticPhysicsHP"
@@ -47,6 +47,11 @@ option(
   USE_HADRON_PHYSICS
   "Include hadron physics lists (default: ON). Excluding hadron physics can speed up the startup of the simulation. This is useful, for example, when you only want to visualize the geometry. It might speed up the actual simulation as well, but sometimes hadron interactions cannot be neglected."
   ON)
+option(
+  USE_DECAY_PHYSICS
+  "Include decay physics and radioactive decay physics lists (default: ON)." ON)
+option(USE_EM_EXTRA_PHYSICS
+       "Include extra electromagnetic physics (default: ON)." ON)
 configure_file(${PROJECT_SOURCE_DIR}/include/physics/PhysicsConfig.hh.in
                ${PROJECT_BINARY_DIR}/include/physics/PhysicsConfig.hh)
 
