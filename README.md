@@ -61,6 +61,10 @@ For an overview of all available command-line options, execute
 
     $ nutr_GEOMETRY --help
 
+Alternatively, it is also possible to supply commands using a pipe:
+
+    $ cat MACRO | nutr_GEOMETRY
+
 ### 2.2 Build Variables
 
 After the first build step, several `CMake` build variables will be available for a customization of the build.
