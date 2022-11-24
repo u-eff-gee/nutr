@@ -1,6 +1,5 @@
 /run/numberOfThreads
 /run/initialize
-/random/setSeeds 0 0
 
 ## Define particle
 
