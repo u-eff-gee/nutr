@@ -37,11 +37,19 @@ void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   for (size_t i = 0; i < n_sensitive_detectors; ++i) {
     analysisManager->CreateNtupleDColumn("det" + to_string(i));
   }
+  analysisManager->CreateNtupleDColumn("x0");
+  analysisManager->CreateNtupleDColumn("y0");
+  analysisManager->CreateNtupleDColumn("z0");
+  analysisManager->CreateNtupleDColumn("px0");
+  analysisManager->CreateNtupleDColumn("py0");
+  analysisManager->CreateNtupleDColumn("pz0");
+  analysisManager->CreateNtupleDColumn("E0");
 }
 
 void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
                                      [[maybe_unused]] int eventID,
-                                     vector<shared_ptr<G4VHit>> hits) {
+                                     vector<shared_ptr<G4VHit>> hits,
+                                     G4PrimaryVertex *primary_vertex) {
 
   for (size_t i = 0; i < hits.size(); ++i) {
     analysisManager->FillNtupleDColumn(
@@ -54,4 +62,22 @@ void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
   for (size_t i = hits.size(); i < n_sensitive_detectors; ++i) {
     analysisManager->FillNtupleDColumn(0, i, 0.);
   }
+  analysisManager->FillNtupleDColumn(0, n_sensitive_detectors,
+                                     primary_vertex->GetPosition().x());
+  analysisManager->FillNtupleDColumn(0, n_sensitive_detectors + 1,
+                                     primary_vertex->GetPosition().y());
+  analysisManager->FillNtupleDColumn(0, n_sensitive_detectors + 2,
+                                     primary_vertex->GetPosition().z());
+  analysisManager->FillNtupleDColumn(
+      0, n_sensitive_detectors + 3,
+      primary_vertex->GetPrimary(0)->GetMomentumDirection().x());
+  analysisManager->FillNtupleDColumn(
+      0, n_sensitive_detectors + 4,
+      primary_vertex->GetPrimary(0)->GetMomentumDirection().y());
+  analysisManager->FillNtupleDColumn(
+      0, n_sensitive_detectors + 5,
+      primary_vertex->GetPrimary(0)->GetMomentumDirection().z());
+  analysisManager->FillNtupleDColumn(
+      0, n_sensitive_detectors + 6,
+      primary_vertex->GetPrimary(0)->GetKineticEnergy());
 }

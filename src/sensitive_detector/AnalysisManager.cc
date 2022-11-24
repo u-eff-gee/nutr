@@ -46,10 +46,11 @@ void AnalysisManager::Book(string output_file_name) {
   fFactoryOn = true;
 }
 
-void AnalysisManager::FillNtuple(int eventID, vector<shared_ptr<G4VHit>> hits) {
+void AnalysisManager::FillNtuple(int eventID, vector<shared_ptr<G4VHit>> hits,
+                                 G4PrimaryVertex *primary_vertex) {
 
   G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
-  FillNtupleColumns(analysisManager, eventID, hits);
+  FillNtupleColumns(analysisManager, eventID, hits, primary_vertex);
   analysisManager->AddNtupleRow(0);
 }
 

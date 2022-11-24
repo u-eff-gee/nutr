@@ -66,6 +66,6 @@ void EventAction::EndOfEventAction(const G4Event *event) {
   }
 
   if (sum_edep > 0.) {
-    analysis_manager->FillNtuple(eventID, hits);
+    analysis_manager->FillNtuple(eventID, hits, event->GetPrimaryVertex(0));
   }
 }

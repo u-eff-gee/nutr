@@ -51,7 +51,8 @@ void EventAction::EndOfEventAction(const G4Event *event) {
       cumulative_hit->SetDetectorID(
           ((DetectorHit *)hc->GetHit(0))->GetDetectorID());
       cumulative_hit->SetEdep(edep);
-      analysis_manager->FillNtuple(eventID, {cumulative_hit});
+      analysis_manager->FillNtuple(eventID, {cumulative_hit},
+                                   event->GetPrimaryVertex(0));
     }
   }
 }

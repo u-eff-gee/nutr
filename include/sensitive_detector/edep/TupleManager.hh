@@ -28,5 +28,6 @@ public:
   void CreateNtupleColumns(G4AnalysisManager *analysisManager) override;
 
   void FillNtupleColumns(G4AnalysisManager *analysisManager, int eventID,
-                         vector<shared_ptr<G4VHit>> hits) override;
+                         vector<shared_ptr<G4VHit>> hits,
+                         G4PrimaryVertex *primary_vertex) override;
 };
