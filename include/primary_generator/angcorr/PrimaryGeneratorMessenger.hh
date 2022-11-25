@@ -20,6 +20,7 @@
 #pragma once
 
 #include "G4UIcmdWithAString.hh"
+#include "G4UIcmdWithABool.hh"
 #include "G4UIdirectory.hh"
 #include "G4UImessenger.hh"
 
@@ -32,8 +33,9 @@ public:
 
 private:
   PrimaryGeneratorAction *action;
-  G4UIdirectory *dir;
-  G4UIcmdWithAString *cmd_cascade;
-  G4UIcmdWithAString *cmd_energies;
-  G4UIcmdWithAString *cmd_particle;
+  G4UIdirectory dir;
+  G4UIcmdWithAString cmd_cascade;
+  G4UIcmdWithAString cmd_energies;
+  G4UIcmdWithAString cmd_particle;
+  G4UIcmdWithABool cmd_point_source;
 };

@@ -71,7 +71,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                  end_cap_outer_radius, end_cap_side_length * 0.5, 0., twopi);
   G4LogicalVolume *end_cap_side_logical = new G4LogicalVolume(
       end_cap_side_solid,
-      nist->FindOrBuildMaterial(properties.end_cap_material),
+      nist->FindOrBuildMaterial(string{properties.end_cap_material}),
       detector_name + "_end_cap_side_logical");
   end_cap_side_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
   new G4PVPlacement(rotation_matrix,
@@ -88,7 +88,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       properties.end_cap_window_thickness * 0.5, 0., twopi);
   G4LogicalVolume *end_cap_window_logical = new G4LogicalVolume(
       end_cap_window_solid,
-      nist->FindOrBuildMaterial(properties.end_cap_window_material),
+      nist->FindOrBuildMaterial(string{properties.end_cap_window_material}),
       detector_name + "_end_cap_window_logical");
   end_cap_window_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::White()));
@@ -129,7 +129,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       mount_cup_outer_radius, mount_cup_side_length * 0.5, 0., twopi);
   G4LogicalVolume *mount_cup_side_logical = new G4LogicalVolume(
       mount_cup_side_solid,
-      nist->FindOrBuildMaterial(properties.mount_cup_material),
+      nist->FindOrBuildMaterial(string{properties.mount_cup_material}),
       detector_name + "_mount_cup_side_logical");
   mount_cup_side_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Cyan()));
@@ -148,7 +148,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
       properties.mount_cup_thickness * 0.5, 0., twopi);
   G4LogicalVolume *mount_cup_face_logical = new G4LogicalVolume(
       mount_cup_face_solid,
-      nist->FindOrBuildMaterial(properties.mount_cup_material),
+      nist->FindOrBuildMaterial(string{properties.mount_cup_material}),
       detector_name + "_mount_cup_face_logical");
   mount_cup_face_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Cyan()));
@@ -167,7 +167,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                  properties.mount_cup_base_thickness * 0.5, 0., twopi);
   G4LogicalVolume *mount_cup_base_logical = new G4LogicalVolume(
       mount_cup_base_solid,
-      nist->FindOrBuildMaterial(properties.mount_cup_material),
+      nist->FindOrBuildMaterial(string{properties.mount_cup_material}),
       detector_name + "_mount_cup_base_logical");
   mount_cup_base_logical->SetVisAttributes(
       new G4VisAttributes(G4Color::Cyan()));
@@ -202,7 +202,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
 
   G4LogicalVolume *cold_finger_logical = new G4LogicalVolume(
       cold_finger_solid,
-      nist->FindOrBuildMaterial(properties.cold_finger_material),
+      nist->FindOrBuildMaterial(string{properties.cold_finger_material}),
       detector_name + "_cold_finger_logical", 0, 0, 0);
 
   cold_finger_logical->SetVisAttributes(
@@ -363,7 +363,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                    dewar_properties.connection_length * 0.5, 0., twopi);
     G4LogicalVolume *connection_logical = new G4LogicalVolume(
         connection_solid,
-        nist->FindOrBuildMaterial(dewar_properties.connection_material),
+        nist->FindOrBuildMaterial(string{dewar_properties.connection_material}),
         detector_name + "_connection_logical");
     connection_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
     new G4PVPlacement(
@@ -389,7 +389,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                    dewar_properties.dewar_wall_thickness * 0.5, 0., twopi);
     G4LogicalVolume *dewar_face_logical = new G4LogicalVolume(
         dewar_face_solid,
-        nist->FindOrBuildMaterial(dewar_properties.dewar_material),
+        nist->FindOrBuildMaterial(string{dewar_properties.dewar_material}),
         detector_name + "_dewar_face_logical");
     dewar_face_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(
@@ -412,7 +412,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                    0., twopi);
     G4LogicalVolume *dewar_side_logical = new G4LogicalVolume(
         dewar_side_solid,
-        nist->FindOrBuildMaterial(dewar_properties.dewar_material),
+        nist->FindOrBuildMaterial(string{dewar_properties.dewar_material}),
         detector_name + "_dewar_side_logical");
     dewar_side_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(
@@ -433,7 +433,7 @@ void HPGe_Coaxial::Construct_Detector(G4LogicalVolume *world_logical,
                    dewar_properties.dewar_wall_thickness * 0.5, 0., twopi);
     G4LogicalVolume *dewar_base_logical = new G4LogicalVolume(
         dewar_base_solid,
-        nist->FindOrBuildMaterial(dewar_properties.dewar_material),
+        nist->FindOrBuildMaterial(string{dewar_properties.dewar_material}),
         detector_name + "_dewar_base_logical");
     dewar_base_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(

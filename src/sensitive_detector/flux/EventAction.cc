@@ -31,8 +31,6 @@ using std::make_shared;
 EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
 void EventAction::EndOfEventAction(const G4Event *event) {
-  int eventID = event->GetEventID();
-
   G4VHitsCollection *hc = nullptr;
   int particleID{0}, trackID{0};
   shared_ptr<DetectorHit> hit;
@@ -43,7 +41,7 @@ void EventAction::EndOfEventAction(const G4Event *event) {
 
     if (hc->GetSize() > 0) {
       hit = make_shared<DetectorHit>((DetectorHit *)hc->GetHit(0));
-      analysis_manager->FillNtuple(eventID, {hit});
+      analysis_manager->FillNtuple(event, {hit});
       particleID = hit->GetParticleID();
       trackID = hit->GetTrackID();
 
@@ -51,7 +49,7 @@ void EventAction::EndOfEventAction(const G4Event *event) {
         hit = make_shared<DetectorHit>((DetectorHit *)hc->GetHit(i));
         if (hit->GetParticleID() != particleID ||
             hit->GetTrackID() != trackID) {
-          analysis_manager->FillNtuple(eventID, {hit});
+          analysis_manager->FillNtuple(event, {hit});
           particleID = hit->GetParticleID();
           trackID = hit->GetTrackID();
         }

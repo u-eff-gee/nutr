@@ -1,0 +1,25 @@
+/*
+ *
+ * CoaxB4Config.h is created automatically by cmake.
+ * To change settings of CoaxB4Config.hh, edit
+ * the CoaxB4Config.hh.in file in the include
+ * directory and execute cmake again.
+ * Note that this notice is copied from
+ * CoaxB4Config.hh.in to CoaxB4Config.hh.
+ *
+ */
+
+#pragma once
+
+#cmakedefine01 USE_TARGET
+
+#include "HPGe_Collection.hh"
+
+struct DetectorConstructionConfig {
+  constexpr static bool use_target = static_cast<bool>(USE_TARGET);
+  // clang-format off
+  constexpr static auto Coaxial_B4 = HPGe_Coaxial_Collection::@COAXIAL_B4@;
+  constexpr static auto Coaxial_B4_Dewar = HPGe_Coaxial_Collection::@COAXIAL_B4_DEWAR@;
+  // clang-format on
+};
+inline constexpr DetectorConstructionConfig detector_construction_config;

@@ -23,44 +23,57 @@
 #include <PrimaryGeneratorMessenger.hh>
 
 PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
-    PrimaryGeneratorAction *a_action)
-    : action(a_action) {
-  dir = new G4UIdirectory("/alpaca/");
-  dir->SetGuidance("Settings specific to the angular correlation simulation");
+    PrimaryGeneratorAction *a_action) :
+    action(a_action),
+    dir("/alpaca/"),
+    cmd_cascade("/alpaca/cascade", this),
+    cmd_energies("/alpaca/energies", this),
+    cmd_particle("/alpaca/particle", this),
+    cmd_point_source("/alpaca/point_source", this) {
+  // dir = new G4UIdirectory("/alpaca/");
+  dir.SetGuidance("Settings specific to the angular correlation simulation");
 
-  cmd_cascade = new G4UIcmdWithAString("/alpaca/cascade", this);
-  cmd_cascade->SetGuidance(
+  // cmd_cascade = new G4UIcmdWithAString("/alpaca/cascade", this);
+  cmd_cascade.SetGuidance(
       "Quantum numbers of states participating in simulated cascade.");
-  cmd_cascade->SetGuidance("A list of values is expected.");
-  cmd_cascade->SetGuidance("Non-zero multipole mixing ratios can be given in "
+  cmd_cascade.SetGuidance("A list of values is expected.");
+  cmd_cascade.SetGuidance("Non-zero multipole mixing ratios can be given in "
                            "square brackets inbetween states.");
-  cmd_cascade->SetGuidance("The first transition corresponds to the excitation "
+  cmd_cascade.SetGuidance("The first transition corresponds to the excitation "
                            "process and is not observed (no energy assigned).");
-  cmd_cascade->SetGuidance("Examples: 0+ 1- [0.1] 2 0");
-  cmd_cascade->SetGuidance("          3/2- [-0.8] 5/2+ [0.8] 3/2");
-  cmd_cascade->SetParameterName("cascade", false);
+  cmd_cascade.SetGuidance("Examples: 0+ 1- [0.1] 2 0");
+  cmd_cascade.SetGuidance("          3/2- [-0.8] 5/2+ [0.8] 3/2");
+  cmd_cascade.SetParameterName("cascade", false);
 
-  cmd_energies = new G4UIcmdWithAString("/alpaca/energies", this);
-  cmd_energies->SetGuidance(
+  // cmd_energies = new G4UIcmdWithAString("/alpaca/energies", this);
+  cmd_energies.SetGuidance(
       "Gamma-ray energies of transitions in simulated cascade.");
-  cmd_energies->SetGuidance("A list of values is expected, with the "
+  cmd_energies.SetGuidance("A list of values is expected, with the "
                             "last parameter corresponding to the unit.");
-  cmd_energies->SetParameterName("energies", false);
+  cmd_energies.SetParameterName("energies", false);
 
-  cmd_particle = new G4UIcmdWithAString("/alpaca/particle", this);
-  cmd_particle->SetGuidance("Add primary particle.");
-  cmd_particle->SetGuidance("Default: gamma");
-  cmd_particle->SetParameterName("particlename", true);
-  cmd_particle->SetDefaultValue("gamma");
+  // cmd_particle = new G4UIcmdWithAString("/alpaca/particle", this);
+  cmd_particle.SetGuidance("Add primary particle.");
+  cmd_particle.SetGuidance("Default: gamma");
+  cmd_particle.SetParameterName("particlename", true);
+  cmd_particle.SetDefaultValue("gamma");
+  
+  // cmd_point_source = new G4UIcmdWithABool("/alpaca/point_source", this);
+  cmd_point_source.SetGuidance("Emit particles from point-source instead of extended source volume.");
+  cmd_point_source.SetGuidance("Default: false");
+  cmd_point_source.SetParameterName("force_point_source", true);
+  cmd_point_source.SetDefaultValue("false");
 }
 
 void PrimaryGeneratorMessenger::SetNewValue(G4UIcommand *command,
                                             G4String str) {
-  if (command == cmd_cascade) {
+  if (command == &cmd_cascade) {
     action->set_cascade(str);
-  } else if (command == cmd_energies) {
+  } else if (command == &cmd_energies) {
     action->set_energies(str);
-  } else if (command == cmd_particle) {
+  } else if (command == &cmd_particle) {
     action->set_particle(str);
+  } else if (command == &cmd_point_source) {
+    action->set_force_point_source(cmd_point_source.GetNewBoolValue(str));
   }
 }

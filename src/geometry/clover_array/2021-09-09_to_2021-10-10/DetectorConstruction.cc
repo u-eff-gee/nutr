@@ -27,7 +27,6 @@
 
 #include "BeamPipe.hh"
 #include "CeBr3_2x2.hh"
-#include "CoaxB4Config.hh"
 #include "CollimatorRoom.hh"
 #include "ComptonMonitor_2021-09-09_to_2021-10-10.hh"
 #include "GammaVault.hh"
@@ -40,6 +39,8 @@
 #include "Mechanical.hh"
 #include "Target96Mo.hh"
 #include "ZeroDegreeMechanical.hh"
+
+#include "DetectorConstructionConfig.hh"
 
 constexpr double inch = 25.4 * mm;
 
@@ -70,7 +71,8 @@ vector<Detector *> detectors = {
                     {{{"G4_Cu", cu_thin}, {"G4_Pb", pb_thin}}, true}, {},
                     0.5 * pi),
     new HPGe_Coaxial(
-        "coaxial_B4", COAXIAL_B4, COAXIAL_B4_DEWAR, 125.26 * deg, 135. * deg,
+        "coaxial_B4", detector_construction_config.Coaxial_B4,
+        detector_construction_config.Coaxial_B4_Dewar, 125.26 * deg, 135. * deg,
         9.25 * inch,
         {
             {{"G4_Cu",
@@ -152,7 +154,11 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   RegisterSensitiveLogicalVolumes(
       detectors[detectors.size() - 1]->get_sensitive_logical_volumes());
 
-  Target96Mo(world_logical).Construct({});
+  if constexpr (detector_construction_config.use_target) {
+    auto target = Target96Mo(world_logical);
+    target.Construct({});
+    source_volumes.push_back(target.get_source_volume());
+  }
 
   return world_phys;
 }

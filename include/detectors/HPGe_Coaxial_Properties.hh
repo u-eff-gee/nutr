@@ -34,6 +34,10 @@
 // estimates of the actual structure of the dewar and the connecting piece.
 #pragma once
 
+#include <string_view>
+
+using std::string_view;
+
 struct HPGe_Coaxial_Properties {
   // Struct that contains the dimensions of a coaxial detector
   // The naming is partially inspired by typical Ortec data sheets
@@ -65,7 +69,7 @@ struct HPGe_Coaxial_Properties {
   double
       mount_cup_base_thickness; // Thickness of the mount cup base, which may be
                                 // different from the thickness of top and side
-  string mount_cup_material;
+  string_view mount_cup_material;
 
   // End cap
   // Cylindrical cube which covers the whole mount cup.
@@ -88,8 +92,8 @@ struct HPGe_Coaxial_Properties {
                                // vacuum gap
   double end_cap_window_thickness; // Thickness of the window which faces the
                                    // target
-  string end_cap_material;
-  string end_cap_window_material;
+  string_view end_cap_material;
+  string_view end_cap_window_material;
 
   // Cold finger
   // Conducts heat from the dewar to the detector crystal. It penetrates the
@@ -100,7 +104,7 @@ struct HPGe_Coaxial_Properties {
   double cold_finger_penetration_depth; // Determines how far the cold finger,
                                         // including the rounded tip, reaches
                                         // into the crystal
-  string cold_finger_material;
+  string_view cold_finger_material;
 };
 
 struct HPGe_Coaxial_Dewar_Properties {
@@ -116,7 +120,7 @@ struct HPGe_Coaxial_Dewar_Properties {
   double dewar_offset =
       0.; // Offset of the symmetry axis of dewar and connection
           // from the symmetry axis of the front part.
-  string connection_material = "";
+  string_view connection_material = "";
 
   // Dewar
   // A cylindric tube with top and bottom
@@ -124,5 +128,5 @@ struct HPGe_Coaxial_Dewar_Properties {
   double dewar_outer_radius = 0.;   // Outer radius, can be measured most easily
   double dewar_wall_thickness = 0.; // Dewar wall thickness. Assumed to be the
                                     // same for top, bottom and side
-  string dewar_material = "";
+  string_view dewar_material = "";
 };

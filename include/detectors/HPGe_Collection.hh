@@ -27,11 +27,11 @@
 
 namespace HPGe_Coaxial_Collection {
 
-const double inch = 25.4 * mm;
+inline constexpr double inch = 25.4 * mm;
 
 // 60% coaxial HPGe with ORTEC serial number 36-TN21033A
 // Property of TUNL
-HPGe_Coaxial_Properties HPGe_60_TUNL_21033{
+inline constexpr HPGe_Coaxial_Properties HPGe_60_TUNL_21033{
     .detector_radius = 0.5 * 68. * mm, // ORTEC data sheet
     .detector_length = 80.5 * mm,      // ORTEC data sheet
     .detector_face_radius = 8. * mm,   // (J) in ORTEC data sheet
@@ -69,7 +69,7 @@ HPGe_Coaxial_Properties HPGe_60_TUNL_21033{
     .cold_finger_material = "G4_Cu",            // Estimated
 };
 
-HPGe_Coaxial_Dewar_Properties HPGe_60_TUNL_21033_Dewar{
+inline constexpr HPGe_Coaxial_Dewar_Properties HPGe_60_TUNL_21033_Dewar{
     .connection_length = 2. * inch,   // Measured
     .connection_radius = 0.75 * inch, // Estimated
     .dewar_offset = 1. * inch,        // Measured
@@ -83,7 +83,7 @@ HPGe_Coaxial_Dewar_Properties HPGe_60_TUNL_21033_Dewar{
 // 100% (103.5% according to data sheet) coaxial HPGe
 // with ORTEC serial number 42-TP41203A
 // Property of R.V.F. Janssens group, Argonne National Lab
-HPGe_Coaxial_Properties HPGe_ANL_41203{
+inline constexpr HPGe_Coaxial_Properties HPGe_ANL_41203{
     .detector_radius = 0.5 * 89.9 * mm,       // Data sheet
     .detector_length = 98.3 * mm,             // Data sheet
     .detector_face_radius = 2. * mm,          // Estimated
@@ -113,7 +113,7 @@ HPGe_Coaxial_Properties HPGe_ANL_41203{
     .cold_finger_material = "G4_Cu",                 // Estimated
 };
 
-HPGe_Coaxial_Dewar_Properties HPGe_ANL_41203_Dewar{
+inline constexpr HPGe_Coaxial_Dewar_Properties HPGe_ANL_41203_Dewar{
     .connection_length = 4.5 * inch,       // Data sheet
     .connection_radius = 0.5 * 4.5 * inch, // Data sheet
     .dewar_offset = 0. * inch,
@@ -127,7 +127,7 @@ HPGe_Coaxial_Dewar_Properties HPGe_ANL_41203_Dewar{
 // 100% coaxial HPGe
 // with ORTEC serial number 43-TP31670A
 // Property of R.V.F. Janssens group, Argonne National Lab
-HPGe_Coaxial_Properties HPGe_ANL_31670{
+inline constexpr HPGe_Coaxial_Properties HPGe_ANL_31670{
     .detector_radius = 0.5 * 88.6 * mm,       // Data sheet
     .detector_length = 84.1 * mm,             // Data sheet
     .detector_face_radius = 2. * mm,          // Estimated
@@ -157,7 +157,7 @@ HPGe_Coaxial_Properties HPGe_ANL_31670{
     .cold_finger_material = "G4_Cu",                 // Estimated
 };
 
-HPGe_Coaxial_Dewar_Properties HPGe_ANL_31670_Dewar{
+inline constexpr HPGe_Coaxial_Dewar_Properties HPGe_ANL_31670_Dewar{
     .connection_length = 4.5 * inch,       // Data sheet
     .connection_radius = 0.5 * 4.5 * inch, // Data sheet
     .dewar_offset = 0. * inch,
@@ -171,7 +171,7 @@ HPGe_Coaxial_Dewar_Properties HPGe_ANL_31670_Dewar{
 // 120% coaxial HPGe with ORTEC serial number 33-P40383A
 // 'zero-degree detector'
 // Property of TUNL
-HPGe_Coaxial_Properties HPGe_120_TUNL_40383{
+inline constexpr HPGe_Coaxial_Properties HPGe_120_TUNL_40383{
     .detector_radius = 0.5 * 82. * mm, // ORTEC data sheet
     .detector_length = 108.7 * mm,     // ORTEC data sheet
     .detector_face_radius = 8. * mm,   // (J) in ORTEC data sheet
@@ -206,7 +206,7 @@ HPGe_Coaxial_Properties HPGe_120_TUNL_40383{
 
 namespace HPGe_Clover_Collection {
 
-HPGe_Clover_Properties HPGe_Clover_Yale{
+inline constexpr HPGe_Clover_Properties HPGe_Clover_Yale{
     .crystal_radius = 0.5 * 50. * mm,
     .crystal_length = 80. * mm,
     .crystal_face_radius = 2. * mm,

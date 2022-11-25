@@ -24,12 +24,13 @@
 #include "globals.hh"
 
 #include "AnalysisManager.hh"
+#include "SensitiveDetectorBuildOptions.hh"
 
 class NEventAction : public G4UserEventAction {
 public:
   NEventAction(AnalysisManager *ana_man)
       : G4UserEventAction(), analysis_manager(ana_man),
-        update_frequency(@UPDATE_FREQUENCY@){};
+        update_frequency(sensitive_detector_build_options.update_frequency){};
 
   void BeginOfEventAction(const G4Event *event) override final;
   virtual void EndOfEventAction(const G4Event *) = 0;

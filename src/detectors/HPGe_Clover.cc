@@ -65,7 +65,7 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
                   properties.end_cap_front_rounding_radius, 20);
   G4LogicalVolume *end_cap_front_logical = new G4LogicalVolume(
       end_cap_front_solid,
-      nist->FindOrBuildMaterial(properties.end_cap_material),
+      nist->FindOrBuildMaterial(string{properties.end_cap_material}),
       detector_name + "_end_cap_front_logical");
   new G4PVPlacement(
       rotation,
@@ -182,7 +182,7 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
                   properties.end_cap_back_rounding_radius, 20);
   G4LogicalVolume *end_cap_back_logical = new G4LogicalVolume(
       end_cap_back_solid,
-      nist->FindOrBuildMaterial(properties.end_cap_material),
+      nist->FindOrBuildMaterial(string{properties.end_cap_material}),
       detector_name + "_end_cap_back_logical");
   new G4PVPlacement(rotation,
                     global_coordinates +
@@ -222,7 +222,7 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
         properties.connection_length * 0.5, 0., twopi);
     G4LogicalVolume *connection_logical = new G4LogicalVolume(
         connection_solid,
-        nist->FindOrBuildMaterial(properties.connection_material),
+        nist->FindOrBuildMaterial(string{properties.connection_material}),
         detector_name + "connection_logical");
     connection_logical->SetVisAttributes(new G4VisAttributes(G4Color::White()));
     new G4PVPlacement(rotation,
@@ -243,7 +243,8 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
         detector_name + "_dewar_face_solid", 0., properties.dewar_outer_radius,
         properties.dewar_wall_thickness * 0.5, 0., twopi);
     G4LogicalVolume *dewar_face_logical = new G4LogicalVolume(
-        dewar_face_solid, nist->FindOrBuildMaterial(properties.dewar_material),
+        dewar_face_solid,
+        nist->FindOrBuildMaterial(string{properties.dewar_material}),
         detector_name + "_dewar_face_logical");
     dewar_face_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(rotation,
@@ -262,7 +263,8 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
         properties.dewar_outer_radius - properties.dewar_wall_thickness,
         properties.dewar_outer_radius, dewar_side_length * 0.5, 0., twopi);
     G4LogicalVolume *dewar_side_logical = new G4LogicalVolume(
-        dewar_side_solid, nist->FindOrBuildMaterial(properties.dewar_material),
+        dewar_side_solid,
+        nist->FindOrBuildMaterial(string{properties.dewar_material}),
         detector_name + "_dewar_side_logical");
     dewar_side_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(
@@ -280,7 +282,8 @@ void HPGe_Clover::Construct_Detector(G4LogicalVolume *world_logical,
         detector_name + "_dewar_base_solid", 0., properties.dewar_outer_radius,
         properties.dewar_wall_thickness * 0.5, 0., twopi);
     G4LogicalVolume *dewar_base_logical = new G4LogicalVolume(
-        dewar_base_solid, nist->FindOrBuildMaterial(properties.dewar_material),
+        dewar_base_solid,
+        nist->FindOrBuildMaterial(string{properties.dewar_material}),
         detector_name + "_dewar_base_logical");
     dewar_base_logical->SetVisAttributes(new G4VisAttributes(G4Color::Brown()));
     new G4PVPlacement(rotation,
