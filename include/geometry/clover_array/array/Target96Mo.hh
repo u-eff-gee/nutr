@@ -21,6 +21,7 @@
 
 #include "G4LogicalVolume.hh"
 #include "G4VPhysicalVolume.hh"
+#include "SourceVolumeTubs.hh"
 
 /**
  * \brief 96Mo target provided by R. Schwengner, HZDR
@@ -37,6 +38,11 @@ public:
   static constexpr double mass_pe = 50.8 * mg;
   static constexpr double density_pe = 0.940 * mg / (mm * mm * mm);
 
+  std::shared_ptr<SourceVolume> get_source_volume() {
+    return source_volume;
+  }
+
 protected:
   G4LogicalVolume *world_logical;
+  std::shared_ptr<SourceVolume> source_volume;
 };

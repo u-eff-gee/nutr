@@ -17,8 +17,6 @@
         Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
-#include "@HADRON_ELASTIC@.hh"
-#include "@HADRON_INELASTIC@.hh"
 #include "G4DecayPhysics.hh"
 #include "G4EmExtraPhysics.hh"
 #include "G4EmLivermorePolarizedPhysics.hh"
@@ -32,21 +30,26 @@ Physics::Physics() {
 
   RegisterPhysics(new G4EmLivermorePolarizedPhysics());
 
-  G4EmExtraPhysics *emExtraPhysics = new G4EmExtraPhysics();
-  emExtraPhysics->LENDGammaNuclear(@USE_LENDGAMMANUCLEAR@);
-  RegisterPhysics(emExtraPhysics);
+  if constexpr (physics_build_options.use_em_extra_physics) {
+    G4EmExtraPhysics *emExtraPhysics = new G4EmExtraPhysics();
+    emExtraPhysics->LENDGammaNuclear(
+        physics_build_options.use_lendgammanuclear);
+    RegisterPhysics(emExtraPhysics);
+  }
 
-  RegisterPhysics(new G4DecayPhysics());
-  RegisterPhysics(new G4RadioactiveDecayPhysics());
+  if constexpr (physics_build_options.use_decay_physics) {
+    RegisterPhysics(new G4DecayPhysics());
+    RegisterPhysics(new G4RadioactiveDecayPhysics());
+  }
 
-#ifdef USE_HADRON_PHYSICS
-  RegisterPhysics(new @HADRON_ELASTIC@());
+  if constexpr (physics_build_options.use_hadron_physics) {
+    RegisterPhysics(new HadronElastic());
 
-  RegisterPhysics(new @HADRON_INELASTIC@());
-#endif
+    RegisterPhysics(new HadronInelastic());
+  }
 }
 
 void Physics::SetCuts() {
   G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(
-      @PRODUCTION_CUT_LOW_KEV@ * keV, 1. * GeV);
+      physics_build_options.production_cut_low_keV * keV, 1. * GeV);
 }

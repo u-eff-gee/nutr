@@ -3,7 +3,10 @@
 
 using std::time;
 
+#include "G4Threading.hh"
+
 #include "AnalysisManager.hh"
+#include "SensitiveDetectorBuildOptions.hh"
 
 AnalysisManager::AnalysisManager() : fFactoryOn(false) {}
 
@@ -46,12 +49,59 @@ void AnalysisManager::Book(string output_file_name) {
   fFactoryOn = true;
 }
 
-void AnalysisManager::FillNtuple(int eventID, vector<shared_ptr<G4VHit>> hits,
-                                 G4PrimaryVertex *primary_vertex) {
+void AnalysisManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
+
+  analysisManager->CreateNtupleIColumn("evid");
+
+  if constexpr (sensitive_detector_build_options.track_primary) {
+    analysisManager->CreateNtupleDColumn("pos0x");
+    analysisManager->CreateNtupleDColumn("pos0y");
+    analysisManager->CreateNtupleDColumn("pos0z");
+    analysisManager->CreateNtupleDColumn("mom0x");
+    analysisManager->CreateNtupleDColumn("mom0y");
+    analysisManager->CreateNtupleDColumn("mom0z");
+  }
+}
+
+void AnalysisManager::FillNtuple(const G4Event *event,
+                                 vector<shared_ptr<G4VHit>> &hits) {
 
   G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
-  FillNtupleColumns(analysisManager, eventID, hits, primary_vertex);
+  FillNtupleColumns(analysisManager, event, hits);
   analysisManager->AddNtupleRow(0);
+}
+
+size_t AnalysisManager::FillNtupleColumns(
+    G4AnalysisManager *analysisManager, const G4Event *event,
+    [[maybe_unused]] vector<shared_ptr<G4VHit>> &hits) {
+
+  size_t col = 0;
+  analysisManager->FillNtupleIColumn(0, col++, event->GetEventID());
+
+  if constexpr (sensitive_detector_build_options.track_primary) {
+    const G4PrimaryVertex *primary_vertex = event->GetPrimaryVertex(0);
+    if (primary_vertex != nullptr) {
+      analysisManager->FillNtupleDColumn(0, col++, primary_vertex->GetX0());
+      analysisManager->FillNtupleDColumn(0, col++, primary_vertex->GetY0());
+      analysisManager->FillNtupleDColumn(0, col++, primary_vertex->GetZ0());
+
+      const G4PrimaryParticle *primary_particle = primary_vertex->GetPrimary();
+      if (primary_particle != nullptr) {
+        analysisManager->FillNtupleDColumn(
+            0, col++, primary_particle->GetPx());
+        analysisManager->FillNtupleDColumn(
+            0, col++, primary_particle->GetPy());
+        analysisManager->FillNtupleDColumn(
+            0, col++, primary_particle->GetPz());
+      } else {
+        col += 3;
+      }
+    } else {
+      col += 6;
+    }
+  }
+
+  return col;
 }
 
 void AnalysisManager::Save() {
@@ -63,8 +113,10 @@ void AnalysisManager::Save() {
   analysisManager->Write();
   analysisManager->CloseFile();
 
-  G4cout << "Created output file '" << analysisManager->GetFileName() << "'."
-         << G4endl;
+  if (G4Threading::G4GetThreadId() == 0) {
+    G4cout << "Created output file '" << analysisManager->GetFileName() << "'."
+           << G4endl;
+  }
 
   fFactoryOn = false;
 }

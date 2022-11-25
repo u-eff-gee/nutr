@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
   }
 
   G4UIExecutive *ui = nullptr;
-  if (!vm.count("macro")) {
+  if (!vm.count("macro") && isatty(fileno(stdin))) {
     ui = new G4UIExecutive(argc, argv);
   }
 
@@ -82,9 +82,16 @@ int main(int argc, char **argv) {
   G4UImanager *UImanager = G4UImanager::GetUIpointer();
 
   if (!ui) {
-    string command = "/control/execute ";
-    string fileName = vm["macro"].as<string>();
-    UImanager->ApplyCommand(command + fileName);
+    if (vm.count("macro")) {
+      string command = "/control/execute ";
+      string fileName = vm["macro"].as<string>();
+      UImanager->ApplyCommand(command + fileName);
+    } else {
+      std::string line;
+      while (std::getline(std::cin, line)) {
+        UImanager->ApplyCommand(line);
+      }
+    }
   } else {
     UImanager->ApplyCommand("/control/execute init_vis.mac");
     ui->SessionStart();

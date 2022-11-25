@@ -17,27 +17,15 @@
     Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
-#include <memory>
+#pragma once
 
-using std::make_shared;
+// clang-format off
+#cmakedefine UPDATE_FREQUENCY @UPDATE_FREQUENCY@
+#cmakedefine01 TRACK_PRIMARY
+// clang-format on
 
-#include "G4Event.hh"
-#include "G4EventManager.hh"
-#include "G4ios.hh"
-
-#include "DetectorHit.hh"
-#include "EventAction.hh"
-
-EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
-
-void EventAction::EndOfEventAction(const G4Event *event) {
-  G4VHitsCollection *hc = nullptr;
-  for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
-       ++n_hc) {
-    hc = event->GetHCofThisEvent()->GetHC(n_hc);
-
-    for (size_t i = 0; i < hc->GetSize(); ++i)
-      analysis_manager->FillNtuple(
-          event, {make_shared<DetectorHit>((DetectorHit *)hc->GetHit(i))});
-  }
-}
+struct SensitiveDetectorBuildOptions {
+  constexpr static int update_frequency = UPDATE_FREQUENCY;
+  constexpr static bool track_primary = static_cast<bool>(TRACK_PRIMARY);
+};
+inline constexpr SensitiveDetectorBuildOptions sensitive_detector_build_options;

@@ -23,6 +23,9 @@
 void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
 
   analysisManager->CreateNtuple("edep", "Energy Deposition");
+
+  AnalysisManager::CreateNtupleColumns(analysisManager);
+
   analysisManager->CreateNtupleIColumn("deid");
   analysisManager->CreateNtupleDColumn("edep");
   analysisManager->CreateNtupleDColumn("x0");
@@ -34,24 +37,15 @@ void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   analysisManager->CreateNtupleDColumn("E0");
 }
 
-void TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
-                                     [[maybe_unused]] int eventID,
-                                     vector<shared_ptr<G4VHit>> hits,
-                                     G4PrimaryVertex *primary_vertex) {
+size_t TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
+                                       [[maybe_unused]] const G4Event *event,
+                                       vector<shared_ptr<G4VHit>> &hits) {
+
+  auto col = AnalysisManager::FillNtupleColumns(analysisManager, event, hits);
 
   analysisManager->FillNtupleIColumn(
-      0, 0, dynamic_pointer_cast<DetectorHit>(hits[0])->GetDetectorID());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetDetectorID());
   analysisManager->FillNtupleDColumn(
-      0, 1, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEdep());
-  analysisManager->FillNtupleDColumn(0, 2, primary_vertex->GetPosition().x());
-  analysisManager->FillNtupleDColumn(0, 3, primary_vertex->GetPosition().y());
-  analysisManager->FillNtupleDColumn(0, 4, primary_vertex->GetPosition().z());
-  analysisManager->FillNtupleDColumn(
-      0, 5, primary_vertex->GetPrimary(0)->GetMomentumDirection().x());
-  analysisManager->FillNtupleDColumn(
-      0, 6, primary_vertex->GetPrimary(0)->GetMomentumDirection().y());
-  analysisManager->FillNtupleDColumn(
-      0, 7, primary_vertex->GetPrimary(0)->GetMomentumDirection().z());
-  analysisManager->FillNtupleDColumn(
-      0, 8, primary_vertex->GetPrimary(0)->GetKineticEnergy());
+      0, col++, dynamic_pointer_cast<DetectorHit>(hits[0])->GetEdep());
+  return col;
 }

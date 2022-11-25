@@ -29,20 +29,20 @@ using std::shared_ptr;
 
 #include "DetectorHit.hh"
 #include "EventAction.hh"
+#include "SensitiveDetectorBuildOptions.hh"
 
 EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
 void EventAction::EndOfEventAction(const G4Event *event) {
   G4VHitsCollection *hc = nullptr;
   vector<shared_ptr<G4VHit>> hits{make_shared<DetectorHit>()};
-  int current_deid{0}, eventID{0}, max_deid{0};
+  int current_deid{0}, max_deid{0};
   double sum_edep = 0.;
 
   for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
        ++n_hc) {
 
     hc = event->GetHCofThisEvent()->GetHC(n_hc);
-    eventID = event->GetEventID();
 
     if (hc->GetSize() > 0) {
       current_deid = ((DetectorHit *)hc->GetHit(0))->GetDetectorID();
@@ -65,7 +65,7 @@ void EventAction::EndOfEventAction(const G4Event *event) {
     }
   }
 
-  if (sum_edep > 0.) {
-    analysis_manager->FillNtuple(eventID, hits, event->GetPrimaryVertex(0));
+  if (sensitive_detector_build_options.track_primary || sum_edep > 0.) {
+    analysis_manager->FillNtuple(event, hits);
   }
 }

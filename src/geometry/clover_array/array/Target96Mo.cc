@@ -114,8 +114,9 @@ void Target96Mo::Construct(const G4ThreeVector global_coordinates) {
       target_pe_shell_solid, material_pe, "target_pe_shell_logical");
   target_pe_shell_logical->SetVisAttributes(lightgray);
 
-  new G4PVPlacement(0, global_coordinates, target_96Mo_logical, "target_96Mo",
-                    world_logical, false, 0, false);
+  auto *target_96Mo_physical =
+      new G4PVPlacement(0, global_coordinates, target_96Mo_logical,
+                        "target_96Mo", world_logical, false, 0, false);
   new G4PVPlacement(0, global_coordinates, target_pe_shell_logical,
                     "target_pe_shell", world_logical, false, 0, false);
   new G4PVPlacement(0, global_coordinates, target_pe_squarehole_logical,
@@ -131,4 +132,6 @@ void Target96Mo::Construct(const G4ThreeVector global_coordinates) {
           G4ThreeVector(0., 0., -0.5 * (thickness_96mo + thickness_pe_disc)),
       target_pe_bottom_logical, "target_pe_bottom", world_logical, false, 0,
       false);
+
+  source_volume = std::make_shared<SourceVolumeTubs>(target_96Mo_solid, target_96Mo_physical, 1.);
 }

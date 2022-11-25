@@ -4,8 +4,8 @@ __pycache__
 *.root
 
 # CMake - configured files
-include/sensitive_detector/NEventAction.hh
-src/physics/Physics.cc
+include/sensitive_detector/SensitiveDetectorBuildOptions.hh
+include/physics/Physics.hh
 
 # CMake artifacts
 CMakeCache.txt
