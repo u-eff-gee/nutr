@@ -40,13 +40,6 @@ void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   for (size_t i = 0; i < n_sensitive_detectors; ++i) {
     analysisManager->CreateNtupleDColumn("det" + to_string(i));
   }
-  analysisManager->CreateNtupleDColumn("x0");
-  analysisManager->CreateNtupleDColumn("y0");
-  analysisManager->CreateNtupleDColumn("z0");
-  analysisManager->CreateNtupleDColumn("px0");
-  analysisManager->CreateNtupleDColumn("py0");
-  analysisManager->CreateNtupleDColumn("pz0");
-  analysisManager->CreateNtupleDColumn("E0");
 }
 
 size_t TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,

@@ -25,16 +25,6 @@ void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   analysisManager->CreateNtuple("edep", "Energy Deposition");
 
   AnalysisManager::CreateNtupleColumns(analysisManager);
-
-  analysisManager->CreateNtupleIColumn("deid");
-  analysisManager->CreateNtupleDColumn("edep");
-  analysisManager->CreateNtupleDColumn("x0");
-  analysisManager->CreateNtupleDColumn("y0");
-  analysisManager->CreateNtupleDColumn("z0");
-  analysisManager->CreateNtupleDColumn("px0");
-  analysisManager->CreateNtupleDColumn("py0");
-  analysisManager->CreateNtupleDColumn("pz0");
-  analysisManager->CreateNtupleDColumn("E0");
 }
 
 size_t TupleManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
