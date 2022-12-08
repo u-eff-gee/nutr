@@ -23,8 +23,6 @@ include(${Geant4_USE_FILE})
 
 set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
 
-set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/sensitive_detector` that contains the desired sensitive detector. Possible choices: `edep`, `event` (default), `flux`, `tracker`.")
-
 option(TRACK_PRIMARY "Track position and momentum of (first) primary vertex per event" Off)
 
 configure_file(

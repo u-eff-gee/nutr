@@ -76,6 +76,8 @@ option(GEOMETRY_2022-02-21_to_2022-03-02 "Build Clover Array geometry for time i
 
 set(PRODUCTION_CUT_LOW_KEV "0.99" CACHE STRING "Set the lower energy limit of the production cut for gammas, electrons/positrons and protons in keV (default: '0.99', i.e. use default production cut of G4EmLivermorePolarizedPhysics). A straightforward way to view the current production cuts is the '/run/particle/dumpCutValues' macro command.")
 
+set(SENSITIVE_DETECTOR_DIR "event" CACHE STRING "Select directory in `${PROJECT_SOURCE_DIR}/src/sensitive_detector` that contains the desired sensitive detector. Possible choices: `edep`, `event` (default), `flux`, `tracker`.")
+
 add_compile_options(-Wall -Wextra -Wpedantic)
 
 add_subdirectory(src/detectors)
