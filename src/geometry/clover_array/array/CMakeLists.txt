@@ -15,6 +15,10 @@
 #
 #    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
+find_package(Geant4 REQUIRED)
+link_libraries(${Geant4_LIBRARIES})
+include(${Geant4_USE_FILE})
+
 include_directories(${PROJECT_SOURCE_DIR}/include/geometry/clover_array/array)
 
 add_library(activation_target EXCLUDE_FROM_ALL ActivationTarget.cc)

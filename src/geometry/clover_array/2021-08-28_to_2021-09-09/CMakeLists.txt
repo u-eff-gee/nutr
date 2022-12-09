@@ -15,6 +15,10 @@
 #
 #    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
+find_package(Geant4 REQUIRED)
+link_libraries(${Geant4_LIBRARIES})
+include(${Geant4_USE_FILE})
+
 add_library(detectorConstructionMessenger_2021-08-28_to_2021-09-09 DetectorConstructionMessenger.cc)
 target_include_directories(detectorConstructionMessenger_2021-08-28_to_2021-09-09 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/geometry/clover_array/2021-08-28_to_2021-09-09)
 
