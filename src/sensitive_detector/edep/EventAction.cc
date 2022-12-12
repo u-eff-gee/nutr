@@ -49,7 +49,8 @@ void EventAction::EndOfEventAction(const G4Event *event) {
       cumulative_hit->SetDetectorID(
           ((DetectorHit *)hc->GetHit(0))->GetDetectorID());
       cumulative_hit->SetEdep(edep);
-      analysis_manager->FillNtuple(event, {cumulative_hit});
+      vector<shared_ptr<G4VHit>> hits{cumulative_hit}; // Wrap cumulative hit into a vector for compatibility with the AnalysisManager API.
+      analysis_manager->FillNtuple(event, hits);
     }
   }
 }
