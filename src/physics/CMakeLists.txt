@@ -55,8 +55,5 @@ option(USE_EM_EXTRA_PHYSICS
 configure_file(${PROJECT_SOURCE_DIR}/include/physics/PhysicsConfig.hh.in
                ${PROJECT_BINARY_DIR}/include/physics/PhysicsConfig.hh)
 
-find_package(Geant4 REQUIRED)
-link_libraries(${Geant4_LIBRARIES})
-include(${Geant4_USE_FILE})
-
 add_library(physics Physics.cc)
+target_include_directories(physics PUBLIC ${Geant4_INCLUDE_DIRS})

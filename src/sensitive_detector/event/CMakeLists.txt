@@ -17,10 +17,6 @@
 
 include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector/event)
 
-find_package(Geant4 REQUIRED)
-link_libraries(${Geant4_LIBRARIES})
-include(${Geant4_USE_FILE})
-
 add_library(DetectorHit DetectorHit.cc)
 target_include_directories(DetectorHit PUBLIC ${PROJECT_SOURCE_DIR}/include/sensitive_detector)
 target_link_libraries(DetectorHit nDetectorHit)

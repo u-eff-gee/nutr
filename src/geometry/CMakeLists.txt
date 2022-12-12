@@ -15,19 +15,15 @@
 #
 #    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
-find_package(Geant4 REQUIRED)
-link_libraries(${Geant4_LIBRARIES})
-include(${Geant4_USE_FILE})
-
 add_library(nDetectorConstructionMessenger NDetectorConstructionMessenger.cc)
-target_include_directories(nDetectorConstructionMessenger PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
+target_include_directories(nDetectorConstructionMessenger PUBLIC ${Geant4_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include/geometry)
 
 add_library(nDetectorConstruction NDetectorConstruction.cc)
 target_include_directories(nDetectorConstruction PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})
 target_link_libraries(nDetectorConstruction nDetectorConstructionMessenger SensitiveDetector)
 
 add_library(sourceVolume EXCLUDE_FROM_ALL SourceVolume.cc)
-target_include_directories(sourceVolume PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)
+target_include_directories(sourceVolume PUBLIC ${Geant4_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include/geometry)
 
 add_library(sourceVolumeTubs EXCLUDE_FROM_ALL SourceVolumeTubs.cc)
 target_include_directories(sourceVolumeTubs PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry)

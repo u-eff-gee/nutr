@@ -15,15 +15,11 @@
 #
 #    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
-find_package(Geant4 REQUIRED)
-link_libraries(${Geant4_LIBRARIES})
-include(${Geant4_USE_FILE})
-
 add_library(cebr3 EXCLUDE_FROM_ALL CeBr3.cc)
-target_include_directories(cebr3 PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)
+target_include_directories(cebr3 PUBLIC ${Geant4_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include/geometry/materials)
 
 add_library(labr3ce EXCLUDE_FROM_ALL LaBr3Ce.cc)
-target_include_directories(labr3ce PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)
+target_include_directories(labr3ce PUBLIC ${Geant4_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include/geometry/materials)
 
 add_library(pla EXCLUDE_FROM_ALL PLA.cc)
-target_include_directories(pla PUBLIC ${PROJECT_SOURCE_DIR}/include/geometry/materials)
+target_include_directories(pla PUBLIC ${Geant4_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include/geometry/materials)

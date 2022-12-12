@@ -17,10 +17,6 @@
 
 include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals)
 
-find_package(Geant4 REQUIRED)
-link_libraries(${Geant4_LIBRARIES})
-include(${Geant4_USE_FILE})
-
 if(${GEOMETRY_2021-02-16_to_2021-04-10})
     add_library(actionInitialization_2021-02-16_to_2021-04-10 ActionInitialization.cc)
     target_include_directories(actionInitialization_2021-02-16_to_2021-04-10 PUBLIC ${PROJECT_SOURCE_DIR}/include/primary_generator/gps ${PROJECT_SOURCE_DIR}/include/sensitive_detector/${SENSITIVE_DETECTOR_DIR})

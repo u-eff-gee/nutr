@@ -15,10 +15,6 @@
 #
 #    Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
-find_package(Geant4 REQUIRED)
-link_libraries(${Geant4_LIBRARIES})
-include(${Geant4_USE_FILE})
-
-include_directories(${PROJECT_SOURCE_DIR}/include/primary_generator/gps)
 
 add_library(primaryGeneratorAction PrimaryGeneratorAction.cc)
+target_include_directories(primaryGeneratorAction PUBLIC ${Geant4_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include/primary_generator/gps)

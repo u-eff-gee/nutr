@@ -17,10 +17,6 @@
 include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector)
 include_directories(${PROJECT_BINARY_DIR}/include/sensitive_detector)
 
-find_package(Geant4 REQUIRED)
-link_libraries(${Geant4_LIBRARIES})
-include(${Geant4_USE_FILE})
-
 set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
 
 option(TRACK_PRIMARY "Track position and momentum of (first) primary vertex per event" Off)
@@ -31,14 +27,18 @@ configure_file(
 )
 
 add_library(analysisManager AnalysisManager.cc)
+target_include_directories(analysisManager PUBLIC ${Geant4_INCLUDE_DIRS})
 
 add_library(nDetectorHit NDetectorHit.cc)
+target_include_directories(nDetectorHit PUBLIC ${Geant4_INCLUDE_DIRS})
 
 add_library(nRunAction NRunAction.cc)
+target_include_directories(nRunAction PUBLIC ${Geant4_INCLUDE_DIRS})
 
 add_library(nEventAction NEventAction.cc)
 target_link_libraries(nEventAction nRunAction)
 
 add_library(nSensitiveDetector NSensitiveDetector.cc)
+target_include_directories(nSensitiveDetector PUBLIC ${Geant4_INCLUDE_DIRS})
 
 add_subdirectory(${SENSITIVE_DETECTOR_DIR})
