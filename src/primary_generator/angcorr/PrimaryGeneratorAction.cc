@@ -174,8 +174,10 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event *event) {
 
   if (cascade.size() != cascade_energies.size() || cascade.size() == 0)
       [[unlikely]] {
-    std::cerr << "Alpaca not initialized. Use /alpaca/cascade and "
-                 "/alpaca/energies.\n";
+    std::cerr
+        << "Alpaca not initialized. Use the macro commands /alpaca/cascade and "
+           "/alpaca/energies, and make sure that the number of given energies "
+           "matches the number of observed cascade steps.\n";
     event->SetEventAborted();
     return;
   }
