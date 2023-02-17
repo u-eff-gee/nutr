@@ -15,11 +15,18 @@
 # Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 
 include_directories(${PROJECT_SOURCE_DIR}/include/sensitive_detector)
+include_directories(${PROJECT_SOURCE_DIR}/include/fundamentals)
 include_directories(${PROJECT_BINARY_DIR}/include/sensitive_detector)
 
-set(UPDATE_FREQUENCY "10000" CACHE STRING "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000).")
+set(UPDATE_FREQUENCY
+    "10000"
+    CACHE
+      STRING
+      "Determine the number of events since the last update after which a new update about the progress of the simulation is printed on the command line (default: 10000)."
+)
 
-option(TRACK_PRIMARY "Track position and momentum of (first) primary vertex per event" Off)
+option(TRACK_PRIMARY
+       "Track position and momentum of (first) primary vertex per event" Off)
 
 configure_file(
   ${PROJECT_SOURCE_DIR}/include/sensitive_detector/SensitiveDetectorBuildOptions.hh.in

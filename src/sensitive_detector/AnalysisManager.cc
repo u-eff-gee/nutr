@@ -6,6 +6,7 @@ using std::time;
 #include "G4Threading.hh"
 
 #include "AnalysisManager.hh"
+#include "NutrMessenger.hh"
 #include "SensitiveDetectorBuildOptions.hh"
 
 AnalysisManager::AnalysisManager() : fFactoryOn(false) {}
@@ -29,7 +30,10 @@ string AnalysisManager::create_default_file_name() const {
 
 void AnalysisManager::Book(string output_file_name) {
 
-  if (output_file_name == "") {
+  auto output_file_name_macro = NutrMessenger::GetFilename();
+  if (output_file_name_macro != "") {
+    output_file_name = output_file_name_macro;
+  } else if (output_file_name == "") {
     output_file_name = create_default_file_name();
   }
 
@@ -87,12 +91,9 @@ size_t AnalysisManager::FillNtupleColumns(
 
       const G4PrimaryParticle *primary_particle = primary_vertex->GetPrimary();
       if (primary_particle != nullptr) {
-        analysisManager->FillNtupleDColumn(
-            0, col++, primary_particle->GetPx());
-        analysisManager->FillNtupleDColumn(
-            0, col++, primary_particle->GetPy());
-        analysisManager->FillNtupleDColumn(
-            0, col++, primary_particle->GetPz());
+        analysisManager->FillNtupleDColumn(0, col++, primary_particle->GetPx());
+        analysisManager->FillNtupleDColumn(0, col++, primary_particle->GetPy());
+        analysisManager->FillNtupleDColumn(0, col++, primary_particle->GetPz());
       } else {
         col += 3;
       }
