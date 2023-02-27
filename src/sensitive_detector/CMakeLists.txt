@@ -35,6 +35,9 @@ configure_file(
 
 add_library(analysisManager AnalysisManager.cc)
 target_include_directories(analysisManager PUBLIC ${Geant4_INCLUDE_DIRS})
+if(TRACK_PRIMARY)
+  target_link_libraries(analysisManager Geant4::G4particles)
+endif()
 
 add_library(nDetectorHit NDetectorHit.cc)
 target_include_directories(nDetectorHit PUBLIC ${Geant4_INCLUDE_DIRS})
