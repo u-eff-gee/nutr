@@ -25,9 +25,7 @@ set_target_properties(gps_2022-02-07_to_2022-02-15 PROPERTIES RUNTIME_OUTPUT_DIR
 target_include_directories(gps_2022-02-07_to_2022-02-15 PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
 target_link_libraries(gps_2022-02-07_to_2022-02-15 actionInitialization_2022-02-07_to_2022-02-15 ${Boost_LIBRARIES} detectorConstruction_2022-02-07_to_2022-02-15 physics ${Geant4_LIBRARIES})
 
-if(${alpaca_FOUND})
-    add_executable(angcorr_2022-02-07_to_2022-02-15 ${PROJECT_SOURCE_DIR}/src/fundamentals/nutr.cc)
-    set_target_properties(angcorr_2022-02-07_to_2022-02-15 PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/2022-02-07_to_2022-02-15)
-    target_include_directories(angcorr_2022-02-07_to_2022-02-15 PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
-    target_link_libraries(angcorr_2022-02-07_to_2022-02-15 actionInitialization_2022-02-07_to_2022-02-15_angcorr ${Boost_LIBRARIES} detectorConstruction_2022-02-07_to_2022-02-15 physics ${Geant4_LIBRARIES})
-endif()
+add_executable(angcorr_2022-02-07_to_2022-02-15 ${PROJECT_SOURCE_DIR}/src/fundamentals/nutr.cc)
+set_target_properties(angcorr_2022-02-07_to_2022-02-15 PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/2022-02-07_to_2022-02-15)
+target_include_directories(angcorr_2022-02-07_to_2022-02-15 PUBLIC ${PROJECT_SOURCE_DIR}/include/fundamentals ${PROJECT_SOURCE_DIR}/include/geometry ${PROJECT_SOURCE_DIR}/include/physics)
+target_link_libraries(angcorr_2022-02-07_to_2022-02-15 actionInitialization_2022-02-07_to_2022-02-15_angcorr ${Boost_LIBRARIES} detectorConstruction_2022-02-07_to_2022-02-15 physics ${Geant4_LIBRARIES})

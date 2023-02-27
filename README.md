@@ -40,7 +40,7 @@ Some code has been adapted from a previous simulation of the UTR ([utr](https://
 * `boost.program_options` from the [boost](https://www.boost.org/) C++ libraries
 * [ROOT 6](https://root.cern.ch/) is optional, but since the output is written in the ROOT format by default, it is highly recommended.
 * [Doxygen](http://www.doxygen.nl/index.html) and its [requirements for typesetting LaTeX](http://www.doxygen.nl/manual/formulas.html) formulas (optional)
-* [alpaca](https://github.com/uga-uga/alpaca) (version >= 0.9.0) to use the `angcorr` primary generator (optional). The `alpaca` library must have been installed (`cmake --install .`) for `nutr` to be able to find it.
+* [alpaca](https://github.com/uga-uga/alpaca) (version >= 0.9.0) to use the `angcorr` primary generator. Installed automatically if not found.
 
 In the following, the directory where the top-level `CMakeLists.txt` is located in a downloaded version of `nutr` is denoted as `NUTR_SOURCE_DIR`.
 In a build directory `NUTR_BUILD_DIR`, execute:

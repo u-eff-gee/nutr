@@ -34,6 +34,7 @@ namespace po = boost::program_options;
 
 #include "ActionInitialization.hh"
 #include "DetectorConstruction.hh"
+#include "NutrMessenger.hh"
 #include "Physics.hh"
 
 int main(int argc, char **argv) {
@@ -76,6 +77,8 @@ int main(int argc, char **argv) {
 
   runManager->SetUserInitialization(new ActionInitialization(
       vm["output"].as<string>(), vm["seed"].as<long>()));
+
+  NutrMessenger analysisMessenger;
 
   G4VisManager *visManager = new G4VisExecutive();
   visManager->Initialize();
