@@ -29,7 +29,7 @@ public:
 
   size_t FillNtupleColumns(G4AnalysisManager *analysisManager,
                            const G4Event *event,
-                           vector<shared_ptr<G4VHit>> &hits) override;
+                           vector<G4VHit *> hits) override;
 
 private:
   size_t n_sensitive_detectors;

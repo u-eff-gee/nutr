@@ -37,7 +37,6 @@ void EventAction::EndOfEventAction(const G4Event *event) {
     hc = event->GetHCofThisEvent()->GetHC(n_hc);
 
     for (size_t i = 0; i < hc->GetSize(); ++i)
-      analysis_manager->FillNtuple(
-          event, {make_shared<DetectorHit>((DetectorHit *)hc->GetHit(i))});
+      analysis_manager->FillNtuple(event, {(DetectorHit *)hc->GetHit(i)});
   }
 }

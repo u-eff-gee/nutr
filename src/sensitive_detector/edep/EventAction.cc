@@ -19,8 +19,8 @@
 
 #include <memory>
 
-using std::make_shared;
-using std::shared_ptr;
+using std::make_unique;
+using std::unique_ptr;
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -33,7 +33,7 @@ EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
 void EventAction::EndOfEventAction(const G4Event *event) {
   G4VHitsCollection *hc = nullptr;
-  shared_ptr<DetectorHit> cumulative_hit;
+  unique_ptr<DetectorHit> cumulative_hit;
 
   for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
        ++n_hc) {
@@ -45,11 +45,13 @@ void EventAction::EndOfEventAction(const G4Event *event) {
       for (size_t i = 0; i < hc->GetSize(); ++i)
         edep += ((DetectorHit *)hc->GetHit(i))->GetEdep();
 
-      cumulative_hit = make_shared<DetectorHit>();
+      cumulative_hit = make_unique<DetectorHit>();
       cumulative_hit->SetDetectorID(
           ((DetectorHit *)hc->GetHit(0))->GetDetectorID());
       cumulative_hit->SetEdep(edep);
-      vector<shared_ptr<G4VHit>> hits{cumulative_hit}; // Wrap cumulative hit into a vector for compatibility with the AnalysisManager API.
+      vector<G4VHit *> hits{
+          cumulative_hit.get()}; // Wrap cumulative hit into a vector for
+                                 // compatibility with the AnalysisManager API.
       analysis_manager->FillNtuple(event, hits);
     }
   }

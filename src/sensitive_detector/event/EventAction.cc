@@ -17,11 +17,11 @@
     Copyright (C) 2020-2022 Udo Friman-Gayer and Oliver Papst
 */
 
+#include <algorithm>
 #include <memory>
 
-using std::dynamic_pointer_cast;
-using std::make_shared;
-using std::shared_ptr;
+using std::make_unique;
+using std::unique_ptr;
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -35,8 +35,12 @@ EventAction::EventAction(AnalysisManager *ana_man) : NEventAction(ana_man) {}
 
 void EventAction::EndOfEventAction(const G4Event *event) {
   G4VHitsCollection *hc = nullptr;
-  vector<shared_ptr<G4VHit>> hits{make_shared<DetectorHit>()};
-  int current_deid{0}, max_deid{0};
+
+  vector<unique_ptr<DetectorHit>> hits_owned;
+  hits_owned.emplace_back();
+
+  int current_deid{0};
+  int max_deid{0};
   double sum_edep = 0.;
 
   for (int n_hc = 0; n_hc < event->GetHCofThisEvent()->GetNumberOfCollections();
@@ -51,21 +55,28 @@ void EventAction::EndOfEventAction(const G4Event *event) {
       // than the current maximum.
       if (current_deid > max_deid) {
         for (int i = 0; i < current_deid - max_deid; ++i) {
-          hits.push_back(make_shared<DetectorHit>());
+          hits_owned.emplace_back();
         }
         max_deid = current_deid;
       }
 
       double edep = 0.;
-      for (size_t i = 0; i < hc->GetSize(); ++i)
+      for (size_t i = 0; i < hc->GetSize(); ++i) {
         edep += ((DetectorHit *)hc->GetHit(i))->GetEdep();
+      }
 
       sum_edep += edep;
-      dynamic_pointer_cast<DetectorHit>(hits[current_deid])->SetEdep(edep);
+      hits_owned[current_deid]->SetEdep(edep);
     }
   }
 
   if (sensitive_detector_build_options.track_primary || sum_edep > 0.) {
-    analysis_manager->FillNtuple(event, hits);
+    vector<G4VHit *> hits_raw;
+    std::transform(hits_owned.begin(), hits_owned.end(),
+                   std::back_inserter(hits_raw),
+                   [](const std::unique_ptr<DetectorHit> &ptr) {
+                     return static_cast<G4VHit *>(ptr.get());
+                   });
+    analysis_manager->FillNtuple(event, hits_raw);
   }
 }

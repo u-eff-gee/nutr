@@ -23,10 +23,6 @@
 
 #pragma once
 
-#include <memory>
-
-using std::shared_ptr;
-
 #include <string>
 #include <vector>
 
@@ -46,10 +42,10 @@ public:
   void Book(string output_file_name);
   [[maybe_unused]] virtual void
   CreateNtupleColumns(G4AnalysisManager *analysisManager);
-  void FillNtuple(const G4Event *event, vector<shared_ptr<G4VHit>> &hits);
+  void FillNtuple(const G4Event *event, vector<G4VHit *> hits);
   [[maybe_unused]] virtual size_t
   FillNtupleColumns(G4AnalysisManager *analysisManager, const G4Event *event,
-                    vector<shared_ptr<G4VHit>> &hits);
+                    vector<G4VHit *> hits);
   void Save();
 
 protected:

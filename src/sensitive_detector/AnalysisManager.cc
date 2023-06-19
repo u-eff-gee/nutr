@@ -67,17 +67,17 @@ void AnalysisManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
   }
 }
 
-void AnalysisManager::FillNtuple(const G4Event *event,
-                                 vector<shared_ptr<G4VHit>> &hits) {
+void AnalysisManager::FillNtuple(const G4Event *event, vector<G4VHit *> hits) {
 
   G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
   FillNtupleColumns(analysisManager, event, hits);
   analysisManager->AddNtupleRow(0);
 }
 
-size_t AnalysisManager::FillNtupleColumns(
-    G4AnalysisManager *analysisManager, const G4Event *event,
-    [[maybe_unused]] vector<shared_ptr<G4VHit>> &hits) {
+size_t
+AnalysisManager::FillNtupleColumns(G4AnalysisManager *analysisManager,
+                                   const G4Event *event,
+                                   [[maybe_unused]] vector<G4VHit *> hits) {
 
   size_t col = 0;
   analysisManager->FillNtupleIColumn(0, col++, event->GetEventID());
