@@ -121,6 +121,13 @@ set(SENSITIVE_DETECTOR_DIR
       STRING
       "Select directory in `${PROJECT_SOURCE_DIR}/src/sensitive_detector` that contains the desired sensitive detector. Possible choices: `edep`, `event` (default), `flux`, `tracker`."
 )
+set_property(
+  CACHE SENSITIVE_DETECTOR_DIR
+    PROPERTY STRINGS
+             "edep"
+             "event"
+             "flux"
+             "tracker")
 
 add_compile_options(-Wall -Wextra -Wpedantic)
 
