@@ -37,7 +37,7 @@ void EventAction::EndOfEventAction(const G4Event *event) {
   G4VHitsCollection *hc = nullptr;
 
   vector<unique_ptr<DetectorHit>> hits_owned;
-  hits_owned.emplace_back();
+  hits_owned.push_back(make_unique<DetectorHit>());
 
   int current_deid{0};
   int max_deid{0};
@@ -55,7 +55,7 @@ void EventAction::EndOfEventAction(const G4Event *event) {
       // than the current maximum.
       if (current_deid > max_deid) {
         for (int i = 0; i < current_deid - max_deid; ++i) {
-          hits_owned.emplace_back();
+          hits_owned.push_back(make_unique<DetectorHit>());
         }
         max_deid = current_deid;
       }
