@@ -70,7 +70,7 @@ target_include_directories(
          ${PROJECT_SOURCE_DIR}/include/geometry
          ${PROJECT_SOURCE_DIR}/include/physics)
 target_link_libraries(
-  gps_2021-09-09_to_2021-10-10 actionInitialization_2021-09-09_to_2021-10-10
+  gps_2021-09-09_to_2021-10-10 actionInitialization
   ${Boost_LIBRARIES} detectorConstruction_2021-09-09_to_2021-10-10 physics
   ${Geant4_LIBRARIES})
 
@@ -88,5 +88,5 @@ target_include_directories(
          ${PROJECT_SOURCE_DIR}/include/physics)
 target_link_libraries(
   angcorr_2021-09-09_to_2021-10-10
-  actionInitialization_2021-09-09_to_2021-10-10_angcorr ${Boost_LIBRARIES}
+  actionInitialization ${Boost_LIBRARIES}
   detectorConstruction_2021-09-09_to_2021-10-10 physics ${Geant4_LIBRARIES})

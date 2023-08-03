@@ -23,8 +23,8 @@ using std::dynamic_pointer_cast;
 
 #include "G4RunManager.hh"
 
-#include "DetectorConstruction.hh"
 #include "DetectorHit.hh"
+#include "NDetectorConstruction.hh"
 #include "TupleManager.hh"
 
 void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
@@ -33,9 +33,10 @@ void TupleManager::CreateNtupleColumns(G4AnalysisManager *analysisManager) {
 
   AnalysisManager::CreateNtupleColumns(analysisManager);
 
-  n_sensitive_detectors = ((DetectorConstruction *)G4RunManager::GetRunManager()
-                               ->GetUserDetectorConstruction())
-                              ->GetNumberOfSensitiveDetectors();
+  n_sensitive_detectors =
+      ((NDetectorConstruction *)G4RunManager::GetRunManager()
+           ->GetUserDetectorConstruction())
+          ->GetNumberOfSensitiveDetectors();
 
   for (size_t i = 0; i < n_sensitive_detectors; ++i) {
     analysisManager->CreateNtupleDColumn("det" + to_string(i));
